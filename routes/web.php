@@ -27,7 +27,6 @@ Route::post('/login/custom', [
         Route::get('/get_insurance_clients', 'clientsController@getInsuranceClients')->name('get_insurance_clients');
         Route::get('/get_space_contracts', 'ContractsController@getSpaceContracts')->name('get_space_contracts');
         Route::get('/get_space_clients', 'clientsController@getSpaceClients')->name('get_space_clients');
-
         Route::get('/get_car_clients', 'clientsController@getCarClients')->name('get_car_clients');
         Route::get('/get_research_clients', 'clientsController@getResearchClients')->name('get_research_clients');
 
@@ -80,6 +79,10 @@ Route::post('/login/custom', [
     Route::get('/space_contract_form', 'ContractsController@SpaceContractForm');
 
     Route::get('/contracts_management', 'ContractsController@ContractsManagement')->name('contracts_management');
+    Route::get('/contracts_management/insurance', 'ContractsController@ContractsManagementInsurance')->name('contracts_management_insurance');
+    Route::get('/contracts_management/research', 'ContractsController@ContractsManagementResearch')->name('contracts_management_research');
+    Route::get('/contracts_management/car_rental', 'ContractsController@ContractsManagementCarRental')->name('contracts_management_car_rental');
+
 
     Route::get('/invoice_management', 'InvoicesController@invoiceManagement');
 

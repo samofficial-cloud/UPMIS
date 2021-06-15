@@ -93,8 +93,7 @@ div.dt-buttons{
 
 @section('content')
 <div class="wrapper">
-  <div id="coverScreen"  class="pageLoad">
-  </div>
+
 <div class="sidebar">
         <ul style="list-style-type:none;">
 
@@ -175,33 +174,36 @@ div.dt-buttons{
 
 
 
-            <div class="tab">
+
+
+                @if ($category=='Research Flats only')
+
+
+                    <div class="tab">
 
 
 
 
-                    @if ($category=='Real Estate only' OR $category=='All')
+                        @if ($category=='Real Estate only' OR $category=='All')
 
-                        <button class="tablinksOuter  space_identity" onclick="openContractType(event, 'space_contracts')"  ><strong>Real Estate </strong></button>
+                            <button class="tablinksOuter  space_identity" onclick='javascript:window.location.href="/contracts_management"'><strong>Real Estate </strong></button>
 
-                    @else
-                    @endif
-
-
-                    @if ($category=='Research Flats only' OR $category=='All')
-
-                      <button class="tablinksOuter  research_flats_identity" onclick="openContractType(event, 'research_flats_contracts')"  ><strong>Research Flats</strong></button>
-
-                    @else
-                    @endif
+                        @else
+                        @endif
 
 
+
+                        @if ($category=='Research Flats only' OR $category=='All')
+
+                            <button class="tablinksOuter active research_flats_identity" onclick='javascript:window.location.href="/contracts_management/research"'  ><strong>Research Flats</strong></button>
+
+                        @else
+                        @endif
 
 
                         @if($category=='Insurance only' OR $category=='All')
 
-                            <button class="tablinksOuter insurance_identity" onclick="openContractType(event, 'insurance_contracts')"><strong>Insurance </strong></button>
-
+                            <button class="tablinksOuter  insurance_identity" onclick='javascript:window.location.href="/contracts_management/insurance"'><strong>Insurance </strong></button>
 
                         @else
                         @endif
@@ -210,7 +212,7 @@ div.dt-buttons{
 
                         @if ($category=='CPTU only' OR $category=='All')
 
-                            <button class="tablinksOuter car_identity" onclick="openContractType(event, 'car_contracts')" id="carss"><strong>Car Rental </strong></button>
+                            <button class="tablinksOuter  car_identity" onclick='javascript:window.location.href="/contracts_management/car_rental"' id="carss"><strong>Car Rental </strong></button>
 
                         @else
                         @endif
@@ -218,14 +220,4407 @@ div.dt-buttons{
 
 
 
-            </div>
+                    </div>
+
+
+
+                    <div id="research_flats_contracts" style="border-bottom-left-radius: 50px 20px;   border: 1px solid #ccc; padding: 1%;" class="tabcontentOuter">
+                        <?php $r =1; ?>
+                        <br>
+                        @if($privileges=='Read only')
+                        @else
+
+
+                            <div style="float:left;">
+                                <a href="{{ route('contractflat') }}" title="Add new contract"  class="btn button_color active" style="  color: white;   background-color: #38c172;
+                    padding: 10px;
+                    margin-left: 2px;
+                    margin-bottom: 15px;
+                    margin-top: 4px;" role="button" aria-pressed="true">Add New Contract</a>
+
+                            </div>
+                            @admin
+                            <div style="float:right;">
+                                <div style="float:left;"> <a data-toggle="modal" class="btn button_color active" style="background-color: #38c172; padding: 7px; color:white; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;"  data-target="#import_data_research" title="Import Data" role="button" aria-pressed="true">Import Data</a></div>
+                                <div class="modal fade" id="import_data_research" role="dialog">
+
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <b><h5 class="modal-title">Importing Data</h5></b>
+
+                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                            </div>
+
+                                            <div class="modal-body">
+
+                                                <form method="post" enctype="multipart/form-data" action="/import_research_contracts"   >
+                                                    {{csrf_field()}}
+
+                                                    <div class="form-row">
+
+
+                                                        <div  class=" col-md-12 ">
+                                                            <div class="">
+                                                                <label for="">Select File for Upload (.xls, .xlsx) <span style="color: red;">*</span></label>
+                                                                <input type="file" class="" id="" name="import_data"  placeholder="" required  accept=".xls,.xlsx" autocomplete="off">
+                                                                <div class="mt-2"><span style="font-weight: bold;">N.B </span><span class="pl-1" style="color:red;"> The header row as given in the sample must be included as the first row when uploading. Furthermore, the acceptable values as indicated in the header row are case sensitive for instance if acceptable value is "Individual" the value to be inserted should be "Individual" and not "individual" </span></div>
+                                                            </div>
+                                                        </div>
+                                                        <br>
+
+
+                                                    </div>
+
+
+                                                    <div align="right">
+                                                        <button  class="btn btn-primary" type="submit">Import</button>
+                                                        <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                                    </div>
+                                                </form>
+
+
+
+
+
+
+
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                                <div style="float:right;"><a href="/get_research_contracts_format" class="btn button_color active" style="background-color: #38c172; padding: 7px; color:white; margin-left: 5px;  margin-bottom: 5px; margin-top: 4px;"   title="Download Sample">Download Sample</a> </div>
+                                <div style="clear: both;"></div>
+                            </div>
+                            @endadmin
+                            <div style="clear: both;"></div>
+
+                        @endif
+
+                        <div class="">
+                            {{--                    <h3 style="text-align: center"><strong>Research Flats Contracts</strong></h3>--}}
+                            {{--                    <hr>--}}
+
+                            <table class="hover table table-striped table-bordered" id="myTableResearch">
+                                <thead class="thead-dark">
+                                <tr>
+                                    <th scope="col" style="color:#fff;"><center>S/N</center></th>
+                                    <th scope="col" style="color:#fff;"><center>Client Name</center></th>
+                                    <th scope="col" style="color:#fff;"><center>Contract Number</center></th>
+                                    <th scope="col"  style="color:#fff;"><center>Room No</center></th>
+                                    <th scope="col" style="color:#fff;"><center>Host Name</center></th>
+                                    <th scope="col" style="color:#fff;"><center>Arrival Date</center></th>
+                                    <th scope="col" style="color:#fff;"><center>Departure Date</center></th>
+
+                                    <th scope="col"  style="color:#fff;"><center>Total Amount (USD)</center></th>
+                                    <th scope="col"  style="color:#fff;"><center>Total Amount (TZS)</center></th>
+                                    <th scope="col"  style="color:#fff;"><center>Status</center></th>
+                                    <th scope="col"  style="color:#fff;"><center>Action</center></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+
+                                @foreach($research_contracts as $var)
+                                    <tr>
+                                        <td style="text-align: center;">{{$r}}.</td>
+                                        <td>
+
+                                            <a class="link_style" data-toggle="modal" data-target="#flat_client{{$var->id}}" style="color: blue !important; text-decoration: underline !important;  cursor: pointer;" aria-pressed="true">{{$var->first_name}} {{$var->last_name}}</a>
+
+                                            <div class="modal fade" id="flat_client{{$var->id}}" role="dialog">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <b><h5 class="modal-title">{{$var->first_name}} {{$var->last_name}} Details.</h5></b>
+                                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                        </div>
+
+                                                        <div class="modal-body">
+                                                            <table style="width: 100%;">
+                                                                <tr>
+                                                                    <td>Client Name</td>
+                                                                    <td>{{$var->first_name}} {{$var->last_name}}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>Professional</td>
+                                                                    <td>{{$var->professional}}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>Address</td>
+                                                                    <td>{{$var->address}}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>Email</td>
+                                                                    <td>{{$var->email}}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>Phone Number</td>
+                                                                    <td>{{$var->phone_number}}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>Passport No</td>
+                                                                    <td>
+
+                                                                        @if($var->passport_no=='')
+                                                                            N/A
+                                                                        @else
+                                                                            {{$var->passport_no}}
+                                                                        @endif
+
+
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>Passport Issue Date</td>
+                                                                    <td>{{date("d/m/Y",strtotime($var->issue_date))}}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>Passport Issue Place</td>
+                                                                    <td>{{$var->issue_place}}</td>
+                                                                </tr>
+                                                            </table>
+                                                            <br>
+                                                            <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td style="text-align: center;">{{$var->id}}</td>
+                                        <td>
+                                            <a class="link_style" data-toggle="modal" data-target="#flat_room{{$var->id}}" style="color: blue !important; text-decoration: underline !important;  cursor: pointer;" aria-pressed="true">{{$var->room_no}}</a>
+
+                                            <div class="modal fade" id="flat_room{{$var->id}}" role="dialog">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <b><h5 class="modal-title">{{$var->room_no}} Details.</h5></b>
+                                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                        </div>
+
+                                                        <div class="modal-body">
+                                                            <?php $room=DB::table('research_flats_rooms')->where('room_no',$var->room_no)->first(); ?>
+                                                            <table style="width: 100%;">
+                                                                <tr>
+                                                                    <td>Room Number</td>
+                                                                    <td>{{$room->room_no}}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>Category</td>
+                                                                    <td>{{$room->category}}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>Charging price for workers</td>
+                                                                    <td>{{$room->currency}} {{number_format($room->charge_workers)}}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>Charging price for students</td>
+                                                                    <td>{{$room->currency}} {{number_format($room->charge_students)}}</td>
+                                                                </tr>
+                                                            </table>
+                                                            <br>
+                                                            <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+
+                                            @if($var->host_name=='')
+                                                N/A
+                                            @else
+
+
+
+
+                                                <a class="link_style" data-toggle="modal" data-target="#flat_host{{$var->id}}" style="color: blue !important; text-decoration: underline !important;  cursor: pointer;" aria-pressed="true">{{$var->host_name}}</a>
+
+                                                <div class="modal fade" id="flat_host{{$var->id}}" role="dialog">
+                                                    <div class="modal-dialog" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <b><h5 class="modal-title">{{$var->host_name}} Details.</h5></b>
+                                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                            </div>
+
+                                                            <div class="modal-body">
+                                                                <table style="width: 100%;">
+                                                                    <tr>
+                                                                        <td>Host Name</td>
+                                                                        <td>{{$var->host_name}}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>College</td>
+                                                                        <td>{{$var->college_host}}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>Department</td>
+                                                                        <td>{{$var->department_host}}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>Address</td>
+                                                                        <td>{{$var->host_address}}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>Email</td>
+                                                                        <td>{{$var->host_email}}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>Phone Number</td>
+                                                                        <td>{{$var->host_phone}}</td>
+                                                                    </tr>
+                                                                </table>
+                                                                <br>
+                                                                <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            @endif
+
+                                        </td>
+
+                                        <td style="text-align: center;">{{date("d/m/Y",strtotime($var->arrival_date))}}</td>
+                                        <td style="text-align: center;">{{date("d/m/Y",strtotime($var->departure_date))}}</td>
+
+                                        <td style="text-align: right;">{{number_format($var->total_usd)}}</td>
+                                        <td style="text-align: right;">{{number_format($var->total_tzs)}}</td>
+                                        <td style="text-align: right;">
+
+                                            @if($var->contract_status==0)
+                                                TERMINATED
+
+                                            @elseif($var->departure_date<date('Y-m-d'))
+                                                EXPIRED
+                                            @else
+                                                ACTIVE
+                                            @endif
+
+                                        </td>
+                                        <td>
+                                            <center>
+
+
+
+
+                                                <a title="Download this contract" href="{{ route('printResearchForm') }}?id={{$var->id}}"><i class="fa fa-file-pdf-o" aria-hidden="true" style="font-size:20px; color:red;"></i></a>
+
+
+
+                                                @if($privileges=='Read only')
+                                                @else
+
+                                                    <a title="Edit this contract" href="{{ route('editResearchForm', $var->id) }}"><i class="fa fa-edit" aria-hidden="true" style="font-size:20px; color:green;"></i></a>
+
+                                                    @if($var->contract_status==0 OR $var->departure_date<date('Y-m-d'))
+                                                        <a href="{{ route('renewResearchForm', $var->id)}}" style="display:inline-block;" title="Click to renew this contract"><center><i class="fa fa-refresh" style="font-size:20px;"></i></center></a>
+
+                                                    @endif
+
+                                                    @if($var->contract_status==0)
+
+
+                                                    @elseif($var->departure_date<date('Y-m-d'))
+
+                                                    @else
+
+                                                        <a title="Terminate this contract" data-toggle="modal" data-target="#terminate_research{{$var->id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px; color:red; cursor: pointer;"></i></a>
+                                                        <div class="modal fade" id="terminate_research{{$var->id}}" role="dialog">
+
+                                                            <div class="modal-dialog" role="document">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <b><h5 class="modal-title" style="color: red;"><b>Terminating Contract</b></h5></b>
+                                                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                    </div>
+
+                                                                    <div class="modal-body">
+                                                                        <p style="text-align: left; font-size: 16px;">You are about to terminate <strong>{{$var->first_name}} {{$var->last_name}}'s</strong> contract, Please provide reason to proceed</p>
+
+                                                                        <form method="post" action="{{ route('terminatecontractflat',$var->id) }}" >
+                                                                            {{csrf_field()}}
+
+                                                                            <div class="form-group">
+                                                                                <div class="form-wrapper">
+                                                                                    <label for=""><strong>Reason:<span style="color: red;">*</span></strong></label>
+                                                                                    <textarea required name="reason_for_termination" class="form-control"></textarea>
+
+                                                                                </div>
+                                                                            </div>
+                                                                            <br>
+
+                                                                            <div align="right">
+                                                                                <button class="btn btn-primary" type="submit" id="newdata">Terminate</button>
+                                                                                <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                                                            </div>
+
+                                                                        </form>
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    @endif
+
+                                                @endif
+
+                                            </center>
+                                        </td>
+                                    </tr>
+                                    <?php $r = $r +1; ?>
+                                @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+
+                @elseif($category=='Insurance only')
+
+
+                    <div class="tab">
+
+
+
+
+                        @if ($category=='Real Estate only' OR $category=='All')
+
+                            <button class="tablinksOuter  space_identity" onclick='javascript:window.location.href="/contracts_management"'><strong>Real Estate </strong></button>
+
+                        @else
+                        @endif
+
+
+
+                        @if ($category=='Research Flats only' OR $category=='All')
+
+                            <button class="tablinksOuter  research_flats_identity" onclick='javascript:window.location.href="/contracts_management/research"'  ><strong>Research Flats</strong></button>
+
+                        @else
+                        @endif
+
+
+                        @if($category=='Insurance only' OR $category=='All')
+
+                            <button class="tablinksOuter active insurance_identity" onclick='javascript:window.location.href="/contracts_management/insurance"'><strong>Insurance </strong></button>
+
+                        @else
+                        @endif
+
+
+
+                        @if ($category=='CPTU only' OR $category=='All')
+
+                            <button class="tablinksOuter  car_identity" onclick='javascript:window.location.href="/contracts_management/car_rental"' id="carss"><strong>Car Rental </strong></button>
+
+                        @else
+                        @endif
+
+
+
+
+                    </div>
+
+
+
+
+                    <div id="insurance_contracts" style="border-bottom-left-radius: 50px 20px;   border: 1px solid #ccc; padding: 1%;" class="">
+                        <br>
+
+
+                        @if($privileges=='Read only')
+                        @else
+
+                            <div style="float:left;"><a href="/insurance_contract_form" title="Add new Insurance contract"  class="btn button_color active" style="  color: white;   background-color: #38c172;
+    padding: 10px;
+    margin-left: 2px;
+    margin-bottom: 15px;
+    margin-top: 4px;" role="button" aria-pressed="true">Add New Contract</a>
+                            </div>
+
+                            @admin
+                            <div style="float:right;">
+                                <div style="float:left;"> <a data-toggle="modal" class="btn button_color active" style="background-color: #38c172; padding: 7px; color:white; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;"  data-target="#import_data_insurance" title="Import Data" role="button" aria-pressed="true">Import Data</a></div>
+                                <div class="modal fade" id="import_data_insurance" role="dialog">
+
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <b><h5 class="modal-title">Importing Data</h5></b>
+
+                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                            </div>
+
+                                            <div class="modal-body">
+
+                                                <form method="post" enctype="multipart/form-data" action="/import_insurance_contracts"   >
+                                                    {{csrf_field()}}
+
+                                                    <div class="form-row">
+
+
+                                                        <div  class=" col-md-12 ">
+                                                            <div class="">
+                                                                <label for="">Select File for Upload (.xls, .xlsx) <span style="color: red;">*</span></label>
+                                                                <input type="file" class="" id="" name="import_data"  placeholder="" required  accept=".xls,.xlsx" autocomplete="off">
+
+                                                                <div class="mt-2"><span style="font-weight: bold;">N.B </span><span class="pl-1" style="color:red;"> The header row as given in the sample must be included as the first row when uploading. Furthermore, the acceptable values as indicated in the header row are case sensitive for instance if acceptable value is "Individual" the value to be inserted should be "Individual" and not "individual" </span></div>
+                                                            </div>
+
+                                                        </div>
+                                                        <br>
+
+
+                                                    </div>
+
+
+                                                    <div align="right">
+                                                        <button  class="btn btn-primary" type="submit">Import</button>
+                                                        <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                                    </div>
+                                                </form>
+
+
+
+
+
+
+
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                                <div style="float:right;"><a href="/get_insurance_contracts_format" class="btn button_color active" style="background-color: #38c172; padding: 7px; color:white; margin-left: 5px;  margin-bottom: 5px; margin-top: 4px;"   title="Download Sample">Download Sample</a> </div>
+                                <div style="clear: both;"></div>
+                            </div>
+                            @endadmin
+                            <div style="clear: both;"></div>
+
+                        @endif
+
+                        <div class="">
+                            {{--                    <h3 style="text-align: center"><strong>Insurance Contracts</strong></h3>--}}
+                            {{--                    <hr>--}}
+
+
+                            <table class="hover table table-striped table-bordered" style="width: 100% !important;" id="myTableInsurance">
+                                <thead class="thead-dark">
+                                <tr>
+
+                                    <th scope="col" style="color:#fff;"><center>S/N</center></th>
+                                    <th scope="col" style="color:#fff;"><center>Client Name</center></th>
+                                    <th scope="col" style="color:#fff;"><center>Contract Number</center></th>
+
+                                    <th scope="col" style="color:#fff;"><center>Class</center></th>
+                                    <th scope="col" style="color:#fff;"><center>Principal</center></th>
+
+                                    <th scope="col"  style="color:#fff;"><center>Commission Date</center></th>
+                                    <th scope="col"  style="color:#fff;"><center>End Date</center></th>
+                                    <th scope="col"  style="color:#fff;"><center>Premium</center></th>
+
+                                    <th scope="col"  style="color:#fff;"><center>Status</center></th>
+                                    <th scope="col"  style="color:#fff;"><center>Action</center></th>
+
+                                </tr>
+                                </thead>
+                                <tbody>
+
+                                @foreach($insurance_contracts as $var)
+                                    <tr>
+
+                                        <td class="counterCell text-center"></td>
+                                        <td>{{$var->full_name}}</td>
+                                        <td>{{$var->id}}</td>
+                                        <td>{{$var->insurance_class}}</td>
+                                        <td><center>{{$var->principal}}</center></td>
+
+                                        <td><center>{{date("d/m/Y",strtotime($var->commission_date))}}</center></td>
+                                        <td><center>{{date("d/m/Y",strtotime($var->end_date))}}</center></td>
+
+                                        <td><center>{{number_format($var->premium)}} {{$var->currency}}</center></td>
+
+                                        <td><center>
+                                                @if($var->contract_status==0)
+                                                    TERMINATED
+                                                @elseif($var->end_date<date('Y-m-d'))
+                                                    EXPIRED
+                                                @else
+                                                    ACTIVE
+                                                @endif
+                                            </center></td>
+
+                                        <td><center>
+                                                <a title="View more details"  style="color:#3490dc !important; display:inline-block;" href="{{route('contract_details_insurance',$var->id)}}" class=""   style="cursor: pointer;" ><center><i class="fa fa-eye" style="font-size:20px;" aria-hidden="true"></i></center></a>
+
+
+                                                @if($privileges=='Read only')
+                                                @else
+
+
+                                                    @if($var->contract_status==0 OR $var->end_date<date('Y-m-d'))
+                                                        {{--                    <a href="#"><i class="fa fa-print" style="font-size:28px;color: #3490dc;"></i></a>--}}
+                                                        <a href="{{ route('renew_insurance_contract_form',$var->id) }}" style="display:inline-block;" title="Click to renew this contract"><center><i class="fa fa-refresh" style="font-size:20px;"></i></center></a>
+
+                                                    @else
+                                                        <a href="/edit_insurance_contract/{{$var->id}}" ><i class="fa fa-edit" style="font-size:20px; color: green;"></i></a>
+
+                                                        <a data-toggle="modal" data-target="#terminate{{$var->id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px; color:red;"></i></a>
+                                                        <div class="modal fade" id="terminate{{$var->id}}" role="dialog">
+
+                                                            <div class="modal-dialog" role="document">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <b><h5 class="modal-title">Terminating {{$var->full_name}}'s insurance contract</h5></b>
+                                                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                    </div>
+
+                                                                    <div class="modal-body">
+                                                                        <form method="get" action="{{ route('terminate_insurance_contract',$var->id)}}" >
+                                                                            {{csrf_field()}}
+
+                                                                            <div class="form-group">
+                                                                                <div class="form-wrapper">
+                                                                                    <label for=""><strong>Reason</strong> <span style="color: red;">*</span></label>
+                                                                                    <textarea style="width: 100%;" required name="reason_for_termination"></textarea>
+
+                                                                                </div>
+                                                                            </div>
+
+                                                                            <br>
+
+                                                                            <div align="right">
+                                                                                <button class="btn btn-primary" type="submit" id="newdata">Terminate</button>
+                                                                                <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                                                            </div>
+
+                                                                        </form>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+
+                                                        </div>
+
+                                                    @endif
+
+                                                @endif
+
+
+                                            </center>
+                                        </td>
+                                    </tr>
+                                @endforeach
+
+
+                                </tbody>
+                            </table>
+
+                        </div>
+
+
+
+                    </div>
+
+
+
+
+
+                @elseif($category=='CPTU only')
+
+                    <div class="tab">
+
+
+                        @if ($category=='Real Estate only' OR $category=='All')
+
+                            <button class="tablinksOuter  space_identity" onclick='javascript:window.location.href="/contracts_management"'><strong>Real Estate </strong></button>
+
+                        @else
+                        @endif
+
+
+                        @if ($category=='Research Flats only' OR $category=='All')
+
+                            <button class="tablinksOuter  research_flats_identity" onclick='javascript:window.location.href="/contracts_management/research"'  ><strong>Research Flats</strong></button>
+
+                        @else
+                        @endif
+
+
+                        @if($category=='Insurance only' OR $category=='All')
+
+                            <button class="tablinksOuter  insurance_identity" onclick='javascript:window.location.href="/contracts_management/insurance"'><strong>Insurance </strong></button>
+
+                        @else
+                        @endif
+
+
+                        @if ($category=='CPTU only' OR $category=='All')
+
+                            <button class="tablinksOuter active car_identity" onclick='javascript:window.location.href="/contracts_management/car_rental"' id="carss"><strong>Car Rental </strong></button>
+
+                        @else
+                        @endif
+
+
+
+
+                    </div>
+
+
+
+
+                    <div class="tab">
+
+
+                        @if ($category=='Real Estate only' OR $category=='All')
+
+                            <button class="tablinksOuter  space_identity" onclick='javascript:window.location.href="/contracts_management"'><strong>Real Estate </strong></button>
+
+                        @else
+                        @endif
+
+
+
+                        @if ($category=='Research Flats only' OR $category=='All')
+
+                            <button class="tablinksOuter  research_flats_identity" onclick='javascript:window.location.href="/contracts_management/research"'  ><strong>Research Flats</strong></button>
+
+                        @else
+                        @endif
+
+
+                        @if($category=='Insurance only' OR $category=='All')
+
+                            <button class="tablinksOuter  insurance_identity" onclick='javascript:window.location.href="/contracts_management/insurance"'><strong>Insurance </strong></button>
+
+                        @else
+                        @endif
+
+
+
+                        @if ($category=='CPTU only' OR $category=='All')
+
+                            <button class="tablinksOuter active car_identity" onclick='javascript:window.location.href="/contracts_management/car_rental"' id="carss"><strong>Car Rental </strong></button>
+
+                        @else
+                        @endif
+
+
+
+
+                    </div>
+
+                    @if ($category=='CPTU only' OR $category=='All')
+
+                        <div id="car_contracts"  class="tabcontentOuter">
+
+                            {{-- <h4 style="text-align: center">Car Rental Contracts</h4> --}}
+                            {{--                <br>--}}
+                            @if(Auth::user()->role=='Transport Officer-CPTU')
+                                <a class="btn btn-success" href="{{ route('carRentalForm') }}" role="button" style="
+    padding: 10px; margin-bottom: 5px; margin-top: 4px;">Add New Contract
+                                </a>
+                                <br>
+                                <br>
+
+                                <div class="tab2">
+                                    <button class="tablinks" onclick="openContracts(event, 'inbox')" id="defaultOpen"><strong>Inbox</strong></button>
+                                    <button class="tablinks" onclick="openContracts(event, 'outbox')"><strong>Outbox</strong></button>
+                                    {{-- <button class="tablinks" onclick="openContracts(event, 'closed')"><strong>Active Contracts</strong></button> --}}
+                                    <button class="tablinks" onclick="openContracts(event, 'closed_2')"><strong>Contracts</strong></button>
+                                    <button class="tablinks" onclick="openContracts(event, 'log_sheet')"><strong>Log Sheet</strong></button>
+                                </div>
+                                <div id="inbox" class="tabcontent" style="border-bottom-left-radius: 50px 20px;">
+                                    <br>
+                                    @if(count($inbox)>0)
+                                        <table>
+                                            <thead>
+                                            <th style="width: 16%"><center>Contract Number</center></th>
+                                            <th style="width: 16%"><center>Initiated By</center></th>
+                                            <th style="width: 16%"><center>Client Name</center></th>
+                                            <th style="width: 16%"><center>Vehicle</center></th>
+                                            <th style="width: 16%"><center>Start Date</center></th>
+                                            <th style="width: 16%"><center>End Date</center></th>
+                                            <th style="width: 16%"><center>Destination</center></th>
+                                            </thead>
+                                            <tbody>
+                                            @foreach($inbox as $inbox)
+                                                <tr>
+                                                    {{--        @if($inbox->start_date< date('Y-m-d'))
+                                                           <td>
+                                                             <a data-toggle="modal" data-target="#viewcar{{$inbox->id}}" role="button" aria-pressed="true" class="link_style" style="color: blue;"><center>{{$inbox->id}}</center></a>
+
+                                                             <div class="modal fade" id="viewcar{{$inbox->id}}" role="dialog">
+
+                                                               <div class="modal-dialog" role="document">
+                                                                 <div class="modal-content">
+                                                                     <div class="modal-header">
+                                                                       <b><h5 class="modal-title" style="color: red;"><b>WARNING</b></h5></b>
+                                                                       <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                     </div>
+
+                                                                     <div class="modal-body">
+                                                                      <p style="text-align: left; font-size: 16px;">This contract is no longer valid since the start date of the trip has passed.</p>
+
+                                                                     <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+
+                                                                   </div>
+                                                                 </div>
+                                                               </div>
+                                                             </div>
+                                                             </td>
+                                                           @else --}}
+                                                    <td><center><a href="{{ route('carRentalFormE',$inbox->id) }}">{{$inbox->id}}</a></center></td>
+
+
+                                                    {{--  @endif --}}
+
+
+                                                    <td><center>{{$inbox->form_initiator}}</center></td>
+                                                    <td>
+
+                                                        <a  title="Client Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#car_client1{{$inbox->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$inbox->fullName}}</center></a>
+                                                        <div class="modal fade" id="car_client1{{$inbox->id}}" role="dialog">
+
+                                                            <div class="modal-dialog" role="document">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <b><h5 class="modal-title">Client Details.</h5></b>
+
+                                                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                    </div>
+
+                                                                    <div class="modal-body">
+                                                                        <table class="table table-striped table-bordered " style="width: 100%">
+
+                                                                            <tr>
+                                                                                <td>Client:</td>
+                                                                                <td>{{$inbox->fullName}}</td>
+                                                                            </tr>
+
+
+                                                                            <tr>
+                                                                                <td>Email:</td>
+                                                                                <td>{{$inbox->email}}</td>
+                                                                            </tr>
+
+                                                                            <tr>
+                                                                                <td>TIN:</td>
+                                                                                <td>{{$inbox->tin}}</td>
+                                                                            </tr>
+
+
+                                                                            <tr>
+                                                                                <td>Department/Faculty/Unit:</td>
+                                                                                <td>{{$inbox->faculty}}</td>
+                                                                            </tr>
+
+
+                                                                        </table>
+                                                                        <br>
+                                                                        <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+
+                                                    </td>
+                                                    <td><center> <a  title="Vehicle Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#vehicle_details1{{$inbox->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$inbox->vehicle_reg_no}}</center></a>
+                                                            <div class="modal fade" id="vehicle_details1{{$inbox->id}}" role="dialog">
+
+                                                                <div class="modal-dialog" role="document">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header">
+                                                                            <b><h5 class="modal-title">Vehicle Details.</h5></b>
+
+                                                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                        </div>
+
+                                                                        <div class="modal-body">
+                                                                            <table class="table table-striped table-bordered " style="width: 100%">
+
+                                                                                <?php
+                                                                                $vehicle_details=DB::table('car_rentals')->where('vehicle_reg_no',$inbox->vehicle_reg_no)->get();
+
+                                                                                ?>
+
+                                                                                @foreach($vehicle_details as $vehicle_detail)
+                                                                                    <tr>
+                                                                                        <td>Vehicle Model:</td>
+                                                                                        <td>{{$vehicle_detail->vehicle_model}}</td>
+                                                                                    </tr>
+
+
+                                                                                    <tr>
+                                                                                        <td>Vehicle Registration Number:</td>
+                                                                                        <td>{{$vehicle_detail->vehicle_reg_no}}</td>
+                                                                                    </tr>
+
+                                                                                    <tr>
+                                                                                        <td>Hire Rate/KM:</td>
+                                                                                        <td>{{$vehicle_detail->hire_rate}} TZS</td>
+                                                                                    </tr>
+
+                                                                                @endforeach
+
+                                                                            </table>
+                                                                            <br>
+                                                                            <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div></center></td>
+                                                    <td><center>{{date("d/m/Y",strtotime($inbox->start_date))}}</center></td>
+                                                    <td><center>{{date("d/m/Y",strtotime($inbox->end_date))}}</center></td>
+                                                    <td><center>{{$inbox->destination}}</center></td>
+                                                </tr>
+                                            @endforeach
+                                            </tbody>
+                                        </table>
+                                    @else
+                                        <p style="line-height: 1.5;font-size: 17px;"><i class="fa fa-envelope-o" style="font-size:25px;color:#3490dc;"></i> No new message</p>
+                                    @endif
+                                </div>
+
+                                <div id="outbox" class="tabcontent" style="border-bottom-left-radius: 50px 20px;">
+                                    <br>
+                                    @if(count($outbox)>0)
+                                        <table>
+                                            <thead>
+                                            <th style="width: 14%"><center>Contract Number</center></th>
+                                            <th style="width: 14%"><center>Initiated By</center></th>
+                                            <th style="width: 14%"><center>Client Name</center></th>
+                                            <th style="width: 14%"><center>Vehicle</center></th>
+
+                                            <th style="width: 15%"><center>Start Date</center></th>
+                                            <th style="width: 15%"><center>End Date</center></th>
+                                            <th style="width: 14%"><center>Destination</center></th>
+                                            <th style="width: 14%"><center>Form Status</center></th>
+                                            <th style="width: 14%"><center>Action</center></th>
+                                            </thead>
+                                            <tbody>
+                                            @foreach($outbox as $outbox)
+                                                <tr>
+                                                    <td><center>{{$outbox->id}}</center></td>
+                                                    <td><center>{{$outbox->form_initiator}}</center></td>
+                                                    <td>
+
+                                                        <a  title="Client Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#car_client2{{$outbox->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$outbox->fullName}}</center></a>
+                                                        <div class="modal fade" id="car_client2{{$outbox->id}}" role="dialog">
+
+                                                            <div class="modal-dialog" role="document">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <b><h5 class="modal-title">Client Details.</h5></b>
+
+                                                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                    </div>
+
+                                                                    <div class="modal-body">
+                                                                        <table class="table table-striped table-bordered " style="width: 100%">
+
+                                                                            <tr>
+                                                                                <td>Client:</td>
+                                                                                <td>{{$outbox->fullName}}</td>
+                                                                            </tr>
+
+
+                                                                            <tr>
+                                                                                <td>Email:</td>
+                                                                                <td>{{$outbox->email}}</td>
+                                                                            </tr>
+
+                                                                            <tr>
+                                                                                <td>TIN:</td>
+                                                                                <td>{{$outbox->tin}}</td>
+                                                                            </tr>
+
+
+                                                                            <tr>
+                                                                                <td>Department/Faculty/Unit:</td>
+                                                                                <td>{{$outbox->faculty}}</td>
+                                                                            </tr>
+
+
+                                                                        </table>
+                                                                        <br>
+                                                                        <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+
+                                                    </td>
+                                                    <td><center> <a  title="Vehicle Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#vehicle_details2{{$outbox->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$outbox->vehicle_reg_no}}</center></a>
+                                                            <div class="modal fade" id="vehicle_details2{{$outbox->id}}" role="dialog">
+
+                                                                <div class="modal-dialog" role="document">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header">
+                                                                            <b><h5 class="modal-title">Vehicle Details.</h5></b>
+
+                                                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                        </div>
+
+                                                                        <div class="modal-body">
+                                                                            <table class="table table-striped table-bordered " style="width: 100%">
+
+                                                                                <?php
+                                                                                $vehicle_details=DB::table('car_rentals')->where('vehicle_reg_no',$outbox->vehicle_reg_no)->get();
+
+                                                                                ?>
+
+
+                                                                                @foreach($vehicle_details as $vehicle_detail)
+                                                                                    <tr>
+                                                                                        <td>Vehicle Model:</td>
+                                                                                        <td>{{$vehicle_detail->vehicle_model}}</td>
+                                                                                    </tr>
+
+
+                                                                                    <tr>
+                                                                                        <td>Vehicle Registration Number:</td>
+                                                                                        <td>{{$vehicle_detail->vehicle_reg_no}}</td>
+                                                                                    </tr>
+
+                                                                                    <tr>
+                                                                                        <td>Hire Rate/KM:</td>
+                                                                                        <td>{{$vehicle_detail->hire_rate}} TZS</td>
+                                                                                    </tr>
+
+                                                                                @endforeach
+
+                                                                            </table>
+                                                                            <br>
+                                                                            <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div></center></td>
+                                                    <td><center>{{date("d/m/Y",strtotime($outbox->start_date))}} </center></td>
+                                                    <td><center>{{date("d/m/Y",strtotime($outbox->end_date))}}</center></td>
+                                                    <td><center>{{$outbox->destination}}</center></td>
+                                                    <td><center>{{$outbox->form_status}} Stage</center></td>
+                                                    @if($outbox->start_date < date('Y-m-d'))
+                                                        <td>
+                                                            <a title="Delete this form" data-toggle="modal" data-target="#delete{{$outbox->id}}" role="button" aria-pressed="true" style="color: blue;" class="link_style"><center><i class="fa fa-trash" aria-hidden="true" style="font-size:18px; color:red; cursor: pointer;"></i></center></a>
+
+                                                            <div class="modal fade" id="delete{{$outbox->id}}" role="dialog">
+
+                                                                <div class="modal-dialog" role="document">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header">
+                                                                            <b><h5 class="modal-title" style="color: red;"><b>WARNING</b></h5></b>
+                                                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                        </div>
+
+                                                                        <div class="modal-body">
+                                                                            <p style="text-align: left; font-size: 16px;">Are you sure you want to delete this form?</p>
+                                                                            <br>
+                                                                            <div align="right">
+                                                                                <a href="{{ route('deletecontract',$outbox->id) }}" class="btn btn-primary">Proceed</a>
+                                                                                <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                                                            </div>
+
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                    @else
+                                                        <td><center>N/A</center></td>
+                                                    @endif
+                                                </tr>
+                                            @endforeach
+                                            </tbody>
+                                        </table>
+                                    @else
+                                        <p style="line-height: 1.5;font-size: 17px;"><i class="fa fa-envelope-o" style="font-size:25px;color:#3490dc;"></i> No new message</p>
+                                    @endif
+
+                                </div>
+                                <div id="closed" class="tabcontent" style="border-bottom-left-radius: 50px 20px;">
+                                    @if(count($closed_act)!=0)
+                                        <br>
+                                        <table class="hover table table-striped table-bordered" id="myTablecar">
+                                            <thead class="thead-dark">
+                                            <th scope="col" style="color:#fff; width: 5%"><center>S/N</center></th>
+                                            <th scope="col" style="color:#fff; width: 10%"><center>Contract Number</center></th>
+                                            <th scope="col" style="color:#fff; width: 16%"><center>Client Name</center></th>
+                                            <th scope="col" style="color:#fff; width: 16%"><center>Vehicle</center></th>
+
+                                            <th scope="col" style="color:#fff; width: 14%"><center>Start Date</center></th>
+                                            <th scope="col" style="color:#fff; width: 14%"><center>End Date</center></th>
+                                            <th scope="col" style="color:#fff; width: 16%"><center>Destination</center></th>
+                                            <th scope="col" style="color:#fff; width: 16%"><center>Grand Total (TZS)</center></th>
+                                            <th scope="col" style="color:#fff;"><center>Action</center></th>
+                                            </thead>
+                                            <tbody>
+                                            @foreach($closed_act as $closed)
+                                                <tr>
+                                                    <th scope="row" class="counterCell text-center">.</th>
+                                                    <td><center>{{$closed->id}}</center></td>
+                                                    <td>
+
+                                                        <a  title="Client Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#car_client3{{$closed->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$closed->fullName}}</center></a>
+                                                        <div class="modal fade" id="car_client3{{$closed->id}}" role="dialog">
+
+                                                            <div class="modal-dialog" role="document">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <b><h5 class="modal-title">Client Details.</h5></b>
+
+                                                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                    </div>
+
+                                                                    <div class="modal-body">
+                                                                        <table class="table table-striped table-bordered " style="width: 100%">
+
+                                                                            <tr>
+                                                                                <td>Client:</td>
+                                                                                <td>{{$closed->fullName}}</td>
+                                                                            </tr>
+
+
+                                                                            <tr>
+                                                                                <td>Email:</td>
+                                                                                <td>{{$closed->email}}</td>
+                                                                            </tr>
+
+                                                                            <tr>
+                                                                                <td>TIN:</td>
+                                                                                <td>{{$closed->tin}}</td>
+                                                                            </tr>
+
+
+                                                                            <tr>
+                                                                                <td>Department/Faculty/Unit:</td>
+                                                                                <td>{{$closed->faculty}}</td>
+                                                                            </tr>
+
+
+                                                                        </table>
+                                                                        <br>
+                                                                        <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+
+                                                    </td>
+                                                    <td><center> <a  title="Vehicle Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#vehicle_details3{{$closed->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$closed->vehicle_reg_no}}</center></a>
+                                                            <div class="modal fade" id="vehicle_details3{{$closed->id}}" role="dialog">
+
+                                                                <div class="modal-dialog" role="document">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header">
+                                                                            <b><h5 class="modal-title">Vehicle Details.</h5></b>
+
+                                                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                        </div>
+
+                                                                        <div class="modal-body">
+                                                                            <table class="table table-striped table-bordered " style="width: 100%">
+
+                                                                                <?php
+                                                                                $vehicle_details=DB::table('car_rentals')->where('vehicle_reg_no',$closed->vehicle_reg_no)->get();
+
+                                                                                ?>
+
+                                                                                @foreach($vehicle_details as $vehicle_detail)
+                                                                                    <tr>
+                                                                                        <td>Vehicle Model:</td>
+                                                                                        <td>{{$vehicle_detail->vehicle_model}}</td>
+                                                                                    </tr>
+
+
+                                                                                    <tr>
+                                                                                        <td>Vehicle Registration Number:</td>
+                                                                                        <td>{{$vehicle_detail->vehicle_reg_no}}</td>
+                                                                                    </tr>
+
+                                                                                    <tr>
+                                                                                        <td>Hire Rate/KM:</td>
+                                                                                        <td>{{$vehicle_detail->hire_rate}} TZS</td>
+                                                                                    </tr>
+
+                                                                                @endforeach
+
+                                                                            </table>
+                                                                            <br>
+                                                                            <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div></center></td>
+                                                    <td><center>{{date("d/m/Y",strtotime($closed->start_date))}}</center></td>
+                                                    <td><center>{{date("d/m/Y",strtotime($closed->end_date))}}</center></td>
+                                                    <td>{{$closed->destination}}</td>
+                                                    <td style="text-align: right;">{{number_format($closed->grand_total)}}</td>
+                                                    <td><center>
+                                                            <a title="View More Details" role="button" href="{{ route('carcontractviewmore',$closed->id) }}"><i class="fa fa-eye" aria-hidden="true" style="font-size:20px; color:#3490dc; cursor: pointer;"></i></a>
+
+                                                            <a title="Download this contract" href="/contracts/car_rental/print?id={{$closed->id}}"><i class="fa fa-file-pdf-o" aria-hidden="true" style="font-size:20px; color:red;"></i></a>
+
+                                                            <a title="Terminate this contract" data-toggle="modal" data-target="#terminate{{$closed->id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px; color:red; cursor: pointer;"></i></a>
+
+                                                            <div class="modal fade" id="terminate{{$closed->id}}" role="dialog">
+
+                                                                <div class="modal-dialog" role="document">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header">
+                                                                            <b><h5 class="modal-title" style="color: red;"><b>Terminating Contract</b></h5></b>
+                                                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                        </div>
+
+                                                                        <div class="modal-body">
+                                                                            <p style="text-align: left; font-size: 16px;">You are about to terminate <strong>"{{$closed->fullName}}"</strong> contract. Provide reason for termination to proceed.</p>
+
+                                                                            <form method="get" action="{{ route('terminateCarRental',$closed->id) }}" >
+                                                                                {{csrf_field()}}
+
+                                                                                <div class="form-group">
+                                                                                    <div class="form-wrapper">
+                                                                                        <label for=""><strong>Reason:<span style="color: red;">*</span></strong></label>
+                                                                                        <textarea required name="reason_for_termination" class="form-control"></textarea>
+
+                                                                                    </div>
+                                                                                </div>
+                                                                                <br>
+
+                                                                                <div align="right">
+                                                                                    <button class="btn btn-primary" type="submit" id="newdata">Terminate</button>
+                                                                                    <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                                                                </div>
+
+                                                                            </form>
+
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </center></td>
+                                                </tr>
+                                            @endforeach
+                                            </tbody>
+                                        </table>
+                                    @else
+                                        <br><br>
+                                        <p style="font-size: 18px;">No record found.</p>
+                                    @endif
+                                </div>
+                                <div id="closed_2" class="tabcontent" style="border-bottom-left-radius: 50px 20px;">
+                                    @if(count($closed_inact)!=0)
+                                        <br>
+                                        <table class="hover table table-striped table-bordered" id="myTablecar3">
+                                            <thead class="thead-dark">
+                                            <th scope="col" style="color:#fff; width: 5%"><center>S/N</center></th>
+                                            <th scope="col" style="color:#fff; width: 16%"><center>Client Name</center></th>
+                                            <th scope="col" style="color:#fff; width: 10%"><center>Contract Number</center></th>
+                                            <th scope="col" style="color:#fff; width: 16%"><center>Vehicle</center></th>
+
+                                            <th scope="col" style="color:#fff; width: 14%"><center>Start Date</center></th>
+                                            <th scope="col" style="color:#fff; width: 14%"><center>End Date</center></th>
+                                            <th scope="col" style="color:#fff; width: 16%"><center>Destination</center></th>
+                                            <th scope="col" style="color:#fff; width: 16%"><center>Grand Total (TZS)</center></th>
+                                            <th scope="col" style="color:#fff;"><center>Action</center></th>
+                                            </thead>
+                                            <tbody>
+                                            @foreach($closed_inact as $closed)
+                                                <tr>
+                                                    <th scope="row" class="counterCell text-center">.</th>
+
+                                                    <td>
+
+                                                        <a  title="Client Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#car_client4{{$closed->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$closed->fullName}}</center></a>
+                                                        <div class="modal fade" id="car_client4{{$closed->id}}" role="dialog">
+
+                                                            <div class="modal-dialog" role="document">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <b><h5 class="modal-title">Client Details.</h5></b>
+
+                                                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                    </div>
+
+                                                                    <div class="modal-body">
+                                                                        <table class="table table-striped table-bordered " style="width: 100%">
+
+                                                                            <tr>
+                                                                                <td>Client:</td>
+                                                                                <td>{{$closed->fullName}}</td>
+                                                                            </tr>
+
+
+                                                                            <tr>
+                                                                                <td>Email:</td>
+                                                                                <td>{{$closed->email}}</td>
+                                                                            </tr>
+
+                                                                            <tr>
+                                                                                <td>TIN:</td>
+                                                                                <td>{{$closed->tin}}</td>
+                                                                            </tr>
+
+
+                                                                            <tr>
+                                                                                <td>Department/Faculty/Unit:</td>
+                                                                                <td>{{$closed->faculty}}</td>
+                                                                            </tr>
+
+
+                                                                        </table>
+                                                                        <br>
+                                                                        <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+
+                                                    </td>
+                                                    <td><center>{{$closed->id}}</center></td>
+                                                    <td><center> <a  title="Vehicle Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#vehicle_details4{{$closed->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$closed->vehicle_reg_no}}</center></a>
+                                                            <div class="modal fade" id="vehicle_details4{{$closed->id}}" role="dialog">
+
+                                                                <div class="modal-dialog" role="document">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header">
+                                                                            <b><h5 class="modal-title">Vehicle Details.</h5></b>
+
+                                                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                        </div>
+
+                                                                        <div class="modal-body">
+                                                                            <table class="table table-striped table-bordered " style="width: 100%">
+
+                                                                                <?php
+                                                                                $vehicle_details=DB::table('car_rentals')->where('vehicle_reg_no',$closed->vehicle_reg_no)->get();
+
+                                                                                ?>
+
+                                                                                @foreach($vehicle_details as $vehicle_detail)
+                                                                                    <tr>
+                                                                                        <td>Vehicle Model:</td>
+                                                                                        <td>{{$vehicle_detail->vehicle_model}}</td>
+                                                                                    </tr>
+
+
+                                                                                    <tr>
+                                                                                        <td>Vehicle Registration Number:</td>
+                                                                                        <td>{{$vehicle_detail->vehicle_reg_no}}</td>
+                                                                                    </tr>
+
+                                                                                    <tr>
+                                                                                        <td>Hire Rate/KM:</td>
+                                                                                        <td>{{$vehicle_detail->hire_rate}} TZS</td>
+                                                                                    </tr>
+
+                                                                                @endforeach
+
+                                                                            </table>
+                                                                            <br>
+                                                                            <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div></center></td>
+                                                    <td><center>{{date("d/m/Y",strtotime($closed->start_date))}}</center></td>
+                                                    <td><center>{{date("d/m/Y",strtotime($closed->end_date))}}</center></td>
+                                                    <td>{{$closed->destination}}</td>
+                                                    <td style="text-align: right;">{{number_format($closed->grand_total)}}</td>
+                                                    <td><center>
+                                                            <a title="View More Details" role="button" href="{{ route('carcontractviewmore',$closed->id) }}"><i class="fa fa-eye" aria-hidden="true" style="font-size:20px; color:#3490dc; cursor: pointer;"></i></a>
+
+                                                            <a title="Download this contract" href="/contracts/car_rental/print?id={{$closed->id}}"><i class="fa fa-file-pdf-o" aria-hidden="true" style="font-size:20px; color:red;"></i></a></center></td>
+                                                </tr>
+                                            @endforeach
+                                            </tbody>
+                                        </table>
+                                    @else
+                                        <br><br>
+                                        <p style="font-size: 18px;">No record found.</p>
+                                    @endif
+                                </div>
+
+                                <div id="log_sheet" class="tabcontent" style="border-bottom-left-radius: 50px 20px;">
+                                    <?php $logsheets = DB::table('log_sheets')->select('contract_id')->distinct('contract_id')->orderBy('id','dsc')->get();
+                                    $d = 1;
+                                    ?>
+                                    <br>
+                                    <a title="Add New Log Sheet" class="btn btn-success" role="button" data-toggle="modal" data-target="#new_log" role="button" aria-pressed="true" style="color: white;">Add New Log Sheet</a>
+
+                                    <div class="modal fade" id="new_log" role="dialog">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <b><h5 class="modal-title">Fill the Contract Number to continue</h5></b>
+                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                </div>
+
+                                                <div class="modal-body">
+                                                    <form method="post" action="{{ route('logsheetindex') }}">
+                                                        {{csrf_field()}}
+                                                        <div class="form-group">
+                                                            <div class="form-wrapper">
+                                                                <label for="hire_rate">Contract Number<span style="color: red;">*</span></label>
+                                                                <input type="text" id="contract_id" name="contract_id" class="form-control" required="" onkeypress="if((this.value.length<10)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
+                                                            </div>
+                                                        </div>
+
+                                                        <div align="right">
+                                                            <button type="submit" class="btn btn-primary">Submit</button>
+                                                            <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                                                        </div>
+                                                    </form>
+
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+
+
+
+                                    <br><br>
+                                    <table class="hover table table-bordered  table-striped" id="LogTable">
+                                        <thead class="thead-dark">
+                                        <th scope="col" style="color:#fff;"><center>SN</center></th>
+                                        <th scope="col" style="color:#fff;"><center>Client Name</center></th>
+                                        <th scope="col" style="color:#fff;"><center>Contract Number</center></th>
+                                        <th scope="col" style="color:#fff;"><center>Vehicle Reg No.</center></th>
+                                        <th scope="col" style="color:#fff;"><center>Driver Name</center></th>
+                                        <th scope="col" style="color:#fff;"><center>Destination</center></th>
+                                        <th scope="col" style="color:#fff;"><center>Start Date</center></th>
+                                        <th scope="col" style="color:#fff;"><center>End Date</center></th>
+                                        <th scope="col" style="color:#fff;"><center>Action</center></th>
+                                        </thead>
+                                        <tbody>
+                                        @foreach($logsheets as $log)
+                                            <?php $details = DB::table('car_contracts')->select('vehicle_reg_no','driver_name','fullName','faculty','destination','start_date', 'end_date')->where('id',$log->contract_id)->first(); ?>
+                                            <tr>
+                                                <th style="text-align: center;">{{$d}}.</th>
+                                                <td>{{$details->fullName}}</td>
+                                                <td><center>{{$log->contract_id}}</center></td>
+                                                <td><center>{{$details->vehicle_reg_no}}</center></td>
+                                                <td>{{$details->driver_name}}</td>
+                                                <td><center>{{$details->destination}}</center></td>
+                                                <td><center>{{date("d/m/Y",strtotime($details->start_date))}}</center></td>
+                                                <td><center>{{date("d/m/Y",strtotime($details->end_date))}}</center></td>
+                                                <td><center><a title="View More Details" role="button" href="{{ route('logsheetmore',$log->contract_id) }}"><i class="fa fa-eye" aria-hidden="true" style="font-size:20px; color:#3490dc; cursor: pointer;"></i></a></center></td>
+                                            </tr>
+                                            <?php $d = $d+1; ?>
+                                        @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            @elseif(Auth::user()->role=='Vote Holder')
+                                <div class="tab2">
+                                    <button class="tablinks" onclick="openContracts(event, 'inbox')" id="defaultOpen"><strong>Inbox</strong></button>
+                                    <button class="tablinks" onclick="openContracts(event, 'outbox')"><strong>Outbox</strong></button>
+                                    {{-- <button class="tablinks" onclick="openContracts(event, 'closed')"><strong>Active Contract</strong></button> --}}
+                                    <button class="tablinks" onclick="openContracts(event, 'closed_2')"><strong>Contracts</strong></button>
+                                </div>
+                                <div id="inbox" class="tabcontent">
+                                    <br>
+                                    @if(count($inbox)>0)
+                                        <table>
+                                            <thead>
+                                            <th style="width: 16%"><center>Contract Number</center></th>
+                                            <th style="width: 16%"><center>Initiated By</center></th>
+                                            <th style="width: 16%"><center>Client Name</center></th>
+                                            <th style="width: 16%"><center>Vehicle</center></th>
+
+                                            <th style="width: 16%"><center>Start Date</center></th>
+                                            <th style="width: 16%"><center>End Date</center></th>
+                                            <th style="width: 16%"><center>Destination</center></th>
+                                            </thead>
+                                            <tbody>
+                                            @foreach($inbox as $inbox)
+                                                <tr>
+                                                    @if($inbox->start_date< date('Y-m-d'))
+                                                        <td>
+                                                            <a data-toggle="modal" data-target="#viewcar{{$inbox->id}}" role="button" aria-pressed="true" class="link_style" style="color: blue;"><center>{{$inbox->id}}</center></a>
+
+                                                            <div class="modal fade" id="viewcar{{$inbox->id}}" role="dialog">
+
+                                                                <div class="modal-dialog" role="document">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header">
+                                                                            <b><h5 class="modal-title" style="color: red;"><b>WARNING</b></h5></b>
+                                                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                        </div>
+
+                                                                        <div class="modal-body">
+                                                                            <p style="text-align: left; font-size: 16px;">This contract is no longer valid since the start date of the trip has passed.</p>
+
+                                                                            <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                    @else
+
+
+                                                        <td><center><a href="{{ route('carRentalFormC',$inbox->id) }}">{{$inbox->id}}</a></center></td>
+                                                    @endif
+
+
+                                                    <td><center>{{$inbox->form_initiator}}</center></td>
+                                                    <td>
+
+                                                        <a  title="Client Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#car_client5{{$inbox->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$inbox->fullName}}</center></a>
+                                                        <div class="modal fade" id="car_client5{{$inbox->id}}" role="dialog">
+
+                                                            <div class="modal-dialog" role="document">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <b><h5 class="modal-title">Client Details.</h5></b>
+
+                                                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                    </div>
+
+                                                                    <div class="modal-body">
+                                                                        <table class="table table-striped table-bordered " style="width: 100%">
+
+                                                                            <tr>
+                                                                                <td>Client:</td>
+                                                                                <td>{{$inbox->fullName}}</td>
+                                                                            </tr>
+
+
+                                                                            <tr>
+                                                                                <td>Email:</td>
+                                                                                <td>{{$inbox->email}}</td>
+                                                                            </tr>
+
+                                                                            <tr>
+                                                                                <td>TIN:</td>
+                                                                                <td>{{$inbox->tin}}</td>
+                                                                            </tr>
+
+
+                                                                            <tr>
+                                                                                <td>Department/Faculty/Unit:</td>
+                                                                                <td>{{$inbox->faculty}}</td>
+                                                                            </tr>
+
+
+                                                                        </table>
+                                                                        <br>
+                                                                        <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+
+                                                    </td>
+                                                    <td><center> <a  title="Vehicle Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#vehicle_details5{{$inbox->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$inbox->vehicle_reg_no}}</center></a>
+                                                            <div class="modal fade" id="vehicle_details5{{$inbox->id}}" role="dialog">
+
+                                                                <div class="modal-dialog" role="document">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header">
+                                                                            <b><h5 class="modal-title">Vehicle Details.</h5></b>
+
+                                                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                        </div>
+
+                                                                        <div class="modal-body">
+                                                                            <table class="table table-striped table-bordered " style="width: 100%">
+
+                                                                                <?php
+                                                                                $vehicle_details=DB::table('car_rentals')->where('vehicle_reg_no',$inbox->vehicle_reg_no)->get();
+
+                                                                                ?>
+
+                                                                                @foreach($vehicle_details as $vehicle_detail)
+                                                                                    <tr>
+                                                                                        <td>Vehicle Model:</td>
+                                                                                        <td>{{$vehicle_detail->vehicle_model}}</td>
+                                                                                    </tr>
+
+
+                                                                                    <tr>
+                                                                                        <td>Vehicle Registration Number:</td>
+                                                                                        <td>{{$vehicle_detail->vehicle_reg_no}}</td>
+                                                                                    </tr>
+
+                                                                                    <tr>
+                                                                                        <td>Hire Rate/KM:</td>
+                                                                                        <td>{{$vehicle_detail->hire_rate}} TZS</td>
+                                                                                    </tr>
+
+                                                                                @endforeach
+
+                                                                            </table>
+                                                                            <br>
+                                                                            <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div></center></td>
+                                                    <td><center>{{date("d/m/Y",strtotime($inbox->start_date))}} </center></td>
+                                                    <td><center>{{date("d/m/Y",strtotime($inbox->end_date))}}</center></td>
+                                                    <td><center>{{$inbox->destination}}</center></td>
+                                                </tr>
+                                            @endforeach
+                                            </tbody>
+                                        </table>
+                                    @else
+                                        <p style="line-height: 1.5;font-size: 17px;"><i class="fa fa-envelope-o" style="font-size:25px;color:#3490dc;"></i> No new message</p>
+                                    @endif
+                                </div>
+
+                                <div id="outbox" class="tabcontent">
+                                    <br>
+                                    @if(count($outbox)>0)
+                                        <table>
+                                            <thead>
+                                            <th style="width: 14%"><center>Contract Number</center></th>
+                                            <th style="width: 14%"><center>Initiated By</center></th>
+                                            <th style="width: 14%"><center>Client Name</center></th>
+                                            <th style="width: 14%"><center>Vehicle</center></th>
+
+                                            <th style="width: 15%"><center>Start Date</center></th>
+                                            <th style="width: 15%"><center>End Date</center></th>
+                                            <th style="width: 14%"><center>Destination</center></th>
+                                            <th style="width: 14%"><center>Form Status</center></th>
+                                            </thead>
+                                            <tbody>
+                                            @foreach($outbox as $outbox)
+                                                <tr>
+                                                    <td><center>{{$outbox->id}}</center></td>
+                                                    <td><center>{{$outbox->form_initiator}}</center></td>
+                                                    <td>
+
+                                                        <a  title="Client Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#car_client6{{$outbox->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$outbox->fullName}}</center></a>
+                                                        <div class="modal fade" id="car_client6{{$outbox->id}}" role="dialog">
+
+                                                            <div class="modal-dialog" role="document">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <b><h5 class="modal-title">Client Details.</h5></b>
+
+                                                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                    </div>
+
+                                                                    <div class="modal-body">
+                                                                        <table class="table table-striped table-bordered " style="width: 100%">
+
+                                                                            <tr>
+                                                                                <td>Client:</td>
+                                                                                <td>{{$outbox->fullName}}</td>
+                                                                            </tr>
+
+
+                                                                            <tr>
+                                                                                <td>Email:</td>
+                                                                                <td>{{$outbox->email}}</td>
+                                                                            </tr>
+
+                                                                            <tr>
+                                                                                <td>TIN:</td>
+                                                                                <td>{{$outbox->tin}}</td>
+                                                                            </tr>
+
+
+                                                                            <tr>
+                                                                                <td>Department/Faculty/Unit:</td>
+                                                                                <td>{{$outbox->faculty}}</td>
+                                                                            </tr>
+
+
+                                                                        </table>
+                                                                        <br>
+                                                                        <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+
+                                                    </td>
+                                                    <td><center> <a  title="Vehicle Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#vehicle_details6{{$outbox->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$outbox->vehicle_reg_no}}</center></a>
+                                                            <div class="modal fade" id="vehicle_details6{{$outbox->id}}" role="dialog">
+
+                                                                <div class="modal-dialog" role="document">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header">
+                                                                            <b><h5 class="modal-title">Vehicle Details.</h5></b>
+
+                                                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                        </div>
+
+                                                                        <div class="modal-body">
+                                                                            <table class="table table-striped table-bordered " style="width: 100%">
+
+                                                                                <?php
+                                                                                $vehicle_details=DB::table('car_rentals')->where('vehicle_reg_no',$outbox->vehicle_reg_no)->get();
+
+                                                                                ?>
+
+                                                                                @foreach($vehicle_details as $vehicle_detail)
+                                                                                    <tr>
+                                                                                        <td>Vehicle Model:</td>
+                                                                                        <td>{{$vehicle_detail->vehicle_model}}</td>
+                                                                                    </tr>
+
+
+                                                                                    <tr>
+                                                                                        <td>Vehicle Registration Number:</td>
+                                                                                        <td>{{$vehicle_detail->vehicle_reg_no}}</td>
+                                                                                    </tr>
+
+                                                                                    <tr>
+                                                                                        <td>Hire Rate/KM:</td>
+                                                                                        <td>{{$vehicle_detail->hire_rate}} TZS</td>
+                                                                                    </tr>
+
+                                                                                @endforeach
+
+                                                                            </table>
+                                                                            <br>
+                                                                            <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div></center></td>
+                                                    <td><center>{{date("d/m/Y",strtotime($outbox->start_date))}}</center></td>
+                                                    <td><center>{{date("d/m/Y",strtotime($outbox->end_date))}}</center></td>
+                                                    <td><center>{{$outbox->destination}}</center></td>
+                                                    <td><center>{{$outbox->form_status}} Stage</center></td>
+                                                </tr>
+                                            @endforeach
+                                            </tbody>
+                                        </table>
+                                    @else
+                                        <p style="line-height: 1.5;font-size: 17px;"><i class="fa fa-envelope-o" style="font-size:25px;color:#3490dc;"></i> No new message</p>
+                                    @endif
+                                </div>
+                                <div id="closed" class="tabcontent">
+                                    @if(count($closed_act)!=0)
+                                        <br>
+                                        <table class="hover table table-striped table-bordered" id="myTablecar">
+                                            <thead class="thead-dark">
+                                            <th scope="col" style="color:#fff; width: 5%"><center>S/N</center></th>
+                                            <th scope="col" style="color:#fff; width: 16%"><center>Client Name</center></th>
+                                            <th scope="col" style="color:#fff; width: 10%"><center>Contract Number</center></th>
+                                            <th scope="col" style="color:#fff; width: 16%"><center>Vehicle</center></th>
+
+                                            <th scope="col" style="color:#fff; width: 14%"><center>Start Date</center></th>
+                                            <th scope="col" style="color:#fff; width: 14%"><center>End Date</center></th>
+                                            <th scope="col" style="color:#fff; width: 16%"><center>Destination</center></th>
+                                            <th scope="col" style="color:#fff; width: 16%"><center>Grand Total (TZS)</center></th>
+                                            <th scope="col" style="color:#fff;"><center>Action</center></th>
+                                            </thead>
+                                            <tbody>
+                                            @foreach($closed_act as $closed)
+                                                <tr>
+                                                    <th scope="row" class="counterCell text-center">.</th>
+
+                                                    <td>
+
+                                                        <a  title="Client Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#car_client7{{$closed->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$closed->fullName}}</center></a>
+                                                        <div class="modal fade" id="car_client7{{$closed->id}}" role="dialog">
+
+                                                            <div class="modal-dialog" role="document">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <b><h5 class="modal-title">Client Details.</h5></b>
+
+                                                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                    </div>
+
+                                                                    <div class="modal-body">
+                                                                        <table class="table table-striped table-bordered " style="width: 100%">
+
+                                                                            <tr>
+                                                                                <td>Client:</td>
+                                                                                <td>{{$closed->fullName}}</td>
+                                                                            </tr>
+
+
+                                                                            <tr>
+                                                                                <td>Email:</td>
+                                                                                <td>{{$closed->email}}</td>
+                                                                            </tr>
+
+                                                                            <tr>
+                                                                                <td>TIN:</td>
+                                                                                <td>{{$closed->tin}}</td>
+                                                                            </tr>
+
+
+                                                                            <tr>
+                                                                                <td>Department/Faculty/Unit:</td>
+                                                                                <td>{{$closed->faculty}}</td>
+                                                                            </tr>
+
+
+                                                                        </table>
+                                                                        <br>
+                                                                        <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+
+                                                    </td>
+                                                    <td><center>{{$closed->id}}</center></td>
+                                                    <td><center> <a  title="Vehicle Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#vehicle_details7{{$closed->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$closed->vehicle_reg_no}}</center></a>
+                                                            <div class="modal fade" id="vehicle_details7{{$closed->id}}" role="dialog">
+
+                                                                <div class="modal-dialog" role="document">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header">
+                                                                            <b><h5 class="modal-title">Vehicle Details.</h5></b>
+
+                                                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                        </div>
+
+                                                                        <div class="modal-body">
+                                                                            <table class="table table-striped table-bordered " style="width: 100%">
+
+                                                                                <?php
+                                                                                $vehicle_details=DB::table('car_rentals')->where('vehicle_reg_no',$closed->vehicle_reg_no)->get();
+
+                                                                                ?>
+
+                                                                                @foreach($vehicle_details as $vehicle_detail)
+                                                                                    <tr>
+                                                                                        <td>Vehicle Model:</td>
+                                                                                        <td>{{$vehicle_detail->vehicle_model}}</td>
+                                                                                    </tr>
+
+
+                                                                                    <tr>
+                                                                                        <td>Vehicle Registration Number:</td>
+                                                                                        <td>{{$vehicle_detail->vehicle_reg_no}}</td>
+                                                                                    </tr>
+
+                                                                                    <tr>
+                                                                                        <td>Hire Rate/KM:</td>
+                                                                                        <td>{{$vehicle_detail->hire_rate}} TZS</td>
+                                                                                    </tr>
+
+                                                                                @endforeach
+
+                                                                            </table>
+                                                                            <br>
+                                                                            <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div></center></td>
+                                                    <td><center>{{date("d/m/Y",strtotime($closed->start_date))}} </center></td>
+                                                    <td><center>{{date("d/m/Y",strtotime($closed->end_date))}}</center></td>
+                                                    <td>{{$closed->destination}}</td>
+                                                    <td style="text-align: right;">{{number_format($closed->grand_total)}}</td>
+                                                    <td><center>
+
+                                                            <a title="View More Details" role="button" href="{{ route('carcontractviewmore',$closed->id) }}"><i class="fa fa-eye" aria-hidden="true" style="font-size:20px; color:#3490dc; cursor: pointer;"></i></a>
+                                                            <a title="Download this contract" href="/contracts/car_rental/print?id={{$closed->id}}"><i class="fa fa-file-pdf-o" aria-hidden="true" style="font-size:20px; color:red;"></i></a></center></td>
+                                                </tr>
+                                            @endforeach
+                                            </tbody>
+                                        </table>
+                                    @else
+                                        <br><br>
+                                        <p style="font-size: 18px;">No record found.</p>
+                                    @endif
+                                </div>
+
+                                <div id="closed_2" class="tabcontent">
+                                    <br>
+                                    @if(count($closed_inact)!=0)
+                                        <table class="hover table table-striped table-bordered" id="myTablecar4">
+                                            <thead class="thead-dark">
+                                            <th scope="col" style="color:#fff; width: 5%"><center>S/N</center></th>
+                                            <th scope="col" style="color:#fff; width: 16%"><center>Client Name</center></th>
+                                            <th scope="col" style="color:#fff; width: 10%"><center>Contract Number</center></th>
+                                            <th scope="col" style="color:#fff; width: 16%"><center>Vehicle</center></th>
+
+                                            <th scope="col" style="color:#fff; width: 14%"><center>Start Date</center></th>
+                                            <th scope="col" style="color:#fff; width: 14%"><center>End Date</center></th>
+                                            <th scope="col" style="color:#fff; width: 16%"><center>Destination</center></th>
+                                            <th scope="col" style="color:#fff; width: 16%"><center>Grand Total (TZS)</center></th>
+                                            <th scope="col" style="color:#fff;"><center>Action</center></th>
+                                            </thead>
+                                            <tbody>
+                                            @foreach($closed_inact as $closed)
+                                                <tr>
+                                                    <th scope="row" class="counterCell text-center">.</th>
+
+                                                    <td>
+
+                                                        <a  title="Client Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#car_client7{{$closed->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$closed->fullName}}</center></a>
+                                                        <div class="modal fade" id="car_client7{{$closed->id}}" role="dialog">
+
+                                                            <div class="modal-dialog" role="document">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <b><h5 class="modal-title">Client Details.</h5></b>
+
+                                                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                    </div>
+
+                                                                    <div class="modal-body">
+                                                                        <table class="table table-striped table-bordered " style="width: 100%">
+
+                                                                            <tr>
+                                                                                <td>Client:</td>
+                                                                                <td>{{$closed->fullName}}</td>
+                                                                            </tr>
+
+
+                                                                            <tr>
+                                                                                <td>Email:</td>
+                                                                                <td>{{$closed->email}}</td>
+                                                                            </tr>
+
+                                                                            <tr>
+                                                                                <td>TIN:</td>
+                                                                                <td>{{$closed->tin}}</td>
+                                                                            </tr>
+
+
+                                                                            <tr>
+                                                                                <td>Department/Faculty/Unit:</td>
+                                                                                <td>{{$closed->faculty}}</td>
+                                                                            </tr>
+
+
+                                                                        </table>
+                                                                        <br>
+                                                                        <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+
+                                                    </td>
+                                                    <td><center>{{$closed->id}}</center></td>
+                                                    <td><center> <a  title="Vehicle Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#vehicle_details8{{$closed->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$closed->vehicle_reg_no}}</center></a>
+                                                            <div class="modal fade" id="vehicle_details8{{$closed->id}}" role="dialog">
+
+                                                                <div class="modal-dialog" role="document">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header">
+                                                                            <b><h5 class="modal-title">Vehicle Details.</h5></b>
+
+                                                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                        </div>
+
+                                                                        <div class="modal-body">
+                                                                            <table class="table table-striped table-bordered " style="width: 100%">
+
+                                                                                <?php
+                                                                                $vehicle_details=DB::table('car_rentals')->where('vehicle_reg_no',$closed->vehicle_reg_no)->get();
+
+                                                                                ?>
+
+                                                                                @foreach($vehicle_details as $vehicle_detail)
+                                                                                    <tr>
+                                                                                        <td>Vehicle Model:</td>
+                                                                                        <td>{{$vehicle_detail->vehicle_model}}</td>
+                                                                                    </tr>
+
+
+                                                                                    <tr>
+                                                                                        <td>Vehicle Registration Number:</td>
+                                                                                        <td>{{$vehicle_detail->vehicle_reg_no}}</td>
+                                                                                    </tr>
+
+                                                                                    <tr>
+                                                                                        <td>Hire Rate/KM:</td>
+                                                                                        <td>{{$vehicle_detail->hire_rate}} TZS</td>
+                                                                                    </tr>
+
+                                                                                @endforeach
+
+                                                                            </table>
+                                                                            <br>
+                                                                            <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div></center></td>
+                                                    <td><center>{{date("d/m/Y",strtotime($closed->start_date))}} </center></td>
+                                                    <td><center>{{date("d/m/Y",strtotime($closed->end_date))}}</center></td>
+                                                    <td>{{$closed->destination}}</td>
+                                                    <td style="text-align: right;">{{number_format($closed->grand_total)}}</td>
+                                                    <td><center>
+                                                            <a title="View More Details" role="button" href="{{ route('carcontractviewmore',$closed->id) }}"><i class="fa fa-eye" aria-hidden="true" style="font-size:20px; color:#3490dc; cursor: pointer;"></i></a>
+                                                            <a title="Download this contract" href="/contracts/car_rental/print?id={{$closed->id}}"><i class="fa fa-file-pdf-o" aria-hidden="true" style="font-size:20px; color:red;"></i></a></center></td>
+                                                </tr>
+                                            @endforeach
+                                            </tbody>
+                                        </table>
+                                    @else
+                                        <br><br>
+                                        <p style="font-size: 18px;">No record found.</p>
+                                    @endif
+                                </div>
+                            @elseif(Auth::user()->role=='Accountant-Cost Centre')
+                                <div class="tab2">
+                                    <button class="tablinks" onclick="openContracts(event, 'inbox')" id="defaultOpen"><strong>Inbox</strong></button>
+                                    <button class="tablinks" onclick="openContracts(event, 'outbox')"><strong>Outbox</strong></button>
+                                    {{-- <button class="tablinks" onclick="openContracts(event, 'closed')"><strong>Active Contract</strong></button> --}}
+                                    <button class="tablinks" onclick="openContracts(event, 'closed_2')"><strong>Contracts</strong></button>
+                                </div>
+                                <div id="inbox" class="tabcontent">
+                                    <br>
+                                    @if(count($inbox)>0)
+                                        <table>
+                                            <thead>
+                                            <th style="width: 16%"><center>Contract Number</center></th>
+                                            <th style="width: 16%"><center>Initiated By</center></th>
+                                            <th style="width: 16%"><center>Client Name</center></th>
+                                            <th style="width: 16%"><center>Vehicle</center></th>
+
+                                            <th style="width: 16%"><center>Start Date</center></th>
+                                            <th style="width: 16%"><center>End Date</center></th>
+                                            <th style="width: 16%"><center>Destination</center></th>
+                                            </thead>
+                                            <tbody>
+                                            @foreach($inbox as $inbox)
+                                                <tr>
+                                                    @if($inbox->start_date< date('Y-m-d'))
+                                                        <td>
+                                                            <a data-toggle="modal" data-target="#viewcar{{$inbox->id}}" role="button" aria-pressed="true" class="link_style" style="color: blue;"><center>{{$inbox->id}}</center></a>
+
+                                                            <div class="modal fade" id="viewcar{{$inbox->id}}" role="dialog">
+
+                                                                <div class="modal-dialog" role="document">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header">
+                                                                            <b><h5 class="modal-title" style="color: red;"><b>WARNING</b></h5></b>
+                                                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                        </div>
+
+                                                                        <div class="modal-body">
+                                                                            <p style="text-align: left; font-size: 16px;">This contract is no longer valid since the start date of the trip has passed.</p>
+
+                                                                            <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                    @else
+
+
+                                                        <td><center><a href="{{ route('carRentalFormB',$inbox->id) }}">{{$inbox->id}}</a></center></td>
+                                                    @endif
+
+                                                    <td><center>{{$inbox->form_initiator}}</center></td>
+                                                    <td>
+
+                                                        <a  title="Client Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#car_client8{{$inbox->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$inbox->fullName}}</center></a>
+                                                        <div class="modal fade" id="car_client8{{$inbox->id}}" role="dialog">
+
+                                                            <div class="modal-dialog" role="document">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <b><h5 class="modal-title">Client Details.</h5></b>
+
+                                                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                    </div>
+
+                                                                    <div class="modal-body">
+                                                                        <table class="table table-striped table-bordered " style="width: 100%">
+
+                                                                            <tr>
+                                                                                <td>Client:</td>
+                                                                                <td>{{$inbox->fullName}}</td>
+                                                                            </tr>
+
+
+                                                                            <tr>
+                                                                                <td>Email:</td>
+                                                                                <td>{{$inbox->email}}</td>
+                                                                            </tr>
+
+                                                                            <tr>
+                                                                                <td>TIN:</td>
+                                                                                <td>{{$inbox->tin}}</td>
+                                                                            </tr>
+
+
+                                                                            <tr>
+                                                                                <td>Department/Faculty/Unit:</td>
+                                                                                <td>{{$inbox->faculty}}</td>
+                                                                            </tr>
+
+
+                                                                        </table>
+                                                                        <br>
+                                                                        <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+
+                                                    </td>
+                                                    <td><center> <a  title="Vehicle Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#vehicle_details9{{$inbox->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$inbox->vehicle_reg_no}}</center></a>
+                                                            <div class="modal fade" id="vehicle_details9{{$inbox->id}}" role="dialog">
+
+                                                                <div class="modal-dialog" role="document">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header">
+                                                                            <b><h5 class="modal-title">Vehicle Details.</h5></b>
+
+                                                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                        </div>
+
+                                                                        <div class="modal-body">
+                                                                            <table class="table table-striped table-bordered " style="width: 100%">
+
+                                                                                <?php
+                                                                                $vehicle_details=DB::table('car_rentals')->where('vehicle_reg_no',$inbox->vehicle_reg_no)->get();
+
+                                                                                ?>
+
+                                                                                @foreach($vehicle_details as $vehicle_detail)
+                                                                                    <tr>
+                                                                                        <td>Vehicle Model:</td>
+                                                                                        <td>{{$vehicle_detail->vehicle_model}}</td>
+                                                                                    </tr>
+
+
+                                                                                    <tr>
+                                                                                        <td>Vehicle Registration Number:</td>
+                                                                                        <td>{{$vehicle_detail->vehicle_reg_no}}</td>
+                                                                                    </tr>
+
+                                                                                    <tr>
+                                                                                        <td>Hire Rate/KM:</td>
+                                                                                        <td>{{$vehicle_detail->hire_rate}} TZS</td>
+                                                                                    </tr>
+
+                                                                                @endforeach
+
+                                                                            </table>
+                                                                            <br>
+                                                                            <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div></center></td>
+                                                    <td><center>{{date("d/m/Y",strtotime($inbox->start_date))}}</center></td>
+                                                    <td><center>{{date("d/m/Y",strtotime($inbox->end_date))}}</center></td>
+                                                    <td><center>{{$inbox->destination}}</center></td>
+                                                </tr>
+                                            @endforeach
+                                            </tbody>
+                                        </table>
+                                    @else
+                                        <p style="line-height: 1.5;font-size: 17px;"><i class="fa fa-envelope-o" style="font-size:25px;color:#3490dc;"></i> No new message</p>
+                                    @endif
+                                </div>
+
+                                <div id="outbox" class="tabcontent">
+                                    <br>
+                                    @if(count($outbox)>0)
+                                        <table>
+                                            <thead>
+                                            <th style="width: 14%"><center>Contract Number</center></th>
+                                            <th style="width: 14%"><center>Initiated By</center></th>
+                                            <th style="width: 14%"><center>Client Name</center></th>
+                                            <th style="width: 14%"><center>Vehicle</center></th>
+
+                                            <th style="width: 15%"><center>Start Date</center></th>
+                                            <th style="width: 15%"><center>End Date</center></th>
+                                            <th style="width: 14%"><center>Destination</center></th>
+                                            <th style="width: 14%"><center>Form Status</center></th>
+                                            </thead>
+                                            <tbody>
+                                            @foreach($outbox as $outbox)
+                                                <tr>
+                                                    <td><center>{{$outbox->id}}</center></td>
+                                                    <td><center>{{$outbox->form_initiator}}</center></td>
+                                                    <td>
+
+                                                        <a  title="Client Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#car_client9{{$outbox->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$outbox->fullName}}</center></a>
+                                                        <div class="modal fade" id="car_client9{{$outbox->id}}" role="dialog">
+
+                                                            <div class="modal-dialog" role="document">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <b><h5 class="modal-title">Client Details.</h5></b>
+
+                                                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                    </div>
+
+                                                                    <div class="modal-body">
+                                                                        <table class="table table-striped table-bordered " style="width: 100%">
+
+                                                                            <tr>
+                                                                                <td>Client:</td>
+                                                                                <td>{{$outbox->fullName}}</td>
+                                                                            </tr>
+
+
+                                                                            <tr>
+                                                                                <td>Email:</td>
+                                                                                <td>{{$outbox->email}}</td>
+                                                                            </tr>
+
+                                                                            <tr>
+                                                                                <td>TIN:</td>
+                                                                                <td>{{$outbox->tin}}</td>
+                                                                            </tr>
+
+
+                                                                            <tr>
+                                                                                <td>Department/Faculty/Unit:</td>
+                                                                                <td>{{$outbox->faculty}}</td>
+                                                                            </tr>
+
+
+                                                                        </table>
+                                                                        <br>
+                                                                        <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+
+                                                    </td>
+                                                    <td><center> <a  title="Vehicle Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#vehicle_details10{{$outbox->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$outbox->vehicle_reg_no}}</center></a>
+                                                            <div class="modal fade" id="vehicle_details10{{$outbox->id}}" role="dialog">
+
+                                                                <div class="modal-dialog" role="document">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header">
+                                                                            <b><h5 class="modal-title">Vehicle Details.</h5></b>
+
+                                                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                        </div>
+
+                                                                        <div class="modal-body">
+                                                                            <table class="table table-striped table-bordered " style="width: 100%">
+
+                                                                                <?php
+                                                                                $vehicle_details=DB::table('car_rentals')->where('vehicle_reg_no',$outbox->vehicle_reg_no)->get();
+
+                                                                                ?>
+
+                                                                                @foreach($vehicle_details as $vehicle_detail)
+                                                                                    <tr>
+                                                                                        <td>Vehicle Model:</td>
+                                                                                        <td>{{$vehicle_detail->vehicle_model}}</td>
+                                                                                    </tr>
+
+
+                                                                                    <tr>
+                                                                                        <td>Vehicle Registration Number:</td>
+                                                                                        <td>{{$vehicle_detail->vehicle_reg_no}}</td>
+                                                                                    </tr>
+
+                                                                                    <tr>
+                                                                                        <td>Hire Rate/KM:</td>
+                                                                                        <td>{{$vehicle_detail->hire_rate}} TZS</td>
+                                                                                    </tr>
+
+                                                                                @endforeach
+
+                                                                            </table>
+                                                                            <br>
+                                                                            <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div></center></td>
+                                                    <td><center>{{date("d/m/Y",strtotime($outbox->start_date))}}</center></td>
+                                                    <td><center>{{date("d/m/Y",strtotime($outbox->end_date))}}</center></td>
+                                                    <td><center>{{$outbox->destination}}</center></td>
+                                                    <td><center>{{$outbox->form_status}} Stage</center></td>
+                                                </tr>
+                                            @endforeach
+                                            </tbody>
+                                        </table>
+                                    @else
+                                        <p style="line-height: 1.5;font-size: 17px;"><i class="fa fa-envelope-o" style="font-size:25px;color:#3490dc;"></i> No new message</p>
+                                    @endif
+                                </div>
+                                <div id="closed" class="tabcontent">
+                                    @if(count($closed_act)!=0)
+                                        <br>
+                                        <table class="hover table table-striped table-bordered" id="myTablecar">
+                                            <thead class="thead-dark">
+                                            <th scope="col" style="color:#fff; width: 5%"><center>S/N</center></th>
+                                            <th scope="col" style="color:#fff; width: 16%"><center>Client Name</center></th>
+                                            <th scope="col" style="color:#fff; width: 10%"><center>Contract Number</center></th>
+                                            <th scope="col" style="color:#fff; width: 16%"><center>Vehicle</center></th>
+
+                                            <th scope="col" style="color:#fff; width: 14%"><center>Start Date</center></th>
+                                            <th scope="col" style="color:#fff; width: 14%"><center>End Date</center></th>
+                                            <th scope="col" style="color:#fff; width: 16%"><center>Destination</center></th>
+                                            <th scope="col" style="color:#fff; width: 16%"><center>Grand Total (TZS)</center></th>
+                                            <th scope="col" style="color:#fff;"><center>Action</center></th>
+                                            </thead>
+                                            <tbody>
+                                            @foreach($closed_act as $closed)
+                                                <tr>
+                                                    <th scope="row" class="counterCell text-center">.</th>
+
+                                                    <td>
+
+                                                        <a  title="Client Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#car_client10{{$closed->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$closed->fullName}}</center></a>
+                                                        <div class="modal fade" id="car_client10{{$closed->id}}" role="dialog">
+
+                                                            <div class="modal-dialog" role="document">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <b><h5 class="modal-title">Client Details.</h5></b>
+
+                                                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                    </div>
+
+                                                                    <div class="modal-body">
+                                                                        <table class="table table-striped table-bordered " style="width: 100%">
+
+                                                                            <tr>
+                                                                                <td>Client:</td>
+                                                                                <td>{{$closed->fullName}}</td>
+                                                                            </tr>
+
+
+                                                                            <tr>
+                                                                                <td>Email:</td>
+                                                                                <td>{{$closed->email}}</td>
+                                                                            </tr>
+
+                                                                            <tr>
+                                                                                <td>TIN:</td>
+                                                                                <td>{{$closed->tin}}</td>
+                                                                            </tr>
+
+
+                                                                            <tr>
+                                                                                <td>Department/Faculty/Unit:</td>
+                                                                                <td>{{$closed->faculty}}</td>
+                                                                            </tr>
+
+
+                                                                        </table>
+                                                                        <br>
+                                                                        <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+
+                                                    </td>
+                                                    <td><center>{{$closed->id}}</center></td>
+                                                    <td><center> <a  title="Vehicle Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#vehicle_details11{{$closed->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$closed->vehicle_reg_no}}</center></a>
+                                                            <div class="modal fade" id="vehicle_details11{{$closed->id}}" role="dialog">
+
+                                                                <div class="modal-dialog" role="document">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header">
+                                                                            <b><h5 class="modal-title">Vehicle Details.</h5></b>
+
+                                                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                        </div>
+
+                                                                        <div class="modal-body">
+                                                                            <table class="table table-striped table-bordered " style="width: 100%">
+
+                                                                                <?php
+                                                                                $vehicle_details=DB::table('car_rentals')->where('vehicle_reg_no',$closed->vehicle_reg_no)->get();
+
+                                                                                ?>
+
+                                                                                @foreach($vehicle_details as $vehicle_detail)
+                                                                                    <tr>
+                                                                                        <td>Vehicle Model:</td>
+                                                                                        <td>{{$vehicle_detail->vehicle_model}}</td>
+                                                                                    </tr>
+
+
+                                                                                    <tr>
+                                                                                        <td>Vehicle Registration Number:</td>
+                                                                                        <td>{{$vehicle_detail->vehicle_reg_no}}</td>
+                                                                                    </tr>
+
+                                                                                    <tr>
+                                                                                        <td>Hire Rate/KM:</td>
+                                                                                        <td>{{$vehicle_detail->hire_rate}} TZS</td>
+                                                                                    </tr>
+
+                                                                                @endforeach
+
+                                                                            </table>
+                                                                            <br>
+                                                                            <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div></center></td>
+                                                    <td><center>{{date("d/m/Y",strtotime($closed->start_date))}}</center></td>
+                                                    <td><center>{{date("d/m/Y",strtotime($closed->end_date))}}</center></td>
+                                                    <td>{{$closed->destination}}</td>
+                                                    <td style="text-align: right;">{{number_format($closed->grand_total)}}</td>
+                                                    <td><center>
+                                                            <a title="View More Details" role="button" href="{{ route('carcontractviewmore',$closed->id) }}"><i class="fa fa-eye" aria-hidden="true" style="font-size:20px; color:#3490dc; cursor: pointer;"></i></a>
+                                                            <a title="Download this contract" href="/contracts/car_rental/print?id={{$closed->id}}"><i class="fa fa-file-pdf-o" aria-hidden="true" style="font-size:20px; color:red;"></i></a></center></td>
+                                                </tr>
+                                            @endforeach
+                                            </tbody>
+                                        </table>
+                                    @else
+                                        <br><br>
+                                        <p style="font-size: 18px;">No record found.</p>
+                                    @endif
+                                </div>
+                                <div id="closed_2" class="tabcontent">
+                                    @if(count($closed_inact)!=0)
+                                        <br>
+                                        <table class="hover table table-striped table-bordered" id="myTablecar5">
+                                            <thead class="thead-dark">
+                                            <th scope="col" style="color:#fff; width: 5%"><center>S/N</center></th>
+                                            <th scope="col" style="color:#fff; width: 16%"><center>Client Name</center></th>
+                                            <th scope="col" style="color:#fff; width: 10%"><center>Contract Number</center></th>
+                                            <th scope="col" style="color:#fff; width: 16%"><center>Vehicle</center></th>
+
+                                            <th scope="col" style="color:#fff; width: 14%"><center>Start Date</center></th>
+                                            <th scope="col" style="color:#fff; width: 14%"><center>End Date</center></th>
+                                            <th scope="col" style="color:#fff; width: 16%"><center>Destination</center></th>
+                                            <th scope="col" style="color:#fff; width: 16%"><center>Grand Total (TZS)</center></th>
+                                            <th scope="col" style="color:#fff;"><center>Action</center></th>
+                                            </thead>
+                                            <tbody>
+                                            @foreach($closed_inact as $closed)
+                                                <tr>
+                                                    <th scope="row" class="counterCell text-center">.</th>
+
+                                                    <td>
+
+                                                        <a  title="Client Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#car_client11{{$closed->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$closed->fullName}}</center></a>
+                                                        <div class="modal fade" id="car_client11{{$closed->id}}" role="dialog">
+
+                                                            <div class="modal-dialog" role="document">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <b><h5 class="modal-title">Client Details.</h5></b>
+
+                                                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                    </div>
+
+                                                                    <div class="modal-body">
+                                                                        <table class="table table-striped table-bordered " style="width: 100%">
+
+                                                                            <tr>
+                                                                                <td>Client:</td>
+                                                                                <td>{{$closed->fullName}}</td>
+                                                                            </tr>
+
+
+                                                                            <tr>
+                                                                                <td>Email:</td>
+                                                                                <td>{{$closed->email}}</td>
+                                                                            </tr>
+
+                                                                            <tr>
+                                                                                <td>TIN:</td>
+                                                                                <td>{{$closed->tin}}</td>
+                                                                            </tr>
+
+
+                                                                            <tr>
+                                                                                <td>Department/Faculty/Unit:</td>
+                                                                                <td>{{$closed->faculty}}</td>
+                                                                            </tr>
+
+
+                                                                        </table>
+                                                                        <br>
+                                                                        <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+
+                                                    </td>
+                                                    <td><center>{{$closed->id}}</center></td>
+                                                    <td><center> <a  title="Vehicle Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#vehicle_details12{{$closed->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$closed->vehicle_reg_no}}</center></a>
+                                                            <div class="modal fade" id="vehicle_details12{{$closed->id}}" role="dialog">
+
+                                                                <div class="modal-dialog" role="document">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header">
+                                                                            <b><h5 class="modal-title">Vehicle Details.</h5></b>
+
+                                                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                        </div>
+
+                                                                        <div class="modal-body">
+                                                                            <table class="table table-striped table-bordered " style="width: 100%">
+
+                                                                                <?php
+                                                                                $vehicle_details=DB::table('car_rentals')->where('vehicle_reg_no',$closed->vehicle_reg_no)->get();
+
+                                                                                ?>
+
+                                                                                @foreach($vehicle_details as $vehicle_detail)
+                                                                                    <tr>
+                                                                                        <td>Vehicle Model:</td>
+                                                                                        <td>{{$vehicle_detail->vehicle_model}}</td>
+                                                                                    </tr>
+
+
+                                                                                    <tr>
+                                                                                        <td>Vehicle Registration Number:</td>
+                                                                                        <td>{{$vehicle_detail->vehicle_reg_no}}</td>
+                                                                                    </tr>
+
+                                                                                    <tr>
+                                                                                        <td>Hire Rate/KM:</td>
+                                                                                        <td>{{$vehicle_detail->hire_rate}} TZS</td>
+                                                                                    </tr>
+
+                                                                                @endforeach
+
+                                                                            </table>
+                                                                            <br>
+                                                                            <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div></center></td>
+                                                    <td><center>{{date("d/m/Y",strtotime($closed->start_date))}}</center></td>
+                                                    <td><center>{{date("d/m/Y",strtotime($closed->end_date))}}</center></td>
+                                                    <td>{{$closed->destination}}</td>
+                                                    <td style="text-align: right;">{{number_format($closed->grand_total)}}</td>
+                                                    <td><center>
+                                                            <a title="View More Details" role="button" href="{{ route('carcontractviewmore',$closed->id) }}"><i class="fa fa-eye" aria-hidden="true" style="font-size:20px; color:#3490dc; cursor: pointer;"></i></a>
+                                                            <a title="Download this contract" href="/contracts/car_rental/print?id={{$closed->id}}"><i class="fa fa-file-pdf-o" aria-hidden="true" style="font-size:20px; color:red;"></i></a></center></td>
+                                                </tr>
+                                            @endforeach
+                                            </tbody>
+                                        </table>
+                                    @else
+                                        <br><br>
+                                        <p style="font-size: 18px;">No record found.</p>
+                                    @endif
+                                </div>
+                            @elseif(Auth::user()->role=='Head of CPTU')
+                                <a class="btn btn-success" href="{{ route('carRentalForm') }}" role="button" style="
+    padding: 10px; margin-bottom: 5px; margin-top: 4px;">Add New Contract
+                                </a>
+                                <br><br>
+                                <div class="tab2">
+                                    <button class="tablinks" onclick="openContracts(event, 'inbox')" id="defaultOpen"><strong>Inbox</strong></button>
+                                    <button class="tablinks" onclick="openContracts(event, 'outbox')"><strong>Outbox</strong></button>
+                                    {{-- <button class="tablinks" onclick="openContracts(event, 'closed')"><strong>Active Contract</strong></button> --}}
+                                    <button class="tablinks" onclick="openContracts(event, 'closed_2')"><strong>Contracts</strong></button>
+                                    <button class="tablinks" onclick="openContracts(event, 'log_sheet')"><strong>Log Sheet</strong></button>
+                                </div>
+                                <div id="inbox" class="tabcontent">
+                                    <br>
+                                    @if(count($inbox)>0)
+                                        <table>
+                                            <thead>
+                                            <th style="width: 16%"><center>Contract Number</center></th>
+                                            <th style="width: 16%"><center>Initiated By</center></th>
+                                            <th style="width: 16%"><center>Client Name</center></th>
+                                            <th style="width: 16%"><center>Vehicle</center></th>
+
+                                            <th style="width: 16%"><center>Start Date</center></th>
+                                            <th style="width: 16%"><center>End Date</center></th>
+                                            <th style="width: 16%"><center>Destination</center></th>
+                                            </thead>
+                                            <tbody>
+                                            @foreach($inbox as $inbox)
+                                                <tr>
+                                                    @if($inbox->start_date< date('Y-m-d'))
+                                                        <td>
+                                                            <a data-toggle="modal" data-target="#viewcar{{$inbox->id}}" role="button" aria-pressed="true" class="link_style" style="color: blue;"><center>{{$inbox->id}}</center></a>
+
+                                                            <div class="modal fade" id="viewcar{{$inbox->id}}" role="dialog">
+
+                                                                <div class="modal-dialog" role="document">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header">
+                                                                            <b><h5 class="modal-title" style="color: red;"><b>WARNING</b></h5></b>
+                                                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                        </div>
+
+                                                                        <div class="modal-body">
+                                                                            <p style="text-align: left; font-size: 16px;">This contract is no longer valid since the start date of the trip has passed.</p>
+
+                                                                            <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+
+                                                    @else
+                                                        <td><center><a href="{{ route('carRentalFormD',$inbox->id) }}">{{$inbox->id}}</a></center></td>
+                                                    @endif
+
+                                                    <td><center>{{$inbox->form_initiator}}</center></td>
+                                                    <td>
+
+                                                        <a  title="Client Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#car_client12{{$inbox->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$inbox->fullName}}</center></a>
+                                                        <div class="modal fade" id="car_client12{{$inbox->id}}" role="dialog">
+
+                                                            <div class="modal-dialog" role="document">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <b><h5 class="modal-title">Client Details.</h5></b>
+
+                                                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                    </div>
+
+                                                                    <div class="modal-body">
+                                                                        <table class="table table-striped table-bordered " style="width: 100%">
+
+                                                                            <tr>
+                                                                                <td>Client:</td>
+                                                                                <td>{{$inbox->fullName}}</td>
+                                                                            </tr>
+
+
+                                                                            <tr>
+                                                                                <td>Email:</td>
+                                                                                <td>{{$inbox->email}}</td>
+                                                                            </tr>
+
+                                                                            <tr>
+                                                                                <td>TIN:</td>
+                                                                                <td>{{$inbox->tin}}</td>
+                                                                            </tr>
+
+
+                                                                            <tr>
+                                                                                <td>Department/Faculty/Unit:</td>
+                                                                                <td>{{$inbox->faculty}}</td>
+                                                                            </tr>
+
+
+                                                                        </table>
+                                                                        <br>
+                                                                        <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+
+                                                    </td>
+                                                    <td><center> <a  title="Vehicle Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#vehicle_details13{{$inbox->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$inbox->vehicle_reg_no}}</center></a>
+                                                            <div class="modal fade" id="vehicle_details13{{$inbox->id}}" role="dialog">
+
+                                                                <div class="modal-dialog" role="document">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header">
+                                                                            <b><h5 class="modal-title">Vehicle Details.</h5></b>
+
+                                                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                        </div>
+
+                                                                        <div class="modal-body">
+                                                                            <table class="table table-striped table-bordered " style="width: 100%">
+
+                                                                                <?php
+                                                                                $vehicle_details=DB::table('car_rentals')->where('vehicle_reg_no',$inbox->vehicle_reg_no)->get();
+
+                                                                                ?>
+
+                                                                                @foreach($vehicle_details as $vehicle_detail)
+                                                                                    <tr>
+                                                                                        <td>Vehicle Model:</td>
+                                                                                        <td>{{$vehicle_detail->vehicle_model}}</td>
+                                                                                    </tr>
+
+
+                                                                                    <tr>
+                                                                                        <td>Vehicle Registration Number:</td>
+                                                                                        <td>{{$vehicle_detail->vehicle_reg_no}}</td>
+                                                                                    </tr>
+
+                                                                                    <tr>
+                                                                                        <td>Hire Rate/KM:</td>
+                                                                                        <td>{{$vehicle_detail->hire_rate}} TZS</td>
+                                                                                    </tr>
+
+                                                                                @endforeach
+
+                                                                            </table>
+                                                                            <br>
+                                                                            <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div></center></td>
+                                                    <td><center>{{date("d/m/Y",strtotime($inbox->start_date))}}</center></td>
+                                                    <td><center> {{date("d/m/Y",strtotime($inbox->end_date))}}</center></td>
+                                                    <td><center>{{$inbox->destination}}</center></td>
+                                                </tr>
+                                            @endforeach
+                                            </tbody>
+                                        </table>
+                                    @else
+                                        <p style="line-height: 1.5;font-size: 17px;"><i class="fa fa-envelope-o" style="font-size:25px;color:#3490dc;"></i> No new message</p>
+                                    @endif
+                                </div>
+
+                                <div id="outbox" class="tabcontent">
+                                    <br>
+                                    @if(count($outbox)>0)
+                                        <table>
+                                            <thead>
+                                            <th style="width: 14%"><center>Contract Number</center></th>
+                                            <th style="width: 14%"><center>Initiated By</center></th>
+                                            <th style="width: 14%"><center>Client Name</center></th>
+                                            <th style="width: 14%"><center>Vehicle</center></th>
+
+                                            <th style="width: 15%"><center>Start Date</center></th>
+                                            <th style="width: 15%"><center>End Date</center></th>
+                                            <th style="width: 14%"><center>Destination</center></th>
+                                            <th style="width: 14%"><center>Form Status</center></th>
+                                            <th style="width: 14%"><center>Action</center></th>
+                                            </thead>
+                                            <tbody>
+                                            @foreach($outbox as $outbox)
+                                                <tr>
+                                                    <td><center>{{$outbox->id}}</center></td>
+                                                    <td><center>{{$outbox->form_initiator}}</center></td>
+                                                    <td>
+
+                                                        <a  title="Client Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#car_client13{{$outbox->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$outbox->fullName}}</center></a>
+                                                        <div class="modal fade" id="car_client13{{$outbox->id}}" role="dialog">
+
+                                                            <div class="modal-dialog" role="document">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <b><h5 class="modal-title">Client Details.</h5></b>
+
+                                                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                    </div>
+
+                                                                    <div class="modal-body">
+                                                                        <table class="table table-striped table-bordered " style="width: 100%">
+
+                                                                            <tr>
+                                                                                <td>Client:</td>
+                                                                                <td>{{$outbox->fullName}}</td>
+                                                                            </tr>
+
+
+                                                                            <tr>
+                                                                                <td>Email:</td>
+                                                                                <td>{{$outbox->email}}</td>
+                                                                            </tr>
+
+                                                                            <tr>
+                                                                                <td>TIN:</td>
+                                                                                <td>{{$outbox->tin}}</td>
+                                                                            </tr>
+
+
+                                                                            <tr>
+                                                                                <td>Department/Faculty/Unit:</td>
+                                                                                <td>{{$outbox->faculty}}</td>
+                                                                            </tr>
+
+
+                                                                        </table>
+                                                                        <br>
+                                                                        <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+
+                                                    </td>
+                                                    <td><center> <a  title="Vehicle Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#vehicle_details14{{$outbox->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$outbox->vehicle_reg_no}}</center></a>
+                                                            <div class="modal fade" id="vehicle_details14{{$outbox->id}}" role="dialog">
+
+                                                                <div class="modal-dialog" role="document">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header">
+                                                                            <b><h5 class="modal-title">Vehicle Details.</h5></b>
+
+                                                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                        </div>
+
+                                                                        <div class="modal-body">
+                                                                            <table class="table table-striped table-bordered " style="width: 100%">
+
+                                                                                <?php
+                                                                                $vehicle_details=DB::table('car_rentals')->where('vehicle_reg_no',$outbox->vehicle_reg_no)->get();
+
+                                                                                ?>
+
+                                                                                @foreach($vehicle_details as $vehicle_detail)
+                                                                                    <tr>
+                                                                                        <td>Vehicle Model:</td>
+                                                                                        <td>{{$vehicle_detail->vehicle_model}}</td>
+                                                                                    </tr>
+
+
+                                                                                    <tr>
+                                                                                        <td>Vehicle Registration Number:</td>
+                                                                                        <td>{{$vehicle_detail->vehicle_reg_no}}</td>
+                                                                                    </tr>
+
+                                                                                    <tr>
+                                                                                        <td>Hire Rate/KM:</td>
+                                                                                        <td>{{$vehicle_detail->hire_rate}} TZS</td>
+                                                                                    </tr>
+
+                                                                                @endforeach
+
+                                                                            </table>
+                                                                            <br>
+                                                                            <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div></center></td>
+                                                    <td><center>{{date("d/m/Y",strtotime($outbox->start_date))}}</center></td>
+                                                    <td><center>{{date("d/m/Y",strtotime($outbox->end_date))}}</center></td>
+                                                    <td><center>{{$outbox->destination}}</center></td>
+                                                    <td><center>{{$outbox->form_status}} Stage</center></td>
+                                                    @if($outbox->start_date < date('Y-m-d'))
+                                                        <td>
+                                                            <a title="Delete this form" data-toggle="modal" data-target="#delete{{$outbox->id}}" role="button" aria-pressed="true" style="color: blue;" class="link_style"><center><i class="fa fa-trash" aria-hidden="true" style="font-size:18px; color:red;"></i></center></a>
+
+                                                            <div class="modal fade" id="delete{{$outbox->id}}" role="dialog">
+
+                                                                <div class="modal-dialog" role="document">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header">
+                                                                            <b><h5 class="modal-title" style="color: red;"><b>WARNING</b></h5></b>
+                                                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                        </div>
+
+                                                                        <div class="modal-body">
+                                                                            <p style="text-align: left; font-size: 16px;">Are you sure you want to delete this form?</p>
+                                                                            <br>
+                                                                            <div align="right">
+                                                                                <a href="{{ route('deletecontract',$outbox->id) }}" class="btn btn-primary">Proceed</a>
+                                                                                <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                                                            </div>
+
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                    @else
+                                                        <td><center>N/A</center></td>
+                                                    @endif
+                                                </tr>
+                                            @endforeach
+                                            </tbody>
+                                        </table>
+                                    @else
+                                        <p style="line-height: 1.5;font-size: 17px;"><i class="fa fa-envelope-o" style="font-size:25px;color:#3490dc;"></i> No new message</p>
+                                    @endif
+                                </div>
+                                <div id="closed" class="tabcontent">
+                                    @if(count($closed_act)!=0)
+                                        <br>
+                                        <table class="hover table table-striped table-bordered" id="myTablecar">
+                                            <thead class="thead-dark">
+                                            <th scope="col" style="color:#fff; width: 5%"><center>S/N</center></th>
+                                            <th scope="col" style="color:#fff; width: 16%"><center>Client Name</center></th>
+                                            <th scope="col" style="color:#fff; width: 10%"><center>Contract Number</center></th>
+                                            <th scope="col" style="color:#fff; width: 16%"><center>Vehicle</center></th>
+
+                                            <th scope="col" style="color:#fff; width: 14%"><center>Start Date</center></th>
+                                            <th scope="col" style="color:#fff; width: 14%"><center>End Date</center></th>
+                                            <th scope="col" style="color:#fff; width: 16%"><center>Destination</center></th>
+                                            <th scope="col" style="color:#fff; width: 16%"><center>Grand Total (TZS)</center></th>
+                                            <th scope="col" style="color:#fff;"><center>Action</center></th>
+                                            </thead>
+                                            <tbody>
+                                            @foreach($closed_act as $closed)
+                                                <tr>
+                                                    <th scope="row" class="counterCell text-center">.</th>
+
+                                                    <td>
+
+                                                        <a  title="Client Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#car_client14{{$closed->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$closed->fullName}}</center></a>
+                                                        <div class="modal fade" id="car_client14{{$closed->id}}" role="dialog">
+
+                                                            <div class="modal-dialog" role="document">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <b><h5 class="modal-title">Client Details.</h5></b>
+
+                                                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                    </div>
+
+                                                                    <div class="modal-body">
+                                                                        <table class="table table-striped table-bordered " style="width: 100%">
+
+                                                                            <tr>
+                                                                                <td>Client:</td>
+                                                                                <td>{{$closed->fullName}}</td>
+                                                                            </tr>
+
+
+                                                                            <tr>
+                                                                                <td>Email:</td>
+                                                                                <td>{{$closed->email}}</td>
+                                                                            </tr>
+
+                                                                            <tr>
+                                                                                <td>TIN:</td>
+                                                                                <td>{{$closed->tin}}</td>
+                                                                            </tr>
+
+
+                                                                            <tr>
+                                                                                <td>Department/Faculty/Unit:</td>
+                                                                                <td>{{$closed->faculty}}</td>
+                                                                            </tr>
+
+
+                                                                        </table>
+                                                                        <br>
+                                                                        <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+
+                                                    </td>
+                                                    <td><center>{{$closed->id}}</center></td>
+                                                    <td><center> <a  title="Vehicle Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#vehicle_details15{{$closed->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$closed->vehicle_reg_no}}</center></a>
+                                                            <div class="modal fade" id="vehicle_details15{{$closed->id}}" role="dialog">
+
+                                                                <div class="modal-dialog" role="document">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header">
+                                                                            <b><h5 class="modal-title">Vehicle Details.</h5></b>
+
+                                                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                        </div>
+
+                                                                        <div class="modal-body">
+                                                                            <table class="table table-striped table-bordered " style="width: 100%">
+
+                                                                                <?php
+                                                                                $vehicle_details=DB::table('car_rentals')->where('vehicle_reg_no',$closed->vehicle_reg_no)->get();
+
+                                                                                ?>
+
+                                                                                @foreach($vehicle_details as $vehicle_detail)
+                                                                                    <tr>
+                                                                                        <td>Vehicle Model:</td>
+                                                                                        <td>{{$vehicle_detail->vehicle_model}}</td>
+                                                                                    </tr>
+
+
+                                                                                    <tr>
+                                                                                        <td>Vehicle Registration Number:</td>
+                                                                                        <td>{{$vehicle_detail->vehicle_reg_no}}</td>
+                                                                                    </tr>
+
+                                                                                    <tr>
+                                                                                        <td>Hire Rate/KM:</td>
+                                                                                        <td>{{$vehicle_detail->hire_rate}} TZS</td>
+                                                                                    </tr>
+
+                                                                                @endforeach
+
+                                                                            </table>
+                                                                            <br>
+                                                                            <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div></center></td>
+                                                    <td><center>{{date("d/m/Y",strtotime($closed->start_date))}}</center></td>
+                                                    <td><center> {{date("d/m/Y",strtotime($closed->end_date))}}</center></td>
+                                                    <td>{{$closed->destination}}</td>
+                                                    <td style="text-align: right;">{{number_format($closed->grand_total)}}</td>
+                                                    <td><center>
+                                                            <a title="View More Details" role="button" href="{{ route('carcontractviewmore',$closed->id) }}"><i class="fa fa-eye" aria-hidden="true" style="font-size:20px; color:#3490dc; cursor: pointer;"></i></a>
+
+                                                            <a title="Download this contract" href="/contracts/car_rental/print?id={{$closed->id}}"><i class="fa fa-file-pdf-o" aria-hidden="true" style="font-size:20px; color:red;"></i></a>
+
+                                                            <a title="Terminate this contract" data-toggle="modal" data-target="#terminate{{$closed->id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px; color:red; cursor: pointer;"></i></a>
+
+                                                            <div class="modal fade" id="terminate{{$closed->id}}" role="dialog">
+
+                                                                <div class="modal-dialog" role="document">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header">
+                                                                            <b><h5 class="modal-title" style="color: red;"><b>Terminating Contract</b></h5></b>
+                                                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                        </div>
+
+                                                                        <div class="modal-body">
+                                                                            <p style="text-align: left; font-size: 16px;">You are about to terminate <strong>"{{$closed->fullName}}"</strong> contract. Provide reason for termination to proceed.</p>
+
+                                                                            <form method="get" action="{{ route('terminateCarRental',$closed->id) }}" >
+                                                                                {{csrf_field()}}
+
+                                                                                <div class="form-group">
+                                                                                    <div class="form-wrapper">
+                                                                                        <label for=""><strong>Reason:<span style="color: red;">*</span></strong></label>
+                                                                                        <textarea required name="reason_for_termination" class="form-control"></textarea>
+
+                                                                                    </div>
+                                                                                </div>
+                                                                                <br>
+
+                                                                                <div align="right">
+                                                                                    <button class="btn btn-primary" type="submit" id="newdata">Terminate</button>
+                                                                                    <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                                                                </div>
+
+                                                                            </form>
+
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </center></td>
+                                                </tr>
+                                            @endforeach
+                                            </tbody>
+                                        </table>
+                                    @else
+                                        <br><br>
+                                        <p style="font-size: 18px;">No record found.</p>
+                                    @endif
+                                </div>
+                                <div id="closed_2" class="tabcontent">
+                                    @if(count($closed_inact)!=0)
+                                        <br>
+                                        <table class="hover table table-striped table-bordered" id="myTablecar6">
+                                            <thead class="thead-dark">
+                                            <th scope="col" style="color:#fff; width: 5%"><center>S/N</center></th>
+                                            <th scope="col" style="color:#fff; width: 16%"><center>Client Name</center></th>
+                                            <th scope="col" style="color:#fff; width: 10%"><center>Contract Number</center></th>
+                                            <th scope="col" style="color:#fff; width: 16%"><center>Vehicle</center></th>
+
+                                            <th scope="col" style="color:#fff; width: 14%"><center>Start Date</center></th>
+                                            <th scope="col" style="color:#fff; width: 14%"><center>End Date</center></th>
+                                            <th scope="col" style="color:#fff; width: 16%"><center>Destination</center></th>
+                                            <th scope="col" style="color:#fff; width: 16%"><center>Grand Total (TZS)</center></th>
+                                            <th scope="col" style="color:#fff;"><center>Action</center></th>
+                                            </thead>
+                                            <tbody>
+                                            @foreach($closed_inact as $closed)
+                                                <tr>
+                                                    <th scope="row" class="counterCell text-center">.</th>
+
+                                                    <td>
+
+                                                        <a  title="Client Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#car_client15{{$closed->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$closed->fullName}}</center></a>
+                                                        <div class="modal fade" id="car_client15{{$closed->id}}" role="dialog">
+
+                                                            <div class="modal-dialog" role="document">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <b><h5 class="modal-title">Client Details.</h5></b>
+
+                                                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                    </div>
+
+                                                                    <div class="modal-body">
+                                                                        <table class="table table-striped table-bordered " style="width: 100%">
+
+                                                                            <tr>
+                                                                                <td>Client:</td>
+                                                                                <td>{{$closed->fullName}}</td>
+                                                                            </tr>
+
+
+                                                                            <tr>
+                                                                                <td>Email:</td>
+                                                                                <td>{{$closed->email}}</td>
+                                                                            </tr>
+
+                                                                            <tr>
+                                                                                <td>TIN:</td>
+                                                                                <td>{{$closed->tin}}</td>
+                                                                            </tr>
+
+
+                                                                            <tr>
+                                                                                <td>Department/Faculty/Unit:</td>
+                                                                                <td>{{$closed->faculty}}</td>
+                                                                            </tr>
+
+
+                                                                        </table>
+                                                                        <br>
+                                                                        <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+
+                                                    </td>
+                                                    <td><center>{{$closed->id}}</center></td>
+                                                    <td><center> <a  title="Vehicle Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#vehicle_details16{{$closed->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$closed->vehicle_reg_no}}</center></a>
+                                                            <div class="modal fade" id="vehicle_details16{{$closed->id}}" role="dialog">
+
+                                                                <div class="modal-dialog" role="document">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header">
+                                                                            <b><h5 class="modal-title">Vehicle Details.</h5></b>
+
+                                                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                        </div>
+
+                                                                        <div class="modal-body">
+                                                                            <table class="table table-striped table-bordered " style="width: 100%">
+
+                                                                                <?php
+                                                                                $vehicle_details=DB::table('car_rentals')->where('vehicle_reg_no',$closed->vehicle_reg_no)->get();
+
+                                                                                ?>
+
+                                                                                @foreach($vehicle_details as $vehicle_detail)
+                                                                                    <tr>
+                                                                                        <td>Vehicle Model:</td>
+                                                                                        <td>{{$vehicle_detail->vehicle_model}}</td>
+                                                                                    </tr>
+
+
+                                                                                    <tr>
+                                                                                        <td>Vehicle Registration Number:</td>
+                                                                                        <td>{{$vehicle_detail->vehicle_reg_no}}</td>
+                                                                                    </tr>
+
+                                                                                    <tr>
+                                                                                        <td>Hire Rate/KM:</td>
+                                                                                        <td>{{$vehicle_detail->hire_rate}} TZS</td>
+                                                                                    </tr>
+
+                                                                                @endforeach
+
+                                                                            </table>
+                                                                            <br>
+                                                                            <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div></center></td>
+
+                                                    <td><center>{{date("d/m/Y",strtotime($closed->start_date))}}</center></td>
+                                                    <td><center>{{date("d/m/Y",strtotime($closed->end_date))}}</center></td>
+                                                    <td>{{$closed->destination}}</td>
+                                                    <td style="text-align: right;">{{number_format($closed->grand_total)}}</td>
+                                                    <td><center>
+                                                            <a title="View More Details" role="button" href="{{ route('carcontractviewmore',$closed->id) }}"><i class="fa fa-eye" aria-hidden="true" style="font-size:20px; color:#3490dc; cursor: pointer;"></i></a>
+                                                            <a title="Download this contract" href="/contracts/car_rental/print?id={{$closed->id}}"><i class="fa fa-file-pdf-o" aria-hidden="true" style="font-size:20px; color:red;"></i></a></center></td>
+                                                </tr>
+                                            @endforeach
+                                            </tbody>
+                                        </table>
+                                    @else
+                                        <br><br>
+                                        <p style="font-size: 18px;">No record found.</p>
+                                    @endif
+                                </div>
+
+                                <div id="log_sheet" class="tabcontent" style="border-bottom-left-radius: 50px 20px;">
+                                    <?php $logsheets = DB::table('log_sheets')->select('contract_id')->distinct('contract_id')->orderBy('id','dsc')->get();
+                                    $d = 1;
+                                    ?>
+                                    <br>
+                                    <a title="Add New Log Sheet" class="btn btn-success" role="button" data-toggle="modal" data-target="#new_log" role="button" aria-pressed="true" style="color: white;">Add New Log Sheet</a>
+
+                                    <div class="modal fade" id="new_log" role="dialog">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <b><h5 class="modal-title">Fill the Contract Number to continue</h5></b>
+                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                </div>
+
+                                                <div class="modal-body">
+                                                    <form method="post" action="{{ route('logsheetindex') }}">
+                                                        {{csrf_field()}}
+                                                        <div class="form-group">
+                                                            <div class="form-wrapper">
+                                                                <label for="hire_rate">Contract Number<span style="color: red;">*</span></label>
+                                                                <input type="text" id="contract_id" name="contract_id" class="form-control" required="" onkeypress="if((this.value.length<10)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
+                                                            </div>
+                                                        </div>
+
+                                                        <div align="right">
+                                                            <button type="submit" class="btn btn-primary">Submit</button>
+                                                            <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                                                        </div>
+                                                    </form>
+
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+
+
+
+                                    <br><br>
+                                    <table class="hover table table-bordered  table-striped" id="LogTable">
+                                        <thead class="thead-dark">
+                                        <th scope="col" style="color:#fff;"><center>SN</center></th>
+                                        <th scope="col" style="color:#fff;"><center>Client Name</center></th>
+                                        <th scope="col" style="color:#fff;"><center>Contract Number</center></th>
+                                        <th scope="col" style="color:#fff;"><center>Vehicle Reg No.</center></th>
+                                        <th scope="col" style="color:#fff;"><center>Driver Name</center></th>
+                                        <th scope="col" style="color:#fff;"><center>Destination</center></th>
+                                        <th scope="col" style="color:#fff;"><center>Start Date</center></th>
+                                        <th scope="col" style="color:#fff;"><center>End Date</center></th>
+                                        <th scope="col" style="color:#fff;"><center>Action</center></th>
+                                        </thead>
+                                        <tbody>
+                                        @foreach($logsheets as $log)
+                                            <?php $details = DB::table('car_contracts')->select('vehicle_reg_no','driver_name','fullName','faculty','destination','start_date', 'end_date')->where('id',$log->contract_id)->first(); ?>
+                                            <tr>
+                                                <th style="text-align: center;">{{$d}}.</th>
+                                                <td>{{$details->fullName}}</td>
+                                                <td><center>{{$log->contract_id}}</center></td>
+                                                <td><center>{{$details->vehicle_reg_no}}</center></td>
+                                                <td>{{$details->driver_name}}</td>
+                                                <td><center>{{$details->destination}}</center></td>
+                                                <td><center>{{date("d/m/Y",strtotime($details->start_date))}} </center></td>
+                                                <td><center>{{date("d/m/Y",strtotime($details->end_date))}}</center></td>
+                                                <td><center><a title="View More Details" role="button" href="{{ route('logsheetmore',$log->contract_id) }}"><i class="fa fa-eye" aria-hidden="true" style="font-size:20px; color:#3490dc; cursor: pointer;"></i></a></center></td>
+                                            </tr>
+                                            <?php $d = $d+1; ?>
+                                        @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            @elseif(Auth::user()->role=='DVC Administrator')
+                                <div class="tab2">
+                                    <button class="tablinks" onclick="openContracts(event, 'inbox')" id="defaultOpen"><strong>Inbox</strong></button>
+                                    <button class="tablinks" onclick="openContracts(event, 'outbox')"><strong>Outbox</strong></button>
+                                    {{-- <button class="tablinks" onclick="openContracts(event, 'closed')"><strong>Active Contract</strong></button> --}}
+                                    <button class="tablinks" onclick="openContracts(event, 'closed_2')"><strong>Contracts</strong></button>
+                                    <button class="tablinks" onclick="openContracts(event, 'log_sheet')"><strong>Log Sheets</strong></button>
+                                </div>
+                                <div id="inbox" class="tabcontent">
+                                    <br>
+                                    @if(count($inbox)>0)
+                                        <table>
+                                            <thead>
+                                            <th style="width: 16%"><center>Contract Number</center></th>
+                                            <th style="width: 16%"><center>Initiated By</center></th>
+                                            <th style="width: 16%"><center>Client Name</center></th>
+                                            <th style="width: 16%"><center>Vehicle</center></th>
+
+                                            <th style="width: 16%"><center>Start Date</center></th>
+                                            <th style="width: 16%"><center>End Date</center></th>
+                                            <th style="width: 16%"><center>Destination</center></th>
+                                            </thead>
+                                            <tbody>
+                                            @foreach($inbox as $inbox)
+                                                <tr>
+                                                    @if($inbox->start_date< date('Y-m-d'))
+                                                        <td>
+                                                            <a data-toggle="modal" data-target="#viewcar{{$inbox->id}}" role="button" aria-pressed="true" class="link_style" style="color: blue;"><center>{{$inbox->id}}</center></a>
+
+                                                            <div class="modal fade" id="viewcar{{$inbox->id}}" role="dialog">
+
+                                                                <div class="modal-dialog" role="document">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header">
+                                                                            <b><h5 class="modal-title" style="color: red;"><b>WARNING</b></h5></b>
+                                                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                        </div>
+
+                                                                        <div class="modal-body">
+                                                                            <p style="text-align: left; font-size: 16px;">This contract is no longer valid since the start date of the trip has passed.</p>
+
+                                                                            <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                    @else
+                                                        <td><center><a href="{{ route('carRentalFormD1',$inbox->id) }}">{{$inbox->id}}</a></center></td>
+                                                    @endif
+                                                    <td><center>{{$inbox->form_initiator}}</center></td>
+                                                    <td>
+
+                                                        <a  title="Client Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#car_client16{{$inbox->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$inbox->fullName}}</center></a>
+                                                        <div class="modal fade" id="car_client16{{$inbox->id}}" role="dialog">
+
+                                                            <div class="modal-dialog" role="document">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <b><h5 class="modal-title">Client Details.</h5></b>
+
+                                                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                    </div>
+
+                                                                    <div class="modal-body">
+                                                                        <table class="table table-striped table-bordered " style="width: 100%">
+
+                                                                            <tr>
+                                                                                <td>Client:</td>
+                                                                                <td>{{$inbox->fullName}}</td>
+                                                                            </tr>
+
+
+                                                                            <tr>
+                                                                                <td>Email:</td>
+                                                                                <td>{{$inbox->email}}</td>
+                                                                            </tr>
+
+                                                                            <tr>
+                                                                                <td>TIN:</td>
+                                                                                <td>{{$inbox->tin}}</td>
+                                                                            </tr>
+
+
+                                                                            <tr>
+                                                                                <td>Department/Faculty/Unit:</td>
+                                                                                <td>{{$inbox->faculty}}</td>
+                                                                            </tr>
+
+
+                                                                        </table>
+                                                                        <br>
+                                                                        <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+
+                                                    </td>
+                                                    <td><center> <a  title="Vehicle Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#vehicle_details17{{$inbox->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$inbox->vehicle_reg_no}}</center></a>
+                                                            <div class="modal fade" id="vehicle_details17{{$inbox->id}}" role="dialog">
+
+                                                                <div class="modal-dialog" role="document">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header">
+                                                                            <b><h5 class="modal-title">Vehicle Details.</h5></b>
+
+                                                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                        </div>
+
+                                                                        <div class="modal-body">
+                                                                            <table class="table table-striped table-bordered " style="width: 100%">
+
+                                                                                <?php
+                                                                                $vehicle_details=DB::table('car_rentals')->where('vehicle_reg_no',$inbox->vehicle_reg_no)->get();
+
+                                                                                ?>
+
+                                                                                @foreach($vehicle_details as $vehicle_detail)
+                                                                                    <tr>
+                                                                                        <td>Vehicle Model:</td>
+                                                                                        <td>{{$vehicle_detail->vehicle_model}}</td>
+                                                                                    </tr>
+
+
+                                                                                    <tr>
+                                                                                        <td>Vehicle Registration Number:</td>
+                                                                                        <td>{{$vehicle_detail->vehicle_reg_no}}</td>
+                                                                                    </tr>
+
+                                                                                    <tr>
+                                                                                        <td>Hire Rate/KM:</td>
+                                                                                        <td>{{$vehicle_detail->hire_rate}} TZS</td>
+                                                                                    </tr>
+
+                                                                                @endforeach
+
+                                                                            </table>
+                                                                            <br>
+                                                                            <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div></center></td>
+                                                    <td><center>{{date("d/m/Y",strtotime($inbox->start_date))}} </center></td>
+                                                    <td><center>{{date("d/m/Y",strtotime($inbox->end_date))}}</center></td>
+                                                    <td><center>{{$inbox->destination}}</center></td>
+                                                </tr>
+                                            @endforeach
+                                            </tbody>
+                                        </table>
+                                    @else
+                                        <p style="line-height: 1.5;font-size: 17px;"><i class="fa fa-envelope-o" style="font-size:25px;color:#3490dc;"></i> No new message</p>
+                                    @endif
+                                </div>
+
+                                <div id="outbox" class="tabcontent">
+                                    <br>
+                                    @if(count($outbox)>0)
+                                        <table>
+                                            <thead>
+                                            <th style="width: 14%"><center>Contract Number</center></th>
+                                            <th style="width: 14%"><center>Initiated By</center></th>
+                                            <th style="width: 14%"><center>Client Name</center></th>
+                                            <th style="width: 14%"><center>Vehicle</center></th>
+
+                                            <th style="width: 15%"><center>Start Date</center></th>
+                                            <th style="width: 15%"><center>End Date</center></th>
+                                            <th style="width: 14%"><center>Destination</center></th>
+                                            <th style="width: 14%"><center>Form Status</center></th>
+                                            </thead>
+                                            <tbody>
+                                            @foreach($outbox as $outbox)
+                                                <tr>
+                                                    <td><center>{{$outbox->id}}</center></td>
+                                                    <td><center>{{$outbox->form_initiator}}</center></td>
+                                                    <td>
+
+                                                        <a  title="Client Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#car_client17{{$outbox->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$outbox->fullName}}</center></a>
+                                                        <div class="modal fade" id="car_client17{{$outbox->id}}" role="dialog">
+
+                                                            <div class="modal-dialog" role="document">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <b><h5 class="modal-title">Client Details.</h5></b>
+
+                                                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                    </div>
+
+                                                                    <div class="modal-body">
+                                                                        <table class="table table-striped table-bordered " style="width: 100%">
+
+                                                                            <tr>
+                                                                                <td>Client:</td>
+                                                                                <td>{{$outbox->fullName}}</td>
+                                                                            </tr>
+
+
+                                                                            <tr>
+                                                                                <td>Email:</td>
+                                                                                <td>{{$outbox->email}}</td>
+                                                                            </tr>
+
+                                                                            <tr>
+                                                                                <td>TIN:</td>
+                                                                                <td>{{$outbox->tin}}</td>
+                                                                            </tr>
+
+
+                                                                            <tr>
+                                                                                <td>Department/Faculty/Unit:</td>
+                                                                                <td>{{$outbox->faculty}}</td>
+                                                                            </tr>
+
+
+                                                                        </table>
+                                                                        <br>
+                                                                        <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+
+                                                    </td>
+                                                    <td><center> <a  title="Vehicle Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#vehicle_details18{{$outbox->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$outbox->vehicle_reg_no}}</center></a>
+                                                            <div class="modal fade" id="vehicle_details18{{$outbox->id}}" role="dialog">
+
+                                                                <div class="modal-dialog" role="document">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header">
+                                                                            <b><h5 class="modal-title">Vehicle Details.</h5></b>
+
+                                                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                        </div>
+
+                                                                        <div class="modal-body">
+                                                                            <table class="table table-striped table-bordered " style="width: 100%">
+
+                                                                                <?php
+                                                                                $vehicle_details=DB::table('car_rentals')->where('vehicle_reg_no',$outbox->vehicle_reg_no)->get();
+
+                                                                                ?>
+
+                                                                                @foreach($vehicle_details as $vehicle_detail)
+                                                                                    <tr>
+                                                                                        <td>Vehicle Model:</td>
+                                                                                        <td>{{$vehicle_detail->vehicle_model}}</td>
+                                                                                    </tr>
+
+
+                                                                                    <tr>
+                                                                                        <td>Vehicle Registration Number:</td>
+                                                                                        <td>{{$vehicle_detail->vehicle_reg_no}}</td>
+                                                                                    </tr>
+
+                                                                                    <tr>
+                                                                                        <td>Hire Rate/KM:</td>
+                                                                                        <td>{{$vehicle_detail->hire_rate}} TZS</td>
+                                                                                    </tr>
+
+                                                                                @endforeach
+
+                                                                            </table>
+                                                                            <br>
+                                                                            <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div></center></td>
+                                                    <td><center>{{date("d/m/Y",strtotime($outbox->start_date))}} </center></td>
+                                                    <td><center>{{date("d/m/Y",strtotime($outbox->end_date))}}</center></td>
+                                                    <td><center>{{$outbox->destination}}</center></td>
+                                                    <td><center>{{$outbox->form_status}} Stage</center></td>
+                                                </tr>
+                                            @endforeach
+                                            </tbody>
+                                        </table>
+                                    @else
+                                        <p style="line-height: 1.5;font-size: 17px;"><i class="fa fa-envelope-o" style="font-size:25px;color:#3490dc;"></i> No new message</p>
+                                    @endif
+                                </div>
+                                <div id="closed" class="tabcontent">
+                                    @if(count($closed_act)!=0)
+                                        <br>
+                                        <table class="hover table table-striped table-bordered" id="myTablecar">
+                                            <thead class="thead-dark">
+                                            <th scope="col" style="color:#fff; width: 5%"><center>S/N</center></th>
+                                            <th scope="col" style="color:#fff; width: 16%"><center>Client Name</center></th>
+                                            <th scope="col" style="color:#fff; width: 10%"><center>Contract Number</center></th>
+                                            <th scope="col" style="color:#fff; width: 16%"><center>Vehicle</center></th>
+
+                                            <th scope="col" style="color:#fff; width: 14%"><center>Start Date</center></th>
+                                            <th scope="col" style="color:#fff; width: 14%"><center>End Date</center></th>
+                                            <th scope="col" style="color:#fff; width: 16%"><center>Destination</center></th>
+                                            <th scope="col" style="color:#fff; width: 16%"><center>Grand Total (TZS)</center></th>
+                                            <th scope="col" style="color:#fff;"><center>Action</center></th>
+                                            </thead>
+                                            <tbody>
+                                            @foreach($closed_act as $closed)
+                                                <tr>
+                                                    <th scope="row" class="counterCell text-center">.</th>
+
+                                                    <td>
+
+                                                        <a  title="Client Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#car_client18{{$closed->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$closed->fullName}}</center></a>
+                                                        <div class="modal fade" id="car_client18{{$closed->id}}" role="dialog">
+
+                                                            <div class="modal-dialog" role="document">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <b><h5 class="modal-title">Client Details.</h5></b>
+
+                                                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                    </div>
+
+                                                                    <div class="modal-body">
+                                                                        <table class="table table-striped table-bordered " style="width: 100%">
+
+                                                                            <tr>
+                                                                                <td>Client:</td>
+                                                                                <td>{{$closed->fullName}}</td>
+                                                                            </tr>
+
+
+                                                                            <tr>
+                                                                                <td>Email:</td>
+                                                                                <td>{{$closed->email}}</td>
+                                                                            </tr>
+
+                                                                            <tr>
+                                                                                <td>TIN:</td>
+                                                                                <td>{{$closed->tin}}</td>
+                                                                            </tr>
+
+
+                                                                            <tr>
+                                                                                <td>Department/Faculty/Unit:</td>
+                                                                                <td>{{$closed->faculty}}</td>
+                                                                            </tr>
+
+
+                                                                        </table>
+                                                                        <br>
+                                                                        <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+
+                                                    </td>
+                                                    <td><center>{{$closed->id}}</center></td>
+                                                    <td><center> <a  title="Vehicle Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#vehicle_details19{{$closed->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$closed->vehicle_reg_no}}</center></a>
+                                                            <div class="modal fade" id="vehicle_details19{{$closed->id}}" role="dialog">
+
+                                                                <div class="modal-dialog" role="document">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header">
+                                                                            <b><h5 class="modal-title">Vehicle Details.</h5></b>
+
+                                                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                        </div>
+
+                                                                        <div class="modal-body">
+                                                                            <table class="table table-striped table-bordered " style="width: 100%">
+
+                                                                                <?php
+                                                                                $vehicle_details=DB::table('car_rentals')->where('vehicle_reg_no',$closed->vehicle_reg_no)->get();
+
+                                                                                ?>
+
+                                                                                @foreach($vehicle_details as $vehicle_detail)
+                                                                                    <tr>
+                                                                                        <td>Vehicle Model:</td>
+                                                                                        <td>{{$vehicle_detail->vehicle_model}}</td>
+                                                                                    </tr>
+
+
+                                                                                    <tr>
+                                                                                        <td>Vehicle Registration Number:</td>
+                                                                                        <td>{{$vehicle_detail->vehicle_reg_no}}</td>
+                                                                                    </tr>
+
+                                                                                    <tr>
+                                                                                        <td>Hire Rate/KM:</td>
+                                                                                        <td>{{$vehicle_detail->hire_rate}} TZS</td>
+                                                                                    </tr>
+
+                                                                                @endforeach
+
+                                                                            </table>
+                                                                            <br>
+                                                                            <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div></center></td>
+                                                    <td><center>{{date("d/m/Y",strtotime($closed->start_date))}} </center></td>
+                                                    <td><center>{{date("d/m/Y",strtotime($closed->end_date))}}</center></td>
+                                                    <td>{{$closed->destination}}</td>
+                                                    <td style="text-align: right;">{{number_format($closed->grand_total)}}</td>
+                                                    <td><center>
+                                                            <a title="View More Details" role="button" href="{{ route('carcontractviewmore',$closed->id) }}"><i class="fa fa-eye" aria-hidden="true" style="font-size:20px; color:#3490dc; cursor: pointer;"></i></a>
+                                                            <a title="Download this contract" href="/contracts/car_rental/print?id={{$closed->id}}"><i class="fa fa-file-pdf-o" aria-hidden="true" style="font-size:20px; color:red;"></i></a></center></td>
+                                                </tr>
+                                            @endforeach
+                                            </tbody>
+                                        </table>
+                                    @else
+                                        <br><br>
+                                        <p style="font-size: 18px;">No record found.</p>
+                                    @endif
+                                </div>
+                                <div id="closed_2" class="tabcontent">
+                                    @if(count($closed_inact)!=0)
+                                        <br>
+                                        <table class="hover table table-striped table-bordered" id="myTablecar7">
+                                            <thead class="thead-dark">
+                                            <th scope="col" style="color:#fff; width: 5%"><center>S/N</center></th>
+                                            <th scope="col" style="color:#fff; width: 16%"><center>Client Name</center></th>
+                                            <th scope="col" style="color:#fff; width: 10%"><center>Contract Number</center></th>
+                                            <th scope="col" style="color:#fff; width: 16%"><center>Vehicle</center></th>
+
+                                            <th scope="col" style="color:#fff; width: 14%"><center>Start Date</center></th>
+                                            <th scope="col" style="color:#fff; width: 14%"><center>End Date</center></th>
+                                            <th scope="col" style="color:#fff; width: 16%"><center>Destination</center></th>
+                                            <th scope="col" style="color:#fff; width: 16%"><center>Grand Total (TZS)</center></th>
+                                            <th scope="col" style="color:#fff;"><center>Action</center></th>
+                                            </thead>
+                                            <tbody>
+                                            @foreach($closed_inact as $closed)
+                                                <tr>
+                                                    <th scope="row" class="counterCell text-center">.</th>
+
+                                                    <td>
+
+                                                        <a  title="Client Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#car_client19{{$closed->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$closed->fullName}}</center></a>
+                                                        <div class="modal fade" id="car_client19{{$closed->id}}" role="dialog">
+
+                                                            <div class="modal-dialog" role="document">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <b><h5 class="modal-title">Client Details.</h5></b>
+
+                                                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                    </div>
+
+                                                                    <div class="modal-body">
+                                                                        <table class="table table-striped table-bordered " style="width: 100%">
+
+                                                                            <tr>
+                                                                                <td>Client:</td>
+                                                                                <td>{{$closed->fullName}}</td>
+                                                                            </tr>
+
+
+                                                                            <tr>
+                                                                                <td>Email:</td>
+                                                                                <td>{{$closed->email}}</td>
+                                                                            </tr>
+
+                                                                            <tr>
+                                                                                <td>TIN:</td>
+                                                                                <td>{{$closed->tin}}</td>
+                                                                            </tr>
+
+
+                                                                            <tr>
+                                                                                <td>Department/Faculty/Unit:</td>
+                                                                                <td>{{$closed->faculty}}</td>
+                                                                            </tr>
+
+
+                                                                        </table>
+                                                                        <br>
+                                                                        <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+
+                                                    </td>
+                                                    <td><center>{{$closed->id}}</center></td>
+                                                    <td><center> <a  title="Vehicle Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#vehicle_details20{{$closed->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$closed->vehicle_reg_no}}</center></a>
+                                                            <div class="modal fade" id="vehicle_details20{{$closed->id}}" role="dialog">
+
+                                                                <div class="modal-dialog" role="document">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header">
+                                                                            <b><h5 class="modal-title">Vehicle Details.</h5></b>
+
+                                                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                        </div>
+
+                                                                        <div class="modal-body">
+                                                                            <table class="table table-striped table-bordered " style="width: 100%">
+
+                                                                                <?php
+                                                                                $vehicle_details=DB::table('car_rentals')->where('vehicle_reg_no',$closed->vehicle_reg_no)->get();
+
+                                                                                ?>
+
+                                                                                @foreach($vehicle_details as $vehicle_detail)
+                                                                                    <tr>
+                                                                                        <td>Vehicle Model:</td>
+                                                                                        <td>{{$vehicle_detail->vehicle_model}}</td>
+                                                                                    </tr>
+
+
+                                                                                    <tr>
+                                                                                        <td>Vehicle Registration Number:</td>
+                                                                                        <td>{{$vehicle_detail->vehicle_reg_no}}</td>
+                                                                                    </tr>
+
+                                                                                    <tr>
+                                                                                        <td>Hire Rate/KM:</td>
+                                                                                        <td>{{$vehicle_detail->hire_rate}} TZS</td>
+                                                                                    </tr>
+
+                                                                                @endforeach
+
+                                                                            </table>
+                                                                            <br>
+                                                                            <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div></center></td>
+                                                    <td><center>{{date("d/m/Y",strtotime($closed->start_date))}} </center></td>
+                                                    <td><center>{{date("d/m/Y",strtotime($closed->end_date))}}</center></td>
+                                                    <td>{{$closed->destination}}</td>
+                                                    <td style="text-align: right;">{{number_format($closed->grand_total)}}</td>
+                                                    <td><center>
+                                                            <a title="View More Details" role="button" href="{{ route('carcontractviewmore',$closed->id) }}"><i class="fa fa-eye" aria-hidden="true" style="font-size:20px; color:#3490dc; cursor: pointer;"></i></a>
+                                                            <a title="Download this contract" href="/contracts/car_rental/print?id={{$closed->id}}"><i class="fa fa-file-pdf-o" aria-hidden="true" style="font-size:20px; color:red;"></i></a></center></td>
+                                                </tr>
+                                            @endforeach
+                                            </tbody>
+                                        </table>
+                                    @else
+                                        <br><br>
+                                        <p style="font-size: 18px;">No record found.</p>
+                                    @endif
+                                </div>
+
+                                <div id="log_sheet" class="tabcontent" style="border-bottom-left-radius: 50px 20px;">
+                                    <?php $logsheets = DB::table('log_sheets')->select('contract_id')->distinct('contract_id')->orderBy('id','dsc')->get();
+                                    $d = 1;
+                                    ?>
+                                    <br><br>
+                                    <table class="hover table table-bordered  table-striped" id="LogTable">
+                                        <thead class="thead-dark">
+                                        <th scope="col" style="color:#fff;"><center>SN</center></th>
+                                        <th scope="col" style="color:#fff;"><center>Client Name</center></th>
+                                        <th scope="col" style="color:#fff;"><center>Contract Number</center></th>
+                                        <th scope="col" style="color:#fff;"><center>Vehicle Reg No.</center></th>
+                                        <th scope="col" style="color:#fff;"><center>Driver Name</center></th>
+                                        <th scope="col" style="color:#fff;"><center>Destination</center></th>
+                                        <th scope="col" style="color:#fff;"><center>Start Date</center></th>
+                                        <th scope="col" style="color:#fff;"><center>End Date</center></th>
+                                        <th scope="col" style="color:#fff;"><center>Action</center></th>
+                                        </thead>
+                                        <tbody>
+                                        @foreach($logsheets as $log)
+                                            <?php $details = DB::table('car_contracts')->select('vehicle_reg_no','driver_name','fullName','faculty','destination','start_date', 'end_date')->where('id',$log->contract_id)->first(); ?>
+                                            <tr>
+                                                <th style="text-align: center;">{{$d}}.</th>
+                                                <td>{{$details->fullName}}</td>
+                                                <td><center>{{$log->contract_id}}</center></td>
+                                                <td><center>{{$details->vehicle_reg_no}}</center></td>
+                                                <td>{{$details->driver_name}}</td>
+                                                <td><center>{{$details->destination}}</center></td>
+                                                <td><center>{{date("d/m/Y",strtotime($details->start_date))}}</center></td>
+                                                <td><center>{{date("d/m/Y",strtotime($details->end_date))}}</center></td>
+                                                <td><center><a title="View More Details" role="button" href="{{ route('logsheetmore',$log->contract_id) }}"><i class="fa fa-eye" aria-hidden="true" style="font-size:20px; color:#3490dc; cursor: pointer;"></i></a></center></td>
+                                            </tr>
+                                            <?php $d = $d+1; ?>
+                                        @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            @elseif((Auth::user()->role!='DVC Administrator')&&($category=='All')||(Auth::user()->role!='Accountant')&&($category=='All'))
+
+                                <div class="tab2" style="margin-top: 12px;">
+                                    {{--  <button class="tablinks" onclick="openContracts(event, 'active')" id="defaultOpen"><strong>Active</strong></button> --}}
+                                    <button class="tablinks" onclick="openContracts(event, 'inactive')" id="defaultOpen"><strong>Contracts</strong></button>
+                                    <button class="tablinks" onclick="openContracts(event, 'log_sheet')"><strong>Log Sheets</strong></button>
+                                </div>
+                                <div id="active" class="tabcontent" style="border-bottom-left-radius: 50px 20px;   border: 1px solid #ccc; padding: 1%;">
+                                    <br>
+                                    @if($privileges=='Read only')
+                                    @else
+                                        <a class="btn btn-success" href="{{ route('carRentalForm') }}" role="button" style="
+        padding: 10px; margin-bottom: 5px; margin-top: 4px;">Add New Contract
+                                        </a>
+                                    @endif
+                                    {{--   <h4 style="text-align: center"><strong>Active Car Rental Contracts</strong></h4>--}}
+                                    {{--   <hr>--}}
+                                    @if(count($closed_act)!=0)
+                                        <table class="hover table table-striped table-bordered" id="myTablecar">
+                                            <thead class="thead-dark">
+                                            <th scope="col" style="color:#fff; width: 5%"><center>S/N</center></th>
+                                            <th scope="col" style="color:#fff; width: 16%"><center>Client Name</center></th>
+                                            <th scope="col" style="color:#fff; width: 10%"><center>Contract Number</center></th>
+                                            <th scope="col" style="color:#fff; width: 16%"><center>Vehicle</center></th>
+
+                                            <th scope="col" style="color:#fff; width: 17%"><center>Start Date</center></th>
+                                            <th scope="col" style="color:#fff; width: 17%"><center>End Date</center></th>
+                                            <th scope="col" style="color:#fff; width: 13%"><center>Destination</center></th>
+                                            <th scope="col" style="color:#fff; width: 16%"><center>Grand Total (TZS)</center></th>
+                                            <th scope="col" style="color:#fff;  width: 8%"><center>Action</center></th>
+                                            </thead>
+                                            <tbody>
+                                            @foreach($closed_act as $closed)
+                                                <tr>
+                                                    <th scope="row" class="counterCell text-center">.</th>
+
+                                                    <td>
+
+                                                        <a  title="Client Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#car_client20{{$closed->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$closed->fullName}}</center></a>
+                                                        <div class="modal fade" id="car_client20{{$closed->id}}" role="dialog">
+
+                                                            <div class="modal-dialog" role="document">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <b><h5 class="modal-title">Client Details.</h5></b>
+
+                                                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                    </div>
+
+                                                                    <div class="modal-body">
+                                                                        <table class="table table-striped table-bordered " style="width: 100%">
+
+                                                                            <tr>
+                                                                                <td>Client:</td>
+                                                                                <td>{{$closed->fullName}}</td>
+                                                                            </tr>
+
+
+                                                                            <tr>
+                                                                                <td>Email:</td>
+                                                                                <td>{{$closed->email}}</td>
+                                                                            </tr>
+
+                                                                            <tr>
+                                                                                <td>TIN:</td>
+                                                                                <td>{{$closed->tin}}</td>
+                                                                            </tr>
+
+
+                                                                            <tr>
+                                                                                <td>Department/Faculty/Unit:</td>
+                                                                                <td>{{$closed->faculty}}</td>
+                                                                            </tr>
+
+
+                                                                        </table>
+                                                                        <br>
+                                                                        <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+
+                                                    </td>
+                                                    <td><center>{{$closed->id}}</center></td>
+                                                    <td><center> <a  title="Vehicle Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#vehicle_details21{{$closed->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$closed->vehicle_reg_no}}</center></a>
+                                                            <div class="modal fade" id="vehicle_details21{{$closed->id}}" role="dialog">
+
+                                                                <div class="modal-dialog" role="document">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header">
+                                                                            <b><h5 class="modal-title">Vehicle Details.</h5></b>
+
+                                                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                        </div>
+
+                                                                        <div class="modal-body">
+                                                                            <table class="table table-striped table-bordered " style="width: 100%">
+
+                                                                                <?php
+                                                                                $vehicle_details=DB::table('car_rentals')->where('vehicle_reg_no',$closed->vehicle_reg_no)->get();
+
+                                                                                ?>
+
+                                                                                @foreach($vehicle_details as $vehicle_detail)
+                                                                                    <tr>
+                                                                                        <td>Vehicle Model:</td>
+                                                                                        <td>{{$vehicle_detail->vehicle_model}}</td>
+                                                                                    </tr>
+
+
+                                                                                    <tr>
+                                                                                        <td>Vehicle Registration Number:</td>
+                                                                                        <td>{{$vehicle_detail->vehicle_reg_no}}</td>
+                                                                                    </tr>
+
+                                                                                    <tr>
+                                                                                        <td>Hire Rate/KM:</td>
+                                                                                        <td>{{$vehicle_detail->hire_rate}} TZS</td>
+                                                                                    </tr>
+
+                                                                                @endforeach
+
+                                                                            </table>
+                                                                            <br>
+                                                                            <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div></center></td>
+                                                    <td>{{date("d/m/Y",strtotime($closed->start_date))}} </td>
+                                                    <td>{{date("d/m/Y",strtotime($closed->end_date))}}</td>
+                                                    <td>{{$closed->destination}}</td>
+                                                    <td style="text-align: right;">{{number_format($closed->grand_total)}}</td>
+                                                    <td><center>
+                                                            <a title="View More Details" role="button" href="{{ route('carcontractviewmore',$closed->id) }}"><i class="fa fa-eye" aria-hidden="true" style="font-size:20px; color:#3490dc; cursor: pointer;"></i></a>
+
+                                                            <a title="Download this contract" href="/contracts/car_rental/print?id={{$closed->id}}"><i class="fa fa-file-pdf-o" aria-hidden="true" style="font-size:20px; color:red;"></i></a>
+
+                                                            @if($privileges=='Read only')
+                                                            @else
+
+                                                                <a title="Terminate this contract" data-toggle="modal" data-target="#terminate{{$closed->id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px; color:red; cursor: pointer;"></i></a>
+
+                                                                <div class="modal fade" id="terminate{{$closed->id}}" role="dialog">
+
+                                                                    <div class="modal-dialog" role="document">
+                                                                        <div class="modal-content">
+                                                                            <div class="modal-header">
+                                                                                <b><h5 class="modal-title" style="color: red;"><b>Terminating Contract</b></h5></b>
+                                                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                            </div>
+
+                                                                            <div class="modal-body">
+                                                                                <p style="text-align: left; font-size: 16px;">You are about to terminate <strong>"{{$closed->fullName}}"</strong> contract. Provide reason for termination to proceed.</p>
+
+                                                                                <form method="get" action="{{ route('terminateCarRental',$closed->id) }}" >
+                                                                                    {{csrf_field()}}
+
+                                                                                    <div class="form-group">
+                                                                                        <div class="form-wrapper">
+                                                                                            <label for=""><strong>Reason:<span style="color: red;">*</span></strong></label>
+                                                                                            <textarea required name="reason_for_termination" class="form-control"></textarea>
+
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <br>
+
+                                                                                    <div align="right">
+                                                                                        <button class="btn btn-primary" type="submit" id="newdata">Terminate</button>
+                                                                                        <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                                                                    </div>
+
+                                                                                </form>
+
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            @endif
+                                                        </center></td>
+                                                </tr>
+                                            @endforeach
+                                            </tbody>
+                                        </table>
+                                    @else
+                                        <br><br>
+                                        <p style="font-size: 18px;">No record found.</p>
+                                    @endif
+                                </div>
+                                <div id="inactive" class="tabcontent" style="border-bottom-left-radius: 50px 20px;   border: 1px solid #ccc; padding: 1%;">
+                                    <br>
+                                    @if($privileges=='Read only')
+                                    @else
+                                        @if(Auth::user()->role=='Transport Officer-CPTU')
+                                            <div style="float:left;">
+                                                <a class="btn btn-success" href="{{ route('carRentalForm') }}" role="button" style="
+          padding: 10px; margin-bottom: 5px; margin-top: 4px;">Add New Contract
+                                                </a>
+                                            </div>
+                                        @endif
+
+                                        @admin
+                                        <div style="float:right;">
+                                            <div style="float:left;"> <a data-toggle="modal" class="btn button_color active" style="background-color: #38c172; padding: 7px; color:white; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;"  data-target="#import_data_car" title="Import Data" role="button" aria-pressed="true">Import Data</a></div>
+
+                                            <div style="float:right;"><a href="/get_car_contracts_format" class="btn button_color active" style="background-color: #38c172; padding: 7px; color:white; margin-left: 5px;  margin-bottom: 5px; margin-top: 4px;"   title="Download Sample">Download Sample</a> </div>
+                                            <div style="clear: both;"></div>
+                                        </div>
+                                        @endadmin
+                                        <div style="clear: both;"></div>
+
+
+                                        <div class="modal fade" id="import_data_car" role="dialog">
+
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <b><h5 class="modal-title">Importing Data</h5></b>
+
+                                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                    </div>
+
+                                                    <div class="modal-body">
+
+                                                        <form method="post" enctype="multipart/form-data" action="/import_car_contracts"   >
+                                                            {{csrf_field()}}
+
+                                                            <div class="form-row">
+
+
+                                                                <div  class=" col-md-12 ">
+                                                                    <div class="">
+                                                                        <label for="">Select File for Upload (.xls, .xlsx) <span style="color: red;">*</span></label>
+                                                                        <input type="file" class="" id="" name="import_data" value="" placeholder="" required accept=".xls,.xlsx" autocomplete="off">
+                                                                        <div class="mt-2"><span style="font-weight: bold;">N.B </span><span class="pl-1" style="color:red;"> The header row as given in the sample must be included as the first row when uploading. Furthermore, the acceptable values as indicated in the header row are case sensitive for instance if acceptable value is "Individual" the value to be inserted should be "Individual" and not "individual" </span></div>
+                                                                    </div>
+                                                                </div>
+                                                                <br>
+
+
+                                                            </div>
+
+
+                                                            <div align="right">
+                                                                <button  class="btn btn-primary" type="submit">Import</button>
+                                                                <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                                            </div>
+                                                        </form>
+
+
+
+
+
+
+
+
+
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                        </div>
+
+
+                                    @endif
+                                    {{--   <h4 style="text-align: center"><strong>Car Rental Contracts</strong></h4>--}}
+                                    {{--   <hr>--}}
+                                    @if(count($closed_inact)!=0)
+                                        <table class="hover table table-striped table-bordered" id="myTablecar2">
+                                            <thead class="thead-dark">
+                                            <th scope="col" style="color:#fff; width: 5%"><center>S/N</center></th>
+                                            <th scope="col" style="color:#fff; width: 16%"><center>Client Name</center></th>
+                                            <th scope="col" style="color:#fff; width: 10%"><center>Contract Number</center></th>
+                                            <th scope="col" style="color:#fff; width: 16%"><center>Vehicle</center></th>
+
+                                            <th scope="col" style="color:#fff; width: 17%"><center>Start Date</center></th>
+                                            <th scope="col" style="color:#fff; width: 17%"><center>End Date</center></th>
+                                            <th scope="col" style="color:#fff; width: 13%"><center>Destination</center></th>
+                                            <th scope="col" style="color:#fff; width: 16%"><center>Grand Total (TZS)</center></th>
+                                            <th scope="col" style="color:#fff;"><center>Action</center></th>
+                                            </thead>
+                                            <tbody>
+                                            @foreach($closed_inact as $closed)
+                                                <tr>
+                                                    <th scope="row" class="counterCell text-center">.</th>
+
+                                                    <td>
+
+                                                        <a  title="Client Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#car_client21{{$closed->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$closed->fullName}}</center></a>
+                                                        <div class="modal fade" id="car_client21{{$closed->id}}" role="dialog">
+
+                                                            <div class="modal-dialog" role="document">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <b><h5 class="modal-title">Client Details.</h5></b>
+
+                                                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                    </div>
+
+                                                                    <div class="modal-body">
+                                                                        <table class="table table-striped table-bordered " style="width: 100%">
+
+                                                                            <tr>
+                                                                                <td>Client:</td>
+                                                                                <td>{{$closed->fullName}}</td>
+                                                                            </tr>
+
+
+                                                                            <tr>
+                                                                                <td>Email:</td>
+                                                                                <td>{{$closed->email}}</td>
+                                                                            </tr>
+
+                                                                            <tr>
+                                                                                <td>TIN:</td>
+                                                                                <td>{{$closed->tin}}</td>
+                                                                            </tr>
+
+
+                                                                            <tr>
+                                                                                <td>Department/Faculty/Unit:</td>
+                                                                                <td>{{$closed->faculty}}</td>
+                                                                            </tr>
+
+
+                                                                        </table>
+                                                                        <br>
+                                                                        <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+
+                                                    </td>
+                                                    <td><center>{{$closed->id}}</center></td>
+                                                    <td><center> <a  title="Vehicle Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#vehicle_details22{{$closed->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$closed->vehicle_reg_no}}</center></a>
+                                                            <div class="modal fade" id="vehicle_details22{{$closed->id}}" role="dialog">
+
+                                                                <div class="modal-dialog" role="document">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header">
+                                                                            <b><h5 class="modal-title">Vehicle Details.</h5></b>
+
+                                                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                        </div>
+
+                                                                        <div class="modal-body">
+                                                                            <table class="table table-striped table-bordered " style="width: 100%">
+
+                                                                                <?php
+                                                                                $vehicle_details=DB::table('car_rentals')->where('vehicle_reg_no',$closed->vehicle_reg_no)->get();
+
+                                                                                ?>
+
+                                                                                @foreach($vehicle_details as $vehicle_detail)
+                                                                                    <tr>
+                                                                                        <td>Vehicle Model:</td>
+                                                                                        <td>{{$vehicle_detail->vehicle_model}}</td>
+                                                                                    </tr>
+
+
+                                                                                    <tr>
+                                                                                        <td>Vehicle Registration Number:</td>
+                                                                                        <td>{{$vehicle_detail->vehicle_reg_no}}</td>
+                                                                                    </tr>
+
+                                                                                    <tr>
+                                                                                        <td>Hire Rate/KM:</td>
+                                                                                        <td>{{$vehicle_detail->hire_rate}} TZS</td>
+                                                                                    </tr>
+
+                                                                                @endforeach
+
+                                                                            </table>
+                                                                            <br>
+                                                                            <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div></center></td>
+                                                    <td>{{date("d/m/Y",strtotime($closed->start_date))}} </td>
+                                                    <td> {{date("d/m/Y",strtotime($closed->end_date))}}</td>
+                                                    <td>{{$closed->destination}}</td>
+                                                    <td style="text-align: right;">{{number_format($closed->grand_total)}}</td>
+                                                    <td><center>
+                                                            <a title="View More Details" role="button" href="{{ route('carcontractviewmore',$closed->id) }}"><i class="fa fa-eye" aria-hidden="true" style="font-size:20px; color:#3490dc; cursor: pointer;"></i></a>
+                                                            <a title="Download this contract" href="/contracts/car_rental/print?id={{$closed->id}}"><i class="fa fa-file-pdf-o" aria-hidden="true" style="font-size:20px; color:red;"></i></a></center></td>
+
+                                                </tr>
+                                            @endforeach
+                                            </tbody>
+                                        </table>
+                                    @else
+                                        <br><br>
+                                        <p style="font-size: 18px;">No record found.</p>
+                                    @endif
+                                </div>
+
+                                <div id="log_sheet" class="tabcontent" style="border-bottom-left-radius: 50px 20px;   border: 1px solid #ccc; padding: 1%;">
+                                    <?php $logsheets = DB::table('log_sheets')->select('contract_id')->distinct('contract_id')->orderBy('id','dsc')->get();
+                                    $d = 1;
+                                    ?>
+                                    <br>
+                                    @if($privileges=='Read only')
+                                    @else
+                                        <a title="Add New Log Sheet" class="btn btn-success" role="button" data-toggle="modal" data-target="#new_log" role="button" aria-pressed="true" style="color: white;">Add New Log Sheet</a>
+
+                                        <div class="modal fade" id="new_log" role="dialog">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <b><h5 class="modal-title">Fill the Contract Number to continue</h5></b>
+                                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                    </div>
+
+                                                    <div class="modal-body">
+                                                        <form method="post" action="{{ route('logsheetindex') }}">
+                                                            {{csrf_field()}}
+                                                            <div class="form-group">
+                                                                <div class="form-wrapper">
+                                                                    <label for="hire_rate">Contract Number<span style="color: red;">*</span></label>
+                                                                    <input type="text" id="contract_id" name="contract_id" class="form-control" required="" onkeypress="if((this.value.length<10)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
+                                                                </div>
+                                                            </div>
+
+                                                            <div align="right">
+                                                                <button type="submit" class="btn btn-primary">Submit</button>
+                                                                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                                                            </div>
+                                                        </form>
+
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+
+
+                                        @admin
+                                        <div style="float:right;">
+                                            <div style="float:left;"> <a data-toggle="modal" class="btn button_color active" style="background-color: #38c172; padding: 7px; color:white; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;"  data-target="#import_data_logsheets" title="Import Data" role="button" aria-pressed="true">Import Data</a></div>
+
+                                            <div style="float:right;"><a href="/get_logsheets_format" class="btn button_color active" style="background-color: #38c172; padding: 7px; color:white; margin-left: 5px;  margin-bottom: 5px; margin-top: 4px;"   title="Download Sample">Download Sample</a> </div>
+                                            <div style="clear: both;"></div>
+                                        </div>
+                                        @endadmin
+                                        <div style="clear: both;"></div>
+
+
+                                        <div class="modal fade" id="import_data_logsheets" role="dialog">
+
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <b><h5 class="modal-title">Importing Data</h5></b>
+
+                                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                    </div>
+
+                                                    <div class="modal-body">
+
+                                                        <form method="post" enctype="multipart/form-data" action="/import_logsheets">
+                                                            {{csrf_field()}}
+
+                                                            <div class="form-row">
+
+
+                                                                <div  class=" col-md-12 ">
+                                                                    <div class="">
+                                                                        <label for="">Select File for Upload (.xls, .xlsx) <span style="color: red;">*</span></label>
+                                                                        <input type="file" class="" id="" name="import_data" value="" placeholder="" required accept=".xls,.xlsx" autocomplete="off">
+                                                                        <div class="mt-2"><span style="font-weight: bold;">N.B </span><span class="pl-1" style="color:red;"> The header row as given in the sample must be included as the first row when uploading. Furthermore, the acceptable values as indicated in the header row are case sensitive for instance if acceptable value is "Individual" the value to be inserted should be "Individual" and not "individual" </span></div>
+                                                                    </div>
+                                                                </div>
+                                                                <br>
+
+
+                                                            </div>
+
+
+                                                            <div align="right">
+                                                                <button  class="btn btn-primary" type="submit">Import</button>
+                                                                <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                                            </div>
+                                                        </form>
+
+
+
+
+
+
+
+
+
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                        </div>
+
+
+
+
+                                    @endif
+                                    <br><br>
+                                    <table class="hover table table-bordered  table-striped" id="LogTable">
+                                        <thead class="thead-dark">
+                                        <th scope="col" style="color:#fff;"><center>SN</center></th>
+                                        <th scope="col" style="color:#fff;"><center>Client Name</center></th>
+                                        <th scope="col" style="color:#fff;"><center>Contract Number</center></th>
+                                        <th scope="col" style="color:#fff;"><center>Vehicle Reg No.</center></th>
+                                        <th scope="col" style="color:#fff;"><center>Driver Name</center></th>
+                                        <th scope="col" style="color:#fff;"><center>Destination</center></th>
+                                        <th scope="col" style="color:#fff;"><center>Start Date</center></th>
+                                        <th scope="col" style="color:#fff;"><center>End Date</center></th>
+                                        <th scope="col" style="color:#fff;"><center>Action</center></th>
+                                        </thead>
+                                        <tbody>
+                                        @foreach($logsheets as $log)
+                                            <?php $details = DB::table('car_contracts')->select('vehicle_reg_no','driver_name','fullName','faculty','destination','start_date', 'end_date')->where('id',$log->contract_id)->first(); ?>
+                                            <tr>
+                                                <th style="text-align: center;">{{$d}}.</th>
+                                                <td>{{$details->fullName}}</td>
+                                                <td><center>{{$log->contract_id}}</center></td>
+                                                <td><center>{{$details->vehicle_reg_no}}</center></td>
+                                                <td>{{$details->driver_name}}</td>
+                                                <td><center>{{$details->destination}}</center></td>
+                                                <td><center>{{date("d/m/Y",strtotime($details->start_date))}}</center></td>
+                                                <td><center> {{date("d/m/Y",strtotime($details->end_date))}}</center></td>
+                                                <td><center><a title="View More Details" role="button" href="{{ route('logsheetmore',$log->contract_id) }}"><i class="fa fa-eye" aria-hidden="true" style="font-size:20px; color:#3490dc; cursor: pointer;"></i></a></center></td>
+                                            </tr>
+                                            <?php $d = $d+1; ?>
+                                        @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                            @endif
+
+                        </div>
+                    @endif
+
+
+
+
+
+                @else
+
+
+
+                    <div class="tab">
+
+
+                        @if ($category=='Real Estate only' OR $category=='All')
+
+                            <button class="tablinksOuter active  space_identity" onclick='javascript:window.location.href="/contracts_management"'><strong>Real Estate </strong></button>
+
+                        @else
+                        @endif
+
+
+
+                        @if ($category=='Research Flats only' OR $category=='All')
+
+                            <button class="tablinksOuter  research_flats_identity" onclick='javascript:window.location.href="/contracts_management/research"'  ><strong>Research Flats</strong></button>
+
+                        @else
+                        @endif
+
+
+                        @if($category=='Insurance only' OR $category=='All')
+
+                            <button class="tablinksOuter  insurance_identity" onclick='javascript:window.location.href="/contracts_management/insurance"'><strong>Insurance </strong></button>
+
+                        @else
+                        @endif
+
+
+
+                        @if ($category=='CPTU only' OR $category=='All')
+
+                            <button class="tablinksOuter  car_identity" onclick='javascript:window.location.href="/contracts_management/car_rental"' id="carss"><strong>Car Rental </strong></button>
+
+                        @else
+                        @endif
+
+
+
+
+                    </div>
+
 
 
 
           @if(Auth::user()->role=='Director DPDI' || Auth::user()->role=='DPDI Planner')
 
-            <div id="space_contracts" class="tabcontentOuter">
-                <br>
+            <div id="space_contracts" class="">
 
 
 
@@ -244,9 +4639,9 @@ div.dt-buttons{
                     <?php
                     $i=1;
                     ?>
-@if($space_contract_inbox!='')
+        @if($space_contract_inbox!='')
                     <table class="table">
-                        <thead >
+                        <thead>
                         <tr>
                             <th scope="col" ><center>S/N</center></th>
                             <th scope="col" >Client Name</th>
@@ -256,7 +4651,6 @@ div.dt-buttons{
                             <th scope="col"  ><center>Amount(Vacation season)</center></th>
                             <th scope="col"  ><center>Start Date</center></th>
                             <th scope="col"  ><center>End Date</center></th>
-
                             <th scope="col"  ><center>Description</center></th>
                             <th scope="col"  ><center>Action</center></th>
                         </tr>
@@ -699,16 +5093,361 @@ div.dt-buttons{
                             <th scope="col"  style="color:#fff;"><center>End Date</center></th>
                             <th scope="col" style="color:#fff;" ><center>Amount(Academic season)</center></th>
                             <th scope="col" style="color:#fff;" ><center>Amount(Vacation season)</center></th>
-
-
-
-
                             <th scope="col"  style="color:#fff;"><center>Status</center></th>
                             <th scope="col"  style="color:#fff;"><center>Action</center></th>
                         </tr>
                         </thead>
                         <tbody>
 
+                        @foreach($space_contracts as $var)
+                            <tr>
+
+                                <td><center>{{$i}}</center></td>
+                                <td><a class="link_style" data-toggle="modal" data-target="#client{{$var->contract_id}}" style="color: blue !important; text-decoration: underline !important;  cursor: pointer;" aria-pressed="true">{{$var->full_name}}</a>
+
+                                    @if($var->has_clients==1)
+                                        &nbsp; <a href="{{route('space_contracts_subclients',$var->client_id)}}"><i  class=" fas fa-angle-double-down"></i></a>
+                                    @else
+                                    @endif
+
+
+                                    <div class="modal fade" id="client{{$var->contract_id}}" role="dialog">
+
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <b><h5 class="modal-title">{{$var->full_name}} Details.</h5></b>
+
+                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                </div>
+
+                                                <div class="modal-body">
+                                                    <table style="width: 100%">
+                                                        <tr>
+                                                            <td>Client Type:</td>
+                                                            <td>{{$var->type}}</td>
+                                                        </tr>
+                                                        @if($var->type=='Individual')
+                                                            <tr>
+                                                                <td> First Name:</td>
+                                                                <td> {{$var->first_name}}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Last Name:</td>
+                                                                <td>{{$var->last_name}}</td>
+                                                            </tr>
+                                                        @elseif($var->type=='Company/Organization')
+                                                            <tr>
+                                                                <td>Company Name:</td>
+                                                                <td>{{$var->first_name}}</td>
+                                                            </tr>
+                                                        @endif
+                                                        <tr>
+                                                            <td>Phone Number:</td>
+                                                            <td>{{$var->phone_number}}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Email:</td>
+                                                            <td>{{$var->email}}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Address:</td>
+                                                            <td>{{$var->address}}</td>
+                                                        </tr>
+                                                    </table>
+                                                    <br>
+                                                    <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>{{$var->contract_id}} </td>
+                                <td>
+
+                                    @if($var->space_id_contract!='')
+                                        <a class="link_style" href="{{route('space_details',$var->space_id_contract)}}" style="color: blue !important; text-decoration: underline !important;  cursor: pointer;" aria-pressed="true"><center>{{$var->space_id_contract}}</center></a>
+                                    @else
+                                    @endif
+                                </td>
+
+                                <td><center>{{date('d/m/Y',strtotime($var->start_date))}}</center></td>
+                                <td><center>{{date('d/m/Y',strtotime($var->end_date))}}</center></td>
+
+                                <td>@if($var->has_clients=="1")
+                                    @else
+                                        @if($var->academic_dependence=='Yes')
+                                            {{number_format($var->academic_season)}} {{$var->currency}}
+                                        @else
+                                            {{number_format($var->amount)}} {{$var->currency}}
+                                        @endif
+
+                                    @endif
+
+                                </td>
+                                <td>
+                                    @if($var->has_clients=="1")
+                                    @else
+
+                                        @if($var->academic_dependence=='Yes')
+                                            @if($var->vacation_season=="0")
+                                                {{number_format($var->academic_season)}} {{$var->currency}}
+                                            @else
+                                                {{number_format($var->vacation_season)}} {{$var->currency}}
+                                            @endif
+                                        @else
+                                            {{number_format($var->amount)}} {{$var->currency}}
+                                        @endif
+
+                                    @endif
+                                </td>
+
+
+
+
+
+
+
+                                <td><center>
+                                        @if($var->contract_status==0)
+                                            TERMINATED
+                                        @elseif($var->end_date<date('Y-m-d'))
+                                            EXPIRED
+                                        @else
+                                            ACTIVE
+                                        @endif
+                                    </center></td>
+                                <td><center>
+                                        <a title="View more details"  style="color:#3490dc !important; display:inline-block;" href="{{route('contract_details',base64_encode(base64_encode(base64_encode($var->contract_id))))}}" class=""   style="cursor: pointer;" ><center><i class="fa fa-eye" style="font-size:20px;" aria-hidden="true"></i></center></a>
+
+
+                                        @if(($var->contract_status==1 AND $var->end_date>=date('Y-m-d')))
+                                            @if($privileges=='Read only')
+                                            @else
+                                                <a title="Click to edit this contract"   href="/edit_space_contract/{{$var->contract_id}}" ><i class="fa fa-edit" style="font-size:20px; color: green;"></i></a>
+
+
+
+                                                <a data-toggle="modal" title="Click to terminate this contract" data-target="#terminate{{$var->contract_id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px; color:red;"></i></a>
+                                                <div class="modal fade" id="terminate{{$var->contract_id}}" role="dialog">
+
+                                                    <div class="modal-dialog" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <b><h5 class="modal-title">Terminating {{$var->full_name}}'s contract for space id {{$var->space_id_contract}}</h5></b>
+                                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                            </div>
+
+                                                            <div class="modal-body">
+                                                                <form method="get" action="{{ route('terminate_space_contract',$var->contract_id)}}" >
+                                                                    {{csrf_field()}}
+
+                                                                    <div class="form-group">
+                                                                        <div class="form-wrapper">
+                                                                            <label for=""><strong>Reason</strong> <span style="color: red;">*</span></label>
+                                                                            <textarea style="width: 100%;" required name="reason_for_termination"></textarea>
+
+                                                                        </div>
+                                                                    </div>
+                                                                    <br>
+
+
+                                                                    <div class="form-group">
+                                                                        <div class="form-wrapper" style="text-align: left;">
+                                                                            <label for="generate_invoice_checkbox" style="display: inline-block;"><strong>Generate invoice</strong></label>
+                                                                            <input type="checkbox"  style="display: inline-block;" value="generate_invoice_selected" id="generate_invoice_checkbox{{$var->contract_id}}" onchange="generateInvoice({{$var->contract_id}})"  name="generate_invoice_checkbox" autocomplete="off">
+                                                                        </div>
+                                                                    </div>
+                                                                    <br>
+
+                                                                    <div id="invoiceDiv{{$var->contract_id}}" style="display: none;">
+
+
+                                                                        <div class="form-row">
+                                                                            <div class="form-group col-md-6" id="debtor_nameDiv" >
+                                                                                <div class="form-wrapper">
+                                                                                    <label for=""  >Client Full Name <span style="color: red;">*</span></label>
+                                                                                    <input type="text" class="form-control" id="debtor_name" name="debtor_name" value="{{$var->full_name}}" readonly Required autocomplete="off">
+                                                                                </div>
+                                                                            </div>
+                                                                            <br>
+
+
+
+
+                                                                            <div class="form-group col-md-6 pt-2" id="debtor_account_codeDiv" >
+                                                                                <div class="form-wrapper">
+                                                                                    <label for=""  >Client Account Code</label>
+                                                                                    <input type="text" class="form-control" id="debtor_account_code" name="debtor_account_code" value="{{$var->client_id}}"  readonly autocomplete="off">
+                                                                                </div>
+                                                                            </div>
+                                                                            <br>
+
+
+
+                                                                            <div class="form-group col-md-12 pt-2" id="tinDiv" >
+                                                                                <div class="form-wrapper">
+                                                                                    <label for=""  >Client TIN</label>
+                                                                                    <input type="text" class="form-control" id="tin" name="tin" value="{{$var->tin}}" readonly autocomplete="off">
+                                                                                </div>
+                                                                            </div>
+                                                                            <br>
+
+
+
+
+
+                                                                            <div class="form-group col-md-12 pt-2" id="debtor_addressDiv" >
+                                                                                <div class="form-wrapper">
+                                                                                    <label for=""  >Client Address <span style="color: red;">*</span></label>
+                                                                                    <input type="text" class="form-control" id="debtor_address" name="debtor_address" value="{{$var->address}}" readonly Required autocomplete="off">
+                                                                                </div>
+                                                                            </div>
+                                                                            <br>
+
+                                                                            <div  class="form-group col-md-12 mt-1">
+                                                                                <div class="form-wrapper">
+                                                                                    <label for=""  >Inc Code<span style="color: red;">*</span></label>
+                                                                                    <input type="text" class="form-control"  name="inc_code" value=""  Required autocomplete="off">
+                                                                                </div>
+                                                                            </div>
+                                                                            <br>
+
+
+                                                                            <div class="form-group col-md-6 pt-2" id="invoicing_period_start_dateDiv" >
+                                                                                <div class="form-wrapper">
+                                                                                    <label for=""  >Invoice Start Date <span style="color: red;">*</span></label>
+                                                                                    <input type="date" class="form-control" id="invoicing_period_start_date{{$var->contract_id}}" name="invoicing_period_start_date" value=""  autocomplete="off">
+                                                                                </div>
+                                                                            </div>
+                                                                            <br>
+
+
+                                                                            <div class="form-group col-md-6 pt-2" id="invoicing_period_end_dateDiv" >
+                                                                                <div class="form-wrapper">
+                                                                                    <label for=""  >Invoice End Date <span style="color: red;">*</span></label>
+                                                                                    <input type="date" class="form-control" id="invoicing_period_end_date{{$var->contract_id}}" name="invoicing_period_end_date" value=""  autocomplete="off">
+                                                                                </div>
+                                                                            </div>
+                                                                            <br>
+
+                                                                            <div class="form-group col-md-12 pt-2" id="periodDiv" >
+                                                                                <div class="form-wrapper">
+                                                                                    <label for="">Period <span style="color: red;">*</span></label>
+                                                                                    <input type="text" class="form-control" id="period{{$var->contract_id}}" name="period" value=""   autocomplete="off">
+                                                                                </div>
+                                                                            </div>
+                                                                            <br>
+
+                                                                            <div class="form-group col-md-6 pt-2" id="contract_idDiv" >
+                                                                                <div class="form-wrapper">
+                                                                                    <label for="">Contract ID <span style="color: red;">*</span></label>
+                                                                                    <input type="number" min="1" class="form-control" id="contract_id" name="contract_id" value="{{$var->contract_id}}" readonly required autocomplete="off">
+                                                                                </div>
+                                                                            </div>
+                                                                            <br>
+
+
+                                                                            <div class="form-group col-md-6 pt-2" id="project_idDiv" >
+                                                                                <div class="form-wrapper">
+                                                                                    <label for=""  >Project ID <span style="color: red;">*</span></label>
+                                                                                    <input type="text" class="form-control" id="project_id{{$var->contract_id}}" name="project_id" value=""  autocomplete="off">
+                                                                                </div>
+                                                                            </div>
+                                                                            <br>
+
+
+                                                                            <div class="form-group col-md-6 pt-2" id="amount_to_be_paidDiv" >
+                                                                                <div class="form-wrapper">
+                                                                                    <label for="">Amount <span style="color: red;">*</span></label>
+                                                                                    <input type="number" min="0" class="form-control" id="amount_to_be_paid{{$var->contract_id}}" name="amount_to_be_paid" value=""   autocomplete="off">
+                                                                                </div>
+                                                                            </div>
+                                                                            <br>
+
+
+                                                                            <div class="form-group col-md-6 pt-2" id="currencyDiv">
+                                                                                <label>Currency <span style="color: red;">*</span></label>
+                                                                                <div  class="form-wrapper">
+                                                                                    <select id="currency_invoice{{$var->contract_id}}" class="form-control"  name="currency">
+                                                                                        <option value="" ></option>
+                                                                                        <option value="TZS" >TZS</option>
+                                                                                        <option value="USD" >USD</option>
+                                                                                    </select>
+                                                                                </div>
+                                                                            </div>
+                                                                            <br>
+
+
+                                                                            <div class="form-group col-md-12 pt-2" id="statusDiv">
+                                                                                <div class="form-wrapper">
+                                                                                    <label for=""  >Status <span style="color: red;">*</span></label>
+                                                                                    <input type="text" class="form-control" id="status{{$var->contract_id}}" name="status" value=""   autocomplete="off">
+                                                                                </div>
+                                                                            </div>
+                                                                            <br>
+
+                                                                            <div class="form-group col-md-12 pt-2" id="descriptionDiv">
+                                                                                <div class="form-wrapper">
+                                                                                    <label for=""  >Description <span style="color: red;">*</span></label>
+                                                                                    <input type="text" class="form-control" id="description{{$var->contract_id}}" name="description" value=""   autocomplete="off">
+                                                                                </div>
+                                                                            </div>
+                                                                            <br>
+
+
+
+
+
+
+                                                                        </div>
+
+                                                                    </div>
+
+
+                                                                    <br>
+                                                                    <div align="right">
+                                                                        <button class="btn btn-primary" type="submit" id="newdata">Terminate</button>
+                                                                        <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                                                    </div>
+
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+
+                                                </div>
+
+                                            @endif
+
+                                        @else
+                                        @endif
+
+
+
+
+
+                                        @if($var->contract_status==0 OR $var->end_date<date('Y-m-d'))
+                                            {{--                    <a href="#"><i class="fa fa-print" style="font-size:28px;color: #3490dc;"></i></a>--}}
+                                            @if($privileges=='Read only')
+                                            @else
+                                                <a href="{{ route('renew_space_contract_form',$var->contract_id) }}" style="display:inline-block;" title="Click to renew this contract"><center><i class="fa fa-refresh" style="font-size:20px;"></i></center></a>
+                                            @endif
+
+                                        @else
+                                        @endif
+
+
+                                    </center>
+                                </td>
+                            </tr>
+
+                            <?php
+                            $i=$i+1;
+                            ?>
+
+                        @endforeach
 
 
                         </tbody>
@@ -726,7 +5465,7 @@ div.dt-buttons{
             </div>
           @else
 
-              <div id="space_contracts" style="border-bottom-left-radius: 50px 20px;   border: 1px solid #ccc; padding: 1%;" class="tabcontentOuter">
+              <div id="space_contracts" style="border-bottom-left-radius: 50px 20px;   border: 1px solid #ccc; padding: 1%;" class="">
                   <br>
 
 
@@ -834,13 +5573,363 @@ div.dt-buttons{
                           <th scope="col" style="color:#fff;" ><center>Amount(Vacation season)</center></th>
 
 
-
-
                           <th scope="col"  style="color:#fff;"><center>Status</center></th>
                           <th scope="col"  style="color:#fff;"><center>Action</center></th>
                       </tr>
                       </thead>
                       <tbody>
+
+
+                      @foreach($space_contracts as $var)
+                          <tr>
+
+                              <td><center>{{$i}}</center></td>
+                              <td><a class="link_style" data-toggle="modal" data-target="#client{{$var->contract_id}}" style="color: blue !important; text-decoration: underline !important;  cursor: pointer;" aria-pressed="true">{{$var->full_name}}</a>
+
+                                  @if($var->has_clients==1)
+                                      &nbsp; <a href="{{route('space_contracts_subclients',$var->client_id)}}"><i  class=" fas fa-angle-double-down"></i></a>
+                                  @else
+                                  @endif
+
+
+                                  <div class="modal fade" id="client{{$var->contract_id}}" role="dialog">
+
+                                      <div class="modal-dialog" role="document">
+                                          <div class="modal-content">
+                                              <div class="modal-header">
+                                                  <b><h5 class="modal-title">{{$var->full_name}} Details.</h5></b>
+
+                                                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                              </div>
+
+                                              <div class="modal-body">
+                                                  <table style="width: 100%">
+                                                      <tr>
+                                                          <td>Client Type:</td>
+                                                          <td>{{$var->type}}</td>
+                                                      </tr>
+                                                      @if($var->type=='Individual')
+                                                          <tr>
+                                                              <td> First Name:</td>
+                                                              <td> {{$var->first_name}}</td>
+                                                          </tr>
+                                                          <tr>
+                                                              <td>Last Name:</td>
+                                                              <td>{{$var->last_name}}</td>
+                                                          </tr>
+                                                      @elseif($var->type=='Company/Organization')
+                                                          <tr>
+                                                              <td>Company Name:</td>
+                                                              <td>{{$var->first_name}}</td>
+                                                          </tr>
+                                                      @endif
+                                                      <tr>
+                                                          <td>Phone Number:</td>
+                                                          <td>{{$var->phone_number}}</td>
+                                                      </tr>
+                                                      <tr>
+                                                          <td>Email:</td>
+                                                          <td>{{$var->email}}</td>
+                                                      </tr>
+                                                      <tr>
+                                                          <td>Address:</td>
+                                                          <td>{{$var->address}}</td>
+                                                      </tr>
+                                                  </table>
+                                                  <br>
+                                                  <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </td>
+                              <td>{{$var->contract_id}} </td>
+                              <td>
+
+                                  @if($var->space_id_contract!='')
+                                      <a class="link_style" href="{{route('space_details',$var->space_id_contract)}}" style="color: blue !important; text-decoration: underline !important;  cursor: pointer;" aria-pressed="true"><center>{{$var->space_id_contract}}</center></a>
+                                  @else
+                                  @endif
+                              </td>
+
+                              <td><center>{{date('d/m/Y',strtotime($var->start_date))}}</center></td>
+                              <td><center>{{date('d/m/Y',strtotime($var->end_date))}}</center></td>
+
+                              <td>@if($var->has_clients=="1")
+                                  @else
+                                      @if($var->academic_dependence=='Yes')
+                                          {{number_format($var->academic_season)}} {{$var->currency}}
+                                      @else
+                                          {{number_format($var->amount)}} {{$var->currency}}
+                                      @endif
+
+                                  @endif
+
+                              </td>
+                              <td>
+                                  @if($var->has_clients=="1")
+                                  @else
+
+                                      @if($var->academic_dependence=='Yes')
+                                          @if($var->vacation_season=="0")
+                                              {{number_format($var->academic_season)}} {{$var->currency}}
+                                          @else
+                                              {{number_format($var->vacation_season)}} {{$var->currency}}
+                                          @endif
+                                      @else
+                                          {{number_format($var->amount)}} {{$var->currency}}
+                                      @endif
+
+                                  @endif
+                              </td>
+
+
+
+
+
+
+
+                              <td><center>
+                                      @if($var->contract_status==0)
+                                          TERMINATED
+                                      @elseif($var->end_date<date('Y-m-d'))
+                                          EXPIRED
+                                      @else
+                                          ACTIVE
+                                      @endif
+                                  </center></td>
+                              <td><center>
+                                      <a title="View more details"  style="color:#3490dc !important; display:inline-block;" href="{{route('contract_details',base64_encode(base64_encode(base64_encode($var->contract_id))))}}" class=""   style="cursor: pointer;" ><center><i class="fa fa-eye" style="font-size:20px;" aria-hidden="true"></i></center></a>
+
+
+                                      @if(($var->contract_status==1 AND $var->end_date>=date('Y-m-d')))
+                                          @if($privileges=='Read only')
+                                          @else
+                                              <a title="Click to edit this contract"   href="/edit_space_contract/{{$var->contract_id}}" ><i class="fa fa-edit" style="font-size:20px; color: green;"></i></a>
+
+
+
+                                              <a data-toggle="modal" title="Click to terminate this contract" data-target="#terminate{{$var->contract_id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px; color:red;"></i></a>
+                                              <div class="modal fade" id="terminate{{$var->contract_id}}" role="dialog">
+
+                                                  <div class="modal-dialog" role="document">
+                                                      <div class="modal-content">
+                                                          <div class="modal-header">
+                                                              <b><h5 class="modal-title">Terminating {{$var->full_name}}'s contract for space id {{$var->space_id_contract}}</h5></b>
+                                                              <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                          </div>
+
+                                                          <div class="modal-body">
+                                                              <form method="get" action="{{ route('terminate_space_contract',$var->contract_id)}}" >
+                                                                  {{csrf_field()}}
+
+                                                                  <div class="form-group">
+                                                                      <div class="form-wrapper">
+                                                                          <label for=""><strong>Reason</strong> <span style="color: red;">*</span></label>
+                                                                          <textarea style="width: 100%;" required name="reason_for_termination"></textarea>
+
+                                                                      </div>
+                                                                  </div>
+                                                                  <br>
+
+
+                                                                  <div class="form-group">
+                                                                      <div class="form-wrapper" style="text-align: left;">
+                                                                          <label for="generate_invoice_checkbox" style="display: inline-block;"><strong>Generate invoice</strong></label>
+                                                                          <input type="checkbox"  style="display: inline-block;" value="generate_invoice_selected" id="generate_invoice_checkbox{{$var->contract_id}}" onchange="generateInvoice({{$var->contract_id}})"  name="generate_invoice_checkbox" autocomplete="off">
+                                                                      </div>
+                                                                  </div>
+                                                                  <br>
+
+                                                                  <div id="invoiceDiv{{$var->contract_id}}" style="display: none;">
+
+
+                                                                      <div class="form-row">
+                                                                          <div class="form-group col-md-6" id="debtor_nameDiv" >
+                                                                              <div class="form-wrapper">
+                                                                                  <label for=""  >Client Full Name <span style="color: red;">*</span></label>
+                                                                                  <input type="text" class="form-control" id="debtor_name" name="debtor_name" value="{{$var->full_name}}" readonly Required autocomplete="off">
+                                                                              </div>
+                                                                          </div>
+                                                                          <br>
+
+
+
+
+                                                                          <div class="form-group col-md-6 pt-2" id="debtor_account_codeDiv" >
+                                                                              <div class="form-wrapper">
+                                                                                  <label for=""  >Client Account Code</label>
+                                                                                  <input type="text" class="form-control" id="debtor_account_code" name="debtor_account_code" value="{{$var->client_id}}"  readonly autocomplete="off">
+                                                                              </div>
+                                                                          </div>
+                                                                          <br>
+
+
+
+                                                                          <div class="form-group col-md-12 pt-2" id="tinDiv" >
+                                                                              <div class="form-wrapper">
+                                                                                  <label for=""  >Client TIN</label>
+                                                                                  <input type="text" class="form-control" id="tin" name="tin" value="{{$var->tin}}" readonly autocomplete="off">
+                                                                              </div>
+                                                                          </div>
+                                                                          <br>
+
+
+
+
+
+                                                                          <div class="form-group col-md-12 pt-2" id="debtor_addressDiv" >
+                                                                              <div class="form-wrapper">
+                                                                                  <label for=""  >Client Address <span style="color: red;">*</span></label>
+                                                                                  <input type="text" class="form-control" id="debtor_address" name="debtor_address" value="{{$var->address}}" readonly Required autocomplete="off">
+                                                                              </div>
+                                                                          </div>
+                                                                          <br>
+
+                                                                          <div  class="form-group col-md-12 mt-1">
+                                                                              <div class="form-wrapper">
+                                                                                  <label for=""  >Inc Code<span style="color: red;">*</span></label>
+                                                                                  <input type="text" class="form-control"  name="inc_code" value=""  Required autocomplete="off">
+                                                                              </div>
+                                                                          </div>
+                                                                          <br>
+
+
+                                                                          <div class="form-group col-md-6 pt-2" id="invoicing_period_start_dateDiv" >
+                                                                              <div class="form-wrapper">
+                                                                                  <label for=""  >Invoice Start Date <span style="color: red;">*</span></label>
+                                                                                  <input type="date" class="form-control" id="invoicing_period_start_date{{$var->contract_id}}" name="invoicing_period_start_date" value=""  autocomplete="off">
+                                                                              </div>
+                                                                          </div>
+                                                                          <br>
+
+
+                                                                          <div class="form-group col-md-6 pt-2" id="invoicing_period_end_dateDiv" >
+                                                                              <div class="form-wrapper">
+                                                                                  <label for=""  >Invoice End Date <span style="color: red;">*</span></label>
+                                                                                  <input type="date" class="form-control" id="invoicing_period_end_date{{$var->contract_id}}" name="invoicing_period_end_date" value=""  autocomplete="off">
+                                                                              </div>
+                                                                          </div>
+                                                                          <br>
+
+                                                                          <div class="form-group col-md-12 pt-2" id="periodDiv" >
+                                                                              <div class="form-wrapper">
+                                                                                  <label for="">Period <span style="color: red;">*</span></label>
+                                                                                  <input type="text" class="form-control" id="period{{$var->contract_id}}" name="period" value=""   autocomplete="off">
+                                                                              </div>
+                                                                          </div>
+                                                                          <br>
+
+                                                                          <div class="form-group col-md-6 pt-2" id="contract_idDiv" >
+                                                                              <div class="form-wrapper">
+                                                                                  <label for="">Contract ID <span style="color: red;">*</span></label>
+                                                                                  <input type="number" min="1" class="form-control" id="contract_id" name="contract_id" value="{{$var->contract_id}}" readonly required autocomplete="off">
+                                                                              </div>
+                                                                          </div>
+                                                                          <br>
+
+
+                                                                          <div class="form-group col-md-6 pt-2" id="project_idDiv" >
+                                                                              <div class="form-wrapper">
+                                                                                  <label for=""  >Project ID <span style="color: red;">*</span></label>
+                                                                                  <input type="text" class="form-control" id="project_id{{$var->contract_id}}" name="project_id" value=""  autocomplete="off">
+                                                                              </div>
+                                                                          </div>
+                                                                          <br>
+
+
+                                                                          <div class="form-group col-md-6 pt-2" id="amount_to_be_paidDiv" >
+                                                                              <div class="form-wrapper">
+                                                                                  <label for="">Amount <span style="color: red;">*</span></label>
+                                                                                  <input type="number" min="0" class="form-control" id="amount_to_be_paid{{$var->contract_id}}" name="amount_to_be_paid" value=""   autocomplete="off">
+                                                                              </div>
+                                                                          </div>
+                                                                          <br>
+
+
+                                                                          <div class="form-group col-md-6 pt-2" id="currencyDiv">
+                                                                              <label>Currency <span style="color: red;">*</span></label>
+                                                                              <div  class="form-wrapper">
+                                                                                  <select id="currency_invoice{{$var->contract_id}}" class="form-control"  name="currency">
+                                                                                      <option value="" ></option>
+                                                                                      <option value="TZS" >TZS</option>
+                                                                                      <option value="USD" >USD</option>
+                                                                                  </select>
+                                                                              </div>
+                                                                          </div>
+                                                                          <br>
+
+
+                                                                          <div class="form-group col-md-12 pt-2" id="statusDiv">
+                                                                              <div class="form-wrapper">
+                                                                                  <label for=""  >Status <span style="color: red;">*</span></label>
+                                                                                  <input type="text" class="form-control" id="status{{$var->contract_id}}" name="status" value=""   autocomplete="off">
+                                                                              </div>
+                                                                          </div>
+                                                                          <br>
+
+                                                                          <div class="form-group col-md-12 pt-2" id="descriptionDiv">
+                                                                              <div class="form-wrapper">
+                                                                                  <label for=""  >Description <span style="color: red;">*</span></label>
+                                                                                  <input type="text" class="form-control" id="description{{$var->contract_id}}" name="description" value=""   autocomplete="off">
+                                                                              </div>
+                                                                          </div>
+                                                                          <br>
+
+
+
+
+
+
+                                                                      </div>
+
+                                                                  </div>
+
+
+                                                                  <br>
+                                                                  <div align="right">
+                                                                      <button class="btn btn-primary" type="submit" id="newdata">Terminate</button>
+                                                                      <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                                                  </div>
+
+                                                              </form>
+                                                          </div>
+                                                      </div>
+                                                  </div>
+
+
+                                              </div>
+
+                                          @endif
+
+                                      @else
+                                      @endif
+
+
+
+
+
+                                      @if($var->contract_status==0 OR $var->end_date<date('Y-m-d'))
+                                          {{--                    <a href="#"><i class="fa fa-print" style="font-size:28px;color: #3490dc;"></i></a>--}}
+                                          @if($privileges=='Read only')
+                                          @else
+                                              <a href="{{ route('renew_space_contract_form',$var->contract_id) }}" style="display:inline-block;" title="Click to renew this contract"><center><i class="fa fa-refresh" style="font-size:20px;"></i></center></a>
+                                          @endif
+
+                                      @else
+                                      @endif
+
+
+                                  </center>
+                              </td>
+                          </tr>
+
+                          <?php
+                          $i=$i+1;
+                          ?>
+
+                      @endforeach
+
 
 
 
@@ -856,4135 +5945,13 @@ div.dt-buttons{
 
           @endif
 
-
-
-
-
-
-
-
-             <div id="research_flats_contracts" style="border-bottom-left-radius: 50px 20px;   border: 1px solid #ccc; padding: 1%;" class="tabcontentOuter">
-              <?php $r =1; ?>
-                <br>
-                @if($privileges=='Read only')
-                @else
-
-
-<div style="float:left;">
-    <a href="{{ route('contractflat') }}" title="Add new contract"  class="btn button_color active" style="  color: white;   background-color: #38c172;
-                    padding: 10px;
-                    margin-left: 2px;
-                    margin-bottom: 15px;
-                    margin-top: 4px;" role="button" aria-pressed="true">Add New Contract</a>
-
-</div>
-                      @admin
-                      <div style="float:right;">
-                          <div style="float:left;"> <a data-toggle="modal" class="btn button_color active" style="background-color: #38c172; padding: 7px; color:white; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;"  data-target="#import_data_research" title="Import Data" role="button" aria-pressed="true">Import Data</a></div>
-                          <div class="modal fade" id="import_data_research" role="dialog">
-
-                              <div class="modal-dialog" role="document">
-                                  <div class="modal-content">
-                                      <div class="modal-header">
-                                          <b><h5 class="modal-title">Importing Data</h5></b>
-
-                                          <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                      </div>
-
-                                      <div class="modal-body">
-
-                                          <form method="post" enctype="multipart/form-data" action="/import_research_contracts"   >
-                                              {{csrf_field()}}
-
-                                              <div class="form-row">
-
-
-                                                  <div  class=" col-md-12 ">
-                                                      <div class="">
-                                                          <label for="">Select File for Upload (.xls, .xlsx) <span style="color: red;">*</span></label>
-                                                          <input type="file" class="" id="" name="import_data"  placeholder="" required  accept=".xls,.xlsx" autocomplete="off">
-                                                          <div class="mt-2"><span style="font-weight: bold;">N.B </span><span class="pl-1" style="color:red;"> The header row as given in the sample must be included as the first row when uploading. Furthermore, the acceptable values as indicated in the header row are case sensitive for instance if acceptable value is "Individual" the value to be inserted should be "Individual" and not "individual" </span></div>
-                                                      </div>
-                                                  </div>
-                                                  <br>
-
-
-                                              </div>
-
-
-                                              <div align="right">
-                                                  <button  class="btn btn-primary" type="submit">Import</button>
-                                                  <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
-                                              </div>
-                                          </form>
-
-
-
-
-
-
-
-
-
-                                      </div>
-                                  </div>
-                              </div>
-
-
-                          </div>
-                          <div style="float:right;"><a href="/get_research_contracts_format" class="btn button_color active" style="background-color: #38c172; padding: 7px; color:white; margin-left: 5px;  margin-bottom: 5px; margin-top: 4px;"   title="Download Sample">Download Sample</a> </div>
-                          <div style="clear: both;"></div>
-                      </div>
-                      @endadmin
-                  <div style="clear: both;"></div>
-
-                  @endif
-
-                <div class="">
-{{--                    <h3 style="text-align: center"><strong>Research Flats Contracts</strong></h3>--}}
-{{--                    <hr>--}}
-
-                    <table class="hover table table-striped table-bordered" id="myTableResearch">
-                        <thead class="thead-dark">
-                        <tr>
-                            <th scope="col" style="color:#fff;"><center>S/N</center></th>
-                            <th scope="col" style="color:#fff;"><center>Client Name</center></th>
-                            <th scope="col" style="color:#fff;"><center>Contract Number</center></th>
-                            <th scope="col"  style="color:#fff;"><center>Room No</center></th>
-                            <th scope="col" style="color:#fff;"><center>Host Name</center></th>
-                            <th scope="col" style="color:#fff;"><center>Arrival Date</center></th>
-                            <th scope="col" style="color:#fff;"><center>Departure Date</center></th>
-
-                            <th scope="col"  style="color:#fff;"><center>Total Amount (USD)</center></th>
-                            <th scope="col"  style="color:#fff;"><center>Total Amount (TZS)</center></th>
-                                <th scope="col"  style="color:#fff;"><center>Status</center></th>
-                            <th scope="col"  style="color:#fff;"><center>Action</center></th>
-                        </tr>
-                        </thead>
-                        <tbody>
-
-                        @foreach($research_contracts as $var)
-                            <tr>
-                              <td style="text-align: center;">{{$r}}.</td>
-                              <td>
-
-                                <a class="link_style" data-toggle="modal" data-target="#flat_client{{$var->id}}" style="color: blue !important; text-decoration: underline !important;  cursor: pointer;" aria-pressed="true">{{$var->first_name}} {{$var->last_name}}</a>
-
-                                    <div class="modal fade" id="flat_client{{$var->id}}" role="dialog">
-                                      <div class="modal-dialog" role="document">
-                                        <div class="modal-content">
-                                          <div class="modal-header">
-                                            <b><h5 class="modal-title">{{$var->first_name}} {{$var->last_name}} Details.</h5></b>
-                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                          </div>
-
-                                  <div class="modal-body">
-                                    <table style="width: 100%;">
-                                      <tr>
-                                        <td>Client Name</td>
-                                        <td>{{$var->first_name}} {{$var->last_name}}</td>
-                                      </tr>
-                                      <tr>
-                                        <td>Professional</td>
-                                        <td>{{$var->professional}}</td>
-                                      </tr>
-                                      <tr>
-                                        <td>Address</td>
-                                        <td>{{$var->address}}</td>
-                                      </tr>
-                                      <tr>
-                                        <td>Email</td>
-                                        <td>{{$var->email}}</td>
-                                      </tr>
-                                      <tr>
-                                        <td>Phone Number</td>
-                                        <td>{{$var->phone_number}}</td>
-                                      </tr>
-                                      <tr>
-                                        <td>Passport No</td>
-                                        <td>
-
-                                            @if($var->passport_no=='')
-                                                N/A
-                                            @else
-                                            {{$var->passport_no}}
-                                            @endif
-
-
-                                        </td>
-                                      </tr>
-                                      <tr>
-                                        <td>Passport Issue Date</td>
-                                        <td>{{date("d/m/Y",strtotime($var->issue_date))}}</td>
-                                      </tr>
-                                      <tr>
-                                        <td>Passport Issue Place</td>
-                                        <td>{{$var->issue_place}}</td>
-                                      </tr>
-                                    </table>
-                                     <br>
-                                  <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                                </td>
-                                <td style="text-align: center;">{{$var->id}}</td>
-                                <td>
-                                    <a class="link_style" data-toggle="modal" data-target="#flat_room{{$var->id}}" style="color: blue !important; text-decoration: underline !important;  cursor: pointer;" aria-pressed="true">{{$var->room_no}}</a>
-
-                                    <div class="modal fade" id="flat_room{{$var->id}}" role="dialog">
-                                        <div class="modal-dialog" role="document">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <b><h5 class="modal-title">{{$var->room_no}} Details.</h5></b>
-                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                </div>
-
-                                                <div class="modal-body">
-                                                    <?php $room=DB::table('research_flats_rooms')->where('room_no',$var->room_no)->first(); ?>
-                                                    <table style="width: 100%;">
-                                                        <tr>
-                                                            <td>Room Number</td>
-                                                            <td>{{$room->room_no}}</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Category</td>
-                                                            <td>{{$room->category}}</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Charging price for workers</td>
-                                                            <td>{{$room->currency}} {{number_format($room->charge_workers)}}</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Charging price for students</td>
-                                                            <td>{{$room->currency}} {{number_format($room->charge_students)}}</td>
-                                                        </tr>
-                                                    </table>
-                                                    <br>
-                                                    <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-
-                                    @if($var->host_name=='')
-                                    N/A
-                                    @else
-
-
-
-
-                                  <a class="link_style" data-toggle="modal" data-target="#flat_host{{$var->id}}" style="color: blue !important; text-decoration: underline !important;  cursor: pointer;" aria-pressed="true">{{$var->host_name}}</a>
-
-                                    <div class="modal fade" id="flat_host{{$var->id}}" role="dialog">
-                                      <div class="modal-dialog" role="document">
-                                        <div class="modal-content">
-                                          <div class="modal-header">
-                                            <b><h5 class="modal-title">{{$var->host_name}} Details.</h5></b>
-                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                          </div>
-
-                                  <div class="modal-body">
-                                    <table style="width: 100%;">
-                                      <tr>
-                                        <td>Host Name</td>
-                                        <td>{{$var->host_name}}</td>
-                                      </tr>
-                                      <tr>
-                                        <td>College</td>
-                                        <td>{{$var->college_host}}</td>
-                                      </tr>
-                                      <tr>
-                                        <td>Department</td>
-                                        <td>{{$var->department_host}}</td>
-                                      </tr>
-                                      <tr>
-                                        <td>Address</td>
-                                        <td>{{$var->host_address}}</td>
-                                      </tr>
-                                      <tr>
-                                        <td>Email</td>
-                                        <td>{{$var->host_email}}</td>
-                                      </tr>
-                                      <tr>
-                                        <td>Phone Number</td>
-                                        <td>{{$var->host_phone}}</td>
-                                      </tr>
-                                    </table>
-                                    <br>
-                                  <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                                  @endif
-
-                                </td>
-
-                              <td style="text-align: center;">{{date("d/m/Y",strtotime($var->arrival_date))}}</td>
-                              <td style="text-align: center;">{{date("d/m/Y",strtotime($var->departure_date))}}</td>
-
-                              <td style="text-align: right;">{{number_format($var->total_usd)}}</td>
-                              <td style="text-align: right;">{{number_format($var->total_tzs)}}</td>
-                              <td style="text-align: right;">
-
-                                  @if($var->contract_status==0)
-                                  TERMINATED
-
-                                  @elseif($var->departure_date<date('Y-m-d'))
-                                  EXPIRED
-                                  @else
-                                  ACTIVE
-                                  @endif
-
-                              </td>
-                              <td>
-                                  <center>
-
-
-
-
-                                          <a title="Download this contract" href="{{ route('printResearchForm') }}?id={{$var->id}}"><i class="fa fa-file-pdf-o" aria-hidden="true" style="font-size:20px; color:red;"></i></a>
-
-
-
-                                      @if($privileges=='Read only')
-                                      @else
-
-                                          <a title="Edit this contract" href="{{ route('editResearchForm', $var->id) }}"><i class="fa fa-edit" aria-hidden="true" style="font-size:20px; color:green;"></i></a>
-
-                                      @if($var->contract_status==0 OR $var->departure_date<date('Y-m-d'))
-                                          <a href="{{ route('renewResearchForm', $var->id)}}" style="display:inline-block;" title="Click to renew this contract"><center><i class="fa fa-refresh" style="font-size:20px;"></i></center></a>
-
-                                          @endif
-
-                                      @if($var->contract_status==0)
-
-
-                                      @elseif($var->departure_date<date('Y-m-d'))
-
-                                      @else
-
-                                          <a title="Terminate this contract" data-toggle="modal" data-target="#terminate_research{{$var->id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px; color:red; cursor: pointer;"></i></a>
-                                          <div class="modal fade" id="terminate_research{{$var->id}}" role="dialog">
-
-                                              <div class="modal-dialog" role="document">
-                                                  <div class="modal-content">
-                                                      <div class="modal-header">
-                                                          <b><h5 class="modal-title" style="color: red;"><b>Terminating Contract</b></h5></b>
-                                                          <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                      </div>
-
-                                                      <div class="modal-body">
-                                                          <p style="text-align: left; font-size: 16px;">You are about to terminate <strong>{{$var->first_name}} {{$var->last_name}}'s</strong> contract, Please provide reason to proceed</p>
-
-                                                          <form method="post" action="{{ route('terminatecontractflat',$var->id) }}" >
-                                                              {{csrf_field()}}
-
-                                                              <div class="form-group">
-                                                                  <div class="form-wrapper">
-                                                                      <label for=""><strong>Reason:<span style="color: red;">*</span></strong></label>
-                                                                      <textarea required name="reason_for_termination" class="form-control"></textarea>
-
-                                                                  </div>
-                                                              </div>
-                                                              <br>
-
-                                                              <div align="right">
-                                                                  <button class="btn btn-primary" type="submit" id="newdata">Terminate</button>
-                                                                  <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
-                                                              </div>
-
-                                                          </form>
-
-                                                      </div>
-                                                  </div>
-                                              </div>
-                                          </div>
-                                      @endif
-
-                                      @endif
-
-                                  </center>
-                              </td>
-                            </tr>
-                            <?php $r = $r +1; ?>
-                        @endforeach
-                      </tbody>
-                    </table>
-                  </div>
-
-             </div>
-
-
-
-            <div id="insurance_contracts" style="border-bottom-left-radius: 50px 20px;   border: 1px solid #ccc; padding: 1%;" class="tabcontentOuter">
-                <br>
-
-
-                @if($privileges=='Read only')
-                @else
-
-<div style="float:left;"><a href="/insurance_contract_form" title="Add new Insurance contract"  class="btn button_color active" style="  color: white;   background-color: #38c172;
-    padding: 10px;
-    margin-left: 2px;
-    margin-bottom: 15px;
-    margin-top: 4px;" role="button" aria-pressed="true">Add New Contract</a>
-</div>
-
-                    @admin
-                    <div style="float:right;">
-                        <div style="float:left;"> <a data-toggle="modal" class="btn button_color active" style="background-color: #38c172; padding: 7px; color:white; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;"  data-target="#import_data_insurance" title="Import Data" role="button" aria-pressed="true">Import Data</a></div>
-                        <div class="modal fade" id="import_data_insurance" role="dialog">
-
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <b><h5 class="modal-title">Importing Data</h5></b>
-
-                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                    </div>
-
-                                    <div class="modal-body">
-
-                                        <form method="post" enctype="multipart/form-data" action="/import_insurance_contracts"   >
-                                            {{csrf_field()}}
-
-                                            <div class="form-row">
-
-
-                                                <div  class=" col-md-12 ">
-                                                    <div class="">
-                                                        <label for="">Select File for Upload (.xls, .xlsx) <span style="color: red;">*</span></label>
-                                                        <input type="file" class="" id="" name="import_data"  placeholder="" required  accept=".xls,.xlsx" autocomplete="off">
-
-                                                        <div class="mt-2"><span style="font-weight: bold;">N.B </span><span class="pl-1" style="color:red;"> The header row as given in the sample must be included as the first row when uploading. Furthermore, the acceptable values as indicated in the header row are case sensitive for instance if acceptable value is "Individual" the value to be inserted should be "Individual" and not "individual" </span></div>
-                                                    </div>
-
-                                                </div>
-                                                <br>
-
-
-                                            </div>
-
-
-                                            <div align="right">
-                                                <button  class="btn btn-primary" type="submit">Import</button>
-                                                <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
-                                            </div>
-                                        </form>
-
-
-
-
-
-
-
-
-
-                                    </div>
-                                </div>
-                            </div>
-
-
-                        </div>
-                        <div style="float:right;"><a href="/get_insurance_contracts_format" class="btn button_color active" style="background-color: #38c172; padding: 7px; color:white; margin-left: 5px;  margin-bottom: 5px; margin-top: 4px;"   title="Download Sample">Download Sample</a> </div>
-                        <div style="clear: both;"></div>
-                    </div>
-                    @endadmin
-                    <div style="clear: both;"></div>
-
-                @endif
-
-                <div class="">
-{{--                    <h3 style="text-align: center"><strong>Insurance Contracts</strong></h3>--}}
-{{--                    <hr>--}}
-
-
-                    <table class="hover table table-striped table-bordered" style="width: 100% !important;" id="myTableInsurance">
-                        <thead class="thead-dark">
-                        <tr>
-
-                            <th scope="col" style="color:#fff;"><center>S/N</center></th>
-                            <th scope="col" style="color:#fff;"><center>Client Name</center></th>
-                            <th scope="col" style="color:#fff;"><center>Contract Number</center></th>
-
-                            <th scope="col" style="color:#fff;"><center>Class</center></th>
-                            <th scope="col" style="color:#fff;"><center>Principal</center></th>
-
-                            <th scope="col"  style="color:#fff;"><center>Commission Date</center></th>
-                            <th scope="col"  style="color:#fff;"><center>End Date</center></th>
-                            <th scope="col"  style="color:#fff;"><center>Premium</center></th>
-
-                            <th scope="col"  style="color:#fff;"><center>Status</center></th>
-                            <th scope="col"  style="color:#fff;"><center>Action</center></th>
-
-                        </tr>
-                        </thead>
-                        <tbody>
-
-
-
-
-                        </tbody>
-                    </table>
-
-                </div>
-
-
-
-            </div>
-
-
- @if ($category=='CPTU only' OR $category=='All')
-
-            <div id="car_contracts"  class="tabcontentOuter">
-
-                {{-- <h4 style="text-align: center">Car Rental Contracts</h4> --}}
-{{--                <br>--}}
-                @if(Auth::user()->role=='Transport Officer-CPTU')
-  <a class="btn btn-success" href="{{ route('carRentalForm') }}" role="button" style="
-    padding: 10px; margin-bottom: 5px; margin-top: 4px;">Add New Contract
-  </a>
-<br>
-<br>
-
-  <div class="tab2">
-            <button class="tablinks" onclick="openContracts(event, 'inbox')" id="defaultOpen"><strong>Inbox</strong></button>
-            <button class="tablinks" onclick="openContracts(event, 'outbox')"><strong>Outbox</strong></button>
-            {{-- <button class="tablinks" onclick="openContracts(event, 'closed')"><strong>Active Contracts</strong></button> --}}
-            <button class="tablinks" onclick="openContracts(event, 'closed_2')"><strong>Contracts</strong></button>
-            <button class="tablinks" onclick="openContracts(event, 'log_sheet')"><strong>Log Sheet</strong></button>
-        </div>
-<div id="inbox" class="tabcontent" style="border-bottom-left-radius: 50px 20px;">
-  <br>
-  @if(count($inbox)>0)
-<table>
-    <thead>
-    <th style="width: 16%"><center>Contract Number</center></th>
-    <th style="width: 16%"><center>Initiated By</center></th>
-      <th style="width: 16%"><center>Client Name</center></th>
-      <th style="width: 16%"><center>Vehicle</center></th>
-      <th style="width: 16%"><center>Start Date</center></th>
-      <th style="width: 16%"><center>End Date</center></th>
-      <th style="width: 16%"><center>Destination</center></th>
-    </thead>
-    <tbody>
-      @foreach($inbox as $inbox)
-      <tr>
- {{--        @if($inbox->start_date< date('Y-m-d'))
-        <td>
-          <a data-toggle="modal" data-target="#viewcar{{$inbox->id}}" role="button" aria-pressed="true" class="link_style" style="color: blue;"><center>{{$inbox->id}}</center></a>
-
-          <div class="modal fade" id="viewcar{{$inbox->id}}" role="dialog">
-
-            <div class="modal-dialog" role="document">
-              <div class="modal-content">
-                  <div class="modal-header">
-                    <b><h5 class="modal-title" style="color: red;"><b>WARNING</b></h5></b>
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                  </div>
-
-                  <div class="modal-body">
-                   <p style="text-align: left; font-size: 16px;">This contract is no longer valid since the start date of the trip has passed.</p>
-
-                  <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
-
-                </div>
-              </div>
-            </div>
-          </div>
-          </td>
-        @else --}}
-          <td><center><a href="{{ route('carRentalFormE',$inbox->id) }}">{{$inbox->id}}</a></center></td>
-
-
-       {{--  @endif --}}
-
-
-        <td><center>{{$inbox->form_initiator}}</center></td>
-          <td>
-
-              <a  title="Client Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#car_client1{{$inbox->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$inbox->fullName}}</center></a>
-              <div class="modal fade" id="car_client1{{$inbox->id}}" role="dialog">
-
-                  <div class="modal-dialog" role="document">
-                      <div class="modal-content">
-                          <div class="modal-header">
-                              <b><h5 class="modal-title">Client Details.</h5></b>
-
-                              <button type="button" class="close" data-dismiss="modal">&times;</button>
-                          </div>
-
-                          <div class="modal-body">
-                              <table class="table table-striped table-bordered " style="width: 100%">
-
-                                  <tr>
-                                      <td>Client:</td>
-                                      <td>{{$inbox->fullName}}</td>
-                                  </tr>
-
-
-                                  <tr>
-                                      <td>Email:</td>
-                                      <td>{{$inbox->email}}</td>
-                                  </tr>
-
-                                  <tr>
-                                      <td>TIN:</td>
-                                      <td>{{$inbox->tin}}</td>
-                                  </tr>
-
-
-                                  <tr>
-                                      <td>Department/Faculty/Unit:</td>
-                                      <td>{{$inbox->faculty}}</td>
-                                  </tr>
-
-
-                              </table>
-                              <br>
-                              <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-
-
-          </td>
-        <td><center> <a  title="Vehicle Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#vehicle_details1{{$inbox->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$inbox->vehicle_reg_no}}</center></a>
-                <div class="modal fade" id="vehicle_details1{{$inbox->id}}" role="dialog">
-
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <b><h5 class="modal-title">Vehicle Details.</h5></b>
-
-                                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            </div>
-
-                            <div class="modal-body">
-                                <table class="table table-striped table-bordered " style="width: 100%">
-
-                                    <?php
-                                    $vehicle_details=DB::table('car_rentals')->where('vehicle_reg_no',$inbox->vehicle_reg_no)->get();
-
-                                    ?>
-
-                                    @foreach($vehicle_details as $vehicle_detail)
-                                    <tr>
-                                        <td>Vehicle Model:</td>
-                                        <td>{{$vehicle_detail->vehicle_model}}</td>
-                                    </tr>
-
-
-                                    <tr>
-                                        <td>Vehicle Registration Number:</td>
-                                        <td>{{$vehicle_detail->vehicle_reg_no}}</td>
-                                    </tr>
-
-                                    <tr>
-                                        <td>Hire Rate/KM:</td>
-                                        <td>{{$vehicle_detail->hire_rate}} TZS</td>
-                                    </tr>
-
-                                        @endforeach
-
-                                </table>
-                                <br>
-                                <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
-                            </div>
-                        </div>
-                    </div>
-                </div></center></td>
-        <td><center>{{date("d/m/Y",strtotime($inbox->start_date))}}</center></td>
-        <td><center>{{date("d/m/Y",strtotime($inbox->end_date))}}</center></td>
-        <td><center>{{$inbox->destination}}</center></td>
-      </tr>
-      @endforeach
-    </tbody>
-  </table>
-  @else
-  <p style="line-height: 1.5;font-size: 17px;"><i class="fa fa-envelope-o" style="font-size:25px;color:#3490dc;"></i> No new message</p>
-  @endif
-</div>
-
-<div id="outbox" class="tabcontent" style="border-bottom-left-radius: 50px 20px;">
-  <br>
-  @if(count($outbox)>0)
-  <table>
-    <thead>
-      <th style="width: 14%"><center>Contract Number</center></th>
-      <th style="width: 14%"><center>Initiated By</center></th>
-      <th style="width: 14%"><center>Client Name</center></th>
-      <th style="width: 14%"><center>Vehicle</center></th>
-
-      <th style="width: 15%"><center>Start Date</center></th>
-      <th style="width: 15%"><center>End Date</center></th>
-      <th style="width: 14%"><center>Destination</center></th>
-      <th style="width: 14%"><center>Form Status</center></th>
-      <th style="width: 14%"><center>Action</center></th>
-    </thead>
-    <tbody>
-      @foreach($outbox as $outbox)
-      <tr>
-        <td><center>{{$outbox->id}}</center></td>
-        <td><center>{{$outbox->form_initiator}}</center></td>
-          <td>
-
-              <a  title="Client Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#car_client2{{$outbox->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$outbox->fullName}}</center></a>
-              <div class="modal fade" id="car_client2{{$outbox->id}}" role="dialog">
-
-                  <div class="modal-dialog" role="document">
-                      <div class="modal-content">
-                          <div class="modal-header">
-                              <b><h5 class="modal-title">Client Details.</h5></b>
-
-                              <button type="button" class="close" data-dismiss="modal">&times;</button>
-                          </div>
-
-                          <div class="modal-body">
-                              <table class="table table-striped table-bordered " style="width: 100%">
-
-                                  <tr>
-                                      <td>Client:</td>
-                                      <td>{{$outbox->fullName}}</td>
-                                  </tr>
-
-
-                                  <tr>
-                                      <td>Email:</td>
-                                      <td>{{$outbox->email}}</td>
-                                  </tr>
-
-                                  <tr>
-                                      <td>TIN:</td>
-                                      <td>{{$outbox->tin}}</td>
-                                  </tr>
-
-
-                                  <tr>
-                                      <td>Department/Faculty/Unit:</td>
-                                      <td>{{$outbox->faculty}}</td>
-                                  </tr>
-
-
-                              </table>
-                              <br>
-                              <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-
-
-          </td>
-          <td><center> <a  title="Vehicle Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#vehicle_details2{{$outbox->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$outbox->vehicle_reg_no}}</center></a>
-                  <div class="modal fade" id="vehicle_details2{{$outbox->id}}" role="dialog">
-
-                      <div class="modal-dialog" role="document">
-                          <div class="modal-content">
-                              <div class="modal-header">
-                                  <b><h5 class="modal-title">Vehicle Details.</h5></b>
-
-                                  <button type="button" class="close" data-dismiss="modal">&times;</button>
-                              </div>
-
-                              <div class="modal-body">
-                                  <table class="table table-striped table-bordered " style="width: 100%">
-
-                                      <?php
-                                      $vehicle_details=DB::table('car_rentals')->where('vehicle_reg_no',$outbox->vehicle_reg_no)->get();
-
-                                      ?>
-
-
-                                      @foreach($vehicle_details as $vehicle_detail)
-                                          <tr>
-                                              <td>Vehicle Model:</td>
-                                              <td>{{$vehicle_detail->vehicle_model}}</td>
-                                          </tr>
-
-
-                                          <tr>
-                                              <td>Vehicle Registration Number:</td>
-                                              <td>{{$vehicle_detail->vehicle_reg_no}}</td>
-                                          </tr>
-
-                                          <tr>
-                                              <td>Hire Rate/KM:</td>
-                                              <td>{{$vehicle_detail->hire_rate}} TZS</td>
-                                          </tr>
-
-                                      @endforeach
-
-                                  </table>
-                                  <br>
-                                  <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
-                              </div>
-                          </div>
-                      </div>
-                  </div></center></td>
-        <td><center>{{date("d/m/Y",strtotime($outbox->start_date))}} </center></td>
-        <td><center>{{date("d/m/Y",strtotime($outbox->end_date))}}</center></td>
-         <td><center>{{$outbox->destination}}</center></td>
-        <td><center>{{$outbox->form_status}} Stage</center></td>
-         @if($outbox->start_date < date('Y-m-d'))
-          <td>
-             <a title="Delete this form" data-toggle="modal" data-target="#delete{{$outbox->id}}" role="button" aria-pressed="true" style="color: blue;" class="link_style"><center><i class="fa fa-trash" aria-hidden="true" style="font-size:18px; color:red; cursor: pointer;"></i></center></a>
-
-        <div class="modal fade" id="delete{{$outbox->id}}" role="dialog">
-
-          <div class="modal-dialog" role="document">
-              <div class="modal-content">
-                  <div class="modal-header">
-                    <b><h5 class="modal-title" style="color: red;"><b>WARNING</b></h5></b>
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                  </div>
-
-                  <div class="modal-body">
-                   <p style="text-align: left; font-size: 16px;">Are you sure you want to delete this form?</p>
-                    <br>
-                  <div align="right">
-                    <a href="{{ route('deletecontract',$outbox->id) }}" class="btn btn-primary">Proceed</a>
-                    <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
-                  </div>
-
-               </div>
-              </div>
-            </div>
-          </div>
-          </td>
-        @else
-          <td><center>N/A</center></td>
-        @endif
-      </tr>
-      @endforeach
-    </tbody>
-  </table>
-  @else
-  <p style="line-height: 1.5;font-size: 17px;"><i class="fa fa-envelope-o" style="font-size:25px;color:#3490dc;"></i> No new message</p>
-  @endif
-
-</div>
-<div id="closed" class="tabcontent" style="border-bottom-left-radius: 50px 20px;">
-  @if(count($closed_act)!=0)
-   <br>
-<table class="hover table table-striped table-bordered" id="myTablecar">
-    <thead class="thead-dark">
-      <th scope="col" style="color:#fff; width: 5%"><center>S/N</center></th>
-      <th scope="col" style="color:#fff; width: 10%"><center>Contract Number</center></th>
-      <th scope="col" style="color:#fff; width: 16%"><center>Client Name</center></th>
-      <th scope="col" style="color:#fff; width: 16%"><center>Vehicle</center></th>
-
-      <th scope="col" style="color:#fff; width: 14%"><center>Start Date</center></th>
-      <th scope="col" style="color:#fff; width: 14%"><center>End Date</center></th>
-      <th scope="col" style="color:#fff; width: 16%"><center>Destination</center></th>
-       <th scope="col" style="color:#fff; width: 16%"><center>Grand Total (TZS)</center></th>
-      <th scope="col" style="color:#fff;"><center>Action</center></th>
-    </thead>
-    <tbody>
-      @foreach($closed_act as $closed)
-      <tr>
-        <th scope="row" class="counterCell text-center">.</th>
-        <td><center>{{$closed->id}}</center></td>
-        <td>
-
-            <a  title="Client Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#car_client3{{$closed->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$closed->fullName}}</center></a>
-            <div class="modal fade" id="car_client3{{$closed->id}}" role="dialog">
-
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <b><h5 class="modal-title">Client Details.</h5></b>
-
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        </div>
-
-                        <div class="modal-body">
-                            <table class="table table-striped table-bordered " style="width: 100%">
-
-                                <tr>
-                                    <td>Client:</td>
-                                    <td>{{$closed->fullName}}</td>
-                                </tr>
-
-
-                                <tr>
-                                    <td>Email:</td>
-                                    <td>{{$closed->email}}</td>
-                                </tr>
-
-                                <tr>
-                                    <td>TIN:</td>
-                                    <td>{{$closed->tin}}</td>
-                                </tr>
-
-
-                                <tr>
-                                    <td>Department/Faculty/Unit:</td>
-                                    <td>{{$closed->faculty}}</td>
-                                </tr>
-
-
-                            </table>
-                            <br>
-                            <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
-        </td>
-          <td><center> <a  title="Vehicle Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#vehicle_details3{{$closed->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$closed->vehicle_reg_no}}</center></a>
-                  <div class="modal fade" id="vehicle_details3{{$closed->id}}" role="dialog">
-
-                      <div class="modal-dialog" role="document">
-                          <div class="modal-content">
-                              <div class="modal-header">
-                                  <b><h5 class="modal-title">Vehicle Details.</h5></b>
-
-                                  <button type="button" class="close" data-dismiss="modal">&times;</button>
-                              </div>
-
-                              <div class="modal-body">
-                                  <table class="table table-striped table-bordered " style="width: 100%">
-
-                                      <?php
-                                      $vehicle_details=DB::table('car_rentals')->where('vehicle_reg_no',$closed->vehicle_reg_no)->get();
-
-                                      ?>
-
-                                      @foreach($vehicle_details as $vehicle_detail)
-                                          <tr>
-                                              <td>Vehicle Model:</td>
-                                              <td>{{$vehicle_detail->vehicle_model}}</td>
-                                          </tr>
-
-
-                                          <tr>
-                                              <td>Vehicle Registration Number:</td>
-                                              <td>{{$vehicle_detail->vehicle_reg_no}}</td>
-                                          </tr>
-
-                                          <tr>
-                                              <td>Hire Rate/KM:</td>
-                                              <td>{{$vehicle_detail->hire_rate}} TZS</td>
-                                          </tr>
-
-                                      @endforeach
-
-                                  </table>
-                                  <br>
-                                  <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
-                              </div>
-                          </div>
-                      </div>
-                  </div></center></td>
-        <td><center>{{date("d/m/Y",strtotime($closed->start_date))}}</center></td>
-        <td><center>{{date("d/m/Y",strtotime($closed->end_date))}}</center></td>
-         <td>{{$closed->destination}}</td>
-         <td style="text-align: right;">{{number_format($closed->grand_total)}}</td>
-         <td><center>
-          <a title="View More Details" role="button" href="{{ route('carcontractviewmore',$closed->id) }}"><i class="fa fa-eye" aria-hidden="true" style="font-size:20px; color:#3490dc; cursor: pointer;"></i></a>
-
-          <a title="Download this contract" href="/contracts/car_rental/print?id={{$closed->id}}"><i class="fa fa-file-pdf-o" aria-hidden="true" style="font-size:20px; color:red;"></i></a>
-
-         <a title="Terminate this contract" data-toggle="modal" data-target="#terminate{{$closed->id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px; color:red; cursor: pointer;"></i></a>
-
-        <div class="modal fade" id="terminate{{$closed->id}}" role="dialog">
-
-          <div class="modal-dialog" role="document">
-              <div class="modal-content">
-                  <div class="modal-header">
-                    <b><h5 class="modal-title" style="color: red;"><b>Terminating Contract</b></h5></b>
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                  </div>
-
-                  <div class="modal-body">
-                   <p style="text-align: left; font-size: 16px;">You are about to terminate <strong>"{{$closed->fullName}}"</strong> contract. Provide reason for termination to proceed.</p>
-
-                    <form method="get" action="{{ route('terminateCarRental',$closed->id) }}" >
-                        {{csrf_field()}}
-
-                          <div class="form-group">
-                              <div class="form-wrapper">
-                                  <label for=""><strong>Reason:<span style="color: red;">*</span></strong></label>
-                                    <textarea required name="reason_for_termination" class="form-control"></textarea>
-
-                              </div>
-                          </div>
-                            <br>
-
-                            <div align="right">
-                              <button class="btn btn-primary" type="submit" id="newdata">Terminate</button>
-                              <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
-                            </div>
-
-                    </form>
-
-                </div>
-              </div>
-            </div>
-          </div>
-        </center></td>
-      </tr>
-      @endforeach
-    </tbody>
-  </table>
-  @else
-  <br><br>
-  <p style="font-size: 18px;">No record found.</p>
-  @endif
-</div>
-<div id="closed_2" class="tabcontent" style="border-bottom-left-radius: 50px 20px;">
-  @if(count($closed_inact)!=0)
-   <br>
-<table class="hover table table-striped table-bordered" id="myTablecar3">
-    <thead class="thead-dark">
-      <th scope="col" style="color:#fff; width: 5%"><center>S/N</center></th>
-      <th scope="col" style="color:#fff; width: 16%"><center>Client Name</center></th>
-      <th scope="col" style="color:#fff; width: 10%"><center>Contract Number</center></th>
-      <th scope="col" style="color:#fff; width: 16%"><center>Vehicle</center></th>
-
-      <th scope="col" style="color:#fff; width: 14%"><center>Start Date</center></th>
-      <th scope="col" style="color:#fff; width: 14%"><center>End Date</center></th>
-      <th scope="col" style="color:#fff; width: 16%"><center>Destination</center></th>
-       <th scope="col" style="color:#fff; width: 16%"><center>Grand Total (TZS)</center></th>
-      <th scope="col" style="color:#fff;"><center>Action</center></th>
-    </thead>
-    <tbody>
-      @foreach($closed_inact as $closed)
-      <tr>
-        <th scope="row" class="counterCell text-center">.</th>
-
-          <td>
-
-              <a  title="Client Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#car_client4{{$closed->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$closed->fullName}}</center></a>
-              <div class="modal fade" id="car_client4{{$closed->id}}" role="dialog">
-
-                  <div class="modal-dialog" role="document">
-                      <div class="modal-content">
-                          <div class="modal-header">
-                              <b><h5 class="modal-title">Client Details.</h5></b>
-
-                              <button type="button" class="close" data-dismiss="modal">&times;</button>
-                          </div>
-
-                          <div class="modal-body">
-                              <table class="table table-striped table-bordered " style="width: 100%">
-
-                                  <tr>
-                                      <td>Client:</td>
-                                      <td>{{$closed->fullName}}</td>
-                                  </tr>
-
-
-                                  <tr>
-                                      <td>Email:</td>
-                                      <td>{{$closed->email}}</td>
-                                  </tr>
-
-                                  <tr>
-                                      <td>TIN:</td>
-                                      <td>{{$closed->tin}}</td>
-                                  </tr>
-
-
-                                  <tr>
-                                      <td>Department/Faculty/Unit:</td>
-                                      <td>{{$closed->faculty}}</td>
-                                  </tr>
-
-
-                              </table>
-                              <br>
-                              <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-
-
-          </td>
-          <td><center>{{$closed->id}}</center></td>
-          <td><center> <a  title="Vehicle Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#vehicle_details4{{$closed->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$closed->vehicle_reg_no}}</center></a>
-                  <div class="modal fade" id="vehicle_details4{{$closed->id}}" role="dialog">
-
-                      <div class="modal-dialog" role="document">
-                          <div class="modal-content">
-                              <div class="modal-header">
-                                  <b><h5 class="modal-title">Vehicle Details.</h5></b>
-
-                                  <button type="button" class="close" data-dismiss="modal">&times;</button>
-                              </div>
-
-                              <div class="modal-body">
-                                  <table class="table table-striped table-bordered " style="width: 100%">
-
-                                      <?php
-                                      $vehicle_details=DB::table('car_rentals')->where('vehicle_reg_no',$closed->vehicle_reg_no)->get();
-
-                                      ?>
-
-                                      @foreach($vehicle_details as $vehicle_detail)
-                                          <tr>
-                                              <td>Vehicle Model:</td>
-                                              <td>{{$vehicle_detail->vehicle_model}}</td>
-                                          </tr>
-
-
-                                          <tr>
-                                              <td>Vehicle Registration Number:</td>
-                                              <td>{{$vehicle_detail->vehicle_reg_no}}</td>
-                                          </tr>
-
-                                          <tr>
-                                              <td>Hire Rate/KM:</td>
-                                              <td>{{$vehicle_detail->hire_rate}} TZS</td>
-                                          </tr>
-
-                                      @endforeach
-
-                                  </table>
-                                  <br>
-                                  <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
-                              </div>
-                          </div>
-                      </div>
-                  </div></center></td>
-        <td><center>{{date("d/m/Y",strtotime($closed->start_date))}}</center></td>
-        <td><center>{{date("d/m/Y",strtotime($closed->end_date))}}</center></td>
-         <td>{{$closed->destination}}</td>
-        <td style="text-align: right;">{{number_format($closed->grand_total)}}</td>
-         <td><center>
-          <a title="View More Details" role="button" href="{{ route('carcontractviewmore',$closed->id) }}"><i class="fa fa-eye" aria-hidden="true" style="font-size:20px; color:#3490dc; cursor: pointer;"></i></a>
-
-          <a title="Download this contract" href="/contracts/car_rental/print?id={{$closed->id}}"><i class="fa fa-file-pdf-o" aria-hidden="true" style="font-size:20px; color:red;"></i></a></center></td>
-      </tr>
-      @endforeach
-    </tbody>
-  </table>
-  @else
-  <br><br>
-  <p style="font-size: 18px;">No record found.</p>
-  @endif
-</div>
-
-<div id="log_sheet" class="tabcontent" style="border-bottom-left-radius: 50px 20px;">
-  <?php $logsheets = DB::table('log_sheets')->select('contract_id')->distinct('contract_id')->orderBy('id','dsc')->get();
-  $d = 1;
-  ?>
-  <br>
-       <a title="Add New Log Sheet" class="btn btn-success" role="button" data-toggle="modal" data-target="#new_log" role="button" aria-pressed="true" style="color: white;">Add New Log Sheet</a>
-
-<div class="modal fade" id="new_log" role="dialog">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <b><h5 class="modal-title">Fill the Contract Number to continue</h5></b>
-              <button type="button" class="close" data-dismiss="modal">&times;</button>
-            </div>
-
-           <div class="modal-body">
-            <form method="post" action="{{ route('logsheetindex') }}">
-              {{csrf_field()}}
-                  <div class="form-group">
-                    <div class="form-wrapper">
-                      <label for="hire_rate">Contract Number<span style="color: red;">*</span></label>
-                      <input type="text" id="contract_id" name="contract_id" class="form-control" required="" onkeypress="if((this.value.length<10)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
-                    </div>
-                </div>
-
-                <div align="right">
-                  <button type="submit" class="btn btn-primary">Submit</button>
-                  <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
-                </div>
-            </form>
-
-
-          </div>
-        </div>
-      </div>
-</div>
-
-
-
-
-
-
-  <br><br>
-    <table class="hover table table-bordered  table-striped" id="LogTable">
-      <thead class="thead-dark">
-          <th scope="col" style="color:#fff;"><center>SN</center></th>
-          <th scope="col" style="color:#fff;"><center>Client Name</center></th>
-          <th scope="col" style="color:#fff;"><center>Contract Number</center></th>
-          <th scope="col" style="color:#fff;"><center>Vehicle Reg No.</center></th>
-          <th scope="col" style="color:#fff;"><center>Driver Name</center></th>
-          <th scope="col" style="color:#fff;"><center>Destination</center></th>
-          <th scope="col" style="color:#fff;"><center>Start Date</center></th>
-          <th scope="col" style="color:#fff;"><center>End Date</center></th>
-          <th scope="col" style="color:#fff;"><center>Action</center></th>
-        </thead>
-        <tbody>
-          @foreach($logsheets as $log)
-            <?php $details = DB::table('car_contracts')->select('vehicle_reg_no','driver_name','fullName','faculty','destination','start_date', 'end_date')->where('id',$log->contract_id)->first(); ?>
-            <tr>
-              <th style="text-align: center;">{{$d}}.</th>
-              <td>{{$details->fullName}}</td>
-                <td><center>{{$log->contract_id}}</center></td>
-                <td><center>{{$details->vehicle_reg_no}}</center></td>
-                <td>{{$details->driver_name}}</td>
-              <td><center>{{$details->destination}}</center></td>
-              <td><center>{{date("d/m/Y",strtotime($details->start_date))}}</center></td>
-              <td><center>{{date("d/m/Y",strtotime($details->end_date))}}</center></td>
-              <td><center><a title="View More Details" role="button" href="{{ route('logsheetmore',$log->contract_id) }}"><i class="fa fa-eye" aria-hidden="true" style="font-size:20px; color:#3490dc; cursor: pointer;"></i></a></center></td>
-            </tr>
-            <?php $d = $d+1; ?>
-          @endforeach
-        </tbody>
-    </table>
-</div>
-@elseif(Auth::user()->role=='Vote Holder')
-      <div class="tab2">
-            <button class="tablinks" onclick="openContracts(event, 'inbox')" id="defaultOpen"><strong>Inbox</strong></button>
-            <button class="tablinks" onclick="openContracts(event, 'outbox')"><strong>Outbox</strong></button>
-            {{-- <button class="tablinks" onclick="openContracts(event, 'closed')"><strong>Active Contract</strong></button> --}}
-            <button class="tablinks" onclick="openContracts(event, 'closed_2')"><strong>Contracts</strong></button>
-        </div>
-<div id="inbox" class="tabcontent">
-  <br>
-  @if(count($inbox)>0)
-<table>
-    <thead>
-      <th style="width: 16%"><center>Contract Number</center></th>
-      <th style="width: 16%"><center>Initiated By</center></th>
-      <th style="width: 16%"><center>Client Name</center></th>
-      <th style="width: 16%"><center>Vehicle</center></th>
-
-      <th style="width: 16%"><center>Start Date</center></th>
-      <th style="width: 16%"><center>End Date</center></th>
-      <th style="width: 16%"><center>Destination</center></th>
-    </thead>
-    <tbody>
-      @foreach($inbox as $inbox)
-      <tr>
-         @if($inbox->start_date< date('Y-m-d'))
-        <td>
-          <a data-toggle="modal" data-target="#viewcar{{$inbox->id}}" role="button" aria-pressed="true" class="link_style" style="color: blue;"><center>{{$inbox->id}}</center></a>
-
-          <div class="modal fade" id="viewcar{{$inbox->id}}" role="dialog">
-
-            <div class="modal-dialog" role="document">
-              <div class="modal-content">
-                  <div class="modal-header">
-                    <b><h5 class="modal-title" style="color: red;"><b>WARNING</b></h5></b>
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                  </div>
-
-                  <div class="modal-body">
-                   <p style="text-align: left; font-size: 16px;">This contract is no longer valid since the start date of the trip has passed.</p>
-
-                  <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
-
-                </div>
-              </div>
-            </div>
-          </div>
-          </td>
-        @else
-
-
-           <td><center><a href="{{ route('carRentalFormC',$inbox->id) }}">{{$inbox->id}}</a></center></td>
-        @endif
-
-
-        <td><center>{{$inbox->form_initiator}}</center></td>
-             <td>
-
-                 <a  title="Client Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#car_client5{{$inbox->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$inbox->fullName}}</center></a>
-                 <div class="modal fade" id="car_client5{{$inbox->id}}" role="dialog">
-
-                     <div class="modal-dialog" role="document">
-                         <div class="modal-content">
-                             <div class="modal-header">
-                                 <b><h5 class="modal-title">Client Details.</h5></b>
-
-                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                             </div>
-
-                             <div class="modal-body">
-                                 <table class="table table-striped table-bordered " style="width: 100%">
-
-                                     <tr>
-                                         <td>Client:</td>
-                                         <td>{{$inbox->fullName}}</td>
-                                     </tr>
-
-
-                                     <tr>
-                                         <td>Email:</td>
-                                         <td>{{$inbox->email}}</td>
-                                     </tr>
-
-                                     <tr>
-                                         <td>TIN:</td>
-                                         <td>{{$inbox->tin}}</td>
-                                     </tr>
-
-
-                                     <tr>
-                                         <td>Department/Faculty/Unit:</td>
-                                         <td>{{$inbox->faculty}}</td>
-                                     </tr>
-
-
-                                 </table>
-                                 <br>
-                                 <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
-                             </div>
-                         </div>
-                     </div>
-                 </div>
-
-
-             </td>
-             <td><center> <a  title="Vehicle Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#vehicle_details5{{$inbox->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$inbox->vehicle_reg_no}}</center></a>
-                     <div class="modal fade" id="vehicle_details5{{$inbox->id}}" role="dialog">
-
-                         <div class="modal-dialog" role="document">
-                             <div class="modal-content">
-                                 <div class="modal-header">
-                                     <b><h5 class="modal-title">Vehicle Details.</h5></b>
-
-                                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                 </div>
-
-                                 <div class="modal-body">
-                                     <table class="table table-striped table-bordered " style="width: 100%">
-
-                                         <?php
-                                         $vehicle_details=DB::table('car_rentals')->where('vehicle_reg_no',$inbox->vehicle_reg_no)->get();
-
-                                         ?>
-
-                                         @foreach($vehicle_details as $vehicle_detail)
-                                             <tr>
-                                                 <td>Vehicle Model:</td>
-                                                 <td>{{$vehicle_detail->vehicle_model}}</td>
-                                             </tr>
-
-
-                                             <tr>
-                                                 <td>Vehicle Registration Number:</td>
-                                                 <td>{{$vehicle_detail->vehicle_reg_no}}</td>
-                                             </tr>
-
-                                             <tr>
-                                                 <td>Hire Rate/KM:</td>
-                                                 <td>{{$vehicle_detail->hire_rate}} TZS</td>
-                                             </tr>
-
-                                         @endforeach
-
-                                     </table>
-                                     <br>
-                                     <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
-                                 </div>
-                             </div>
-                         </div>
-                     </div></center></td>
-        <td><center>{{date("d/m/Y",strtotime($inbox->start_date))}} </center></td>
-        <td><center>{{date("d/m/Y",strtotime($inbox->end_date))}}</center></td>
-         <td><center>{{$inbox->destination}}</center></td>
-      </tr>
-      @endforeach
-    </tbody>
-  </table>
-   @else
-  <p style="line-height: 1.5;font-size: 17px;"><i class="fa fa-envelope-o" style="font-size:25px;color:#3490dc;"></i> No new message</p>
-  @endif
-</div>
-
-<div id="outbox" class="tabcontent">
-  <br>
-  @if(count($outbox)>0)
-<table>
-   <thead>
-      <th style="width: 14%"><center>Contract Number</center></th>
-      <th style="width: 14%"><center>Initiated By</center></th>
-      <th style="width: 14%"><center>Client Name</center></th>
-      <th style="width: 14%"><center>Vehicle</center></th>
-
-      <th style="width: 15%"><center>Start Date</center></th>
-      <th style="width: 15%"><center>End Date</center></th>
-      <th style="width: 14%"><center>Destination</center></th>
-      <th style="width: 14%"><center>Form Status</center></th>
-    </thead>
-    <tbody>
-      @foreach($outbox as $outbox)
-      <tr>
-        <td><center>{{$outbox->id}}</center></td>
-        <td><center>{{$outbox->form_initiator}}</center></td>
-          <td>
-
-              <a  title="Client Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#car_client6{{$outbox->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$outbox->fullName}}</center></a>
-              <div class="modal fade" id="car_client6{{$outbox->id}}" role="dialog">
-
-                  <div class="modal-dialog" role="document">
-                      <div class="modal-content">
-                          <div class="modal-header">
-                              <b><h5 class="modal-title">Client Details.</h5></b>
-
-                              <button type="button" class="close" data-dismiss="modal">&times;</button>
-                          </div>
-
-                          <div class="modal-body">
-                              <table class="table table-striped table-bordered " style="width: 100%">
-
-                                  <tr>
-                                      <td>Client:</td>
-                                      <td>{{$outbox->fullName}}</td>
-                                  </tr>
-
-
-                                  <tr>
-                                      <td>Email:</td>
-                                      <td>{{$outbox->email}}</td>
-                                  </tr>
-
-                                  <tr>
-                                      <td>TIN:</td>
-                                      <td>{{$outbox->tin}}</td>
-                                  </tr>
-
-
-                                  <tr>
-                                      <td>Department/Faculty/Unit:</td>
-                                      <td>{{$outbox->faculty}}</td>
-                                  </tr>
-
-
-                              </table>
-                              <br>
-                              <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-
-
-          </td>
-          <td><center> <a  title="Vehicle Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#vehicle_details6{{$outbox->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$outbox->vehicle_reg_no}}</center></a>
-                  <div class="modal fade" id="vehicle_details6{{$outbox->id}}" role="dialog">
-
-                      <div class="modal-dialog" role="document">
-                          <div class="modal-content">
-                              <div class="modal-header">
-                                  <b><h5 class="modal-title">Vehicle Details.</h5></b>
-
-                                  <button type="button" class="close" data-dismiss="modal">&times;</button>
-                              </div>
-
-                              <div class="modal-body">
-                                  <table class="table table-striped table-bordered " style="width: 100%">
-
-                                      <?php
-                                      $vehicle_details=DB::table('car_rentals')->where('vehicle_reg_no',$outbox->vehicle_reg_no)->get();
-
-                                      ?>
-
-                                      @foreach($vehicle_details as $vehicle_detail)
-                                          <tr>
-                                              <td>Vehicle Model:</td>
-                                              <td>{{$vehicle_detail->vehicle_model}}</td>
-                                          </tr>
-
-
-                                          <tr>
-                                              <td>Vehicle Registration Number:</td>
-                                              <td>{{$vehicle_detail->vehicle_reg_no}}</td>
-                                          </tr>
-
-                                          <tr>
-                                              <td>Hire Rate/KM:</td>
-                                              <td>{{$vehicle_detail->hire_rate}} TZS</td>
-                                          </tr>
-
-                                      @endforeach
-
-                                  </table>
-                                  <br>
-                                  <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
-                              </div>
-                          </div>
-                      </div>
-                  </div></center></td>
-        <td><center>{{date("d/m/Y",strtotime($outbox->start_date))}}</center></td>
-        <td><center>{{date("d/m/Y",strtotime($outbox->end_date))}}</center></td>
-         <td><center>{{$outbox->destination}}</center></td>
-        <td><center>{{$outbox->form_status}} Stage</center></td>
-      </tr>
-      @endforeach
-    </tbody>
-  </table>
-   @else
-  <p style="line-height: 1.5;font-size: 17px;"><i class="fa fa-envelope-o" style="font-size:25px;color:#3490dc;"></i> No new message</p>
-  @endif
-</div>
-<div id="closed" class="tabcontent">
-  @if(count($closed_act)!=0)
-   <br>
-<table class="hover table table-striped table-bordered" id="myTablecar">
-    <thead class="thead-dark">
-      <th scope="col" style="color:#fff; width: 5%"><center>S/N</center></th>
-      <th scope="col" style="color:#fff; width: 16%"><center>Client Name</center></th>
-      <th scope="col" style="color:#fff; width: 10%"><center>Contract Number</center></th>
-      <th scope="col" style="color:#fff; width: 16%"><center>Vehicle</center></th>
-
-      <th scope="col" style="color:#fff; width: 14%"><center>Start Date</center></th>
-      <th scope="col" style="color:#fff; width: 14%"><center>End Date</center></th>
-      <th scope="col" style="color:#fff; width: 16%"><center>Destination</center></th>
-       <th scope="col" style="color:#fff; width: 16%"><center>Grand Total (TZS)</center></th>
-      <th scope="col" style="color:#fff;"><center>Action</center></th>
-    </thead>
-    <tbody>
-      @foreach($closed_act as $closed)
-      <tr>
-        <th scope="row" class="counterCell text-center">.</th>
-
-          <td>
-
-              <a  title="Client Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#car_client7{{$closed->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$closed->fullName}}</center></a>
-              <div class="modal fade" id="car_client7{{$closed->id}}" role="dialog">
-
-                  <div class="modal-dialog" role="document">
-                      <div class="modal-content">
-                          <div class="modal-header">
-                              <b><h5 class="modal-title">Client Details.</h5></b>
-
-                              <button type="button" class="close" data-dismiss="modal">&times;</button>
-                          </div>
-
-                          <div class="modal-body">
-                              <table class="table table-striped table-bordered " style="width: 100%">
-
-                                  <tr>
-                                      <td>Client:</td>
-                                      <td>{{$closed->fullName}}</td>
-                                  </tr>
-
-
-                                  <tr>
-                                      <td>Email:</td>
-                                      <td>{{$closed->email}}</td>
-                                  </tr>
-
-                                  <tr>
-                                      <td>TIN:</td>
-                                      <td>{{$closed->tin}}</td>
-                                  </tr>
-
-
-                                  <tr>
-                                      <td>Department/Faculty/Unit:</td>
-                                      <td>{{$closed->faculty}}</td>
-                                  </tr>
-
-
-                              </table>
-                              <br>
-                              <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-
-
-          </td>
-          <td><center>{{$closed->id}}</center></td>
-          <td><center> <a  title="Vehicle Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#vehicle_details7{{$closed->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$closed->vehicle_reg_no}}</center></a>
-                  <div class="modal fade" id="vehicle_details7{{$closed->id}}" role="dialog">
-
-                      <div class="modal-dialog" role="document">
-                          <div class="modal-content">
-                              <div class="modal-header">
-                                  <b><h5 class="modal-title">Vehicle Details.</h5></b>
-
-                                  <button type="button" class="close" data-dismiss="modal">&times;</button>
-                              </div>
-
-                              <div class="modal-body">
-                                  <table class="table table-striped table-bordered " style="width: 100%">
-
-                                      <?php
-                                      $vehicle_details=DB::table('car_rentals')->where('vehicle_reg_no',$closed->vehicle_reg_no)->get();
-
-                                      ?>
-
-                                      @foreach($vehicle_details as $vehicle_detail)
-                                          <tr>
-                                              <td>Vehicle Model:</td>
-                                              <td>{{$vehicle_detail->vehicle_model}}</td>
-                                          </tr>
-
-
-                                          <tr>
-                                              <td>Vehicle Registration Number:</td>
-                                              <td>{{$vehicle_detail->vehicle_reg_no}}</td>
-                                          </tr>
-
-                                          <tr>
-                                              <td>Hire Rate/KM:</td>
-                                              <td>{{$vehicle_detail->hire_rate}} TZS</td>
-                                          </tr>
-
-                                      @endforeach
-
-                                  </table>
-                                  <br>
-                                  <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
-                              </div>
-                          </div>
-                      </div>
-                  </div></center></td>
-        <td><center>{{date("d/m/Y",strtotime($closed->start_date))}} </center></td>
-        <td><center>{{date("d/m/Y",strtotime($closed->end_date))}}</center></td>
-         <td>{{$closed->destination}}</td>
-         <td style="text-align: right;">{{number_format($closed->grand_total)}}</td>
-         <td><center>
-
-          <a title="View More Details" role="button" href="{{ route('carcontractviewmore',$closed->id) }}"><i class="fa fa-eye" aria-hidden="true" style="font-size:20px; color:#3490dc; cursor: pointer;"></i></a>
-          <a title="Download this contract" href="/contracts/car_rental/print?id={{$closed->id}}"><i class="fa fa-file-pdf-o" aria-hidden="true" style="font-size:20px; color:red;"></i></a></center></td>
-      </tr>
-      @endforeach
-    </tbody>
-  </table>
-  @else
-  <br><br>
-  <p style="font-size: 18px;">No record found.</p>
-  @endif
-</div>
-
-<div id="closed_2" class="tabcontent">
-   <br>
-   @if(count($closed_inact)!=0)
-<table class="hover table table-striped table-bordered" id="myTablecar4">
-    <thead class="thead-dark">
-      <th scope="col" style="color:#fff; width: 5%"><center>S/N</center></th>
-      <th scope="col" style="color:#fff; width: 16%"><center>Client Name</center></th>
-      <th scope="col" style="color:#fff; width: 10%"><center>Contract Number</center></th>
-      <th scope="col" style="color:#fff; width: 16%"><center>Vehicle</center></th>
-
-      <th scope="col" style="color:#fff; width: 14%"><center>Start Date</center></th>
-      <th scope="col" style="color:#fff; width: 14%"><center>End Date</center></th>
-      <th scope="col" style="color:#fff; width: 16%"><center>Destination</center></th>
-       <th scope="col" style="color:#fff; width: 16%"><center>Grand Total (TZS)</center></th>
-      <th scope="col" style="color:#fff;"><center>Action</center></th>
-    </thead>
-    <tbody>
-      @foreach($closed_inact as $closed)
-      <tr>
-        <th scope="row" class="counterCell text-center">.</th>
-
-          <td>
-
-              <a  title="Client Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#car_client7{{$closed->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$closed->fullName}}</center></a>
-              <div class="modal fade" id="car_client7{{$closed->id}}" role="dialog">
-
-                  <div class="modal-dialog" role="document">
-                      <div class="modal-content">
-                          <div class="modal-header">
-                              <b><h5 class="modal-title">Client Details.</h5></b>
-
-                              <button type="button" class="close" data-dismiss="modal">&times;</button>
-                          </div>
-
-                          <div class="modal-body">
-                              <table class="table table-striped table-bordered " style="width: 100%">
-
-                                  <tr>
-                                      <td>Client:</td>
-                                      <td>{{$closed->fullName}}</td>
-                                  </tr>
-
-
-                                  <tr>
-                                      <td>Email:</td>
-                                      <td>{{$closed->email}}</td>
-                                  </tr>
-
-                                  <tr>
-                                      <td>TIN:</td>
-                                      <td>{{$closed->tin}}</td>
-                                  </tr>
-
-
-                                  <tr>
-                                      <td>Department/Faculty/Unit:</td>
-                                      <td>{{$closed->faculty}}</td>
-                                  </tr>
-
-
-                              </table>
-                              <br>
-                              <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-
-
-          </td>
-          <td><center>{{$closed->id}}</center></td>
-          <td><center> <a  title="Vehicle Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#vehicle_details8{{$closed->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$closed->vehicle_reg_no}}</center></a>
-                  <div class="modal fade" id="vehicle_details8{{$closed->id}}" role="dialog">
-
-                      <div class="modal-dialog" role="document">
-                          <div class="modal-content">
-                              <div class="modal-header">
-                                  <b><h5 class="modal-title">Vehicle Details.</h5></b>
-
-                                  <button type="button" class="close" data-dismiss="modal">&times;</button>
-                              </div>
-
-                              <div class="modal-body">
-                                  <table class="table table-striped table-bordered " style="width: 100%">
-
-                                      <?php
-                                      $vehicle_details=DB::table('car_rentals')->where('vehicle_reg_no',$closed->vehicle_reg_no)->get();
-
-                                      ?>
-
-                                      @foreach($vehicle_details as $vehicle_detail)
-                                          <tr>
-                                              <td>Vehicle Model:</td>
-                                              <td>{{$vehicle_detail->vehicle_model}}</td>
-                                          </tr>
-
-
-                                          <tr>
-                                              <td>Vehicle Registration Number:</td>
-                                              <td>{{$vehicle_detail->vehicle_reg_no}}</td>
-                                          </tr>
-
-                                          <tr>
-                                              <td>Hire Rate/KM:</td>
-                                              <td>{{$vehicle_detail->hire_rate}} TZS</td>
-                                          </tr>
-
-                                      @endforeach
-
-                                  </table>
-                                  <br>
-                                  <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
-                              </div>
-                          </div>
-                      </div>
-                  </div></center></td>
-        <td><center>{{date("d/m/Y",strtotime($closed->start_date))}} </center></td>
-        <td><center>{{date("d/m/Y",strtotime($closed->end_date))}}</center></td>
-         <td>{{$closed->destination}}</td>
-         <td style="text-align: right;">{{number_format($closed->grand_total)}}</td>
-         <td><center>
-          <a title="View More Details" role="button" href="{{ route('carcontractviewmore',$closed->id) }}"><i class="fa fa-eye" aria-hidden="true" style="font-size:20px; color:#3490dc; cursor: pointer;"></i></a>
-          <a title="Download this contract" href="/contracts/car_rental/print?id={{$closed->id}}"><i class="fa fa-file-pdf-o" aria-hidden="true" style="font-size:20px; color:red;"></i></a></center></td>
-      </tr>
-      @endforeach
-    </tbody>
-  </table>
-  @else
-    <br><br>
-    <p style="font-size: 18px;">No record found.</p>
-  @endif
-</div>
-@elseif(Auth::user()->role=='Accountant-Cost Centre')
-  <div class="tab2">
-            <button class="tablinks" onclick="openContracts(event, 'inbox')" id="defaultOpen"><strong>Inbox</strong></button>
-            <button class="tablinks" onclick="openContracts(event, 'outbox')"><strong>Outbox</strong></button>
-            {{-- <button class="tablinks" onclick="openContracts(event, 'closed')"><strong>Active Contract</strong></button> --}}
-            <button class="tablinks" onclick="openContracts(event, 'closed_2')"><strong>Contracts</strong></button>
-        </div>
-<div id="inbox" class="tabcontent">
-  <br>
-  @if(count($inbox)>0)
-<table>
-    <thead>
-      <th style="width: 16%"><center>Contract Number</center></th>
-      <th style="width: 16%"><center>Initiated By</center></th>
-      <th style="width: 16%"><center>Client Name</center></th>
-      <th style="width: 16%"><center>Vehicle</center></th>
-
-      <th style="width: 16%"><center>Start Date</center></th>
-      <th style="width: 16%"><center>End Date</center></th>
-      <th style="width: 16%"><center>Destination</center></th>
-    </thead>
-    <tbody>
-      @foreach($inbox as $inbox)
-      <tr>
-          @if($inbox->start_date< date('Y-m-d'))
-        <td>
-          <a data-toggle="modal" data-target="#viewcar{{$inbox->id}}" role="button" aria-pressed="true" class="link_style" style="color: blue;"><center>{{$inbox->id}}</center></a>
-
-          <div class="modal fade" id="viewcar{{$inbox->id}}" role="dialog">
-
-            <div class="modal-dialog" role="document">
-              <div class="modal-content">
-                  <div class="modal-header">
-                    <b><h5 class="modal-title" style="color: red;"><b>WARNING</b></h5></b>
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                  </div>
-
-                  <div class="modal-body">
-                   <p style="text-align: left; font-size: 16px;">This contract is no longer valid since the start date of the trip has passed.</p>
-
-                  <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
-
-                </div>
-              </div>
-            </div>
-          </div>
-          </td>
-        @else
-
-
-            <td><center><a href="{{ route('carRentalFormB',$inbox->id) }}">{{$inbox->id}}</a></center></td>
-        @endif
-
-        <td><center>{{$inbox->form_initiator}}</center></td>
-              <td>
-
-                  <a  title="Client Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#car_client8{{$inbox->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$inbox->fullName}}</center></a>
-                  <div class="modal fade" id="car_client8{{$inbox->id}}" role="dialog">
-
-                      <div class="modal-dialog" role="document">
-                          <div class="modal-content">
-                              <div class="modal-header">
-                                  <b><h5 class="modal-title">Client Details.</h5></b>
-
-                                  <button type="button" class="close" data-dismiss="modal">&times;</button>
-                              </div>
-
-                              <div class="modal-body">
-                                  <table class="table table-striped table-bordered " style="width: 100%">
-
-                                      <tr>
-                                          <td>Client:</td>
-                                          <td>{{$inbox->fullName}}</td>
-                                      </tr>
-
-
-                                      <tr>
-                                          <td>Email:</td>
-                                          <td>{{$inbox->email}}</td>
-                                      </tr>
-
-                                      <tr>
-                                          <td>TIN:</td>
-                                          <td>{{$inbox->tin}}</td>
-                                      </tr>
-
-
-                                      <tr>
-                                          <td>Department/Faculty/Unit:</td>
-                                          <td>{{$inbox->faculty}}</td>
-                                      </tr>
-
-
-                                  </table>
-                                  <br>
-                                  <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-
-
-              </td>
-              <td><center> <a  title="Vehicle Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#vehicle_details9{{$inbox->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$inbox->vehicle_reg_no}}</center></a>
-                      <div class="modal fade" id="vehicle_details9{{$inbox->id}}" role="dialog">
-
-                          <div class="modal-dialog" role="document">
-                              <div class="modal-content">
-                                  <div class="modal-header">
-                                      <b><h5 class="modal-title">Vehicle Details.</h5></b>
-
-                                      <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                  </div>
-
-                                  <div class="modal-body">
-                                      <table class="table table-striped table-bordered " style="width: 100%">
-
-                                          <?php
-                                          $vehicle_details=DB::table('car_rentals')->where('vehicle_reg_no',$inbox->vehicle_reg_no)->get();
-
-                                          ?>
-
-                                          @foreach($vehicle_details as $vehicle_detail)
-                                              <tr>
-                                                  <td>Vehicle Model:</td>
-                                                  <td>{{$vehicle_detail->vehicle_model}}</td>
-                                              </tr>
-
-
-                                              <tr>
-                                                  <td>Vehicle Registration Number:</td>
-                                                  <td>{{$vehicle_detail->vehicle_reg_no}}</td>
-                                              </tr>
-
-                                              <tr>
-                                                  <td>Hire Rate/KM:</td>
-                                                  <td>{{$vehicle_detail->hire_rate}} TZS</td>
-                                              </tr>
-
-                                          @endforeach
-
-                                      </table>
-                                      <br>
-                                      <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
-                                  </div>
-                              </div>
-                          </div>
-                      </div></center></td>
-        <td><center>{{date("d/m/Y",strtotime($inbox->start_date))}}</center></td>
-        <td><center>{{date("d/m/Y",strtotime($inbox->end_date))}}</center></td>
-         <td><center>{{$inbox->destination}}</center></td>
-      </tr>
-      @endforeach
-    </tbody>
-  </table>
-   @else
-  <p style="line-height: 1.5;font-size: 17px;"><i class="fa fa-envelope-o" style="font-size:25px;color:#3490dc;"></i> No new message</p>
-  @endif
-</div>
-
-<div id="outbox" class="tabcontent">
-  <br>
-  @if(count($outbox)>0)
-<table>
-   <thead>
-      <th style="width: 14%"><center>Contract Number</center></th>
-      <th style="width: 14%"><center>Initiated By</center></th>
-      <th style="width: 14%"><center>Client Name</center></th>
-      <th style="width: 14%"><center>Vehicle</center></th>
-
-      <th style="width: 15%"><center>Start Date</center></th>
-      <th style="width: 15%"><center>End Date</center></th>
-      <th style="width: 14%"><center>Destination</center></th>
-      <th style="width: 14%"><center>Form Status</center></th>
-    </thead>
-    <tbody>
-      @foreach($outbox as $outbox)
-      <tr>
-        <td><center>{{$outbox->id}}</center></td>
-        <td><center>{{$outbox->form_initiator}}</center></td>
-          <td>
-
-              <a  title="Client Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#car_client9{{$outbox->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$outbox->fullName}}</center></a>
-              <div class="modal fade" id="car_client9{{$outbox->id}}" role="dialog">
-
-                  <div class="modal-dialog" role="document">
-                      <div class="modal-content">
-                          <div class="modal-header">
-                              <b><h5 class="modal-title">Client Details.</h5></b>
-
-                              <button type="button" class="close" data-dismiss="modal">&times;</button>
-                          </div>
-
-                          <div class="modal-body">
-                              <table class="table table-striped table-bordered " style="width: 100%">
-
-                                  <tr>
-                                      <td>Client:</td>
-                                      <td>{{$outbox->fullName}}</td>
-                                  </tr>
-
-
-                                  <tr>
-                                      <td>Email:</td>
-                                      <td>{{$outbox->email}}</td>
-                                  </tr>
-
-                                  <tr>
-                                      <td>TIN:</td>
-                                      <td>{{$outbox->tin}}</td>
-                                  </tr>
-
-
-                                  <tr>
-                                      <td>Department/Faculty/Unit:</td>
-                                      <td>{{$outbox->faculty}}</td>
-                                  </tr>
-
-
-                              </table>
-                              <br>
-                              <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-
-
-          </td>
-          <td><center> <a  title="Vehicle Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#vehicle_details10{{$outbox->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$outbox->vehicle_reg_no}}</center></a>
-                  <div class="modal fade" id="vehicle_details10{{$outbox->id}}" role="dialog">
-
-                      <div class="modal-dialog" role="document">
-                          <div class="modal-content">
-                              <div class="modal-header">
-                                  <b><h5 class="modal-title">Vehicle Details.</h5></b>
-
-                                  <button type="button" class="close" data-dismiss="modal">&times;</button>
-                              </div>
-
-                              <div class="modal-body">
-                                  <table class="table table-striped table-bordered " style="width: 100%">
-
-                                      <?php
-                                      $vehicle_details=DB::table('car_rentals')->where('vehicle_reg_no',$outbox->vehicle_reg_no)->get();
-
-                                      ?>
-
-                                      @foreach($vehicle_details as $vehicle_detail)
-                                          <tr>
-                                              <td>Vehicle Model:</td>
-                                              <td>{{$vehicle_detail->vehicle_model}}</td>
-                                          </tr>
-
-
-                                          <tr>
-                                              <td>Vehicle Registration Number:</td>
-                                              <td>{{$vehicle_detail->vehicle_reg_no}}</td>
-                                          </tr>
-
-                                          <tr>
-                                              <td>Hire Rate/KM:</td>
-                                              <td>{{$vehicle_detail->hire_rate}} TZS</td>
-                                          </tr>
-
-                                      @endforeach
-
-                                  </table>
-                                  <br>
-                                  <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
-                              </div>
-                          </div>
-                      </div>
-                  </div></center></td>
-        <td><center>{{date("d/m/Y",strtotime($outbox->start_date))}}</center></td>
-        <td><center>{{date("d/m/Y",strtotime($outbox->end_date))}}</center></td>
-         <td><center>{{$outbox->destination}}</center></td>
-        <td><center>{{$outbox->form_status}} Stage</center></td>
-      </tr>
-      @endforeach
-    </tbody>
-  </table>
-   @else
-  <p style="line-height: 1.5;font-size: 17px;"><i class="fa fa-envelope-o" style="font-size:25px;color:#3490dc;"></i> No new message</p>
-  @endif
-</div>
-<div id="closed" class="tabcontent">
-  @if(count($closed_act)!=0)
-   <br>
-<table class="hover table table-striped table-bordered" id="myTablecar">
-    <thead class="thead-dark">
-      <th scope="col" style="color:#fff; width: 5%"><center>S/N</center></th>
-      <th scope="col" style="color:#fff; width: 16%"><center>Client Name</center></th>
-      <th scope="col" style="color:#fff; width: 10%"><center>Contract Number</center></th>
-      <th scope="col" style="color:#fff; width: 16%"><center>Vehicle</center></th>
-
-      <th scope="col" style="color:#fff; width: 14%"><center>Start Date</center></th>
-      <th scope="col" style="color:#fff; width: 14%"><center>End Date</center></th>
-      <th scope="col" style="color:#fff; width: 16%"><center>Destination</center></th>
-       <th scope="col" style="color:#fff; width: 16%"><center>Grand Total (TZS)</center></th>
-      <th scope="col" style="color:#fff;"><center>Action</center></th>
-    </thead>
-    <tbody>
-      @foreach($closed_act as $closed)
-      <tr>
-        <th scope="row" class="counterCell text-center">.</th>
-
-          <td>
-
-              <a  title="Client Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#car_client10{{$closed->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$closed->fullName}}</center></a>
-              <div class="modal fade" id="car_client10{{$closed->id}}" role="dialog">
-
-                  <div class="modal-dialog" role="document">
-                      <div class="modal-content">
-                          <div class="modal-header">
-                              <b><h5 class="modal-title">Client Details.</h5></b>
-
-                              <button type="button" class="close" data-dismiss="modal">&times;</button>
-                          </div>
-
-                          <div class="modal-body">
-                              <table class="table table-striped table-bordered " style="width: 100%">
-
-                                  <tr>
-                                      <td>Client:</td>
-                                      <td>{{$closed->fullName}}</td>
-                                  </tr>
-
-
-                                  <tr>
-                                      <td>Email:</td>
-                                      <td>{{$closed->email}}</td>
-                                  </tr>
-
-                                  <tr>
-                                      <td>TIN:</td>
-                                      <td>{{$closed->tin}}</td>
-                                  </tr>
-
-
-                                  <tr>
-                                      <td>Department/Faculty/Unit:</td>
-                                      <td>{{$closed->faculty}}</td>
-                                  </tr>
-
-
-                              </table>
-                              <br>
-                              <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-
-
-          </td>
-          <td><center>{{$closed->id}}</center></td>
-          <td><center> <a  title="Vehicle Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#vehicle_details11{{$closed->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$closed->vehicle_reg_no}}</center></a>
-                  <div class="modal fade" id="vehicle_details11{{$closed->id}}" role="dialog">
-
-                      <div class="modal-dialog" role="document">
-                          <div class="modal-content">
-                              <div class="modal-header">
-                                  <b><h5 class="modal-title">Vehicle Details.</h5></b>
-
-                                  <button type="button" class="close" data-dismiss="modal">&times;</button>
-                              </div>
-
-                              <div class="modal-body">
-                                  <table class="table table-striped table-bordered " style="width: 100%">
-
-                                      <?php
-                                      $vehicle_details=DB::table('car_rentals')->where('vehicle_reg_no',$closed->vehicle_reg_no)->get();
-
-                                      ?>
-
-                                      @foreach($vehicle_details as $vehicle_detail)
-                                          <tr>
-                                              <td>Vehicle Model:</td>
-                                              <td>{{$vehicle_detail->vehicle_model}}</td>
-                                          </tr>
-
-
-                                          <tr>
-                                              <td>Vehicle Registration Number:</td>
-                                              <td>{{$vehicle_detail->vehicle_reg_no}}</td>
-                                          </tr>
-
-                                          <tr>
-                                              <td>Hire Rate/KM:</td>
-                                              <td>{{$vehicle_detail->hire_rate}} TZS</td>
-                                          </tr>
-
-                                      @endforeach
-
-                                  </table>
-                                  <br>
-                                  <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
-                              </div>
-                          </div>
-                      </div>
-                  </div></center></td>
-        <td><center>{{date("d/m/Y",strtotime($closed->start_date))}}</center></td>
-        <td><center>{{date("d/m/Y",strtotime($closed->end_date))}}</center></td>
-         <td>{{$closed->destination}}</td>
-         <td style="text-align: right;">{{number_format($closed->grand_total)}}</td>
-         <td><center>
-         <a title="View More Details" role="button" href="{{ route('carcontractviewmore',$closed->id) }}"><i class="fa fa-eye" aria-hidden="true" style="font-size:20px; color:#3490dc; cursor: pointer;"></i></a>
-          <a title="Download this contract" href="/contracts/car_rental/print?id={{$closed->id}}"><i class="fa fa-file-pdf-o" aria-hidden="true" style="font-size:20px; color:red;"></i></a></center></td>
-      </tr>
-      @endforeach
-    </tbody>
-  </table>
-  @else
-    <br><br>
-    <p style="font-size: 18px;">No record found.</p>
-  @endif
-</div>
-<div id="closed_2" class="tabcontent">
-  @if(count($closed_inact)!=0)
-   <br>
-<table class="hover table table-striped table-bordered" id="myTablecar5">
-    <thead class="thead-dark">
-      <th scope="col" style="color:#fff; width: 5%"><center>S/N</center></th>
-      <th scope="col" style="color:#fff; width: 16%"><center>Client Name</center></th>
-      <th scope="col" style="color:#fff; width: 10%"><center>Contract Number</center></th>
-      <th scope="col" style="color:#fff; width: 16%"><center>Vehicle</center></th>
-
-      <th scope="col" style="color:#fff; width: 14%"><center>Start Date</center></th>
-      <th scope="col" style="color:#fff; width: 14%"><center>End Date</center></th>
-      <th scope="col" style="color:#fff; width: 16%"><center>Destination</center></th>
-       <th scope="col" style="color:#fff; width: 16%"><center>Grand Total (TZS)</center></th>
-      <th scope="col" style="color:#fff;"><center>Action</center></th>
-    </thead>
-    <tbody>
-      @foreach($closed_inact as $closed)
-      <tr>
-        <th scope="row" class="counterCell text-center">.</th>
-
-          <td>
-
-              <a  title="Client Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#car_client11{{$closed->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$closed->fullName}}</center></a>
-              <div class="modal fade" id="car_client11{{$closed->id}}" role="dialog">
-
-                  <div class="modal-dialog" role="document">
-                      <div class="modal-content">
-                          <div class="modal-header">
-                              <b><h5 class="modal-title">Client Details.</h5></b>
-
-                              <button type="button" class="close" data-dismiss="modal">&times;</button>
-                          </div>
-
-                          <div class="modal-body">
-                              <table class="table table-striped table-bordered " style="width: 100%">
-
-                                  <tr>
-                                      <td>Client:</td>
-                                      <td>{{$closed->fullName}}</td>
-                                  </tr>
-
-
-                                  <tr>
-                                      <td>Email:</td>
-                                      <td>{{$closed->email}}</td>
-                                  </tr>
-
-                                  <tr>
-                                      <td>TIN:</td>
-                                      <td>{{$closed->tin}}</td>
-                                  </tr>
-
-
-                                  <tr>
-                                      <td>Department/Faculty/Unit:</td>
-                                      <td>{{$closed->faculty}}</td>
-                                  </tr>
-
-
-                              </table>
-                              <br>
-                              <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-
-
-          </td>
-          <td><center>{{$closed->id}}</center></td>
-          <td><center> <a  title="Vehicle Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#vehicle_details12{{$closed->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$closed->vehicle_reg_no}}</center></a>
-                  <div class="modal fade" id="vehicle_details12{{$closed->id}}" role="dialog">
-
-                      <div class="modal-dialog" role="document">
-                          <div class="modal-content">
-                              <div class="modal-header">
-                                  <b><h5 class="modal-title">Vehicle Details.</h5></b>
-
-                                  <button type="button" class="close" data-dismiss="modal">&times;</button>
-                              </div>
-
-                              <div class="modal-body">
-                                  <table class="table table-striped table-bordered " style="width: 100%">
-
-                                      <?php
-                                      $vehicle_details=DB::table('car_rentals')->where('vehicle_reg_no',$closed->vehicle_reg_no)->get();
-
-                                      ?>
-
-                                      @foreach($vehicle_details as $vehicle_detail)
-                                          <tr>
-                                              <td>Vehicle Model:</td>
-                                              <td>{{$vehicle_detail->vehicle_model}}</td>
-                                          </tr>
-
-
-                                          <tr>
-                                              <td>Vehicle Registration Number:</td>
-                                              <td>{{$vehicle_detail->vehicle_reg_no}}</td>
-                                          </tr>
-
-                                          <tr>
-                                              <td>Hire Rate/KM:</td>
-                                              <td>{{$vehicle_detail->hire_rate}} TZS</td>
-                                          </tr>
-
-                                      @endforeach
-
-                                  </table>
-                                  <br>
-                                  <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
-                              </div>
-                          </div>
-                      </div>
-                  </div></center></td>
-        <td><center>{{date("d/m/Y",strtotime($closed->start_date))}}</center></td>
-        <td><center>{{date("d/m/Y",strtotime($closed->end_date))}}</center></td>
-         <td>{{$closed->destination}}</td>
-         <td style="text-align: right;">{{number_format($closed->grand_total)}}</td>
-         <td><center>
-         <a title="View More Details" role="button" href="{{ route('carcontractviewmore',$closed->id) }}"><i class="fa fa-eye" aria-hidden="true" style="font-size:20px; color:#3490dc; cursor: pointer;"></i></a>
-          <a title="Download this contract" href="/contracts/car_rental/print?id={{$closed->id}}"><i class="fa fa-file-pdf-o" aria-hidden="true" style="font-size:20px; color:red;"></i></a></center></td>
-      </tr>
-      @endforeach
-    </tbody>
-  </table>
-  @else
-    <br><br>
-    <p style="font-size: 18px;">No record found.</p>
-  @endif
-</div>
-@elseif(Auth::user()->role=='Head of CPTU')
-<a class="btn btn-success" href="{{ route('carRentalForm') }}" role="button" style="
-    padding: 10px; margin-bottom: 5px; margin-top: 4px;">Add New Contract
-  </a>
-  <br><br>
-  <div class="tab2">
-            <button class="tablinks" onclick="openContracts(event, 'inbox')" id="defaultOpen"><strong>Inbox</strong></button>
-            <button class="tablinks" onclick="openContracts(event, 'outbox')"><strong>Outbox</strong></button>
-            {{-- <button class="tablinks" onclick="openContracts(event, 'closed')"><strong>Active Contract</strong></button> --}}
-            <button class="tablinks" onclick="openContracts(event, 'closed_2')"><strong>Contracts</strong></button>
-            <button class="tablinks" onclick="openContracts(event, 'log_sheet')"><strong>Log Sheet</strong></button>
-        </div>
-<div id="inbox" class="tabcontent">
-  <br>
-  @if(count($inbox)>0)
-<table>
-    <thead>
-      <th style="width: 16%"><center>Contract Number</center></th>
-      <th style="width: 16%"><center>Initiated By</center></th>
-      <th style="width: 16%"><center>Client Name</center></th>
-      <th style="width: 16%"><center>Vehicle</center></th>
-
-      <th style="width: 16%"><center>Start Date</center></th>
-      <th style="width: 16%"><center>End Date</center></th>
-      <th style="width: 16%"><center>Destination</center></th>
-    </thead>
-    <tbody>
-      @foreach($inbox as $inbox)
-      <tr>
-        @if($inbox->start_date< date('Y-m-d'))
-          <td>
-          <a data-toggle="modal" data-target="#viewcar{{$inbox->id}}" role="button" aria-pressed="true" class="link_style" style="color: blue;"><center>{{$inbox->id}}</center></a>
-
-          <div class="modal fade" id="viewcar{{$inbox->id}}" role="dialog">
-
-            <div class="modal-dialog" role="document">
-              <div class="modal-content">
-                  <div class="modal-header">
-                    <b><h5 class="modal-title" style="color: red;"><b>WARNING</b></h5></b>
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                  </div>
-
-                  <div class="modal-body">
-                   <p style="text-align: left; font-size: 16px;">This contract is no longer valid since the start date of the trip has passed.</p>
-
-                  <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
-
-                </div>
-              </div>
-            </div>
-          </div>
-          </td>
-
-        @else
-          <td><center><a href="{{ route('carRentalFormD',$inbox->id) }}">{{$inbox->id}}</a></center></td>
-        @endif
-
-        <td><center>{{$inbox->form_initiator}}</center></td>
-            <td>
-
-                <a  title="Client Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#car_client12{{$inbox->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$inbox->fullName}}</center></a>
-                <div class="modal fade" id="car_client12{{$inbox->id}}" role="dialog">
-
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <b><h5 class="modal-title">Client Details.</h5></b>
-
-                                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            </div>
-
-                            <div class="modal-body">
-                                <table class="table table-striped table-bordered " style="width: 100%">
-
-                                    <tr>
-                                        <td>Client:</td>
-                                        <td>{{$inbox->fullName}}</td>
-                                    </tr>
-
-
-                                    <tr>
-                                        <td>Email:</td>
-                                        <td>{{$inbox->email}}</td>
-                                    </tr>
-
-                                    <tr>
-                                        <td>TIN:</td>
-                                        <td>{{$inbox->tin}}</td>
-                                    </tr>
-
-
-                                    <tr>
-                                        <td>Department/Faculty/Unit:</td>
-                                        <td>{{$inbox->faculty}}</td>
-                                    </tr>
-
-
-                                </table>
-                                <br>
-                                <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-
-            </td>
-            <td><center> <a  title="Vehicle Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#vehicle_details13{{$inbox->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$inbox->vehicle_reg_no}}</center></a>
-                    <div class="modal fade" id="vehicle_details13{{$inbox->id}}" role="dialog">
-
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <b><h5 class="modal-title">Vehicle Details.</h5></b>
-
-                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                </div>
-
-                                <div class="modal-body">
-                                    <table class="table table-striped table-bordered " style="width: 100%">
-
-                                        <?php
-                                        $vehicle_details=DB::table('car_rentals')->where('vehicle_reg_no',$inbox->vehicle_reg_no)->get();
-
-                                        ?>
-
-                                        @foreach($vehicle_details as $vehicle_detail)
-                                            <tr>
-                                                <td>Vehicle Model:</td>
-                                                <td>{{$vehicle_detail->vehicle_model}}</td>
-                                            </tr>
-
-
-                                            <tr>
-                                                <td>Vehicle Registration Number:</td>
-                                                <td>{{$vehicle_detail->vehicle_reg_no}}</td>
-                                            </tr>
-
-                                            <tr>
-                                                <td>Hire Rate/KM:</td>
-                                                <td>{{$vehicle_detail->hire_rate}} TZS</td>
-                                            </tr>
-
-                                        @endforeach
-
-                                    </table>
-                                    <br>
-                                    <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
-                                </div>
-                            </div>
-                        </div>
-                    </div></center></td>
-        <td><center>{{date("d/m/Y",strtotime($inbox->start_date))}}</center></td>
-        <td><center> {{date("d/m/Y",strtotime($inbox->end_date))}}</center></td>
-        <td><center>{{$inbox->destination}}</center></td>
-      </tr>
-      @endforeach
-    </tbody>
-  </table>
-   @else
-  <p style="line-height: 1.5;font-size: 17px;"><i class="fa fa-envelope-o" style="font-size:25px;color:#3490dc;"></i> No new message</p>
-  @endif
-</div>
-
-<div id="outbox" class="tabcontent">
-  <br>
-  @if(count($outbox)>0)
-<table>
-   <thead>
-      <th style="width: 14%"><center>Contract Number</center></th>
-      <th style="width: 14%"><center>Initiated By</center></th>
-      <th style="width: 14%"><center>Client Name</center></th>
-      <th style="width: 14%"><center>Vehicle</center></th>
-
-      <th style="width: 15%"><center>Start Date</center></th>
-      <th style="width: 15%"><center>End Date</center></th>
-      <th style="width: 14%"><center>Destination</center></th>
-      <th style="width: 14%"><center>Form Status</center></th>
-      <th style="width: 14%"><center>Action</center></th>
-    </thead>
-    <tbody>
-      @foreach($outbox as $outbox)
-      <tr>
-        <td><center>{{$outbox->id}}</center></td>
-        <td><center>{{$outbox->form_initiator}}</center></td>
-          <td>
-
-              <a  title="Client Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#car_client13{{$outbox->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$outbox->fullName}}</center></a>
-              <div class="modal fade" id="car_client13{{$outbox->id}}" role="dialog">
-
-                  <div class="modal-dialog" role="document">
-                      <div class="modal-content">
-                          <div class="modal-header">
-                              <b><h5 class="modal-title">Client Details.</h5></b>
-
-                              <button type="button" class="close" data-dismiss="modal">&times;</button>
-                          </div>
-
-                          <div class="modal-body">
-                              <table class="table table-striped table-bordered " style="width: 100%">
-
-                                  <tr>
-                                      <td>Client:</td>
-                                      <td>{{$outbox->fullName}}</td>
-                                  </tr>
-
-
-                                  <tr>
-                                      <td>Email:</td>
-                                      <td>{{$outbox->email}}</td>
-                                  </tr>
-
-                                  <tr>
-                                      <td>TIN:</td>
-                                      <td>{{$outbox->tin}}</td>
-                                  </tr>
-
-
-                                  <tr>
-                                      <td>Department/Faculty/Unit:</td>
-                                      <td>{{$outbox->faculty}}</td>
-                                  </tr>
-
-
-                              </table>
-                              <br>
-                              <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-
-
-          </td>
-          <td><center> <a  title="Vehicle Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#vehicle_details14{{$outbox->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$outbox->vehicle_reg_no}}</center></a>
-                  <div class="modal fade" id="vehicle_details14{{$outbox->id}}" role="dialog">
-
-                      <div class="modal-dialog" role="document">
-                          <div class="modal-content">
-                              <div class="modal-header">
-                                  <b><h5 class="modal-title">Vehicle Details.</h5></b>
-
-                                  <button type="button" class="close" data-dismiss="modal">&times;</button>
-                              </div>
-
-                              <div class="modal-body">
-                                  <table class="table table-striped table-bordered " style="width: 100%">
-
-                                      <?php
-                                      $vehicle_details=DB::table('car_rentals')->where('vehicle_reg_no',$outbox->vehicle_reg_no)->get();
-
-                                      ?>
-
-                                      @foreach($vehicle_details as $vehicle_detail)
-                                          <tr>
-                                              <td>Vehicle Model:</td>
-                                              <td>{{$vehicle_detail->vehicle_model}}</td>
-                                          </tr>
-
-
-                                          <tr>
-                                              <td>Vehicle Registration Number:</td>
-                                              <td>{{$vehicle_detail->vehicle_reg_no}}</td>
-                                          </tr>
-
-                                          <tr>
-                                              <td>Hire Rate/KM:</td>
-                                              <td>{{$vehicle_detail->hire_rate}} TZS</td>
-                                          </tr>
-
-                                      @endforeach
-
-                                  </table>
-                                  <br>
-                                  <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
-                              </div>
-                          </div>
-                      </div>
-                  </div></center></td>
-        <td><center>{{date("d/m/Y",strtotime($outbox->start_date))}}</center></td>
-        <td><center>{{date("d/m/Y",strtotime($outbox->end_date))}}</center></td>
-         <td><center>{{$outbox->destination}}</center></td>
-        <td><center>{{$outbox->form_status}} Stage</center></td>
-       @if($outbox->start_date < date('Y-m-d'))
-          <td>
-             <a title="Delete this form" data-toggle="modal" data-target="#delete{{$outbox->id}}" role="button" aria-pressed="true" style="color: blue;" class="link_style"><center><i class="fa fa-trash" aria-hidden="true" style="font-size:18px; color:red;"></i></center></a>
-
-        <div class="modal fade" id="delete{{$outbox->id}}" role="dialog">
-
-          <div class="modal-dialog" role="document">
-              <div class="modal-content">
-                  <div class="modal-header">
-                    <b><h5 class="modal-title" style="color: red;"><b>WARNING</b></h5></b>
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                  </div>
-
-                  <div class="modal-body">
-                   <p style="text-align: left; font-size: 16px;">Are you sure you want to delete this form?</p>
-                    <br>
-                  <div align="right">
-                    <a href="{{ route('deletecontract',$outbox->id) }}" class="btn btn-primary">Proceed</a>
-                    <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
-                  </div>
-
-               </div>
-              </div>
-            </div>
-          </div>
-          </td>
-        @else
-          <td><center>N/A</center></td>
-        @endif
-      </tr>
-      @endforeach
-    </tbody>
-  </table>
-   @else
-  <p style="line-height: 1.5;font-size: 17px;"><i class="fa fa-envelope-o" style="font-size:25px;color:#3490dc;"></i> No new message</p>
-  @endif
-</div>
-<div id="closed" class="tabcontent">
-  @if(count($closed_act)!=0)
-   <br>
-<table class="hover table table-striped table-bordered" id="myTablecar">
-    <thead class="thead-dark">
-      <th scope="col" style="color:#fff; width: 5%"><center>S/N</center></th>
-      <th scope="col" style="color:#fff; width: 16%"><center>Client Name</center></th>
-      <th scope="col" style="color:#fff; width: 10%"><center>Contract Number</center></th>
-      <th scope="col" style="color:#fff; width: 16%"><center>Vehicle</center></th>
-
-      <th scope="col" style="color:#fff; width: 14%"><center>Start Date</center></th>
-      <th scope="col" style="color:#fff; width: 14%"><center>End Date</center></th>
-      <th scope="col" style="color:#fff; width: 16%"><center>Destination</center></th>
-       <th scope="col" style="color:#fff; width: 16%"><center>Grand Total (TZS)</center></th>
-      <th scope="col" style="color:#fff;"><center>Action</center></th>
-    </thead>
-    <tbody>
-      @foreach($closed_act as $closed)
-      <tr>
-        <th scope="row" class="counterCell text-center">.</th>
-
-          <td>
-
-              <a  title="Client Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#car_client14{{$closed->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$closed->fullName}}</center></a>
-              <div class="modal fade" id="car_client14{{$closed->id}}" role="dialog">
-
-                  <div class="modal-dialog" role="document">
-                      <div class="modal-content">
-                          <div class="modal-header">
-                              <b><h5 class="modal-title">Client Details.</h5></b>
-
-                              <button type="button" class="close" data-dismiss="modal">&times;</button>
-                          </div>
-
-                          <div class="modal-body">
-                              <table class="table table-striped table-bordered " style="width: 100%">
-
-                                  <tr>
-                                      <td>Client:</td>
-                                      <td>{{$closed->fullName}}</td>
-                                  </tr>
-
-
-                                  <tr>
-                                      <td>Email:</td>
-                                      <td>{{$closed->email}}</td>
-                                  </tr>
-
-                                  <tr>
-                                      <td>TIN:</td>
-                                      <td>{{$closed->tin}}</td>
-                                  </tr>
-
-
-                                  <tr>
-                                      <td>Department/Faculty/Unit:</td>
-                                      <td>{{$closed->faculty}}</td>
-                                  </tr>
-
-
-                              </table>
-                              <br>
-                              <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-
-
-          </td>
-          <td><center>{{$closed->id}}</center></td>
-          <td><center> <a  title="Vehicle Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#vehicle_details15{{$closed->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$closed->vehicle_reg_no}}</center></a>
-                  <div class="modal fade" id="vehicle_details15{{$closed->id}}" role="dialog">
-
-                      <div class="modal-dialog" role="document">
-                          <div class="modal-content">
-                              <div class="modal-header">
-                                  <b><h5 class="modal-title">Vehicle Details.</h5></b>
-
-                                  <button type="button" class="close" data-dismiss="modal">&times;</button>
-                              </div>
-
-                              <div class="modal-body">
-                                  <table class="table table-striped table-bordered " style="width: 100%">
-
-                                      <?php
-                                      $vehicle_details=DB::table('car_rentals')->where('vehicle_reg_no',$closed->vehicle_reg_no)->get();
-
-                                      ?>
-
-                                      @foreach($vehicle_details as $vehicle_detail)
-                                          <tr>
-                                              <td>Vehicle Model:</td>
-                                              <td>{{$vehicle_detail->vehicle_model}}</td>
-                                          </tr>
-
-
-                                          <tr>
-                                              <td>Vehicle Registration Number:</td>
-                                              <td>{{$vehicle_detail->vehicle_reg_no}}</td>
-                                          </tr>
-
-                                          <tr>
-                                              <td>Hire Rate/KM:</td>
-                                              <td>{{$vehicle_detail->hire_rate}} TZS</td>
-                                          </tr>
-
-                                      @endforeach
-
-                                  </table>
-                                  <br>
-                                  <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
-                              </div>
-                          </div>
-                      </div>
-                  </div></center></td>
-        <td><center>{{date("d/m/Y",strtotime($closed->start_date))}}</center></td>
-        <td><center> {{date("d/m/Y",strtotime($closed->end_date))}}</center></td>
-         <td>{{$closed->destination}}</td>
-         <td style="text-align: right;">{{number_format($closed->grand_total)}}</td>
-         <td><center>
-         <a title="View More Details" role="button" href="{{ route('carcontractviewmore',$closed->id) }}"><i class="fa fa-eye" aria-hidden="true" style="font-size:20px; color:#3490dc; cursor: pointer;"></i></a>
-
-          <a title="Download this contract" href="/contracts/car_rental/print?id={{$closed->id}}"><i class="fa fa-file-pdf-o" aria-hidden="true" style="font-size:20px; color:red;"></i></a>
-
-          <a title="Terminate this contract" data-toggle="modal" data-target="#terminate{{$closed->id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px; color:red; cursor: pointer;"></i></a>
-
-        <div class="modal fade" id="terminate{{$closed->id}}" role="dialog">
-
-          <div class="modal-dialog" role="document">
-              <div class="modal-content">
-                  <div class="modal-header">
-                    <b><h5 class="modal-title" style="color: red;"><b>Terminating Contract</b></h5></b>
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                  </div>
-
-                  <div class="modal-body">
-                   <p style="text-align: left; font-size: 16px;">You are about to terminate <strong>"{{$closed->fullName}}"</strong> contract. Provide reason for termination to proceed.</p>
-
-                    <form method="get" action="{{ route('terminateCarRental',$closed->id) }}" >
-                        {{csrf_field()}}
-
-                          <div class="form-group">
-                              <div class="form-wrapper">
-                                  <label for=""><strong>Reason:<span style="color: red;">*</span></strong></label>
-                                    <textarea required name="reason_for_termination" class="form-control"></textarea>
-
-                              </div>
-                          </div>
-                            <br>
-
-                            <div align="right">
-                              <button class="btn btn-primary" type="submit" id="newdata">Terminate</button>
-                              <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
-                            </div>
-
-                    </form>
-
-                </div>
-              </div>
-            </div>
-          </div>
-        </center></td>
-      </tr>
-      @endforeach
-    </tbody>
-  </table>
-  @else
-  <br><br>
-  <p style="font-size: 18px;">No record found.</p>
-  @endif
-</div>
-<div id="closed_2" class="tabcontent">
-  @if(count($closed_inact)!=0)
-   <br>
-<table class="hover table table-striped table-bordered" id="myTablecar6">
-    <thead class="thead-dark">
-      <th scope="col" style="color:#fff; width: 5%"><center>S/N</center></th>
-      <th scope="col" style="color:#fff; width: 16%"><center>Client Name</center></th>
-      <th scope="col" style="color:#fff; width: 10%"><center>Contract Number</center></th>
-      <th scope="col" style="color:#fff; width: 16%"><center>Vehicle</center></th>
-
-      <th scope="col" style="color:#fff; width: 14%"><center>Start Date</center></th>
-      <th scope="col" style="color:#fff; width: 14%"><center>End Date</center></th>
-      <th scope="col" style="color:#fff; width: 16%"><center>Destination</center></th>
-       <th scope="col" style="color:#fff; width: 16%"><center>Grand Total (TZS)</center></th>
-      <th scope="col" style="color:#fff;"><center>Action</center></th>
-    </thead>
-    <tbody>
-      @foreach($closed_inact as $closed)
-      <tr>
-        <th scope="row" class="counterCell text-center">.</th>
-
-          <td>
-
-              <a  title="Client Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#car_client15{{$closed->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$closed->fullName}}</center></a>
-              <div class="modal fade" id="car_client15{{$closed->id}}" role="dialog">
-
-                  <div class="modal-dialog" role="document">
-                      <div class="modal-content">
-                          <div class="modal-header">
-                              <b><h5 class="modal-title">Client Details.</h5></b>
-
-                              <button type="button" class="close" data-dismiss="modal">&times;</button>
-                          </div>
-
-                          <div class="modal-body">
-                              <table class="table table-striped table-bordered " style="width: 100%">
-
-                                  <tr>
-                                      <td>Client:</td>
-                                      <td>{{$closed->fullName}}</td>
-                                  </tr>
-
-
-                                  <tr>
-                                      <td>Email:</td>
-                                      <td>{{$closed->email}}</td>
-                                  </tr>
-
-                                  <tr>
-                                      <td>TIN:</td>
-                                      <td>{{$closed->tin}}</td>
-                                  </tr>
-
-
-                                  <tr>
-                                      <td>Department/Faculty/Unit:</td>
-                                      <td>{{$closed->faculty}}</td>
-                                  </tr>
-
-
-                              </table>
-                              <br>
-                              <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-
-
-          </td>
-          <td><center>{{$closed->id}}</center></td>
-          <td><center> <a  title="Vehicle Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#vehicle_details16{{$closed->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$closed->vehicle_reg_no}}</center></a>
-                  <div class="modal fade" id="vehicle_details16{{$closed->id}}" role="dialog">
-
-                      <div class="modal-dialog" role="document">
-                          <div class="modal-content">
-                              <div class="modal-header">
-                                  <b><h5 class="modal-title">Vehicle Details.</h5></b>
-
-                                  <button type="button" class="close" data-dismiss="modal">&times;</button>
-                              </div>
-
-                              <div class="modal-body">
-                                  <table class="table table-striped table-bordered " style="width: 100%">
-
-                                      <?php
-                                      $vehicle_details=DB::table('car_rentals')->where('vehicle_reg_no',$closed->vehicle_reg_no)->get();
-
-                                      ?>
-
-                                      @foreach($vehicle_details as $vehicle_detail)
-                                          <tr>
-                                              <td>Vehicle Model:</td>
-                                              <td>{{$vehicle_detail->vehicle_model}}</td>
-                                          </tr>
-
-
-                                          <tr>
-                                              <td>Vehicle Registration Number:</td>
-                                              <td>{{$vehicle_detail->vehicle_reg_no}}</td>
-                                          </tr>
-
-                                          <tr>
-                                              <td>Hire Rate/KM:</td>
-                                              <td>{{$vehicle_detail->hire_rate}} TZS</td>
-                                          </tr>
-
-                                      @endforeach
-
-                                  </table>
-                                  <br>
-                                  <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
-                              </div>
-                          </div>
-                      </div>
-                  </div></center></td>
-
-        <td><center>{{date("d/m/Y",strtotime($closed->start_date))}}</center></td>
-        <td><center>{{date("d/m/Y",strtotime($closed->end_date))}}</center></td>
-         <td>{{$closed->destination}}</td>
-         <td style="text-align: right;">{{number_format($closed->grand_total)}}</td>
-         <td><center>
-         <a title="View More Details" role="button" href="{{ route('carcontractviewmore',$closed->id) }}"><i class="fa fa-eye" aria-hidden="true" style="font-size:20px; color:#3490dc; cursor: pointer;"></i></a>
-          <a title="Download this contract" href="/contracts/car_rental/print?id={{$closed->id}}"><i class="fa fa-file-pdf-o" aria-hidden="true" style="font-size:20px; color:red;"></i></a></center></td>
-      </tr>
-      @endforeach
-    </tbody>
-  </table>
-  @else
-  <br><br>
-  <p style="font-size: 18px;">No record found.</p>
-  @endif
-</div>
-
-<div id="log_sheet" class="tabcontent" style="border-bottom-left-radius: 50px 20px;">
-  <?php $logsheets = DB::table('log_sheets')->select('contract_id')->distinct('contract_id')->orderBy('id','dsc')->get();
-  $d = 1;
-  ?>
-  <br>
-       <a title="Add New Log Sheet" class="btn btn-success" role="button" data-toggle="modal" data-target="#new_log" role="button" aria-pressed="true" style="color: white;">Add New Log Sheet</a>
-
-<div class="modal fade" id="new_log" role="dialog">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <b><h5 class="modal-title">Fill the Contract Number to continue</h5></b>
-              <button type="button" class="close" data-dismiss="modal">&times;</button>
-            </div>
-
-           <div class="modal-body">
-            <form method="post" action="{{ route('logsheetindex') }}">
-              {{csrf_field()}}
-                  <div class="form-group">
-                    <div class="form-wrapper">
-                      <label for="hire_rate">Contract Number<span style="color: red;">*</span></label>
-                      <input type="text" id="contract_id" name="contract_id" class="form-control" required="" onkeypress="if((this.value.length<10)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
-                    </div>
-                </div>
-
-                <div align="right">
-                  <button type="submit" class="btn btn-primary">Submit</button>
-                  <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
-                </div>
-            </form>
-
-
-          </div>
-        </div>
-      </div>
-</div>
-
-
-
-
-
-
-  <br><br>
-    <table class="hover table table-bordered  table-striped" id="LogTable">
-      <thead class="thead-dark">
-          <th scope="col" style="color:#fff;"><center>SN</center></th>
-          <th scope="col" style="color:#fff;"><center>Client Name</center></th>
-          <th scope="col" style="color:#fff;"><center>Contract Number</center></th>
-          <th scope="col" style="color:#fff;"><center>Vehicle Reg No.</center></th>
-          <th scope="col" style="color:#fff;"><center>Driver Name</center></th>
-          <th scope="col" style="color:#fff;"><center>Destination</center></th>
-          <th scope="col" style="color:#fff;"><center>Start Date</center></th>
-          <th scope="col" style="color:#fff;"><center>End Date</center></th>
-          <th scope="col" style="color:#fff;"><center>Action</center></th>
-        </thead>
-        <tbody>
-          @foreach($logsheets as $log)
-            <?php $details = DB::table('car_contracts')->select('vehicle_reg_no','driver_name','fullName','faculty','destination','start_date', 'end_date')->where('id',$log->contract_id)->first(); ?>
-            <tr>
-              <th style="text-align: center;">{{$d}}.</th>
-              <td>{{$details->fullName}}</td>
-                <td><center>{{$log->contract_id}}</center></td>
-                <td><center>{{$details->vehicle_reg_no}}</center></td>
-                <td>{{$details->driver_name}}</td>
-              <td><center>{{$details->destination}}</center></td>
-              <td><center>{{date("d/m/Y",strtotime($details->start_date))}} </center></td>
-              <td><center>{{date("d/m/Y",strtotime($details->end_date))}}</center></td>
-              <td><center><a title="View More Details" role="button" href="{{ route('logsheetmore',$log->contract_id) }}"><i class="fa fa-eye" aria-hidden="true" style="font-size:20px; color:#3490dc; cursor: pointer;"></i></a></center></td>
-            </tr>
-            <?php $d = $d+1; ?>
-          @endforeach
-        </tbody>
-    </table>
-</div>
-@elseif(Auth::user()->role=='DVC Administrator')
-  <div class="tab2">
-            <button class="tablinks" onclick="openContracts(event, 'inbox')" id="defaultOpen"><strong>Inbox</strong></button>
-            <button class="tablinks" onclick="openContracts(event, 'outbox')"><strong>Outbox</strong></button>
-            {{-- <button class="tablinks" onclick="openContracts(event, 'closed')"><strong>Active Contract</strong></button> --}}
-            <button class="tablinks" onclick="openContracts(event, 'closed_2')"><strong>Contracts</strong></button>
-            <button class="tablinks" onclick="openContracts(event, 'log_sheet')"><strong>Log Sheets</strong></button>
-    </div>
-<div id="inbox" class="tabcontent">
-  <br>
-  @if(count($inbox)>0)
-<table>
-    <thead>
-      <th style="width: 16%"><center>Contract Number</center></th>
-      <th style="width: 16%"><center>Initiated By</center></th>
-      <th style="width: 16%"><center>Client Name</center></th>
-      <th style="width: 16%"><center>Vehicle</center></th>
-
-      <th style="width: 16%"><center>Start Date</center></th>
-      <th style="width: 16%"><center>End Date</center></th>
-      <th style="width: 16%"><center>Destination</center></th>
-    </thead>
-    <tbody>
-      @foreach($inbox as $inbox)
-      <tr>
-      @if($inbox->start_date< date('Y-m-d'))
-        <td>
-          <a data-toggle="modal" data-target="#viewcar{{$inbox->id}}" role="button" aria-pressed="true" class="link_style" style="color: blue;"><center>{{$inbox->id}}</center></a>
-
-          <div class="modal fade" id="viewcar{{$inbox->id}}" role="dialog">
-
-            <div class="modal-dialog" role="document">
-              <div class="modal-content">
-                  <div class="modal-header">
-                    <b><h5 class="modal-title" style="color: red;"><b>WARNING</b></h5></b>
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                  </div>
-
-                  <div class="modal-body">
-                   <p style="text-align: left; font-size: 16px;">This contract is no longer valid since the start date of the trip has passed.</p>
-
-                  <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
-
-                </div>
-              </div>
-            </div>
-          </div>
-          </td>
-        @else
-           <td><center><a href="{{ route('carRentalFormD1',$inbox->id) }}">{{$inbox->id}}</a></center></td>
-        @endif
-        <td><center>{{$inbox->form_initiator}}</center></td>
-          <td>
-
-              <a  title="Client Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#car_client16{{$inbox->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$inbox->fullName}}</center></a>
-              <div class="modal fade" id="car_client16{{$inbox->id}}" role="dialog">
-
-                  <div class="modal-dialog" role="document">
-                      <div class="modal-content">
-                          <div class="modal-header">
-                              <b><h5 class="modal-title">Client Details.</h5></b>
-
-                              <button type="button" class="close" data-dismiss="modal">&times;</button>
-                          </div>
-
-                          <div class="modal-body">
-                              <table class="table table-striped table-bordered " style="width: 100%">
-
-                                  <tr>
-                                      <td>Client:</td>
-                                      <td>{{$inbox->fullName}}</td>
-                                  </tr>
-
-
-                                  <tr>
-                                      <td>Email:</td>
-                                      <td>{{$inbox->email}}</td>
-                                  </tr>
-
-                                  <tr>
-                                      <td>TIN:</td>
-                                      <td>{{$inbox->tin}}</td>
-                                  </tr>
-
-
-                                  <tr>
-                                      <td>Department/Faculty/Unit:</td>
-                                      <td>{{$inbox->faculty}}</td>
-                                  </tr>
-
-
-                              </table>
-                              <br>
-                              <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-
-
-          </td>
-          <td><center> <a  title="Vehicle Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#vehicle_details17{{$inbox->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$inbox->vehicle_reg_no}}</center></a>
-                  <div class="modal fade" id="vehicle_details17{{$inbox->id}}" role="dialog">
-
-                      <div class="modal-dialog" role="document">
-                          <div class="modal-content">
-                              <div class="modal-header">
-                                  <b><h5 class="modal-title">Vehicle Details.</h5></b>
-
-                                  <button type="button" class="close" data-dismiss="modal">&times;</button>
-                              </div>
-
-                              <div class="modal-body">
-                                  <table class="table table-striped table-bordered " style="width: 100%">
-
-                                      <?php
-                                      $vehicle_details=DB::table('car_rentals')->where('vehicle_reg_no',$inbox->vehicle_reg_no)->get();
-
-                                      ?>
-
-                                      @foreach($vehicle_details as $vehicle_detail)
-                                          <tr>
-                                              <td>Vehicle Model:</td>
-                                              <td>{{$vehicle_detail->vehicle_model}}</td>
-                                          </tr>
-
-
-                                          <tr>
-                                              <td>Vehicle Registration Number:</td>
-                                              <td>{{$vehicle_detail->vehicle_reg_no}}</td>
-                                          </tr>
-
-                                          <tr>
-                                              <td>Hire Rate/KM:</td>
-                                              <td>{{$vehicle_detail->hire_rate}} TZS</td>
-                                          </tr>
-
-                                      @endforeach
-
-                                  </table>
-                                  <br>
-                                  <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
-                              </div>
-                          </div>
-                      </div>
-                  </div></center></td>
-        <td><center>{{date("d/m/Y",strtotime($inbox->start_date))}} </center></td>
-        <td><center>{{date("d/m/Y",strtotime($inbox->end_date))}}</center></td>
-         <td><center>{{$inbox->destination}}</center></td>
-      </tr>
-      @endforeach
-    </tbody>
-  </table>
-   @else
-  <p style="line-height: 1.5;font-size: 17px;"><i class="fa fa-envelope-o" style="font-size:25px;color:#3490dc;"></i> No new message</p>
-  @endif
-</div>
-
-<div id="outbox" class="tabcontent">
-  <br>
-  @if(count($outbox)>0)
-<table>
-   <thead>
-      <th style="width: 14%"><center>Contract Number</center></th>
-      <th style="width: 14%"><center>Initiated By</center></th>
-      <th style="width: 14%"><center>Client Name</center></th>
-      <th style="width: 14%"><center>Vehicle</center></th>
-
-      <th style="width: 15%"><center>Start Date</center></th>
-      <th style="width: 15%"><center>End Date</center></th>
-      <th style="width: 14%"><center>Destination</center></th>
-      <th style="width: 14%"><center>Form Status</center></th>
-    </thead>
-    <tbody>
-      @foreach($outbox as $outbox)
-      <tr>
-        <td><center>{{$outbox->id}}</center></td>
-        <td><center>{{$outbox->form_initiator}}</center></td>
-          <td>
-
-              <a  title="Client Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#car_client17{{$outbox->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$outbox->fullName}}</center></a>
-              <div class="modal fade" id="car_client17{{$outbox->id}}" role="dialog">
-
-                  <div class="modal-dialog" role="document">
-                      <div class="modal-content">
-                          <div class="modal-header">
-                              <b><h5 class="modal-title">Client Details.</h5></b>
-
-                              <button type="button" class="close" data-dismiss="modal">&times;</button>
-                          </div>
-
-                          <div class="modal-body">
-                              <table class="table table-striped table-bordered " style="width: 100%">
-
-                                  <tr>
-                                      <td>Client:</td>
-                                      <td>{{$outbox->fullName}}</td>
-                                  </tr>
-
-
-                                  <tr>
-                                      <td>Email:</td>
-                                      <td>{{$outbox->email}}</td>
-                                  </tr>
-
-                                  <tr>
-                                      <td>TIN:</td>
-                                      <td>{{$outbox->tin}}</td>
-                                  </tr>
-
-
-                                  <tr>
-                                      <td>Department/Faculty/Unit:</td>
-                                      <td>{{$outbox->faculty}}</td>
-                                  </tr>
-
-
-                              </table>
-                              <br>
-                              <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-
-
-          </td>
-          <td><center> <a  title="Vehicle Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#vehicle_details18{{$outbox->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$outbox->vehicle_reg_no}}</center></a>
-                  <div class="modal fade" id="vehicle_details18{{$outbox->id}}" role="dialog">
-
-                      <div class="modal-dialog" role="document">
-                          <div class="modal-content">
-                              <div class="modal-header">
-                                  <b><h5 class="modal-title">Vehicle Details.</h5></b>
-
-                                  <button type="button" class="close" data-dismiss="modal">&times;</button>
-                              </div>
-
-                              <div class="modal-body">
-                                  <table class="table table-striped table-bordered " style="width: 100%">
-
-                                      <?php
-                                      $vehicle_details=DB::table('car_rentals')->where('vehicle_reg_no',$outbox->vehicle_reg_no)->get();
-
-                                      ?>
-
-                                      @foreach($vehicle_details as $vehicle_detail)
-                                          <tr>
-                                              <td>Vehicle Model:</td>
-                                              <td>{{$vehicle_detail->vehicle_model}}</td>
-                                          </tr>
-
-
-                                          <tr>
-                                              <td>Vehicle Registration Number:</td>
-                                              <td>{{$vehicle_detail->vehicle_reg_no}}</td>
-                                          </tr>
-
-                                          <tr>
-                                              <td>Hire Rate/KM:</td>
-                                              <td>{{$vehicle_detail->hire_rate}} TZS</td>
-                                          </tr>
-
-                                      @endforeach
-
-                                  </table>
-                                  <br>
-                                  <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
-                              </div>
-                          </div>
-                      </div>
-                  </div></center></td>
-        <td><center>{{date("d/m/Y",strtotime($outbox->start_date))}} </center></td>
-        <td><center>{{date("d/m/Y",strtotime($outbox->end_date))}}</center></td>
-         <td><center>{{$outbox->destination}}</center></td>
-        <td><center>{{$outbox->form_status}} Stage</center></td>
-      </tr>
-      @endforeach
-    </tbody>
-  </table>
-   @else
-  <p style="line-height: 1.5;font-size: 17px;"><i class="fa fa-envelope-o" style="font-size:25px;color:#3490dc;"></i> No new message</p>
-  @endif
-</div>
-<div id="closed" class="tabcontent">
-  @if(count($closed_act)!=0)
-   <br>
-<table class="hover table table-striped table-bordered" id="myTablecar">
-    <thead class="thead-dark">
-      <th scope="col" style="color:#fff; width: 5%"><center>S/N</center></th>
-      <th scope="col" style="color:#fff; width: 16%"><center>Client Name</center></th>
-      <th scope="col" style="color:#fff; width: 10%"><center>Contract Number</center></th>
-      <th scope="col" style="color:#fff; width: 16%"><center>Vehicle</center></th>
-
-      <th scope="col" style="color:#fff; width: 14%"><center>Start Date</center></th>
-      <th scope="col" style="color:#fff; width: 14%"><center>End Date</center></th>
-      <th scope="col" style="color:#fff; width: 16%"><center>Destination</center></th>
-       <th scope="col" style="color:#fff; width: 16%"><center>Grand Total (TZS)</center></th>
-      <th scope="col" style="color:#fff;"><center>Action</center></th>
-    </thead>
-    <tbody>
-      @foreach($closed_act as $closed)
-      <tr>
-        <th scope="row" class="counterCell text-center">.</th>
-
-          <td>
-
-              <a  title="Client Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#car_client18{{$closed->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$closed->fullName}}</center></a>
-              <div class="modal fade" id="car_client18{{$closed->id}}" role="dialog">
-
-                  <div class="modal-dialog" role="document">
-                      <div class="modal-content">
-                          <div class="modal-header">
-                              <b><h5 class="modal-title">Client Details.</h5></b>
-
-                              <button type="button" class="close" data-dismiss="modal">&times;</button>
-                          </div>
-
-                          <div class="modal-body">
-                              <table class="table table-striped table-bordered " style="width: 100%">
-
-                                  <tr>
-                                      <td>Client:</td>
-                                      <td>{{$closed->fullName}}</td>
-                                  </tr>
-
-
-                                  <tr>
-                                      <td>Email:</td>
-                                      <td>{{$closed->email}}</td>
-                                  </tr>
-
-                                  <tr>
-                                      <td>TIN:</td>
-                                      <td>{{$closed->tin}}</td>
-                                  </tr>
-
-
-                                  <tr>
-                                      <td>Department/Faculty/Unit:</td>
-                                      <td>{{$closed->faculty}}</td>
-                                  </tr>
-
-
-                              </table>
-                              <br>
-                              <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-
-
-          </td>
-          <td><center>{{$closed->id}}</center></td>
-          <td><center> <a  title="Vehicle Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#vehicle_details19{{$closed->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$closed->vehicle_reg_no}}</center></a>
-                  <div class="modal fade" id="vehicle_details19{{$closed->id}}" role="dialog">
-
-                      <div class="modal-dialog" role="document">
-                          <div class="modal-content">
-                              <div class="modal-header">
-                                  <b><h5 class="modal-title">Vehicle Details.</h5></b>
-
-                                  <button type="button" class="close" data-dismiss="modal">&times;</button>
-                              </div>
-
-                              <div class="modal-body">
-                                  <table class="table table-striped table-bordered " style="width: 100%">
-
-                                      <?php
-                                      $vehicle_details=DB::table('car_rentals')->where('vehicle_reg_no',$closed->vehicle_reg_no)->get();
-
-                                      ?>
-
-                                      @foreach($vehicle_details as $vehicle_detail)
-                                          <tr>
-                                              <td>Vehicle Model:</td>
-                                              <td>{{$vehicle_detail->vehicle_model}}</td>
-                                          </tr>
-
-
-                                          <tr>
-                                              <td>Vehicle Registration Number:</td>
-                                              <td>{{$vehicle_detail->vehicle_reg_no}}</td>
-                                          </tr>
-
-                                          <tr>
-                                              <td>Hire Rate/KM:</td>
-                                              <td>{{$vehicle_detail->hire_rate}} TZS</td>
-                                          </tr>
-
-                                      @endforeach
-
-                                  </table>
-                                  <br>
-                                  <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
-                              </div>
-                          </div>
-                      </div>
-                  </div></center></td>
-        <td><center>{{date("d/m/Y",strtotime($closed->start_date))}} </center></td>
-        <td><center>{{date("d/m/Y",strtotime($closed->end_date))}}</center></td>
-         <td>{{$closed->destination}}</td>
-         <td style="text-align: right;">{{number_format($closed->grand_total)}}</td>
-         <td><center>
-          <a title="View More Details" role="button" href="{{ route('carcontractviewmore',$closed->id) }}"><i class="fa fa-eye" aria-hidden="true" style="font-size:20px; color:#3490dc; cursor: pointer;"></i></a>
-          <a title="Download this contract" href="/contracts/car_rental/print?id={{$closed->id}}"><i class="fa fa-file-pdf-o" aria-hidden="true" style="font-size:20px; color:red;"></i></a></center></td>
-      </tr>
-      @endforeach
-    </tbody>
-  </table>
-  @else
-  <br><br>
-  <p style="font-size: 18px;">No record found.</p>
-  @endif
-</div>
-<div id="closed_2" class="tabcontent">
-  @if(count($closed_inact)!=0)
-   <br>
-<table class="hover table table-striped table-bordered" id="myTablecar7">
-    <thead class="thead-dark">
-      <th scope="col" style="color:#fff; width: 5%"><center>S/N</center></th>
-      <th scope="col" style="color:#fff; width: 16%"><center>Client Name</center></th>
-      <th scope="col" style="color:#fff; width: 10%"><center>Contract Number</center></th>
-      <th scope="col" style="color:#fff; width: 16%"><center>Vehicle</center></th>
-
-      <th scope="col" style="color:#fff; width: 14%"><center>Start Date</center></th>
-      <th scope="col" style="color:#fff; width: 14%"><center>End Date</center></th>
-      <th scope="col" style="color:#fff; width: 16%"><center>Destination</center></th>
-       <th scope="col" style="color:#fff; width: 16%"><center>Grand Total (TZS)</center></th>
-      <th scope="col" style="color:#fff;"><center>Action</center></th>
-    </thead>
-    <tbody>
-      @foreach($closed_inact as $closed)
-      <tr>
-        <th scope="row" class="counterCell text-center">.</th>
-
-          <td>
-
-              <a  title="Client Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#car_client19{{$closed->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$closed->fullName}}</center></a>
-              <div class="modal fade" id="car_client19{{$closed->id}}" role="dialog">
-
-                  <div class="modal-dialog" role="document">
-                      <div class="modal-content">
-                          <div class="modal-header">
-                              <b><h5 class="modal-title">Client Details.</h5></b>
-
-                              <button type="button" class="close" data-dismiss="modal">&times;</button>
-                          </div>
-
-                          <div class="modal-body">
-                              <table class="table table-striped table-bordered " style="width: 100%">
-
-                                  <tr>
-                                      <td>Client:</td>
-                                      <td>{{$closed->fullName}}</td>
-                                  </tr>
-
-
-                                  <tr>
-                                      <td>Email:</td>
-                                      <td>{{$closed->email}}</td>
-                                  </tr>
-
-                                  <tr>
-                                      <td>TIN:</td>
-                                      <td>{{$closed->tin}}</td>
-                                  </tr>
-
-
-                                  <tr>
-                                      <td>Department/Faculty/Unit:</td>
-                                      <td>{{$closed->faculty}}</td>
-                                  </tr>
-
-
-                              </table>
-                              <br>
-                              <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-
-
-          </td>
-          <td><center>{{$closed->id}}</center></td>
-          <td><center> <a  title="Vehicle Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#vehicle_details20{{$closed->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$closed->vehicle_reg_no}}</center></a>
-                  <div class="modal fade" id="vehicle_details20{{$closed->id}}" role="dialog">
-
-                      <div class="modal-dialog" role="document">
-                          <div class="modal-content">
-                              <div class="modal-header">
-                                  <b><h5 class="modal-title">Vehicle Details.</h5></b>
-
-                                  <button type="button" class="close" data-dismiss="modal">&times;</button>
-                              </div>
-
-                              <div class="modal-body">
-                                  <table class="table table-striped table-bordered " style="width: 100%">
-
-                                      <?php
-                                      $vehicle_details=DB::table('car_rentals')->where('vehicle_reg_no',$closed->vehicle_reg_no)->get();
-
-                                      ?>
-
-                                      @foreach($vehicle_details as $vehicle_detail)
-                                          <tr>
-                                              <td>Vehicle Model:</td>
-                                              <td>{{$vehicle_detail->vehicle_model}}</td>
-                                          </tr>
-
-
-                                          <tr>
-                                              <td>Vehicle Registration Number:</td>
-                                              <td>{{$vehicle_detail->vehicle_reg_no}}</td>
-                                          </tr>
-
-                                          <tr>
-                                              <td>Hire Rate/KM:</td>
-                                              <td>{{$vehicle_detail->hire_rate}} TZS</td>
-                                          </tr>
-
-                                      @endforeach
-
-                                  </table>
-                                  <br>
-                                  <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
-                              </div>
-                          </div>
-                      </div>
-                  </div></center></td>
-        <td><center>{{date("d/m/Y",strtotime($closed->start_date))}} </center></td>
-        <td><center>{{date("d/m/Y",strtotime($closed->end_date))}}</center></td>
-         <td>{{$closed->destination}}</td>
-         <td style="text-align: right;">{{number_format($closed->grand_total)}}</td>
-         <td><center>
-          <a title="View More Details" role="button" href="{{ route('carcontractviewmore',$closed->id) }}"><i class="fa fa-eye" aria-hidden="true" style="font-size:20px; color:#3490dc; cursor: pointer;"></i></a>
-          <a title="Download this contract" href="/contracts/car_rental/print?id={{$closed->id}}"><i class="fa fa-file-pdf-o" aria-hidden="true" style="font-size:20px; color:red;"></i></a></center></td>
-      </tr>
-      @endforeach
-    </tbody>
-  </table>
-  @else
-  <br><br>
-  <p style="font-size: 18px;">No record found.</p>
-  @endif
-</div>
-
-<div id="log_sheet" class="tabcontent" style="border-bottom-left-radius: 50px 20px;">
-  <?php $logsheets = DB::table('log_sheets')->select('contract_id')->distinct('contract_id')->orderBy('id','dsc')->get();
-  $d = 1;
-  ?>
-  <br><br>
-    <table class="hover table table-bordered  table-striped" id="LogTable">
-      <thead class="thead-dark">
-          <th scope="col" style="color:#fff;"><center>SN</center></th>
-          <th scope="col" style="color:#fff;"><center>Client Name</center></th>
-          <th scope="col" style="color:#fff;"><center>Contract Number</center></th>
-          <th scope="col" style="color:#fff;"><center>Vehicle Reg No.</center></th>
-          <th scope="col" style="color:#fff;"><center>Driver Name</center></th>
-          <th scope="col" style="color:#fff;"><center>Destination</center></th>
-          <th scope="col" style="color:#fff;"><center>Start Date</center></th>
-          <th scope="col" style="color:#fff;"><center>End Date</center></th>
-          <th scope="col" style="color:#fff;"><center>Action</center></th>
-        </thead>
-        <tbody>
-          @foreach($logsheets as $log)
-            <?php $details = DB::table('car_contracts')->select('vehicle_reg_no','driver_name','fullName','faculty','destination','start_date', 'end_date')->where('id',$log->contract_id)->first(); ?>
-            <tr>
-              <th style="text-align: center;">{{$d}}.</th>
-              <td>{{$details->fullName}}</td>
-                <td><center>{{$log->contract_id}}</center></td>
-                <td><center>{{$details->vehicle_reg_no}}</center></td>
-                <td>{{$details->driver_name}}</td>
-              <td><center>{{$details->destination}}</center></td>
-              <td><center>{{date("d/m/Y",strtotime($details->start_date))}}</center></td>
-              <td><center>{{date("d/m/Y",strtotime($details->end_date))}}</center></td>
-              <td><center><a title="View More Details" role="button" href="{{ route('logsheetmore',$log->contract_id) }}"><i class="fa fa-eye" aria-hidden="true" style="font-size:20px; color:#3490dc; cursor: pointer;"></i></a></center></td>
-            </tr>
-            <?php $d = $d+1; ?>
-          @endforeach
-        </tbody>
-    </table>
-</div>
-@elseif((Auth::user()->role!='DVC Administrator')&&($category=='All')||(Auth::user()->role!='Accountant')&&($category=='All'))
-
-<div class="tab2" style="margin-top: 12px;">
-           {{--  <button class="tablinks" onclick="openContracts(event, 'active')" id="defaultOpen"><strong>Active</strong></button> --}}
-            <button class="tablinks" onclick="openContracts(event, 'inactive')" id="defaultOpen"><strong>Contracts</strong></button>
-            <button class="tablinks" onclick="openContracts(event, 'log_sheet')"><strong>Log Sheets</strong></button>
-</div>
-  <div id="active" class="tabcontent" style="border-bottom-left-radius: 50px 20px;   border: 1px solid #ccc; padding: 1%;">
-    <br>
-    @if($privileges=='Read only')
-    @else
-      <a class="btn btn-success" href="{{ route('carRentalForm') }}" role="button" style="
-        padding: 10px; margin-bottom: 5px; margin-top: 4px;">Add New Contract
-      </a>
-  @endif
-{{--   <h4 style="text-align: center"><strong>Active Car Rental Contracts</strong></h4>--}}
-{{--   <hr>--}}
-@if(count($closed_act)!=0)
-  <table class="hover table table-striped table-bordered" id="myTablecar">
-    <thead class="thead-dark">
-      <th scope="col" style="color:#fff; width: 5%"><center>S/N</center></th>
-      <th scope="col" style="color:#fff; width: 16%"><center>Client Name</center></th>
-      <th scope="col" style="color:#fff; width: 10%"><center>Contract Number</center></th>
-      <th scope="col" style="color:#fff; width: 16%"><center>Vehicle</center></th>
-
-      <th scope="col" style="color:#fff; width: 17%"><center>Start Date</center></th>
-      <th scope="col" style="color:#fff; width: 17%"><center>End Date</center></th>
-      <th scope="col" style="color:#fff; width: 13%"><center>Destination</center></th>
-       <th scope="col" style="color:#fff; width: 16%"><center>Grand Total (TZS)</center></th>
-      <th scope="col" style="color:#fff;  width: 8%"><center>Action</center></th>
-    </thead>
-    <tbody>
-      @foreach($closed_act as $closed)
-      <tr>
-        <th scope="row" class="counterCell text-center">.</th>
-
-          <td>
-
-              <a  title="Client Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#car_client20{{$closed->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$closed->fullName}}</center></a>
-              <div class="modal fade" id="car_client20{{$closed->id}}" role="dialog">
-
-                  <div class="modal-dialog" role="document">
-                      <div class="modal-content">
-                          <div class="modal-header">
-                              <b><h5 class="modal-title">Client Details.</h5></b>
-
-                              <button type="button" class="close" data-dismiss="modal">&times;</button>
-                          </div>
-
-                          <div class="modal-body">
-                              <table class="table table-striped table-bordered " style="width: 100%">
-
-                                  <tr>
-                                      <td>Client:</td>
-                                      <td>{{$closed->fullName}}</td>
-                                  </tr>
-
-
-                                  <tr>
-                                      <td>Email:</td>
-                                      <td>{{$closed->email}}</td>
-                                  </tr>
-
-                                  <tr>
-                                      <td>TIN:</td>
-                                      <td>{{$closed->tin}}</td>
-                                  </tr>
-
-
-                                  <tr>
-                                      <td>Department/Faculty/Unit:</td>
-                                      <td>{{$closed->faculty}}</td>
-                                  </tr>
-
-
-                              </table>
-                              <br>
-                              <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-
-
-          </td>
-          <td><center>{{$closed->id}}</center></td>
-          <td><center> <a  title="Vehicle Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#vehicle_details21{{$closed->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$closed->vehicle_reg_no}}</center></a>
-                  <div class="modal fade" id="vehicle_details21{{$closed->id}}" role="dialog">
-
-                      <div class="modal-dialog" role="document">
-                          <div class="modal-content">
-                              <div class="modal-header">
-                                  <b><h5 class="modal-title">Vehicle Details.</h5></b>
-
-                                  <button type="button" class="close" data-dismiss="modal">&times;</button>
-                              </div>
-
-                              <div class="modal-body">
-                                  <table class="table table-striped table-bordered " style="width: 100%">
-
-                                      <?php
-                                      $vehicle_details=DB::table('car_rentals')->where('vehicle_reg_no',$closed->vehicle_reg_no)->get();
-
-                                      ?>
-
-                                      @foreach($vehicle_details as $vehicle_detail)
-                                          <tr>
-                                              <td>Vehicle Model:</td>
-                                              <td>{{$vehicle_detail->vehicle_model}}</td>
-                                          </tr>
-
-
-                                          <tr>
-                                              <td>Vehicle Registration Number:</td>
-                                              <td>{{$vehicle_detail->vehicle_reg_no}}</td>
-                                          </tr>
-
-                                          <tr>
-                                              <td>Hire Rate/KM:</td>
-                                              <td>{{$vehicle_detail->hire_rate}} TZS</td>
-                                          </tr>
-
-                                      @endforeach
-
-                                  </table>
-                                  <br>
-                                  <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
-                              </div>
-                          </div>
-                      </div>
-                  </div></center></td>
-        <td>{{date("d/m/Y",strtotime($closed->start_date))}} </td>
-        <td>{{date("d/m/Y",strtotime($closed->end_date))}}</td>
-         <td>{{$closed->destination}}</td>
-         <td style="text-align: right;">{{number_format($closed->grand_total)}}</td>
-         <td><center>
-          <a title="View More Details" role="button" href="{{ route('carcontractviewmore',$closed->id) }}"><i class="fa fa-eye" aria-hidden="true" style="font-size:20px; color:#3490dc; cursor: pointer;"></i></a>
-
-          <a title="Download this contract" href="/contracts/car_rental/print?id={{$closed->id}}"><i class="fa fa-file-pdf-o" aria-hidden="true" style="font-size:20px; color:red;"></i></a>
-
-          @if($privileges=='Read only')
-            @else
-
-          <a title="Terminate this contract" data-toggle="modal" data-target="#terminate{{$closed->id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px; color:red; cursor: pointer;"></i></a>
-
-        <div class="modal fade" id="terminate{{$closed->id}}" role="dialog">
-
-          <div class="modal-dialog" role="document">
-              <div class="modal-content">
-                  <div class="modal-header">
-                    <b><h5 class="modal-title" style="color: red;"><b>Terminating Contract</b></h5></b>
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                  </div>
-
-                  <div class="modal-body">
-                   <p style="text-align: left; font-size: 16px;">You are about to terminate <strong>"{{$closed->fullName}}"</strong> contract. Provide reason for termination to proceed.</p>
-
-                    <form method="get" action="{{ route('terminateCarRental',$closed->id) }}" >
-                        {{csrf_field()}}
-
-                          <div class="form-group">
-                              <div class="form-wrapper">
-                                  <label for=""><strong>Reason:<span style="color: red;">*</span></strong></label>
-                                    <textarea required name="reason_for_termination" class="form-control"></textarea>
-
-                              </div>
-                          </div>
-                            <br>
-
-                            <div align="right">
-                              <button class="btn btn-primary" type="submit" id="newdata">Terminate</button>
-                              <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
-                            </div>
-
-                    </form>
-
-                </div>
-              </div>
-            </div>
-          </div>
-          @endif
-        </center></td>
-      </tr>
-      @endforeach
-    </tbody>
-  </table>
-  @else
-  <br><br>
-  <p style="font-size: 18px;">No record found.</p>
-  @endif
-  </div>
-  <div id="inactive" class="tabcontent" style="border-bottom-left-radius: 50px 20px;   border: 1px solid #ccc; padding: 1%;">
-    <br>
-     @if($privileges=='Read only')
-    @else
-          @if(Auth::user()->role=='Transport Officer-CPTU')
-         <div style="float:left;">
-       <a class="btn btn-success" href="{{ route('carRentalForm') }}" role="button" style="
-          padding: 10px; margin-bottom: 5px; margin-top: 4px;">Add New Contract
-        </a>
-         </div>
-          @endif
-
-          @admin
-          <div style="float:right;">
-              <div style="float:left;"> <a data-toggle="modal" class="btn button_color active" style="background-color: #38c172; padding: 7px; color:white; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;"  data-target="#import_data_car" title="Import Data" role="button" aria-pressed="true">Import Data</a></div>
-
-              <div style="float:right;"><a href="/get_car_contracts_format" class="btn button_color active" style="background-color: #38c172; padding: 7px; color:white; margin-left: 5px;  margin-bottom: 5px; margin-top: 4px;"   title="Download Sample">Download Sample</a> </div>
-              <div style="clear: both;"></div>
-          </div>
-          @endadmin
-         <div style="clear: both;"></div>
-
-
-          <div class="modal fade" id="import_data_car" role="dialog">
-
-              <div class="modal-dialog" role="document">
-                  <div class="modal-content">
-                      <div class="modal-header">
-                          <b><h5 class="modal-title">Importing Data</h5></b>
-
-                          <button type="button" class="close" data-dismiss="modal">&times;</button>
-                      </div>
-
-                      <div class="modal-body">
-
-                          <form method="post" enctype="multipart/form-data" action="/import_car_contracts"   >
-                              {{csrf_field()}}
-
-                              <div class="form-row">
-
-
-                                  <div  class=" col-md-12 ">
-                                      <div class="">
-                                          <label for="">Select File for Upload (.xls, .xlsx) <span style="color: red;">*</span></label>
-                                          <input type="file" class="" id="" name="import_data" value="" placeholder="" required accept=".xls,.xlsx" autocomplete="off">
-                                          <div class="mt-2"><span style="font-weight: bold;">N.B </span><span class="pl-1" style="color:red;"> The header row as given in the sample must be included as the first row when uploading. Furthermore, the acceptable values as indicated in the header row are case sensitive for instance if acceptable value is "Individual" the value to be inserted should be "Individual" and not "individual" </span></div>
-                                      </div>
-                                  </div>
-                                  <br>
-
-
-                              </div>
-
-
-                              <div align="right">
-                                  <button  class="btn btn-primary" type="submit">Import</button>
-                                  <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
-                              </div>
-                          </form>
-
-
-
-
-
-
-
-
-
-                      </div>
-                  </div>
-              </div>
-
-
-          </div>
-
-
-  @endif
-{{--   <h4 style="text-align: center"><strong>Car Rental Contracts</strong></h4>--}}
-{{--   <hr>--}}
-   @if(count($closed_inact)!=0)
-    <table class="hover table table-striped table-bordered" id="myTablecar2">
-    <thead class="thead-dark">
-      <th scope="col" style="color:#fff; width: 5%"><center>S/N</center></th>
-      <th scope="col" style="color:#fff; width: 16%"><center>Client Name</center></th>
-      <th scope="col" style="color:#fff; width: 10%"><center>Contract Number</center></th>
-      <th scope="col" style="color:#fff; width: 16%"><center>Vehicle</center></th>
-
-      <th scope="col" style="color:#fff; width: 17%"><center>Start Date</center></th>
-      <th scope="col" style="color:#fff; width: 17%"><center>End Date</center></th>
-      <th scope="col" style="color:#fff; width: 13%"><center>Destination</center></th>
-       <th scope="col" style="color:#fff; width: 16%"><center>Grand Total (TZS)</center></th>
-      <th scope="col" style="color:#fff;"><center>Action</center></th>
-    </thead>
-    <tbody>
-      @foreach($closed_inact as $closed)
-      <tr>
-        <th scope="row" class="counterCell text-center">.</th>
-
-          <td>
-
-              <a  title="Client Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#car_client21{{$closed->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$closed->fullName}}</center></a>
-              <div class="modal fade" id="car_client21{{$closed->id}}" role="dialog">
-
-                  <div class="modal-dialog" role="document">
-                      <div class="modal-content">
-                          <div class="modal-header">
-                              <b><h5 class="modal-title">Client Details.</h5></b>
-
-                              <button type="button" class="close" data-dismiss="modal">&times;</button>
-                          </div>
-
-                          <div class="modal-body">
-                              <table class="table table-striped table-bordered " style="width: 100%">
-
-                                  <tr>
-                                      <td>Client:</td>
-                                      <td>{{$closed->fullName}}</td>
-                                  </tr>
-
-
-                                  <tr>
-                                      <td>Email:</td>
-                                      <td>{{$closed->email}}</td>
-                                  </tr>
-
-                                  <tr>
-                                      <td>TIN:</td>
-                                      <td>{{$closed->tin}}</td>
-                                  </tr>
-
-
-                                  <tr>
-                                      <td>Department/Faculty/Unit:</td>
-                                      <td>{{$closed->faculty}}</td>
-                                  </tr>
-
-
-                              </table>
-                              <br>
-                              <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-
-
-          </td>
-          <td><center>{{$closed->id}}</center></td>
-          <td><center> <a  title="Vehicle Details" style="color:#3490dc !important; display:inline-block; cursor:pointer"  class="" data-toggle="modal" data-target="#vehicle_details22{{$closed->id}}" style="cursor: pointer;" aria-pressed="true"><center>{{$closed->vehicle_reg_no}}</center></a>
-                  <div class="modal fade" id="vehicle_details22{{$closed->id}}" role="dialog">
-
-                      <div class="modal-dialog" role="document">
-                          <div class="modal-content">
-                              <div class="modal-header">
-                                  <b><h5 class="modal-title">Vehicle Details.</h5></b>
-
-                                  <button type="button" class="close" data-dismiss="modal">&times;</button>
-                              </div>
-
-                              <div class="modal-body">
-                                  <table class="table table-striped table-bordered " style="width: 100%">
-
-                                      <?php
-                                      $vehicle_details=DB::table('car_rentals')->where('vehicle_reg_no',$closed->vehicle_reg_no)->get();
-
-                                      ?>
-
-                                      @foreach($vehicle_details as $vehicle_detail)
-                                          <tr>
-                                              <td>Vehicle Model:</td>
-                                              <td>{{$vehicle_detail->vehicle_model}}</td>
-                                          </tr>
-
-
-                                          <tr>
-                                              <td>Vehicle Registration Number:</td>
-                                              <td>{{$vehicle_detail->vehicle_reg_no}}</td>
-                                          </tr>
-
-                                          <tr>
-                                              <td>Hire Rate/KM:</td>
-                                              <td>{{$vehicle_detail->hire_rate}} TZS</td>
-                                          </tr>
-
-                                      @endforeach
-
-                                  </table>
-                                  <br>
-                                  <center><button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button></center>
-                              </div>
-                          </div>
-                      </div>
-                  </div></center></td>
-        <td>{{date("d/m/Y",strtotime($closed->start_date))}} </td>
-        <td> {{date("d/m/Y",strtotime($closed->end_date))}}</td>
-         <td>{{$closed->destination}}</td>
-         <td style="text-align: right;">{{number_format($closed->grand_total)}}</td>
-         <td><center>
-          <a title="View More Details" role="button" href="{{ route('carcontractviewmore',$closed->id) }}"><i class="fa fa-eye" aria-hidden="true" style="font-size:20px; color:#3490dc; cursor: pointer;"></i></a>
-          <a title="Download this contract" href="/contracts/car_rental/print?id={{$closed->id}}"><i class="fa fa-file-pdf-o" aria-hidden="true" style="font-size:20px; color:red;"></i></a></center></td>
-
-      </tr>
-      @endforeach
-    </tbody>
-  </table>
-  @else
-    <br><br>
-    <p style="font-size: 18px;">No record found.</p>
-  @endif
-  </div>
-
-  <div id="log_sheet" class="tabcontent" style="border-bottom-left-radius: 50px 20px;   border: 1px solid #ccc; padding: 1%;">
-  <?php $logsheets = DB::table('log_sheets')->select('contract_id')->distinct('contract_id')->orderBy('id','dsc')->get();
-  $d = 1;
-  ?>
-  <br>
-    @if($privileges=='Read only')
-    @else
-         <a title="Add New Log Sheet" class="btn btn-success" role="button" data-toggle="modal" data-target="#new_log" role="button" aria-pressed="true" style="color: white;">Add New Log Sheet</a>
-
-<div class="modal fade" id="new_log" role="dialog">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <b><h5 class="modal-title">Fill the Contract Number to continue</h5></b>
-              <button type="button" class="close" data-dismiss="modal">&times;</button>
-            </div>
-
-           <div class="modal-body">
-            <form method="post" action="{{ route('logsheetindex') }}">
-              {{csrf_field()}}
-                  <div class="form-group">
-                    <div class="form-wrapper">
-                      <label for="hire_rate">Contract Number<span style="color: red;">*</span></label>
-                      <input type="text" id="contract_id" name="contract_id" class="form-control" required="" onkeypress="if((this.value.length<10)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
-                    </div>
-                </div>
-
-                <div align="right">
-                  <button type="submit" class="btn btn-primary">Submit</button>
-                  <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
-                </div>
-            </form>
-
-
-          </div>
-        </div>
-      </div>
-</div>
-
-
-
-
-          @admin
-          <div style="float:right;">
-              <div style="float:left;"> <a data-toggle="modal" class="btn button_color active" style="background-color: #38c172; padding: 7px; color:white; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;"  data-target="#import_data_logsheets" title="Import Data" role="button" aria-pressed="true">Import Data</a></div>
-
-              <div style="float:right;"><a href="/get_logsheets_format" class="btn button_color active" style="background-color: #38c172; padding: 7px; color:white; margin-left: 5px;  margin-bottom: 5px; margin-top: 4px;"   title="Download Sample">Download Sample</a> </div>
-              <div style="clear: both;"></div>
-          </div>
-          @endadmin
-          <div style="clear: both;"></div>
-
-
-          <div class="modal fade" id="import_data_logsheets" role="dialog">
-
-              <div class="modal-dialog" role="document">
-                  <div class="modal-content">
-                      <div class="modal-header">
-                          <b><h5 class="modal-title">Importing Data</h5></b>
-
-                          <button type="button" class="close" data-dismiss="modal">&times;</button>
-                      </div>
-
-                      <div class="modal-body">
-
-                          <form method="post" enctype="multipart/form-data" action="/import_logsheets">
-                              {{csrf_field()}}
-
-                              <div class="form-row">
-
-
-                                  <div  class=" col-md-12 ">
-                                      <div class="">
-                                          <label for="">Select File for Upload (.xls, .xlsx) <span style="color: red;">*</span></label>
-                                          <input type="file" class="" id="" name="import_data" value="" placeholder="" required accept=".xls,.xlsx" autocomplete="off">
-                                          <div class="mt-2"><span style="font-weight: bold;">N.B </span><span class="pl-1" style="color:red;"> The header row as given in the sample must be included as the first row when uploading. Furthermore, the acceptable values as indicated in the header row are case sensitive for instance if acceptable value is "Individual" the value to be inserted should be "Individual" and not "individual" </span></div>
-                                      </div>
-                                  </div>
-                                  <br>
-
-
-                              </div>
-
-
-                              <div align="right">
-                                  <button  class="btn btn-primary" type="submit">Import</button>
-                                  <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
-                              </div>
-                          </form>
-
-
-
-
-
-
-
-
-
-                      </div>
-                  </div>
-              </div>
-
-
-          </div>
-
-
-
-
-    @endif
-    <br><br>
-    <table class="hover table table-bordered  table-striped" id="LogTable">
-      <thead class="thead-dark">
-          <th scope="col" style="color:#fff;"><center>SN</center></th>
-          <th scope="col" style="color:#fff;"><center>Client Name</center></th>
-          <th scope="col" style="color:#fff;"><center>Contract Number</center></th>
-          <th scope="col" style="color:#fff;"><center>Vehicle Reg No.</center></th>
-          <th scope="col" style="color:#fff;"><center>Driver Name</center></th>
-          <th scope="col" style="color:#fff;"><center>Destination</center></th>
-          <th scope="col" style="color:#fff;"><center>Start Date</center></th>
-          <th scope="col" style="color:#fff;"><center>End Date</center></th>
-          <th scope="col" style="color:#fff;"><center>Action</center></th>
-        </thead>
-        <tbody>
-          @foreach($logsheets as $log)
-            <?php $details = DB::table('car_contracts')->select('vehicle_reg_no','driver_name','fullName','faculty','destination','start_date', 'end_date')->where('id',$log->contract_id)->first(); ?>
-            <tr>
-              <th style="text-align: center;">{{$d}}.</th>
-              <td>{{$details->fullName}}</td>
-                <td><center>{{$log->contract_id}}</center></td>
-                <td><center>{{$details->vehicle_reg_no}}</center></td>
-                <td>{{$details->driver_name}}</td>
-              <td><center>{{$details->destination}}</center></td>
-              <td><center>{{date("d/m/Y",strtotime($details->start_date))}}</center></td>
-              <td><center> {{date("d/m/Y",strtotime($details->end_date))}}</center></td>
-              <td><center><a title="View More Details" role="button" href="{{ route('logsheetmore',$log->contract_id) }}"><i class="fa fa-eye" aria-hidden="true" style="font-size:20px; color:#3490dc; cursor: pointer;"></i></a></center></td>
-            </tr>
-            <?php $d = $d+1; ?>
-          @endforeach
-        </tbody>
-    </table>
-</div>
-
 @endif
 
-  </div>
-@endif
+
+
+
+
+
 
 
 
@@ -5040,97 +6007,7 @@ div.dt-buttons{
     </script>
 
 
-<script type="text/javascript">
-  $(window).on('load', function () {
-    $("#coverScreen").hide();
-  });
 
-    window.onload=function(){
-            <?php
-            $category=DB::table('general_settings')->where('user_roles',Auth::user()->role)->value('category');
-            $space_status=0;
-            $insurance_status=0;
-            $car_status=0;
-            $research_status=0;
-
-            if ($category=='Real Estate only' OR $category=='All') {
-                $space_status=1;
-            }
-            else{
-
-            }
-
-            if ($category=='CPTU only' OR $category=='All') {
-                $car_status=1;
-            }
-            else{
-
-            }
-
-            if ($category=='Insurance only' OR $category=='All') {
-                $insurance_status=1;
-            }
-            else{
-
-            }
-
-
-            if ($category=='Research Flats only' OR $category=='All') {
-                $research_status=1;
-            }
-            else{
-
-            }
-
-
-            ?>
-
-        var space_x={!! json_encode($space_status) !!};
-        var insurance_x={!! json_encode($insurance_status) !!};
-        var car_x={!! json_encode($car_status) !!};
-        var research_x={!! json_encode($research_status) !!};
-
-        if(space_x==1){
-
-            $(".insurance_identity").removeClass("defaultContract");
-            $(".car_identity").removeClass("defaultContract");
-            $('.research_flats_identity').removeClass('defaultContract');
-            $('.space_identity').addClass('defaultContract');
-
-
-        }else if(insurance_x==1){
-            $(".space_identity").removeClass("defaultContract");
-            $(".car_identity").removeClass("defaultContract");
-            $('.research_flats_identity').removeClass('defaultContract');
-            $('.insurance_identity').addClass('defaultContract');
-
-        }else if(car_x==1){
-            $(".space_identity").removeClass("defaultContract");
-            $(".insurance_identity").removeClass("defaultContract");
-            $('.research_flats_identity').removeClass('defaultContract');
-            $('.car_identity').addClass('defaultContract');
-
-        }else if(research_x==1){
-            $(".space_identity").removeClass("defaultContract");
-            $(".insurance_identity").removeClass("defaultContract");
-            $('.car_identity').removeClass('defaultContract');
-            $('.research_flats_identity').addClass('defaultContract');
-
-
-        }
-
-
-
-
-        else{
-
-        }
-
-
-        document.querySelector('.defaultContract').click();
-
-    };
-</script>
 
 
     <script type="text/javascript">
@@ -5231,26 +6108,7 @@ div.dt-buttons{
 
 
 
-        function openContractType(evt, evtName) {
-            // Declare all variables
-            var i, tabcontent, tablinks;
 
-            // Get all elements with class="tabcontent" and hide them
-            tabcontent = document.getElementsByClassName("tabcontentOuter");
-            for (i = 0; i < tabcontent.length; i++) {
-                tabcontent[i].style.display = "none";
-            }
-
-            // Get all elements with class="tablinks" and remove the class "active"
-            tablinks = document.getElementsByClassName("tablinksOuter");
-            for (i = 0; i < tablinks.length; i++) {
-                tablinks[i].className = tablinks[i].className.replace(" active", "");
-            }
-
-            // Show the current tab, and add an "active" class to the button that opened the tab
-            document.getElementById(evtName).style.display = "block";
-            evt.currentTarget.className += " active";
-        }
 
 
 
@@ -5279,6 +6137,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
 var tablelog = $('#LogTable').DataTable( {
             dom: '<"top"fl>rt<"bottom"pi>',
     "pageLength": 100,
+    "orderClasses": false,
     "bLengthChange": false
         });
 
@@ -5290,38 +6149,7 @@ var tablelog = $('#LogTable').DataTable( {
     "<'top'<'pull-left 'p>>",
             "pageLength": 100,
             "bLengthChange": false,
-            processing:true,
-            serverSide:true,
-            ajax: {
-                url:"{{ route('get_space_contracts') }}"
-
-            },
-            columnDefs: [ {
-                "searchable": false,
-                "orderable": false,
-                "targets": 0
-            } ],
-            "order": [[ 1, 'asc' ]],
-
-            columns: [
-
-                {data: 'DT_RowIndex', className: 'text-center', name: 'DT_RowIndex'},
-                {data: 'full_name' , className: 'text-center',searchable: true},
-                {data: 'contract_id' , className: 'text-center',searchable: true},
-                {data: 'space_id_contract', className: 'text-center'},
-                {data: 'start_date', className: 'text-center'},
-                {data: 'end_date', className: 'text-center'},
-                {data: 'amount_academic_season', className: 'text-center'},
-                {data: 'amount_vacation_season', className: 'text-center'},
-
-
-                {data: 'contract_status', className: 'text-center'},
-                {data: 'action', className: 'text-center',  orderable: false, searchable: false},
-
-            ],
-
-
-
+            "orderClasses": false,
 
         buttons: [
             {   extend: 'pdfHtml5',
@@ -5430,7 +6258,8 @@ var tablelog = $('#LogTable').DataTable( {
         var table2 = $('#myTable2').DataTable( {
             dom: '<"top"fl>rt<"bottom"pi>',
             "pageLength": 100,
-            "bLengthChange": false
+            "bLengthChange": false,
+            "orderClasses": false
         });
 
         var table_research = $('#myTableResearch').DataTable( {
@@ -5439,6 +6268,7 @@ var tablelog = $('#LogTable').DataTable( {
     "<'top'<tr>>" +
     "<'top'<'pull-left 'p>>",
             "pageLength": 100,
+            "orderClasses": false,
             "bLengthChange": false,
             buttons: [
             {   extend: 'pdfHtml5',
@@ -5555,6 +6385,7 @@ var tablelog = $('#LogTable').DataTable( {
     "<'top'<'pull-left 'p>>",
             "pageLength": 100,
             "bLengthChange": false,
+            "orderClasses": false,
             processing:true,
             serverSide:true,
             ajax: {
@@ -5701,6 +6532,7 @@ var tablelog = $('#LogTable').DataTable( {
     "<'top'<'pull-left 'p>>",
             "pageLength": 100,
             "bLengthChange": false,
+            "orderClasses": false,
         buttons: [
             {   extend: 'pdfHtml5',
                 filename:'Active Car Rental Contracts',
@@ -5809,6 +6641,7 @@ var tablelog = $('#LogTable').DataTable( {
     "<'top'<'pull-left 'p>>",
             "pageLength": 100,
             "bLengthChange": false,
+             "orderClasses": false,
         buttons: [
             {   extend: 'pdfHtml5',
                 filename:'Car Rental Contracts',
@@ -5917,6 +6750,7 @@ var tablelog = $('#LogTable').DataTable( {
     "<'top'<'pull-left 'p>>",
             "pageLength": 100,
             "bLengthChange": false,
+            "orderClasses": false,
         buttons: [
             {   extend: 'pdfHtml5',
                 filename:'Car Rental Contracts',
@@ -6025,6 +6859,7 @@ var tablelog = $('#LogTable').DataTable( {
     "<'top'<'pull-left 'p>>",
             "pageLength": 100,
             "bLengthChange": false,
+            "orderClasses": false,
         buttons: [
             {   extend: 'pdfHtml5',
                 filename:'Car Rental Contracts',
@@ -6133,6 +6968,7 @@ var tablelog = $('#LogTable').DataTable( {
     "<'top'<'pull-left 'p>>",
             "pageLength": 100,
             "bLengthChange": false,
+            "orderClasses": false,
         buttons: [
             {   extend: 'pdfHtml5',
                 filename:'Car Rental Contracts',
@@ -6241,6 +7077,7 @@ var tablelog = $('#LogTable').DataTable( {
     "<'top'<'pull-left 'p>>",
             "pageLength": 100,
             "bLengthChange": false,
+               "orderClasses": false,
         buttons: [
             {   extend: 'pdfHtml5',
                 filename:'Car Rental Contracts',
@@ -6349,6 +7186,7 @@ var tablelog = $('#LogTable').DataTable( {
     "<'top'<'pull-left 'p>>",
             "pageLength": 100,
             "bLengthChange": false,
+                "orderClasses": false,
         buttons: [
             {   extend: 'pdfHtml5',
                 filename:'Car Rental Contracts',
