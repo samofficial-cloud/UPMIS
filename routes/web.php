@@ -85,8 +85,16 @@ Route::post('/login/custom', [
 
 
     Route::get('/invoice_management', 'InvoicesController@invoiceManagement');
+    Route::get('/invoice_management/insurance', 'InvoicesController@invoiceManagementInsurance');
+    Route::get('/invoice_management/research', 'InvoicesController@invoiceManagementResearch');
+    Route::get('/invoice_management/car_rental', 'InvoicesController@invoiceManagementCarRental');
+
 
     Route::get('/businesses', 'HomeController@businesses')->name('businesses');
+    Route::get('/businesses/research', 'HomeController@businessesResearch')->name('businesses_research');
+    Route::get('/businesses/insurance', 'HomeController@businessesInsurance')->name('businesses_insurance');
+    Route::get('/businesses/car_rental', 'HomeController@businessesCarRental')->name('businesses_car_rental');
+
 
     Route::get('/businesses/research_flats', 'HomeController@researchflats')->name('research_flats');
 

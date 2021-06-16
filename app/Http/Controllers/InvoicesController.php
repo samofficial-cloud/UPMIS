@@ -1561,9 +1561,397 @@ class InvoicesController extends Controller
 
     }
 
+
+
     public function space_filter(){
         return View::make('invoice_filtered');
     }
+
+
+    public function invoiceManagementCarRental(){
+
+
+
+
+        if(Auth::user()->role=='Vote Holder' || Auth::user()->role=='Accountant-Cost Centre'){
+//            $car_rental_invoices=DB::table('car_rental_invoices')->join('car_contracts','car_rental_invoices.contract_id','=','car_contracts.id')->where('cost_centre',Auth::user()->cost_centre)->orderBy('car_rental_invoices.invoice_number','desc')->get();
+
+
+            //car rental invoices starts
+
+            $car_invoice_inbox=null;
+            $car_invoice_outbox=null;
+
+
+
+            $created_stage_car_invoices=DB::table('car_rental_invoices')->join('car_contracts','car_rental_invoices.contract_id','=','car_contracts.id')->orderBy('car_rental_invoices.invoice_number','desc')->where('car_rental_invoices.stage',0)->where('car_contracts.cost_centre',Auth::user()->cost_centre)->get();
+            $fowarded_stage_car_invoices=DB::table('car_rental_invoices')->join('car_contracts','car_rental_invoices.contract_id','=','car_contracts.id')->orderBy('car_rental_invoices.invoice_number','desc')->where('car_rental_invoices.stage',1)->where('car_contracts.cost_centre',Auth::user()->cost_centre)->get();
+            $payment_incomplete_car_invoices=DB::table('car_rental_invoices')->join('car_contracts','car_rental_invoices.contract_id','=','car_contracts.id')->orderBy('car_rental_invoices.invoice_number','desc')->where('car_rental_invoices.stage',2)->where('car_rental_invoices.payment_status','Not paid')->where('car_contracts.cost_centre',Auth::user()->cost_centre)->get();
+            $car_invoices=DB::table('car_rental_invoices')->join('car_contracts','car_rental_invoices.contract_id','=','car_contracts.id')->orderBy('car_rental_invoices.invoice_number','desc')->where('car_rental_invoices.stage',2)->where('car_contracts.cost_centre',Auth::user()->cost_centre)->get();
+
+
+            if(Auth::user()->role=='Transport Officer-CPTU' || Auth::user()->role=='Head of CPTU'){
+                if(count($created_stage_car_invoices)==0){
+
+
+                }else{
+
+                    $car_invoice_inbox=$created_stage_car_invoices;
+                }
+
+
+
+                if(count($fowarded_stage_car_invoices)==0){
+
+
+
+                }else{
+
+                    $car_invoice_outbox=$fowarded_stage_car_invoices;
+
+                }
+
+
+
+            }else if (Auth::user()->role=='Accountant-DPDI'){
+
+                if(count($fowarded_stage_car_invoices)==0){
+
+
+                }else{
+
+                    $car_invoice_inbox=$fowarded_stage_car_invoices;
+                }
+
+                if(count($payment_incomplete_car_invoices)==0){
+
+
+                }else{
+
+                    $car_invoice_outbox=$payment_incomplete_car_invoices;
+
+                }
+
+
+
+
+            }else{
+
+
+
+            }
+
+            //car rental invoices ends
+
+
+
+        }
+
+        else{
+
+
+
+
+//            $car_rental_invoices=DB::table('car_rental_invoices')->join('car_contracts','car_rental_invoices.contract_id','=','car_contracts.id')->orderBy('car_rental_invoices.invoice_number','desc')->get();
+
+
+            //car rental invoices starts
+
+            $car_invoice_inbox=null;
+            $car_invoice_outbox=null;
+
+
+
+            $created_stage_car_invoices=DB::table('car_rental_invoices')->join('car_contracts','car_rental_invoices.contract_id','=','car_contracts.id')->orderBy('car_rental_invoices.invoice_number','desc')->where('car_rental_invoices.stage',0)->get();
+            $fowarded_stage_car_invoices=DB::table('car_rental_invoices')->join('car_contracts','car_rental_invoices.contract_id','=','car_contracts.id')->orderBy('car_rental_invoices.invoice_number','desc')->where('car_rental_invoices.stage',1)->get();
+            $payment_incomplete_car_invoices=DB::table('car_rental_invoices')->join('car_contracts','car_rental_invoices.contract_id','=','car_contracts.id')->orderBy('car_rental_invoices.invoice_number','desc')->where('car_rental_invoices.stage',2)->where('car_rental_invoices.payment_status','Not paid')->get();
+            $car_invoices=DB::table('car_rental_invoices')->join('car_contracts','car_rental_invoices.contract_id','=','car_contracts.id')->orderBy('car_rental_invoices.invoice_number','desc')->where('car_rental_invoices.stage',2)->get();
+
+
+            if(Auth::user()->role=='Transport Officer-CPTU' || Auth::user()->role=='Head of CPTU'){
+                if(count($created_stage_car_invoices)==0){
+
+
+                }else{
+
+                    $car_invoice_inbox=$created_stage_car_invoices;
+                }
+
+
+
+                if(count($fowarded_stage_car_invoices)==0){
+
+
+
+                }else{
+
+                    $car_invoice_outbox=$fowarded_stage_car_invoices;
+
+                }
+
+
+
+            }else if (Auth::user()->role=='Accountant-DPDI'){
+
+                if(count($fowarded_stage_car_invoices)==0){
+
+
+                }else{
+
+                    $car_invoice_inbox=$fowarded_stage_car_invoices;
+                }
+
+                if(count($payment_incomplete_car_invoices)==0){
+
+
+                }else{
+
+                    $car_invoice_outbox=$payment_incomplete_car_invoices;
+
+                }
+
+
+
+
+            }else{
+
+
+
+            }
+
+            //car rental invoices ends
+
+
+
+        }
+
+
+        return view('invoices_management_car_rental')->with('car_invoices',$car_invoices)->with('car_invoice_inbox',$car_invoice_inbox)->with('car_invoice_outbox',$car_invoice_outbox);
+
+
+    }
+
+
+    public function invoiceManagementResearch(){
+
+        //research invoices starts
+
+        $research_invoice_inbox=null;
+        $research_invoice_outbox=null;
+
+
+
+        $created_stage_research_invoices=DB::table('research_flats_invoices')->join('research_flats_contracts','research_flats_invoices.contract_id','=','research_flats_contracts.id')->orderBy('research_flats_invoices.invoice_number','desc')->where('research_flats_invoices.stage',0)->get();
+        $fowarded_stage_research_invoices=DB::table('research_flats_invoices')->join('research_flats_contracts','research_flats_invoices.contract_id','=','research_flats_contracts.id')->orderBy('research_flats_invoices.invoice_number','desc')->where('research_flats_invoices.stage',1)->get();
+        $payment_incomplete_research_invoices=DB::table('research_flats_invoices')->join('research_flats_contracts','research_flats_invoices.contract_id','=','research_flats_contracts.id')->orderBy('research_flats_invoices.invoice_number','desc')->where('research_flats_invoices.stage',2)->where('research_flats_invoices.payment_status','Not paid')->get();
+        $research_invoices=DB::table('research_flats_invoices')->join('research_flats_contracts','research_flats_invoices.contract_id','=','research_flats_contracts.id')->orderBy('research_flats_invoices.invoice_number','desc')->where('research_flats_invoices.stage',2)->get();
+
+
+        if(Auth::user()->role=='Research Flats Officer'){
+            if(count($created_stage_research_invoices)==0){
+
+
+            }else{
+
+                $research_invoice_inbox=$created_stage_research_invoices;
+            }
+
+
+
+            if(count($fowarded_stage_research_invoices)==0){
+
+
+
+            }else{
+
+                $research_invoice_outbox=$fowarded_stage_research_invoices;
+
+            }
+
+
+
+        }else if (Auth::user()->role=='Accountant-DPDI'){
+
+            if(count($fowarded_stage_research_invoices)==0){
+
+
+            }else{
+
+                $research_invoice_inbox=$fowarded_stage_research_invoices;
+            }
+
+            if(count($payment_incomplete_research_invoices)==0){
+
+
+            }else{
+
+                $research_invoice_outbox=$payment_incomplete_research_invoices;
+
+            }
+
+
+
+
+        }else{
+
+
+
+        }
+
+        //research invoices ends
+
+        return view('invoices_management_research')->with('research_invoices',$research_invoices)->with('research_invoice_inbox',$research_invoice_inbox)->with('research_invoice_outbox',$research_invoice_outbox);
+
+
+    }
+
+    public function invoiceManagementInsurance(){
+
+        //insurance invoices starts
+
+        $insurance_invoice_inbox=null;
+        $insurance_invoice_outbox=null;
+
+
+
+        $created_stage_insurance_invoices=DB::table('insurance_invoices')->orderBy('invoice_number','desc')->where('stage',0)->get();
+        $fowarded_stage_insurance_invoices=DB::table('insurance_invoices')->orderBy('invoice_number','desc')->where('stage',1)->get();
+        $payment_incomplete_insurance_invoices=DB::table('insurance_invoices')->orderBy('invoice_number','desc')->where('stage',2)->where('payment_status','Not paid')->get();
+        $insurance_invoices=DB::table('insurance_invoices')->orderBy('invoice_number','desc')->where('stage',2)->get();
+
+
+        if(Auth::user()->role=='Insurance Officer'){
+            if(count($created_stage_insurance_invoices)==0){
+
+
+            }else{
+
+                $insurance_invoice_inbox=$created_stage_insurance_invoices;
+            }
+
+
+
+            if(count($fowarded_stage_insurance_invoices)==0){
+
+
+
+            }else{
+
+                $insurance_invoice_outbox=$fowarded_stage_insurance_invoices;
+
+            }
+
+
+
+        }else if (Auth::user()->role=='Accountant-DPDI'){
+
+            if(count($fowarded_stage_insurance_invoices)==0){
+
+
+            }else{
+
+                $insurance_invoice_inbox=$fowarded_stage_insurance_invoices;
+            }
+
+            if(count($payment_incomplete_insurance_invoices)==0){
+
+
+            }else{
+
+                $insurance_invoice_outbox=$payment_incomplete_insurance_invoices;
+
+            }
+
+
+
+
+        }else{
+
+
+
+        }
+
+        //insurance invoices ends
+
+
+
+
+
+        //insurance_clients invoices starts
+
+        $insurance_clients_invoice_inbox=null;
+        $insurance_clients_invoice_outbox=null;
+
+
+
+        $created_stage_insurance_clients_invoices=DB::table('insurance_invoices_clients')->join('insurance_contracts','insurance_invoices_clients.contract_id','=','insurance_contracts.id')->orderBy('insurance_invoices_clients.invoice_number','desc')->where('insurance_invoices_clients.stage',0)->get();
+        $fowarded_stage_insurance_clients_invoices=DB::table('insurance_invoices_clients')->join('insurance_contracts','insurance_invoices_clients.contract_id','=','insurance_contracts.id')->orderBy('insurance_invoices_clients.invoice_number','desc')->where('insurance_invoices_clients.stage',1)->get();
+        $payment_incomplete_insurance_clients_invoices=DB::table('insurance_invoices_clients')->join('insurance_contracts','insurance_invoices_clients.contract_id','=','insurance_contracts.id')->orderBy('insurance_invoices_clients.invoice_number','desc')->where('insurance_invoices_clients.stage',2)->where('insurance_invoices_clients.payment_status','Not paid')->get();
+        $insurance_clients_invoices=DB::table('insurance_invoices_clients')->join('insurance_contracts','insurance_invoices_clients.contract_id','=','insurance_contracts.id')->orderBy('insurance_invoices_clients.invoice_number','desc')->where('insurance_invoices_clients.stage',2)->get();
+
+
+
+        if(Auth::user()->role=='Insurance Officer'){
+            if(count($created_stage_insurance_clients_invoices)==0){
+
+
+            }else{
+
+                $insurance_clients_invoice_inbox=$created_stage_insurance_clients_invoices;
+            }
+
+
+
+            if(count($fowarded_stage_insurance_clients_invoices)==0){
+
+
+
+            }else{
+
+                $insurance_clients_invoice_outbox=$fowarded_stage_insurance_clients_invoices;
+
+            }
+
+
+
+        }else if (Auth::user()->role=='Accountant-DPDI'){
+
+            if(count($fowarded_stage_insurance_clients_invoices)==0){
+
+
+            }else{
+
+                $insurance_clients_invoice_inbox=$fowarded_stage_insurance_clients_invoices;
+            }
+
+            if(count($payment_incomplete_insurance_clients_invoices)==0){
+
+
+            }else{
+
+                $insurance_clients_invoice_outbox=$payment_incomplete_insurance_clients_invoices;
+
+            }
+
+
+
+
+        }else{
+
+
+
+        }
+
+        //insurance_clients invoices ends
+
+
+
+
+        return view('invoices_management_insurance')->with('insurance_invoices',$insurance_invoices)->with('insurance_clients_invoices',$insurance_clients_invoices)->with('insurance_invoice_inbox',$insurance_invoice_inbox)->with('insurance_invoice_outbox',$insurance_invoice_outbox)->with('insurance_clients_invoice_inbox',$insurance_clients_invoice_inbox)->with('insurance_clients_invoice_outbox',$insurance_clients_invoice_outbox);
+
+
+    }
+
 
 
     public function changePayementStatusSpace(Request $request,$id)

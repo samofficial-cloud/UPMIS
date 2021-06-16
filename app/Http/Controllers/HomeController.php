@@ -136,6 +136,47 @@ class HomeController extends Controller
 
     }
 
+    public function businessesInsurance(){
+        $insurance=DB::table('insurance')->where('status',1)->get();
+
+        return view('businesses_insurance')->with('insurance',$insurance);
+    }
+
+    public function businessesResearch(){
+        $rooms = DB::table('research_flats_rooms')->where('status','1')->orderby('room_no','asc')->get();
+
+        return view('businesses_research')->with('rooms',$rooms);
+    }
+
+
+    public function businessesCarRental(){
+
+        $cars=carRental::where('flag','1')->orderBy('vehicle_status','dsc')->get();
+        $operational=operational_expenditure::where('flag','1')->get();
+        $rate=hire_rate::where('flag','1')->orderBy('vehicle_model','asc')->get();
+        $costcentres=cost_centre::orderBy('costcentre_id','asc')->where('status',1)->get();
+
+
+        if(Auth::user()->role=='Transport Officer-CPTU'){
+            $car_inbox = carRental::where('form_status','Transport Officer-CPTU')->where('flag',0)->orderBy('vehicle_status','dsc')->where('cptu_msg_status','inbox')->get();
+            $car_outbox = carRental::where('flag',0)->orderBy('vehicle_status','dsc')->where('cptu_msg_status','outbox')->get();
+        }
+        elseif(Auth::user()->role=='DVC Administrator'){
+            $car_inbox = carRental::where('form_status','DVC Administrator')->where('flag',0)->orderBy('vehicle_status','dsc')->where('dvc_msg_status','inbox')->get();
+            $car_outbox = carRental::where('flag',0)->orderBy('vehicle_status','dsc')->where('dvc_msg_status','outbox')->get();
+        }
+        else{
+            $car_inbox = carRental::where('flag',-1)->orderBy('vehicle_status','dsc')->get();
+            $car_outbox = carRental::where('flag',-1)->orderBy('vehicle_status','dsc')->get();
+        }
+
+
+        return view('businesses_car_rental')->with('cars',$cars)->with('operational',$operational)->with('rate',$rate)->with('costcentres',$costcentres)->with('inbox', $car_inbox)->with('outbox', $car_outbox);
+
+    }
+
+
+
     public function researchflats(){
       $rooms = DB::table('research_flats_rooms')->where('status','1')->orderby('room_no','asc')->get();
       return View('research_flats', compact('rooms'));

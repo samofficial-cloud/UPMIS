@@ -30,12 +30,13 @@
 <script src="{{ asset('js/vfs_fonts.js') }}"></script>
 <script src="{{ asset('js/buttons.html5.min.js') }}"></script>
 <script src="{{ asset('js/buttons.print.min.js') }}"></script>
-<script src="{{ asset('js/sidebar.js') }}" ></script>
+{{--<script src="{{ asset('js/sidebar.js') }}" ></script>--}}
 <script src="{{asset('select2/dist/js/select2.min.js')}}" type="text/javascript"></script>
 
     <script src="{{ asset('js/jquery-ui.js') }}" ></script>
     <script src="{{ asset('js/jquery.timepicker.min.js') }}" ></script>
     <script src="{{ asset('js/flatpickr.js') }}" ></script>
+{{--    <script src="{{ asset('js/all.js') }}" ></script>--}}
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -56,6 +57,8 @@
     <link href="{{ asset('css/jquery-ui.theme.css') }}" rel="stylesheet">
     <link href="{{ asset('css/jquery.timepicker.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/flatpickr.min.css') }}" rel="stylesheet">
+{{--    <link href="{{ asset('css/all.css') }}" rel="stylesheet">--}}
+    <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.7.0/css/all.css' integrity='sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ' crossorigin='anonymous'>
 
 
      @yield('style')

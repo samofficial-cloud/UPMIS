@@ -205,40 +205,1986 @@ input[type=radio]{
 
                 <br>
 
-                    <div class="tab" style="">
-
-
-                        @if ($category=='Real Estate only' OR $category=='All')
-                            <button class="tablinks_inner space_identity" onclick="openInnerInvoices(event, 'space_inner')" id="defaultBusiness"><strong>Real Estate</strong></button>
-                        @else
-                        @endif
-
-                        @if ($category=='Research Flats only' OR $category=='All')
-
-                          <button class="tablinks_inner  research_flats_identity" onclick="openInnerInvoices(event, 'research_flats_inner')" ><strong>Research Flats</strong></button>
-
-                        @else
-                        @endif
 
 
 
 
 
-                        @if($category=='Insurance only' OR $category=='All')
-                                <button class="tablinks_inner bills insurance_identity" onclick="openInnerInvoices(event, 'insurance_inner')"><strong>Insurance</strong></button>
-                        @else
-                        @endif
+                     @if($category=='Research Flats only')
+
+
+                         <div class="tab">
+
+
+                             @if ($category=='Real Estate only' OR $category=='All')
+                                 <button class="tablinks  space_identity" onclick='javascript:window.location.href="/businesses"' ><strong>Real Estate</strong></button>
+                             @else
+                             @endif
 
 
 
-                            @if ($category=='CPTU only' OR $category=='All')
-                                <button class="tablinks_inner bills car_identity" onclick="openInnerInvoices(event, 'car_rental_inner')"><strong>Car rental</strong></button>
-                            @else
-                            @endif
+                             @if($category=='Research Flats only' OR $category=='All')
+                                 <button class="tablinks active research_identity" onclick='javascript:window.location.href="/businesses/research"'><strong>Research Flats</strong></button>
+                             @else
+                             @endif
 
 
 
-                    </div>
+
+
+                             @if($category=='Insurance only' OR $category=='All')
+                                 <button class="tablinks insurance_identity" onclick='javascript:window.location.href="/businesses/insurance"'><strong>Insurance</strong></button>
+
+                             @else
+                             @endif
+
+
+                             @if ($category=='CPTU only' OR $category=='All')
+                                 <button class="tablinks car_identity" onclick='javascript:window.location.href="/businesses/car_rental"'><strong>Car Rental</strong></button>
+                             @else
+                             @endif
+
+
+
+                         </div>
+
+
+                         <div id="research_flats_inner" style="border-bottom-left-radius: 50px 20px; border: 1px solid #ccc; padding: 1%;" class="tabcontent_inner">
+                             @if($privileges=='Read only')
+                             @else
+                                 @admin
+                                 <div style="float: left;">
+
+
+                                     <a title="Add New Room" data-toggle="modal" data-target="#addroom" class="btn btn-success  active" style=" padding: 10px; background-color: #38c172; cursor: pointer; border: none;  margin-bottom: 2px;    margin-top: 4px;" role="button" aria-pressed="true">Add Room</a>
+                                 </div>
+
+                                 <div class="modal fade" id="addroom" role="dialog">
+
+                                     <div class="modal-dialog" role="document">
+                                         <div class="modal-content">
+                                             <div class="modal-header">
+                                                 <b><h5 class="modal-title">Fill the form below to add new room</h5></b>
+
+                                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                             </div>
+
+                                             <div class="modal-body">
+                                                 <form method="post" action="{{ route('addflat') }}">
+                                                     {{csrf_field()}}
+
+                                                     <div class="form-group">
+                                                         <div class="form-wrapper">
+                                                             <label for="room_no">Room No.<span style="color: red;">*</span></label>
+                                                             <input type="text" id="room_no" name="room_no" class="form-control" required="" >
+                                                         </div>
+                                                     </div>
+
+                                                     <div class="form-group">
+                                                         <div class="form-wrapper">
+                                                             <label for="category">Category<span style="color: red;">*</span></label>
+                                                             <select class="form-control" required="" id="category" name="category" required="">
+                                                                 <option value=""disabled selected hidden>Select Category</option>
+                                                                 <option value="Shared Room">Shared Room</option>
+                                                                 <option value="Single Room">Single Room</option>
+                                                                 <option value="Suit Room">Suit Room</option>
+                                                             </select>
+                                                         </div>
+                                                     </div>
+
+                                                     <div class="form-group">
+                                                         <div class="form-wrapper">
+                                                             <label for="currency">Currency<span style="color: red;">*</span></label>
+                                                             <select class="form-control" required="" id="currency" name="currency" required="">
+                                                                 <option value=""disabled selected hidden>Select Currency</option>
+                                                                 <option value="TZS">TZS</option>
+                                                                 <option value="USD">USD</option>
+                                                             </select>
+                                                         </div>
+                                                     </div>
+
+                                                     <div class="form-group">
+                                                         <div class="form-wrapper">
+                                                             <label for="charge_workers">Staff Rate<span style="color: red;">*</span></label>
+                                                             <input type="text" id="charge_workers" name="charge_workers" class="form-control" required="" onkeypress="if((this.value.length<15)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
+                                                         </div>
+                                                     </div>
+
+                                                     <div class="form-group">
+                                                         <div class="form-wrapper">
+                                                             <label for="charge_students">Students Rate<span style="color: red;">*</span></label>
+                                                             <input type="text" id="charge_students" name="charge_students" class="form-control" required="" onkeypress="if((this.value.length<15)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
+                                                         </div>
+                                                     </div>
+
+
+
+
+                                                     <div class="form-group">
+                                                         <div class="form-wrapper">
+                                                             <label for="currency">Status<span style="color: red;">*</span></label>
+                                                             <select class="form-control" required="" id="currency" name="occupational_status" required="">
+                                                                 <option value=""></option>
+                                                                 <option value="Vacant">Vacant</option>
+                                                                 <option value="Occupied">Occupied</option>
+                                                             </select>
+                                                         </div>
+                                                     </div>
+
+
+
+
+
+                                                     <div align="right">
+                                                         <button class="btn btn-primary" type="submit">Save</button>
+                                                         <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                                     </div>
+
+                                                 </form>
+                                             </div>
+                                         </div>
+                                     </div>
+                                 </div>
+
+
+
+                                 <div style="float:right;">
+                                     <div style="float:left;"> <a data-toggle="modal" class="btn button_color active" style="background-color: #38c172; padding: 7px; color:white; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;"  data-target="#import_data_logsheets" title="Import Data" role="button" aria-pressed="true">Import Data</a></div>
+
+                                     <div style="float:right;"><a href="/get_research_rooms_format" class="btn button_color active" style="background-color: #38c172; padding: 7px; color:white; margin-left: 5px;  margin-bottom: 5px; margin-top: 4px;"   title="Download Sample">Download Sample</a> </div>
+                                     <div style="clear: both;"></div>
+                                 </div>
+
+                                 <div style="clear: both;"></div>
+
+
+                                 <div class="modal fade" id="import_data_logsheets" role="dialog">
+
+                                     <div class="modal-dialog" role="document">
+                                         <div class="modal-content">
+                                             <div class="modal-header">
+                                                 <b><h5 class="modal-title">Importing Data</h5></b>
+
+                                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                             </div>
+
+                                             <div class="modal-body">
+
+                                                 <form method="post" enctype="multipart/form-data" action="/import_research_rooms">
+                                                     {{csrf_field()}}
+
+                                                     <div class="form-row">
+
+
+                                                         <div  class=" col-md-12 ">
+                                                             <div class="">
+                                                                 <label for="">Select File for Upload (.xls, .xlsx) <span style="color: red;">*</span></label>
+                                                                 <input type="file" class="" id="" name="import_data" value="" placeholder="" required accept=".xls,.xlsx" autocomplete="off">
+                                                                 <div class="mt-2"><span style="font-weight: bold;">N.B </span><span class="pl-1" style="color:red;"> The header row as given in the sample must be included as the first row when uploading. Furthermore, the acceptable values as indicated in the header row are case sensitive for instance if acceptable value is "Individual" the value to be inserted should be "Individual" and not "individual" </span></div>
+                                                             </div>
+                                                         </div>
+                                                         <br>
+
+
+                                                     </div>
+
+
+                                                     <div align="right">
+                                                         <button  class="btn btn-primary" type="submit">Import</button>
+                                                         <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                                     </div>
+                                                 </form>
+
+
+
+
+
+
+
+
+
+                                             </div>
+                                         </div>
+                                     </div>
+
+
+                                 </div>
+
+
+
+
+
+
+
+                                 @endadmin
+                             @endif
+
+                             @if(count($rooms)!=0)
+                                 <?php $i=1; ?>
+                                 <br><br>
+                                 <table class="hover table table-striped table-bordered" id="TableResearch">
+                                     <thead class="thead-dark">
+                                     <tr>
+                                         <th scope="col" style="color:#fff; width: 5%;"><center>S/N</center></th>
+                                         <th scope="col" style="color:#fff;"><center>Room No.</center></th>
+                                         <th scope="col" style="color:#fff;"><center>Category</center></th>
+                                         <th scope="col" style="color:#fff;"><center>Currency</center></th>
+                                         <th scope="col" style="color:#fff; width: 20%;"><center>Staff Rate</center></th>
+                                         <th scope="col" style="color:#fff;width: 20%;"><center>Students Rate</center></th>
+                                         <th scope="col" style="color:#fff;width: 20%;"><center>Status</center></th>
+                                         @if($privileges=='Read only')
+                                         @else
+                                             @admin
+                                             <th scope="col" style="color:#fff;"><center>Action</center></th>
+                                             @endadmin
+                                         @endif
+                                     </tr>
+                                     </thead>
+                                     <tbody>
+                                     @foreach($rooms as $room)
+                                         <tr>
+                                             <td style="text-align: center;">{{$i}}.</td>
+                                             <td>{{$room->room_no}}</td>
+                                             <td>{{$room->category}}</td>
+                                             <td><center>{{$room->currency}}</center></td>
+                                             <td style="text-align: right;">{{number_format($room->charge_workers)}}</td>
+                                             <td style="text-align: right;">{{number_format($room->charge_students)}}</td>
+                                             <td style="text-align: left;">{{$room->occupational_status}}</td>
+                                             @if($privileges=='Read only')
+                                             @else
+                                                 @admin
+                                                 <td>
+                                                     <center>
+
+                                                         <a title="Edit Room Details" data-toggle="modal" data-target="#editroom{{$room->id}}" role="button" aria-pressed="true"><i class="fa fa-edit" style="font-size:20px; color: green; cursor: pointer;"></i></a>
+                                                         <div class="modal fade" id="editroom{{$room->id}}" role="dialog">
+                                                             <div class="modal-dialog" role="document">
+                                                                 <div class="modal-content">
+                                                                     <div class="modal-header">
+                                                                         <b><h5 class="modal-title">Fill the form below to edit room details</h5></b>
+                                                                         <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                     </div>
+
+                                                                     <div class="modal-body">
+                                                                         <form method="post" action="{{ route('editflat') }}">
+                                                                             {{csrf_field()}}
+                                                                             <div class="form-group">
+                                                                                 <div class="form-wrapper">
+                                                                                     <label for="room_no{{$room->id}}">Room No.<span style="color: red;">*</span></label>
+                                                                                     <input type="text" id="room_no{{$room->id}}" name="room_no" class="form-control" required="" value="{{$room->room_no}}">
+                                                                                 </div>
+                                                                             </div>
+                                                                             <br>
+                                                                             <div class="form-group">
+                                                                                 <div class="form-wrapper">
+                                                                                     <label for="category{{$room->id}}">Category<span style="color: red;">*</span></label>
+                                                                                     <select class="form-control" required="" id="category{{$room->id}}" name="category" required="">
+                                                                                         <option value="{{$room->category}}">{{$room->category}}</option>
+                                                                                         @if($room->category!='Shared Room')
+                                                                                             <option value="Shared Room">Shared Room</option>
+                                                                                         @endif
+                                                                                         @if($room->category!='Single Room')
+                                                                                             <option value="Single Room">Single Room</option>
+                                                                                         @endif
+                                                                                         @if($room->category!='Suit Room')
+                                                                                             <option value="Suit Room">Suit Room</option>
+                                                                                         @endif
+                                                                                     </select>
+                                                                                 </div>
+                                                                             </div>
+                                                                             <br>
+                                                                             <div class="form-group">
+                                                                                 <div class="form-wrapper">
+                                                                                     <label for="currency{{$room->id}}">Currency<span style="color: red;">*</span></label>
+                                                                                     <select class="form-control" required="" id="currency{{$room->id}}" name="currency" required="">
+                                                                                         <option value="{{$room->currency}}">{{$room->currency}}</option>
+                                                                                         @if($room->currency!='TZS')
+                                                                                             <option value="TZS">TZS</option>
+                                                                                         @endif
+                                                                                         @if($room->currency!='USD')
+                                                                                             <option value="USD">USD</option>
+                                                                                         @endif
+                                                                                     </select>
+                                                                                 </div>
+                                                                             </div>
+                                                                             <br>
+                                                                             <div class="form-group">
+                                                                                 <div class="form-wrapper">
+                                                                                     <label for="charge_workers{{$room->id}}">Staff Rate<span style="color: red;">*</span></label>
+                                                                                     <input type="text" id="charge_workers{{$room->id}}" name="charge_workers" class="form-control" required="" value="{{$room->charge_workers}}" onkeypress="if((this.value.length<15)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
+                                                                                 </div>
+                                                                             </div>
+                                                                             <br>
+                                                                             <div class="form-group">
+                                                                                 <div class="form-wrapper">
+                                                                                     <label for="charge_students{{$room->id}}">Students Rate<span style="color: red;">*</span></label>
+                                                                                     <input type="text" id="charge_students{{$room->id}}" name="charge_students" class="form-control" required="" value="{{$room->charge_students}}" onkeypress="if((this.value.length<15)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
+                                                                                 </div>
+                                                                             </div>
+                                                                             <br>
+                                                                             <input type="text" name="room_id" value="{{$room->id}}" hidden="">
+
+
+
+                                                                             <div class="form-group">
+                                                                                 <div class="form-wrapper">
+                                                                                     <label for="currency">Status<span style="color: red;">*</span></label>
+                                                                                     <select class="form-control" required="" id="currency" name="occupational_status" required="">
+
+                                                                                         <option value="{{$room->occupational_status}}">{{$room->occupational_status}}</option>
+                                                                                         @if($room->occupational_status!='Vacant')
+                                                                                             <option value="Vacant">Vacant</option>
+                                                                                         @endif
+                                                                                         @if($room->occupational_status!='Occupied')
+                                                                                             <option value="Occupied">Occupied</option>
+                                                                                         @endif
+
+
+
+                                                                                     </select>
+                                                                                 </div>
+                                                                             </div>
+
+                                                                             <br>
+
+                                                                             <div align="right">
+                                                                                 <button class="btn btn-primary" type="submit">Save</button>
+                                                                                 <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                                                             </div>
+                                                                         </form>
+                                                                     </div>
+                                                                 </div>
+                                                             </div>
+                                                         </div>
+
+                                                         <a title="Delete this room" data-toggle="modal" data-target="#Deleteroom{{$room->id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px; color:red; cursor: pointer;"></i></a>
+
+                                                         <div class="modal fade" id="Deleteroom{{$room->id}}" role="dialog">
+                                                             <div class="modal-dialog" role="document">
+                                                                 <div class="modal-content">
+                                                                     <div class="modal-header">
+                                                                         <b><h5 class="modal-title" style="color: red;"><b>WARNING</b></h5></b>
+                                                                         <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                     </div>
+
+                                                                     <div class="modal-body">
+                                                                         <p style="font-size: 20px;">Are you sure you want to delete {{$room->room_no}}?</p>
+                                                                         <br>
+                                                                         <div align="right">
+                                                                             <a class="btn btn-info" href="{{route('deleteflat',$room->id)}}">Proceed</a>
+                                                                             <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                                                                         </div>
+
+                                                                     </div>
+                                                                 </div>
+                                                             </div>
+                                                         </div>
+
+                                                     </center>
+                                                 </td>
+                                                 @endadmin
+                                             @endif
+                                         </tr>
+                                         <?php $i = $i + 1; ?>
+                                     @endforeach
+                                     </tbody>
+                                 </table>
+                             @else
+                                 <br><br>
+                                 <p style="font-size: 18px;">No room has been added yet.</p>
+                             @endif
+
+                         </div>
+
+                     @elseif($category=='Insurance only')
+
+
+                         <div class="tab">
+
+
+                             @if ($category=='Real Estate only' OR $category=='All')
+                                 <button class="tablinks  space_identity" onclick='javascript:window.location.href="/businesses"' ><strong>Real Estate</strong></button>
+                             @else
+                             @endif
+
+
+
+                             @if($category=='Research Flats only' OR $category=='All')
+                                 <button class="tablinks  research_identity" onclick='javascript:window.location.href="/businesses/research"'><strong>Research Flats</strong></button>
+                             @else
+                             @endif
+
+
+
+
+
+                             @if($category=='Insurance only' OR $category=='All')
+                                 <button class="tablinks active insurance_identity" onclick='javascript:window.location.href="/businesses/insurance"'><strong>Insurance</strong></button>
+
+                             @else
+                             @endif
+
+
+                             @if ($category=='CPTU only' OR $category=='All')
+                                 <button class="tablinks car_identity" onclick='javascript:window.location.href="/businesses/car_rental"'><strong>Car Rental</strong></button>
+                             @else
+                             @endif
+
+
+
+                         </div>
+
+
+
+                         <div id="insurance_inner" style="border: 1px solid #ccc; padding: 1%; border-bottom-left-radius: 50px 20px;" class="tabcontent_inner">
+
+
+                             @if($privileges=='Read only')
+                             @else
+                                 <div style="float:left;">
+
+
+                                     <a data-toggle="modal" data-target="#add_insurance" class="btn button_color active" style="  color: white;  background-color: #38c172;
+
+    padding: 10px;
+    margin-left: -2px;
+    margin-bottom: 15px;
+    margin-top: 4px;" role="button" aria-pressed="true">Add new Insurance Package</a>
+                                 </div>
+
+
+
+                                 @admin
+
+                                 <div style="float:right;">
+                                     <div style="float:left;"> <a data-toggle="modal" class="btn button_color active" style="background-color: #38c172; padding: 7px; color:white; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;"  data-target="#import_data_insurance_package" title="Import Data" role="button" aria-pressed="true">Import Data</a></div>
+
+                                     <div style="float:right;"><a href="/get_insurance_packages_format" class="btn button_color active" style="background-color: #38c172; padding: 7px; color:white; margin-left: 5px;  margin-bottom: 5px; margin-top: 4px;"   title="Download Sample">Download Sample</a> </div>
+                                     <div style="clear: both;"></div>
+                                 </div>
+
+                                 <div style="clear: both;"></div>
+
+
+                                 <div class="modal fade" id="import_data_insurance_package" role="dialog">
+
+                                     <div class="modal-dialog" role="document">
+                                         <div class="modal-content">
+                                             <div class="modal-header">
+                                                 <b><h5 class="modal-title">Importing Data</h5></b>
+
+                                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                             </div>
+
+                                             <div class="modal-body">
+
+                                                 <form method="post" enctype="multipart/form-data" action="/import_insurance_packages">
+                                                     {{csrf_field()}}
+
+                                                     <div class="form-row">
+
+
+                                                         <div  class=" col-md-12 ">
+                                                             <div class="">
+                                                                 <label for="">Select File for Upload (.xls, .xlsx) <span style="color: red;">*</span></label>
+                                                                 <input type="file" class="" id="" name="import_data" value="" placeholder="" required accept=".xls,.xlsx" autocomplete="off">
+                                                                 <div class="mt-2"><span style="font-weight: bold;">N.B </span><span class="pl-1" style="color:red;"> The header row as given in the sample must be included as the first row when uploading. Furthermore, the acceptable values as indicated in the header row are case sensitive for instance if acceptable value is "Individual" the value to be inserted should be "Individual" and not "individual" </span></div>
+                                                             </div>
+                                                         </div>
+                                                         <br>
+
+
+                                                     </div>
+
+
+                                                     <div align="right">
+                                                         <button  class="btn btn-primary" type="submit">Import</button>
+                                                         <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                                     </div>
+                                                 </form>
+
+
+
+
+
+
+
+
+
+                                             </div>
+                                         </div>
+                                     </div>
+
+
+                                 </div>
+
+                                 @endadmin
+
+
+
+
+
+                             @endif
+
+
+                             <div class="">
+
+
+                                 {{--                            <center><h3><strong>Insurance Packages</strong></h3></center>--}}
+                                 {{--                            <hr>--}}
+                                 <div class="modal fade" id="add_insurance" role="dialog">
+
+                                     <div class="modal-dialog" role="document">
+                                         <div class="modal-content">
+                                             <div class="modal-header">
+                                                 <b><h5 class="modal-title">New Insurance Package</h5></b>
+
+                                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                             </div>
+
+                                             <div class="modal-body">
+                                                 <form method="post" action="{{ route('add_insurance')}}"  id="form1">
+                                                     {{csrf_field()}}
+
+
+                                                     <div class="form-group">
+                                                         <div class="form-wrapper">
+                                                             <label for="insurance_class"><strong>Class <span style="color: red;"> *</span></strong></label>
+
+
+                                                             <select id="insurance_class" class="form-control" Required name="class">
+                                                                 <?php
+                                                                 $classes=DB::table('insurance_parameters')->get();
+                                                                 ?>
+                                                                 <option value=""></option>
+                                                                 @foreach($classes as $class)
+                                                                     @if($class->classes!=null)
+                                                                         <option value="{{$class->classes}}">{{$class->classes}}</option>
+                                                                     @else
+                                                                     @endif
+                                                                 @endforeach
+                                                             </select>
+
+
+                                                         </div>
+                                                     </div>
+
+
+
+                                                     <div  id="insurance_companyDiv" class="form-group" style="display: none;" >
+                                                         <div class="form-wrapper">
+                                                             <label for="insurance_company"  ><strong>Insurance Company <span style="color: red;"> *</span></strong></label>
+                                                             <?php
+                                                             $companies=DB::table('insurance_parameters')->get();
+                                                             ?>
+                                                             <select id="insurance_company" class="form-control" required name="insurance_company">
+                                                                 <option value=""></option>
+                                                                 @foreach($companies as $var)
+                                                                     @if($var->company!=null)
+                                                                         <option value="{{$var->company}}" >{{$var->company}}</option>
+                                                                     @else
+                                                                     @endif
+                                                                 @endforeach
+                                                             </select>
+
+
+                                                         </div>
+                                                     </div>
+
+
+                                                     <div id="TypeDiv" class="form-group" style="display: none;">
+                                                         <div class="form-wrapper">
+                                                             <label for="insurance_type"  ><strong>Type <span style="color: red;"> *</span></strong></label>
+                                                             <select id="insurance_type"  class="form-control" name="insurance_type" required>
+                                                                 <option value=""></option>
+                                                                 <option value="THIRD PARTY" id="Option" >THIRD PARTY</option>
+                                                                 <option value="COMPREHENSIVE" id="Option" >COMPREHENSIVE</option>
+                                                             </select>
+                                                         </div>
+                                                     </div>
+
+
+                                                     <div id="TypeDivNA" class="form-group" style="display: none;">
+                                                         <div class="form-wrapper">
+                                                             <label for="insurance_type_na"  ><strong>Type <span style="color: red;"> *</span></strong></label>
+
+                                                             <input type="text" class="form-control" id="insurance_type_na" name="insurance_type" readonly  value="N/A" autocomplete="off">
+
+                                                         </div>
+                                                     </div>
+
+
+
+
+
+
+                                                     <div id="commissionDiv" class="form-group"  style="display: none;">
+
+                                                         <div  id=""  class="form-group row">
+
+                                                             <div class="col-12 inline_block form-wrapper">
+                                                                 <label  for="commission_percentage" class=" col-form-label"><strong>Commission percentage (%)</strong><strong><span style="color: red;"> *</span></strong></label>
+                                                                 <div class="">
+                                                                     <input type="number"  min="1" max="100" step="0.01" class="form-control"  name="commission_percentage" required value=""  id="commission_percentage" autocomplete="off">
+                                                                 </div>
+                                                             </div>
+
+
+                                                         </div>
+
+
+                                                     </div>
+
+
+
+                                                     <div align="right">
+                                                         <button class="btn btn-primary" type="submit">Save</button>
+                                                         <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                                     </div>
+                                                 </form>
+
+
+                                             </div>
+                                         </div>
+                                     </div>
+
+
+                                 </div>
+
+
+
+
+
+                                 <table class="hover table table-striped table-bordered" id="myTable2">
+                                     <thead class="thead-dark">
+                                     <tr>
+                                         <th scope="col" style="color:#fff;"><center>S/N</center></th>
+                                         <th scope="col" style="color:#fff;"><center>Class</center></th>
+                                         <th scope="col" style="color:#fff;"><center>Insurance Company</center></th>
+                                         <th scope="col" style="color:#fff;"><center>Type</center></th>
+                                         <th scope="col"  style="color:#fff;"><center>Commission</center></th>
+
+                                         @if($privileges=='Read only')
+                                         @else
+                                             <th scope="col"  style="color:#fff;"><center>Action</center></th>
+                                         @endif
+                                     </tr>
+                                     </thead>
+                                     <tbody>
+
+                                     @foreach($insurance as $var)
+                                         <tr>
+
+                                             <td class="counterCell text-center"></td>
+                                             <td><center>{{$var->class}}</center></td>
+                                             <td><center>{{$var->insurance_company}}</center></td>
+                                             <td><center>{{$var->insurance_type}}</center></td>
+                                             <td><center>{{$var->commission_percentage}}%</center></td>
+
+                                             @if($privileges=='Read only')
+                                             @else
+                                                 <td><center>
+
+
+
+                                                         <a data-toggle="modal" data-target="#edit_insurance{{$var->id}}" role="button" aria-pressed="true" title="Edit insurance information" name="editC"><i class="fa fa-edit" style="font-size:20px; color: green;"></i></a>
+                                                         <a href="/insurance_contract_on_fly/{{$var->id}}" title="Sell insurance"><i class="fa fa-file-text" aria-hidden="true" style="font-size:20px;"></i></a>
+
+                                                         <a data-toggle="modal" title="Delete insurance package" data-target="#deactivate_insurance{{$var->id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px; color:red;"></i></a>
+                                                         <div class="modal fade" id="edit_insurance{{$var->id}}" role="dialog">
+
+                                                             <div class="modal-dialog" role="document">
+                                                                 <div class="modal-content">
+                                                                     <div class="modal-header">
+                                                                         <b><h5 class="modal-title">Edit Insurance Package Information</h5></b>
+
+                                                                         <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                     </div>
+
+                                                                     <div class="modal-body">
+                                                                         <form method="post" action="{{ route('edit_insurance',$var->id)}}"  id="form1" >
+                                                                             {{csrf_field()}}
+
+
+                                                                             <div class="form-group">
+                                                                                 <div class="form-wrapper">
+                                                                                     <label for="insurance_class"><strong>Class <span style="color: red;"> *</span></strong></label>
+
+                                                                                     <input type="text" id="insurance_class_edit" class="form-control" Required name="class" readonly  value="{{$var->class}}" autocomplete="off">
+
+                                                                                 </div>
+                                                                             </div>
+                                                                             <br>
+
+
+
+                                                                             <div   class="form-group"  >
+                                                                                 <div class="form-wrapper">
+                                                                                     <label for="insurance_company"><strong>Insurance Company <span style="color: red;"> *</span></strong></label>
+
+                                                                                     <input type="text" id="insurance_company_edit" class="form-control" required name="insurance_company" readonly  value="{{$var->insurance_company}}" autocomplete="off">
+
+                                                                                 </div>
+                                                                             </div>
+                                                                             <br>
+
+
+                                                                             <div  class="form-group">
+                                                                                 <div class="form-wrapper">
+                                                                                     <label for="insurance_type"  ><strong>Type <span style="color: red;"> *</span></strong></label>
+                                                                                     <input type="text" id="insurance_type_edit"  class="form-control" name="insurance_type" readonly  value="{{$var->insurance_type}}" autocomplete="off">
+                                                                                 </div>
+                                                                             </div>
+                                                                             <br>
+
+
+
+
+                                                                             <div  class="form-group" >
+
+
+
+                                                                                 <div class="form-wrapper">
+                                                                                     <label  for="commission_percentage" class=" col-form-label"><strong>Commission percentage (%)</strong> <strong> <span style="color: red;"> *</span></strong></label>
+
+                                                                                     <input type="number" min="1" max="100" step="0.01" class="form-control"  name="commission_percentage" required value="{{$var->commission_percentage}}"  id="commission_percentage_edit" autocomplete="off">
+
+                                                                                 </div>
+
+
+
+
+
+
+
+
+
+
+                                                                             </div>
+                                                                             <br>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                                             <div align="right">
+                                                                                 <button class="btn btn-primary" type="submit">Save</button>
+                                                                                 <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                                                             </div>
+                                                                         </form>
+
+
+                                                                     </div>
+                                                                 </div>
+                                                             </div>
+
+
+                                                         </div>
+
+
+
+                                                         <div class="modal fade" id="deactivate_insurance{{$var->id}}" role="dialog">
+
+                                                             <div class="modal-dialog" role="document">
+                                                                 <div class="modal-content">
+                                                                     <div class="modal-header">
+                                                                         <b><h5 class="modal-title">Are you sure you want to deactivate {{$var->insurance_company}}'s {{$var->insurance_type}} insurance?</h5></b>
+
+                                                                         <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                     </div>
+
+                                                                     <div class="modal-body">
+                                                                         <form method="get" action="{{ route('deactivate_insurance',$var->id)}}" >
+                                                                             {{csrf_field()}}
+
+
+
+                                                                             <div align="right">
+                                                                                 <button class="btn btn-primary" type="submit" id="newdata">Yes</button>
+                                                                                 <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">No</button>
+                                                                             </div>
+
+
+                                                                         </form>
+                                                                     </div>
+                                                                 </div>
+                                                             </div>
+
+
+                                                         </div>
+
+
+                                                     </center>
+                                                 </td>
+                                             @endif
+                                         </tr>
+                                     @endforeach
+
+
+
+
+
+                                     </tbody>
+                                 </table>
+
+                             </div>
+
+
+                         </div>
+
+                      @elseif($category=='CPTU only' )
+
+
+                         <div class="tab">
+
+
+                             @if ($category=='Real Estate only' OR $category=='All')
+                                 <button class="  space_identity" onclick='javascript:window.location.href="/businesses"' ><strong>Real Estate</strong></button>
+                             @else
+                             @endif
+
+
+
+                             @if($category=='Research Flats only' OR $category=='All')
+                                 <button class="  research_identity" onclick='javascript:window.location.href="/businesses/research"'><strong>Research Flats</strong></button>
+                             @else
+                             @endif
+
+
+
+
+
+                             @if($category=='Insurance only' OR $category=='All')
+                                 <button class="  insurance_identity" onclick='javascript:window.location.href="/businesses/insurance"'><strong>Insurance</strong></button>
+
+                             @else
+                             @endif
+
+
+                             @if ($category=='CPTU only' OR $category=='All')
+                                 <button class=" active car_identity" onclick='javascript:window.location.href="/businesses/car_rental"'><strong>Car Rental</strong></button>
+                             @else
+                             @endif
+
+
+
+                         </div>
+
+
+
+                         <div id="car_rental_inner" style=" padding-top: 1%;" class="tabcontent_inner">
+
+                             <div class="tab">
+                                 <button class="tablinks" onclick="openContracts(event, 'car_list')" id="defaultOpen"><strong>VEHICLES</strong></button>
+                                 {{-- <button class="tablinks" onclick="openContracts(event, 'Operational')"><strong>OPERATIONAL EXPENDITURE</strong></button> --}}
+                                 {{--                            <button class="tablinks" onclick="openContracts(event, 'hire')"><strong>HIRE RATE</strong></button>--}}
+                                 {{--                            <button class="tablinks" onclick="openContracts(event, 'cost_centres')"><strong>COST CENTRES</strong></button>--}}
+                                 {{--                            <button class="tablinks" onclick="openContracts(event, 'availability')"><strong>VEHICLE AVAILABILITY</strong></button>--}}
+
+                             </div>
+                             <div id="car_list" style="border-bottom-left-radius: 50px 20px;   border: 1px solid #ccc; padding: 1%;" class="tabcontent">
+
+
+                                 @if($privileges=='Read only')
+                                 @else
+
+                                     @if(Auth::user()->role=='Transport Officer-CPTU')
+
+                                         <a title="Add a Vehicle" data-toggle="modal" data-target="#car" class="btn btn-success button_color active" style="padding: 10px; margin-bottom: 5px;margin-top: 4px;" role="button" aria-pressed="true">Add Vehicle</a>
+
+                                         <div class="modal fade" id="car" role="dialog">
+
+                                             <div class="modal-dialog" role="document">
+                                                 <div class="modal-content">
+                                                     <div class="modal-header">
+                                                         <b><h5 class="modal-title">Fill the form below to add new vehicle</h5></b>
+
+                                                         <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                     </div>
+
+                                                     <div class="modal-body">
+                                                         <form method="post" action="{{ route('addCar') }}">
+                                                             {{csrf_field()}}
+                                                             <div class="form-group" id="regNodiv">
+                                                                 <div class="form-wrapper">
+                                                                     <label for="reg_no">Vehicle Registration No<span style="color: red;">*</span></label>
+                                                                     <input type="text" id="reg_no" name="vehicle_reg_no" class="form-control" required="" onblur="this.value=removeSpaces(this.value); javascript:this.value=this.value.toUpperCase();">
+                                                                 </div>
+                                                             </div>
+
+                                                             <div class="form-group" id="modeldiv">
+                                                                 <div class="form-wrapper">
+                                                                     <label for="model">Vehicle Model<span style="color: red;">*</span></label>
+                                                                     <select class="form-control" required="" id="model" name="model" required="">
+                                                                         <option value=""disabled selected hidden>select Vehicle Model</option>
+                                                                         @foreach($model as $models)
+                                                                             <option value="{{$models->vehicle_model}}">{{$models->vehicle_model}}</option>
+                                                                         @endforeach
+                                                                     </select>
+                                                                 </div>
+                                                             </div>
+
+                                                             <div class="form-group">
+                                                                 <div class="form-wrapper" id="clientdiv">
+                                                                     <label for="vehicle_status">Vehicle Status<span style="color: red;">*</span></label>
+                                                                     <select class="form-control" required="" id="vehicle_status" name="vehicle_status" required="">
+                                                                         <option value=""disabled selected hidden>select Vehicle status</option>
+                                                                         <option value="Running">Running</option>
+                                                                         <option value="Minor Repair">Minor Repair</option>
+                                                                         <option value="Grounded">Grounded</option>
+                                                                     </select>
+
+                                                                 </div>
+                                                             </div>
+
+                                                             <div class="form-group" id="hirediv">
+                                                                 <div class="form-wrapper">
+                                                                     <label for="hire_rate">Hire Rate/KM<span style="color: red;">*</span></label>
+                                                                     <input type="text" id="hire_rate" name="hire_rate" class="form-control" readonly="" onkeypress="if((this.value.length<15)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
+                                                                 </div>
+                                                             </div>
+
+
+
+
+                                                             <div class="form-group">
+                                                                 <div class="form-wrapper" >
+                                                                     <label for="hire_status">Hire Status<span style="color: red;">*</span></label>
+                                                                     <select class="form-control" required="" id="hire_status" name="hire_status" required="">
+                                                                         <option value=""></option>
+                                                                         <option value="Hired">Hired</option>
+                                                                         <option value="Available">Available</option>
+                                                                     </select>
+
+                                                                 </div>
+                                                             </div>
+
+
+
+
+
+                                                             <div align="right">
+                                                                 <button class="btn btn-primary" type="submit">Forward</button>
+                                                                 <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                                             </div>
+                                                         </form>
+                                                     </div>
+                                                 </div>
+                                             </div>
+                                         </div>
+                                     @else
+                                     @endif
+                                     <br>
+
+                                 @endif
+
+
+                                 @if((Auth::user()->role=='Transport Officer-CPTU') || (Auth::user()->role=='DVC Administrator'))
+                                     <div class="tab">
+                                         <button class="tablinks_fleet" onclick="openfleet(event, 'car_inbox')" id="defaultOpenfleet"><strong>Inbox</strong></button>
+                                         <button class="tablinks_fleet" onclick="openfleet(event, 'car_outbox')"><strong>Outbox</strong></button>
+                                         <button class="tablinks_fleet" onclick="openfleet(event, 'car_fleet')"><strong>Vehicles</strong></button>
+                                     </div>
+
+                                     @if(Auth::user()->role=='Transport Officer-CPTU')
+                                         <div id="car_inbox" style="border-bottom-left-radius: 50px 20px;   border: 1px solid #ccc; padding: 1%;" class="tabcontent_fleet">
+                                             <br>
+                                             @if(count($inbox)>0)
+                                                 <?php $c =1; ?>
+                                                 <table>
+                                                     <thead>
+                                                     <tr>
+                                                         <th style="width: 14%"><center>SN.</center></th>
+                                                         <th style="width: 14%"><center>Vehicle Registration No.</center></th>
+                                                         <th style="width: 14%"><center>Vehicle Model</center></th>
+                                                         <th style="width: 14%"><center>Vehicle Status</center></th>
+                                                         <th style="width: 14%"><center>Hire Rate</center></th>
+                                                         <th style="width: 14%"><center>Action</center></th>
+                                                     </tr>
+                                                     </thead>
+                                                     <tbody>
+                                                     @foreach($inbox as $car)
+                                                         <tr>
+                                                             <td><center>{{$c}}.</center></td>
+                                                             <td><center>{{$car->vehicle_reg_no}}</center></td>
+                                                             <td><center>{{$car->vehicle_model}}</center></td>
+                                                             <td><center>{{$car->vehicle_status}}</center></td>
+                                                             <td><center>{{number_format($car->hire_rate)}}</center></td>
+                                                             <td>
+                                                                 <a title="View More Details" data-toggle="modal" data-target="#viewmore{{$car->id}}" role="button" aria-pressed="true" id="{{$car->id}}"><i class="fa fa-eye" style="font-size:20px; color: blue; cursor: pointer;padding-left: 70px;"></i></a>
+
+                                                                 <a title="Delete this application" data-toggle="modal" data-target="#Delete_app{{$car->id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px; color:red; cursor: pointer;"></i></a>
+
+                                                                 <div class="modal fade" id="Delete_app{{$car->id}}" role="dialog">
+
+                                                                     <div class="modal-dialog" role="document">
+                                                                         <div class="modal-content">
+                                                                             <div class="modal-header">
+                                                                                 <b><h5 class="modal-title" style="color: red;"><b>WARNING</b></h5></b>
+                                                                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                             </div>
+
+                                                                             <div class="modal-body">
+                                                                                 <p style="font-size: 18px;">Are you sure you want to delete this application?</p>
+                                                                                 <br>
+                                                                                 <div align="right">
+                                                                                     <a class="btn btn-info" href="{{route('addCar_step4',$car->id)}}">Proceed</a>
+                                                                                     <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                                                                                 </div>
+
+                                                                             </div>
+                                                                         </div>
+                                                                     </div>
+                                                                 </div>
+                                                                 <div class="modal fade" id="viewmore{{$car->id}}" role="dialog">
+
+                                                                     <div class="modal-dialog" role="document">
+                                                                         <div class="modal-content">
+                                                                             <div class="modal-header">
+                                                                                 <b><h5 class="modal-title">Vehicle Details</h5></b>
+                                                                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                             </div>
+
+                                                                             <div class="modal-body">
+                                                                                 <form method="post" action="{{ route('addCar_step3') }}">
+                                                                                     {{csrf_field()}}
+                                                                                     <div class="form-group">
+                                                                                         <div class="form-wrapper">
+                                                                                             <label for="remarks" style="color: red;">This Vehicle has been declined due to the following reason(s):</label>
+                                                                                             <textarea type="text" id="remarks{{$car->id}}" name="reason" class="form-control" readonly="">{{$car->comments}}</textarea>
+                                                                                         </div>
+                                                                                     </div>
+
+                                                                                     <div class="form-group">
+                                                                                         <div class="form-wrapper">
+                                                                                             <label for="reg_no{{$car->id}}">Vehicle Registration No<span style="color: red;">*</span></label>
+                                                                                             <input type="text" id="reg_no{{$car->id}}" name="vehicle_reg_no" class="form-control" required="" value="{{$car->vehicle_reg_no}}" onblur="this.value=removeSpaces(this.value); javascript:this.value=this.value.toUpperCase();">
+                                                                                         </div>
+                                                                                     </div>
+
+                                                                                     <div class="form-group" id="modeldiv">
+                                                                                         <div class="form-wrapper">
+                                                                                             <label for="model{{$car->id}}">Vehicle Model<span style="color: red;">*</span></label>
+                                                                                             <select class="form-control" required="" id="model{{$car->id}}" name="model" required="">
+                                                                                                 <option value="{{$car->vehicle_model}}">{{$car->vehicle_model}}</option>
+                                                                                                 @foreach($model as $models)
+                                                                                                     @if($models->vehicle_model != $car->vehicle_model)
+                                                                                                         <option value="{{$models->vehicle_model}}">{{$models->vehicle_model}}</option>
+                                                                                                     @endif
+                                                                                                 @endforeach
+                                                                                             </select>
+                                                                                         </div>
+                                                                                     </div>
+
+                                                                                     <div class="form-group">
+                                                                                         <div class="form-wrapper" id="clientdiv">
+                                                                                             <label for="vehicle_status">Vehicle Status<span style="color: red;">*</span></label>
+                                                                                             <select class="form-control" required="" id="vehicle_status" name="vehicle_status">
+                                                                                                 <option value="{{$car->vehicle_status}}">{{$car->vehicle_status}}</option>
+                                                                                                 @if($car->vehicle_status != 'Running')
+                                                                                                     <option value="Running">Running</option>
+                                                                                                 @endif
+                                                                                                 @if($car->vehicle_status!='Minor Repair')
+                                                                                                     <option value="Minor Repair">Minor Repair</option>
+                                                                                                 @endif
+                                                                                                 @if($car->vehicle_status!='Grounded')
+                                                                                                     <option value="Grounded">Grounded</option>
+                                                                                                 @endif
+                                                                                             </select>
+
+                                                                                         </div>
+                                                                                     </div>
+
+                                                                                     <div class="form-group" id="hirediv">
+                                                                                         <div class="form-wrapper">
+                                                                                             <label for="hire_rate">Hire Rate/KM<span style="color: red;">*</span></label>
+                                                                                             <input type="text" id="hire_rate" name="hire_rate" value="{{$car->hire_rate}}" class="form-control" required="" onkeypress="if((this.value.length<15)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
+                                                                                         </div>
+                                                                                     </div>
+                                                                                     <input type="text" name="vehicle_id" value="{{$car->id}}" hidden="">
+                                                                                     <div align="right">
+                                                                                         <button class="btn btn-primary" type="submit">Forward</button>
+                                                                                         <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                                                                     </div>
+                                                                                 </form>
+                                                                             </div>
+                                                                         </div>
+                                                                     </div>
+                                                                 </div>
+                                                             </td>
+                                                         </tr>
+                                                         <?php $c = $c + 1; ?>
+                                                     @endforeach
+                                                     </tbody>
+                                                 </table>
+                                             @else
+                                                 <p style="line-height: 1.5;font-size: 17px;"><i class="fa fa-envelope-o" style="font-size:25px;color:#3490dc;"></i> No new message</p>
+                                             @endif
+                                         </div>
+
+                                         <div id="car_outbox" style="border-bottom-left-radius: 50px 20px;   border: 1px solid #ccc; padding: 1%;" class="tabcontent_fleet">
+                                             <br>
+                                             @if(count($outbox)>0)
+                                                 <?php $c =1; ?>
+                                                 <table>
+                                                     <thead>
+                                                     <tr>
+                                                         <th style="width: 14%"><center>SN.</center></th>
+                                                         <th style="width: 14%"><center>Vehicle Registration No.</center></th>
+                                                         <th style="width: 14%"><center>Vehicle Model</center></th>
+                                                         <th style="width: 14%"><center>Vehicle Status</center></th>
+                                                         <th style="width: 14%"><center>Hire Rate</center></th>
+                                                         <th style="width: 14%"><center>Form Status</center></th>
+                                                     </tr>
+                                                     </thead>
+                                                     <tbody>
+                                                     @foreach($outbox as $car)
+                                                         <tr>
+                                                             <td><center>{{$c}}.</center></td>
+                                                             <td><center>{{$car->vehicle_reg_no}}</center></td>
+                                                             <td><center>{{$car->vehicle_model}}</center></td>
+                                                             <td><center>{{$car->vehicle_status}}</center></td>
+                                                             <td><center>{{number_format($car->hire_rate)}}</center></td>
+                                                             <td><center>
+
+
+
+                                                                     @if($car->form_status=='DVC Administrator')
+                                                                         DVC Administration
+                                                                     @else
+                                                                     @endif
+                                                                 </center></td>
+                                                         </tr>
+                                                         <?php $c = $c + 1; ?>
+                                                     @endforeach
+                                                     </tbody>
+                                                 </table>
+                                             @else
+                                                 <p style="line-height: 1.5;font-size: 17px;"><i class="fa fa-envelope-o" style="font-size:25px;color:#3490dc;"></i> No new message</p>
+                                             @endif
+                                         </div>
+                                     @elseif(Auth::user()->role=='DVC Administrator')
+                                         <div id="car_inbox" style="border-bottom-left-radius: 50px 20px;   border: 1px solid #ccc; padding: 1%;" class="tabcontent_fleet">
+                                             <br>
+                                             @if(count($inbox)>0)
+                                                 <?php $c =1; ?>
+                                                 <table>
+                                                     <thead>
+                                                     <tr>
+                                                         <th style="width: 14%"><center>SN.</center></th>
+                                                         <th style="width: 14%"><center>Vehicle Registration No.</center></th>
+                                                         <th style="width: 14%"><center>Vehicle Model</center></th>
+                                                         <th style="width: 14%"><center>Vehicle Status</center></th>
+                                                         <th style="width: 14%"><center>Hire Rate</center></th>
+                                                         <th style="width: 14%"><center>Action</center></th>
+                                                     </tr>
+                                                     </thead>
+                                                     <tbody>
+                                                     @foreach($inbox as $car)
+                                                         <tr>
+                                                             <td><center>{{$c}}.</center></td>
+                                                             <td><center>{{$car->vehicle_reg_no}}</center></td>
+                                                             <td><center>{{$car->vehicle_model}}</center></td>
+                                                             <td><center>{{$car->vehicle_status}}</center></td>
+                                                             <td><center>{{number_format($car->hire_rate)}}</center></td>
+                                                             <td>
+                                                                 <a title="Approve this Vehicle" data-toggle="modal" data-target="#approve{{$car->id}}" role="button" aria-pressed="true" id="{{$car->id}}"><center><i class="fa fa-eye" style="font-size:20px; color: blue; cursor: pointer;"></i></center></a>
+                                                                 <div class="modal fade" id="approve{{$car->id}}" role="dialog">
+
+                                                                     <div class="modal-dialog" role="document">
+                                                                         <div class="modal-content">
+                                                                             <div class="modal-header">
+                                                                                 <b><h5 class="modal-title">CONFIRMATION</h5></b>
+                                                                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                             </div>
+
+                                                                             <div class="modal-body">
+                                                                                 <form method='post' action="{{ route('addCar_step2') }}">
+                                                                                     {{csrf_field()}}
+                                                                                     <div class="form-group">
+                                                                                         <div class="row">
+                                                                                             <div class="form-wrapper col-12">
+                                                                                                 <label for="approval_status">Do you approve the additional of this vehicle?</label>
+                                                                                             </div>
+                                                                                         </div>
+                                                                                         <div class="row">
+                                                                                             <div class="form-wrapper col-6">
+                                                                                                 <input class="form-check-input" type="radio" name="approval_status" id="Approve{{$car->id}}" value="Accepted" checked="">
+                                                                                                 <label for="Approve{{$car->id}}" class="form-check-label">Approve</label>
+                                                                                             </div>
+
+                                                                                             <div class="form-wrapper col-6">
+                                                                                                 <input class="form-check-input" type="radio" name="approval_status" id="Reject{{$car->id}}" value="Rejected">
+                                                                                                 <label for="Reject{{$car->id}}" class="form-check-label">Decline</label>
+                                                                                             </div>
+
+                                                                                         </div>
+                                                                                     </div>
+
+                                                                                     <div class="form-group" id="remarksDiv{{$car->id}}" style="display: none;">
+                                                                                         <div class="form-wrapper">
+                                                                                             <label for="remarks">Remark(s)<span style="color: red;">*</span></label>
+                                                                                             <span id="remarksmsg{{$car->id}}"></span>
+                                                                                             <textarea type="text" id="remarks{{$car->id}}" name="reason"  class="form-control"></textarea>
+                                                                                         </div>
+                                                                                     </div>
+
+                                                                                     <input type="text" name="vehicle_id" value="{{$car->id}}" hidden="">
+
+                                                                                     <div align="right">
+                                                                                         <button class="btn btn-primary" type="submit" id="{{$car->id}}" onclick=" return validate(this.id)">Forward</button>
+                                                                                         <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                                                                     </div>
+
+                                                                                 </form>
+
+
+                                                                             </div>
+                                                                         </div>
+                                                                     </div>
+                                                                 </div>
+                                                             </td>
+                                                         </tr>
+                                                         <?php $c = $c + 1; ?>
+                                                     @endforeach
+                                                     </tbody>
+                                                 </table>
+                                             @else
+                                                 <p style="line-height: 1.5;font-size: 17px;"><i class="fa fa-envelope-o" style="font-size:25px;color:#3490dc;"></i> No new message</p>
+                                             @endif
+                                         </div>
+
+                                         <div id="car_outbox" style="border-bottom-left-radius: 50px 20px;   border: 1px solid #ccc; padding: 1%;" class="tabcontent_fleet">
+                                             <br>
+                                             @if(count($outbox)>0)
+                                                 <?php $c =1; ?>
+                                                 <table>
+                                                     <thead>
+                                                     <tr>
+                                                         <th style="width: 14%"><center>SN.</center></th>
+                                                         <th style="width: 14%"><center>Vehicle Registration No.</center></th>
+                                                         <th style="width: 14%"><center>Vehicle Model</center></th>
+                                                         <th style="width: 14%"><center>Vehicle Status</center></th>
+                                                         <th style="width: 14%"><center>Hire Rate</center></th>
+                                                         <th style="width: 14%"><center>Form Status</center></th>
+                                                     </tr>
+                                                     </thead>
+                                                     <tbody>
+                                                     @foreach($outbox as $car)
+                                                         <tr>
+                                                             <td><center>{{$c}}.</center></td>
+                                                             <td><center>{{$car->vehicle_reg_no}}</center></td>
+                                                             <td><center>{{$car->vehicle_model}}</center></td>
+                                                             <td><center>{{$car->vehicle_status}}</center></td>
+                                                             <td><center>{{number_format($car->hire_rate)}}</center></td>
+                                                             <td><center>{{$car->form_status}}</center></td>
+                                                         </tr>
+                                                         <?php $c = $c + 1; ?>
+                                                     @endforeach
+                                                     </tbody>
+                                                 </table>
+                                             @else
+                                                 <p style="line-height: 1.5;font-size: 17px;"><i class="fa fa-envelope-o" style="font-size:25px;color:#3490dc;"></i> No new message</p>
+                                             @endif
+                                         </div>
+                                     @endif
+
+                                     <div id="car_fleet" style="border-bottom-left-radius: 50px 20px;   border: 1px solid #ccc; padding: 1%;" class="tabcontent_fleet">
+
+
+
+                                         {{--                            <br>--}}
+                                         {{--                            <center><h3><strong>VEHICLES</strong></h3></center>--}}
+                                         {{--                            <hr>--}}
+                                         {{--                            <br>--}}
+                                         {{-- @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR (Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator')) --}}
+
+
+                                         <?php $i = 1; ?>
+                                         <table class="hover table table-striped table-bordered" id="myTable3">
+                                             <thead class="thead-dark">
+                                             <tr>
+                                                 <th scope="col" style="color:#fff; width: 5%;"><center>S/N</center></th>
+                                                 <th scope="col" style="color:#fff;"><center>Vehicle Registration No.</center></th>
+                                                 <th scope="col" style="color:#fff;"><center>Vehicle Model</center></th>
+                                                 <th scope="col" style="color:#fff;"><center>Vehicle Status</center></th>
+                                                 <th scope="col" style="color:#fff;"><center>Hire Rate/KM (TZS)</center></th>
+                                                 <th scope="col" style="color:#fff;"><center>Hire Status</center></th>
+                                                 <th scope="col" style="color:#fff;"><center>Action</center></th>
+                                             </tr>
+                                             </thead>
+                                             <tbody>
+                                             @foreach($cars as $cars)
+                                                 <tr>
+                                                     <th scope="row">{{ $i }}.</th>
+                                                     <td><center>{{ $cars->vehicle_reg_no}}</center></td>
+                                                     <td>{{$cars->vehicle_model}}</td>
+                                                     <td>{{ $cars->vehicle_status}}</td>
+                                                     <td><center>{{ number_format($cars->hire_rate)}}</center></td>
+                                                     <td><center>{{ $cars->hire_status}}</center></td>
+                                                     <td><center>
+                                                             <a title="View More Details" role="button" href="{{ route('CarViewMore') }}?vehicle_reg_no={{$cars->vehicle_reg_no}}"><i class="fa fa-eye" aria-hidden="true" style="font-size:20px; color:#3490dc; cursor: pointer;"></i></a>
+                                                             {{--  @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR (Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator')) --}}
+                                                             @if($privileges=='Read only')
+                                                             @else
+                                                                 @admin
+                                                                 <a title="Edit Car Details" data-toggle="modal" data-target="#edit{{$cars->id}}" role="button" aria-pressed="true" id="{{$cars->id}}"><i class="fa fa-edit" style="font-size:20px; color: green; cursor: pointer;"></i></a>
+                                                                 <div class="modal fade" id="edit{{$cars->id}}" role="dialog">
+
+                                                                     <div class="modal-dialog" role="document">
+                                                                         <div class="modal-content">
+                                                                             <div class="modal-header">
+                                                                                 <b><h5 class="modal-title">Fill the form below to edit car details</h5></b>
+
+                                                                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                             </div>
+
+                                                                             <div class="modal-body">
+                                                                                 <form method="get" action="{{ route('editcar') }}">
+                                                                                     {{csrf_field()}}
+                                                                                     <div class="form-group">
+                                                                                         <div class="form-wrapper">
+                                                                                             <label for="reg_no">Vehicle Registration No<span style="color: red;">*</span></label>
+                                                                                             <input type="text" id="reg_no{{$cars->id}}" name="vehicle_reg_no" class="form-control" value="{{$cars->vehicle_reg_no}}" required="" onblur="this.value=removeSpaces(this.value); javascript:this.value=this.value.toUpperCase();">
+                                                                                         </div>
+                                                                                     </div>
+                                                                                     <br>
+
+                                                                                     <div class="form-group">
+                                                                                         <div class="form-wrapper">
+                                                                                             <label for="model">Vehicle Model<span style="color: red;">*</span></label>
+                                                                                             <select class="form-control" required="" id="model{{$cars->id}}" name="model" required="">
+                                                                                                 <option value="{{$cars->vehicle_model}}">{{$cars->vehicle_model}}</option>
+                                                                                                 @foreach($model1 as $model)
+                                                                                                     @if($model->vehicle_model != $cars->vehicle_model)
+                                                                                                         <option value="{{$model->vehicle_model}}">{{$model->vehicle_model}}</option>
+                                                                                                     @endif
+                                                                                                 @endforeach
+                                                                                             </select>
+                                                                                         </div>
+                                                                                     </div>
+                                                                                     <br>
+                                                                                     <div class="form-group">
+                                                                                         <div class="form-wrapper">
+                                                                                             <label for="vehicle_status">Vehicle Status<span style="color: red;">*</span></label>
+                                                                                             <select class="form-control" required="" id="vehicle_status{{$cars->id}}" name="vehicle_status" required="">
+                                                                                                 <option value="{{$cars->vehicle_status}}">{{$cars->vehicle_status}}</option>
+                                                                                                 @if($cars->vehicle_status != 'Running')
+                                                                                                     <option value="Running">Running</option>
+                                                                                                 @endif
+                                                                                                 @if($cars->vehicle_status != 'Minor Repair')
+                                                                                                     <option value="Minor Repair">Minor Repair</option>
+                                                                                                 @endif
+                                                                                                 @if($cars->vehicle_status != 'Grounded')
+                                                                                                     <option value="Grounded">Grounded</option>
+                                                                                                 @endif
+                                                                                             </select>
+
+                                                                                         </div>
+                                                                                     </div>
+                                                                                     <br>
+                                                                                     <div class="form-group">
+                                                                                         <div class="form-wrapper">
+                                                                                             <label for="hire_rate">Hire Rate/KM<span style="color: red;">*</span></label>
+                                                                                             <input type="text" id="hire_rate{{$cars->id}}" name="hire_rate" class="form-control" value="{{$cars->hire_rate}}" required="" onkeypress="if((this.value.length<10)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
+                                                                                         </div>
+                                                                                     </div>
+                                                                                     <br>
+
+                                                                                     <div class="form-group">
+                                                                                         <div class="form-wrapper" >
+                                                                                             <label for="hire_status">Hire Status<span style="color: red;">*</span></label>
+                                                                                             <select class="form-control" required="" id="hire_status" name="hire_status" required="">
+                                                                                                 <option value="{{$cars->hire_status}}">{{$cars->hire_status}}</option>
+                                                                                                 @if($cars->hire_status != 'Hired')
+                                                                                                     <option value="Hired">Hired</option>
+                                                                                                 @endif
+                                                                                                 @if($cars->hire_status != 'Available')
+                                                                                                     <option value="Available">Available</option>
+                                                                                                 @endif
+
+                                                                                             </select>
+
+                                                                                         </div>
+                                                                                     </div>
+
+                                                                                     <br>
+
+
+                                                                                     <input type="text" name="id" value="{{$cars->id}}" hidden="">
+
+                                                                                     <div align="right">
+                                                                                         <button class="btn btn-primary" type="submit">Submit</button>
+                                                                                         <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                                                                     </div>
+                                                                                 </form>
+                                                                             </div>
+                                                                         </div>
+                                                                     </div>
+                                                                 </div>
+
+
+
+                                                                 <a title="Delete this Car" data-toggle="modal" data-target="#Deactivate{{$cars->id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px; color:red; cursor: pointer;"></i></a>
+                                                                 <div class="modal fade" id="Deactivate{{$cars->id}}" role="dialog">
+
+                                                                     <div class="modal-dialog" role="document">
+                                                                         <div class="modal-content">
+                                                                             <div class="modal-header">
+                                                                                 <b><h5 class="modal-title" style="color: red;"><b>WARNING</b></h5></b>
+                                                                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                             </div>
+
+                                                                             <div class="modal-body">
+                                                                                 <p style="font-size: 20px;">Are you sure you want to delete this car?</p>
+                                                                                 <br>
+                                                                                 <div align="right">
+                                                                                     <a class="btn btn-info" href="{{route('deletecar',$cars->id)}}">Proceed</a>
+                                                                                     <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                                                                                 </div>
+
+                                                                             </div>
+                                                                         </div>
+                                                                     </div>
+                                                                 </div>
+                                                                 @endadmin
+                                                             @endif
+                                                         </center>
+                                                     </td>
+
+
+                                                 </tr>
+                                                 <?php
+                                                 $i= $i+1;
+                                                 ?>
+                                             @endforeach
+
+                                             </tbody>
+                                         </table>
+                                     </div>
+                                 @else
+
+
+
+                                     @admin
+
+                                     <div style="float:right;">
+                                         <div style="float:left;"> <a data-toggle="modal" class="btn button_color active" style="background-color: #38c172; padding: 7px; color:white; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;"  data-target="#import_vehicles" title="Import Data" role="button" aria-pressed="true">Import Data</a></div>
+
+                                         <div style="float:right;"><a href="/get_vehicles_format" class="btn button_color active" style="background-color: #38c172; padding: 7px; color:white; margin-left: 5px;  margin-bottom: 5px; margin-top: 4px;"   title="Download Sample">Download Sample</a> </div>
+                                         <div style="clear: both;"></div>
+                                     </div>
+
+                                     <div style="clear: both;"></div>
+
+
+                                     <div class="modal fade" id="import_vehicles" role="dialog">
+
+                                         <div class="modal-dialog" role="document">
+                                             <div class="modal-content">
+                                                 <div class="modal-header">
+                                                     <b><h5 class="modal-title">Importing Data</h5></b>
+
+                                                     <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                 </div>
+
+                                                 <div class="modal-body">
+
+                                                     <form method="post" enctype="multipart/form-data" action="/import_vehicles">
+                                                         {{csrf_field()}}
+
+                                                         <div class="form-row">
+
+
+                                                             <div  class=" col-md-12 ">
+                                                                 <div class="">
+                                                                     <label for="">Select File for Upload (.xls, .xlsx) <span style="color: red;">*</span></label>
+                                                                     <input type="file" class="" id="" name="import_data" value="" placeholder="" required accept=".xls,.xlsx" autocomplete="off">
+                                                                     <div class="mt-2"><span style="font-weight: bold;">N.B </span><span class="pl-1" style="color:red;"> The header row as given in the sample must be included as the first row when uploading. Furthermore, the acceptable values as indicated in the header row are case sensitive for instance if acceptable value is "Individual" the value to be inserted should be "Individual" and not "individual" </span></div>
+                                                                 </div>
+                                                             </div>
+                                                             <br>
+
+
+                                                         </div>
+
+
+                                                         <div align="right">
+                                                             <button  class="btn btn-primary" type="submit">Import</button>
+                                                             <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                                         </div>
+                                                     </form>
+
+
+
+
+
+
+
+
+
+                                                 </div>
+                                             </div>
+                                         </div>
+
+
+                                     </div>
+
+                                     @endadmin
+
+                                     {{--                            <br>--}}
+                                     {{--                            <center><h3><strong>VEHICLES</strong></h3></center>--}}
+                                     {{--                            <hr>--}}
+                                     {{--                            <br>--}}
+                                     {{-- @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR (Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator')) --}}
+
+
+                                     <?php $i = 1; ?>
+                                     <table class="hover table table-striped table-bordered" id="myTable3">
+                                         <thead class="thead-dark">
+                                         <tr>
+                                             <th scope="col" style="color:#fff; width: 5%;"><center>S/N</center></th>
+                                             <th scope="col" style="color:#fff;"><center>Vehicle Registration No.</center></th>
+                                             <th scope="col" style="color:#fff;"><center>Vehicle Model</center></th>
+                                             <th scope="col" style="color:#fff;"><center>Vehicle Status</center></th>
+                                             <th scope="col" style="color:#fff;"><center>Hire Rate/KM (TZS)</center></th>
+                                             <th scope="col" style="color:#fff;"><center>Hire Status</center></th>
+                                             <th scope="col" style="color:#fff;"><center>Action</center></th>
+                                         </tr>
+                                         </thead>
+                                         <tbody>
+                                         @foreach($cars as $cars)
+                                             <tr>
+                                                 <th scope="row">{{ $i }}.</th>
+                                                 <td><center>{{ $cars->vehicle_reg_no}}</center></td>
+                                                 <td>{{$cars->vehicle_model}}</td>
+                                                 <td>{{ $cars->vehicle_status}}</td>
+                                                 <td><center>{{ number_format($cars->hire_rate)}}</center></td>
+                                                 <td><center>{{$cars->hire_status}}</center></td>
+                                                 <td><center>
+                                                         <a title="View More Details" role="button" href="{{ route('CarViewMore') }}?vehicle_reg_no={{$cars->vehicle_reg_no}}"><i class="fa fa-eye" aria-hidden="true" style="font-size:20px; color:#3490dc; cursor: pointer;"></i></a>
+                                                         {{--  @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR (Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator')) --}}
+                                                         @if($privileges=='Read only')
+                                                         @else
+                                                             @admin
+                                                             <a title="Edit Car Details" data-toggle="modal" data-target="#edit{{$cars->id}}" role="button" aria-pressed="true" id="{{$cars->id}}"><i class="fa fa-edit" style="font-size:20px; color: green; cursor: pointer;"></i></a>
+                                                             <div class="modal fade" id="edit{{$cars->id}}" role="dialog">
+
+                                                                 <div class="modal-dialog" role="document">
+                                                                     <div class="modal-content">
+                                                                         <div class="modal-header">
+                                                                             <b><h5 class="modal-title">Fill the form below to edit car details</h5></b>
+
+                                                                             <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                         </div>
+
+                                                                         <div class="modal-body">
+                                                                             <form method="get" action="{{ route('editcar') }}">
+                                                                                 {{csrf_field()}}
+                                                                                 <div class="form-group">
+                                                                                     <div class="form-wrapper">
+                                                                                         <label for="reg_no">Vehicle Registration No<span style="color: red;">*</span></label>
+                                                                                         <input type="text" id="reg_no{{$cars->id}}" name="vehicle_reg_no" class="form-control" value="{{$cars->vehicle_reg_no}}" required="" onblur="this.value=removeSpaces(this.value); javascript:this.value=this.value.toUpperCase();">
+                                                                                     </div>
+                                                                                 </div>
+                                                                                 <br>
+
+                                                                                 <div class="form-group">
+                                                                                     <div class="form-wrapper">
+                                                                                         <label for="model">Vehicle Model<span style="color: red;">*</span></label>
+                                                                                         <select class="form-control" required="" id="model{{$cars->id}}" name="model" required="">
+                                                                                             <option value="{{$cars->vehicle_model}}">{{$cars->vehicle_model}}</option>
+                                                                                             @foreach($model1 as $model)
+                                                                                                 @if($model->vehicle_model != $cars->vehicle_model)
+                                                                                                     <option value="{{$model->vehicle_model}}">{{$model->vehicle_model}}</option>
+                                                                                                 @endif
+                                                                                             @endforeach
+                                                                                         </select>
+                                                                                     </div>
+                                                                                 </div>
+                                                                                 <br>
+                                                                                 <div class="form-group">
+                                                                                     <div class="form-wrapper">
+                                                                                         <label for="vehicle_status">Vehicle Status<span style="color: red;">*</span></label>
+                                                                                         <select class="form-control" required="" id="vehicle_status{{$cars->id}}" name="vehicle_status" required="">
+                                                                                             <option value="{{$cars->vehicle_status}}">{{$cars->vehicle_status}}</option>
+                                                                                             @if($cars->vehicle_status != 'Running')
+                                                                                                 <option value="Running">Running</option>
+                                                                                             @endif
+                                                                                             @if($cars->vehicle_status != 'Minor Repair')
+                                                                                                 <option value="Minor Repair">Minor Repair</option>
+                                                                                             @endif
+                                                                                             @if($cars->vehicle_status != 'Grounded')
+                                                                                                 <option value="Grounded">Grounded</option>
+                                                                                             @endif
+                                                                                         </select>
+
+                                                                                     </div>
+                                                                                 </div>
+                                                                                 <br>
+                                                                                 <div class="form-group">
+                                                                                     <div class="form-wrapper">
+                                                                                         <label for="hire_rate">Hire Rate/KM<span style="color: red;">*</span></label>
+                                                                                         <input type="text" id="hire_rate{{$cars->id}}" name="hire_rate" class="form-control" value="{{$cars->hire_rate}}" required="" onkeypress="if((this.value.length<10)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
+                                                                                     </div>
+                                                                                 </div>
+                                                                                 <br>
+
+                                                                                 <div class="form-group">
+                                                                                     <div class="form-wrapper" >
+                                                                                         <label for="hire_status">Hire Status<span style="color: red;">*</span></label>
+                                                                                         <select class="form-control" required="" id="hire_status" name="hire_status" required="">
+                                                                                             <option value="{{$cars->hire_status}}">{{$cars->hire_status}}</option>
+                                                                                             @if($cars->hire_status != 'Hired')
+                                                                                                 <option value="Hired">Hired</option>
+                                                                                             @endif
+                                                                                             @if($cars->hire_status != 'Available')
+                                                                                                 <option value="Available">Available</option>
+                                                                                             @endif
+
+                                                                                         </select>
+
+                                                                                     </div>
+                                                                                 </div>
+                                                                                 <br>
+
+
+                                                                                 <input type="text" name="id" value="{{$cars->id}}" hidden="">
+
+                                                                                 <div align="right">
+                                                                                     <button class="btn btn-primary" type="submit">Submit</button>
+                                                                                     <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                                                                 </div>
+                                                                             </form>
+                                                                         </div>
+                                                                     </div>
+                                                                 </div>
+                                                             </div>
+
+
+
+                                                             <a title="Delete this Car" data-toggle="modal" data-target="#Deactivate{{$cars->id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px; color:red; cursor: pointer;"></i></a>
+                                                             <div class="modal fade" id="Deactivate{{$cars->id}}" role="dialog">
+
+                                                                 <div class="modal-dialog" role="document">
+                                                                     <div class="modal-content">
+                                                                         <div class="modal-header">
+                                                                             <b><h5 class="modal-title" style="color: red;"><b>WARNING</b></h5></b>
+                                                                             <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                         </div>
+
+                                                                         <div class="modal-body">
+                                                                             <p style="font-size: 20px;">Are you sure you want to delete this car?</p>
+                                                                             <br>
+                                                                             <div align="right">
+                                                                                 <a class="btn btn-info" href="{{route('deletecar',$cars->id)}}">Proceed</a>
+                                                                                 <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                                                                             </div>
+
+                                                                         </div>
+                                                                     </div>
+                                                                 </div>
+                                                             </div>
+                                                             @endadmin
+                                                         @endif
+                                                     </center>
+                                                 </td>
+
+
+                                             </tr>
+                                             <?php
+                                             $i= $i+1;
+                                             ?>
+                                         @endforeach
+
+                                         </tbody>
+                                     </table>
+
+                                 @endif
+                             </div>
+
+                             {{--                        <div id="hire" style="border-bottom-left-radius: 50px 20px;   border: 1px solid #ccc; padding: 1%;" class="tabcontent" >--}}
+                             {{--                            <br>--}}
+                             {{--                            <center><h3><strong>Hire Rates</strong></h3></center>--}}
+                             {{--                            <hr>--}}
+                             {{--                            --}}{{-- @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR (Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator')) --}}
+                             {{--                            @if($privileges=='Read only')--}}
+                             {{--                                @else--}}
+
+                             {{--                                <div style="float:left;">--}}
+
+                             {{--                                    <a data-toggle="modal" data-target="#hiree" class="btn btn-success  active" style="background-color: #38c172; border: none;    padding: 10px;--}}
+
+                             {{--    margin-bottom: 5px;--}}
+                             {{--    margin-top: 4px;" role="button" aria-pressed="true">Add Rate</a>--}}
+                             {{--                                </div>--}}
+
+
+
+
+                             {{--                                @admin--}}
+
+                             {{--                                <div style="float:right;">--}}
+                             {{--                                    <div style="float:left;"> <a data-toggle="modal" class="btn button_color active" style="background-color: #38c172; padding: 7px; color:white; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;"  data-target="#import_data_hire_rate" title="Import Data" role="button" aria-pressed="true">Import Data</a></div>--}}
+
+                             {{--                                    <div style="float:right;"><a href="/get_hire_rate_format" class="btn button_color active" style="background-color: #38c172; padding: 7px; color:white; margin-left: 5px;  margin-bottom: 5px; margin-top: 4px;"   title="Download Sample">Download Sample</a> </div>--}}
+                             {{--                                    <div style="clear: both;"></div>--}}
+                             {{--                                </div>--}}
+
+                             {{--                                <div style="clear: both;"></div>--}}
+
+
+                             {{--                                <div class="modal fade" id="import_data_hire_rate" role="dialog">--}}
+
+                             {{--                                    <div class="modal-dialog" role="document">--}}
+                             {{--                                        <div class="modal-content">--}}
+                             {{--                                            <div class="modal-header">--}}
+                             {{--                                                <b><h5 class="modal-title">Importing Data</h5></b>--}}
+
+                             {{--                                                <button type="button" class="close" data-dismiss="modal">&times;</button>--}}
+                             {{--                                            </div>--}}
+
+                             {{--                                            <div class="modal-body">--}}
+
+                             {{--                                                <form method="post" enctype="multipart/form-data" action="/import_hire_rate">--}}
+                             {{--                                                    {{csrf_field()}}--}}
+
+                             {{--                                                    <div class="form-row">--}}
+
+
+                             {{--                                                        <div  class=" col-md-12 ">--}}
+                             {{--                                                            <div class="">--}}
+                             {{--                                                                <label for="">Select File for Upload (.xls, .xlsx) <span style="color: red;">*</span></label>--}}
+                             {{--                                                                <input type="file" class="" id="" name="import_data" value="" placeholder="" required accept=".xls,.xlsx" autocomplete="off">--}}
+                             {{--                                                                <div class="mt-2"><span style="font-weight: bold;">N.B </span><span class="pl-1" style="color:red;"> The header row as given in the sample must be included as the first row when uploading. Furthermore, the acceptable values as indicated in the header row are case sensitive for instance if acceptable value is "Individual" the value to be inserted should be "Individual" and not "individual" </span></div>--}}
+                             {{--                                                            </div>--}}
+                             {{--                                                        </div>--}}
+                             {{--                                                        <br>--}}
+
+
+                             {{--                                                    </div>--}}
+
+
+                             {{--                                                    <div align="right">--}}
+                             {{--                                                        <button  class="btn btn-primary" type="submit">Import</button>--}}
+                             {{--                                                        <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>--}}
+                             {{--                                                    </div>--}}
+                             {{--                                                </form>--}}
+
+
+
+
+
+
+
+
+
+                             {{--                                            </div>--}}
+                             {{--                                        </div>--}}
+                             {{--                                    </div>--}}
+
+
+                             {{--                                </div>--}}
+
+                             {{--                                @endadmin--}}
+
+
+
+                             {{--                                <div class="modal fade" id="hiree" role="dialog">--}}
+
+                             {{--                                    <div class="modal-dialog" role="document">--}}
+                             {{--                                        <div class="modal-content">--}}
+                             {{--                                            <div class="modal-header">--}}
+                             {{--                                                <b><h5 class="modal-title">Fill the form below to add new hire rate</h5></b>--}}
+
+                             {{--                                                <button type="button" class="close" data-dismiss="modal">&times;</button>--}}
+                             {{--                                            </div>--}}
+
+                             {{--                                            <div class="modal-body">--}}
+                             {{--                                                <form method="post" action="{{ route('addhirerate') }}" onsubmit="return gethire()">--}}
+                             {{--                                                    {{csrf_field()}}--}}
+                             {{--                                                    <div class="form-group" id="modeldiv">--}}
+                             {{--                                                        <div class="form-wrapper">--}}
+                             {{--                                                            <label for="model">Vehicle Model<span style="color: red;">*</span></label>--}}
+                             {{--                                                            <input type="text" id="hire_model" name="vehicle_model" class="form-control" required="" autocomplete="off">--}}
+                             {{--                                                        </div>--}}
+                             {{--                                                    </div>--}}
+
+                             {{--                                                    <div class="form-group" id="hirediv">--}}
+                             {{--                                                        <div class="form-wrapper">--}}
+                             {{--                                                            <label for="hire_hire_rate">Hire Rate/Km<span style="color: red;">*</span></label>--}}
+                             {{--                                                            <span id="ratemessage"></span>--}}
+                             {{--                                                            <input type="text" id="hire_hire_rate" name="hire_rate" class="form-control" required="" onkeypress="if((this.value.length<10)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">--}}
+                             {{--                                                        </div>--}}
+                             {{--                                                    </div>--}}
+
+                             {{--                                                    <div align="right">--}}
+                             {{--                                                        <button class="btn btn-primary" type="submit">Save</button>--}}
+                             {{--                                                        <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>--}}
+                             {{--                                                    </div>--}}
+                             {{--                                                </form>--}}
+                             {{--                                            </div>--}}
+                             {{--                                        </div>--}}
+                             {{--                                    </div>--}}
+                             {{--                                </div>--}}
+                             {{--                                <br>--}}
+                             {{--                            @endif--}}
+                             {{--                             <div class="" style="width: 100%;">--}}
+                             {{--                                <table class="hover table table-striped table-bordered"  id="myTable4">--}}
+                             {{--                                    <thead class="thead-dark">--}}
+                             {{--                                    <tr>--}}
+                             {{--                                        <th scope="col" style="color:#fff; width: 3%;"><center>S/N</center></th>--}}
+                             {{--                                        <th scope="col" style="color:#fff;"><center>Vehicle Model</center></th>--}}
+                             {{--                                        <th scope="col" style="color:#fff;"><center>Hire Rate/KM (TZS)</center></th>--}}
+                             {{--                                        --}}{{-- @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR (Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator')) --}}
+                             {{--                                        @if($privileges=='Read only')--}}
+                             {{--                                        @else--}}
+                             {{--                                            <th scope="col" style="color:#fff;"><center>Action</center></th>--}}
+                             {{--                                        @endif--}}
+                             {{--                                    </tr>--}}
+                             {{--                                    </thead>--}}
+                             {{--                                    <tbody>--}}
+                             {{--                                    @foreach($rate as $rate)--}}
+                             {{--                                        <tr>--}}
+                             {{--                                            <th scope="row" class="counterCell text-center">.</th>--}}
+                             {{--                                            <td>{{$rate->vehicle_model}}</td>--}}
+                             {{--                                            <td><center>{{number_format($rate->hire_rate)}}</center></td>--}}
+                             {{--                                           --}}{{--  @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR (Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator')) --}}
+                             {{--                                           @if($privileges=='Read only')--}}
+                             {{--                                            @else--}}
+                             {{--                                                <td><center>--}}
+                             {{--                                                        <a title="Edit this Hire Rate" data-toggle="modal" data-target="#hire{{$rate->id}}" role="button" aria-pressed="true" id="{{$rate->id}}"><i class="fa fa-edit" style="font-size:20px; color: green;cursor: pointer;"></i></a>--}}
+                             {{--                                                        <div class="modal fade" id="hire{{$rate->id}}" role="dialog">--}}
+
+                             {{--                                                            <div class="modal-dialog modal-dialog-scrollable" role="document">--}}
+                             {{--                                                                <div class="modal-content">--}}
+                             {{--                                                                    <div class="modal-header">--}}
+                             {{--                                                                        <b><h5 class="modal-title">Fill the form below to edit hire rate details</h5></b>--}}
+
+                             {{--                                                                        <button type="button" class="close" data-dismiss="modal">&times;</button>--}}
+                             {{--                                                                    </div>--}}
+
+                             {{--                                                                    <div class="modal-body">--}}
+                             {{--                                                                        <form method="post" action="{{ route('edithirerate') }}">--}}
+                             {{--                                                                            {{csrf_field()}}--}}
+                             {{--                                                                            <div class="form-group">--}}
+                             {{--                                                                                <div class="form-wrapper">--}}
+                             {{--                                                                                    <label for="hire_vehicle_model{{$rate->id}}">Vehicle Model<span style="color: red;">*</span></label>--}}
+                             {{--                                                                                    <input type="text" id="hire_vehicle_model{{$rate->id}}" name="hire_vehicle_model" class="form-control" required="" autocomplete="off" value="{{$rate->vehicle_model}}">--}}
+                             {{--                                                                                </div>--}}
+                             {{--                                                                            </div>--}}
+                             {{--                                                                            <br>--}}
+
+                             {{--                                                                            <div class="form-group">--}}
+                             {{--                                                                                <div class="form-wrapper">--}}
+                             {{--                                                                                    <label for="hire_hire_rate{{$rate->id}}">Hire Rate/KM<span style="color: red;">*</span><span id="ratemessage{{$rate->id}}"></span></label>--}}
+
+                             {{--                                                                                    <input type="text" id="hire_hire_rate{{$rate->id}}" name="hire_hire_rate" class="form-control" required="" value="{{$rate->hire_rate}}" onkeypress="if((this.value.length<10)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">--}}
+                             {{--                                                                                </div>--}}
+                             {{--                                                                            </div>--}}
+                             {{--                                                                            <br>--}}
+                             {{--                                                                            <input type="text" name="id" value="{{$rate->id}}" hidden="">--}}
+
+                             {{--                                                                            <div align="right">--}}
+                             {{--                                                                                <button class="btn btn-primary" type="submit" name="rate_editSubmit" id="{{$rate->id}}">Submit</button>--}}
+                             {{--                                                                                <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>--}}
+                             {{--                                                                            </div>--}}
+
+                             {{--                                                                        </form>--}}
+
+                             {{--                                                                    </div>--}}
+                             {{--                                                                </div>--}}
+                             {{--                                                            </div>--}}
+                             {{--                                                        </div>--}}
+
+                             {{--                                                        <a title="Delete this Hire Rate" data-toggle="modal" data-target="#Deactivatehire{{$rate->id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px; color:red; cursor: pointer;"></i></a>--}}
+                             {{--                                                        <div class="modal fade" id="Deactivatehire{{$rate->id}}" role="dialog">--}}
+                             {{--                                                            <div class="modal-dialog" role="document">--}}
+                             {{--                                                                <div class="modal-content">--}}
+                             {{--                                                                    <div class="modal-header">--}}
+                             {{--                                                                        <b><h5 class="modal-title" style="color: red;"><b>WARNING</b></h5></b>--}}
+                             {{--                                                                        <button type="button" class="close" data-dismiss="modal">&times;</button>--}}
+                             {{--                                                                    </div>--}}
+
+                             {{--                                                                    <div class="modal-body">--}}
+                             {{--                                                                        <p style="font-size: 20px;">Are you sure you want to delete this hire rate?</p>--}}
+                             {{--                                                                        <br>--}}
+                             {{--                                                                        <div align="right">--}}
+                             {{--                                                                            <a class="btn btn-info" href="{{route('deletehirerate',$rate->id)}}">Proceed</a>--}}
+                             {{--                                                                            <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>--}}
+                             {{--                                                                        </div>--}}
+
+                             {{--                                                                    </div>--}}
+                             {{--                                                                </div>--}}
+                             {{--                                                            </div>--}}
+                             {{--                                                        </div></center>--}}
+                             {{--                                                </td>--}}
+                             {{--                                            @endif--}}
+                             {{--                                        </tr>--}}
+                             {{--                                    @endforeach--}}
+                             {{--                                    </tbody>--}}
+                             {{--                                </table>--}}
+                             {{--                            </div>--}}
+                             {{--                        </div>--}}
+
+                             <?php
+                             $today=date('Y-m-d');
+                             ?>
+
+
+
+                             <?php $k=1;?>
+
+                         </div>
+
+
+                    @else
+
+                         <div class="tab">
+
+
+                             @if ($category=='Real Estate only' OR $category=='All')
+                                 <button class="tablinks active space_identity" onclick='javascript:window.location.href="/businesses"' ><strong>Real Estate</strong></button>
+                             @else
+                             @endif
+
+
+
+                             @if($category=='Research Flats only' OR $category=='All')
+                                 <button class="tablinks  research_identity" onclick='javascript:window.location.href="/businesses/research"'><strong>Research Flats</strong></button>
+                             @else
+                             @endif
+
+
+
+
+
+                             @if($category=='Insurance only' OR $category=='All')
+                                 <button class="tablinks insurance_identity" onclick='javascript:window.location.href="/businesses/insurance"'><strong>Insurance</strong></button>
+
+                             @else
+                             @endif
+
+
+                             @if ($category=='CPTU only' OR $category=='All')
+                                 <button class="tablinks car_identity" onclick='javascript:window.location.href="/businesses/car_rental"'><strong>Car Rental</strong></button>
+                             @else
+                             @endif
+
+
+
+                         </div>
+
 
                      @if((Auth::user()->role=='DPDI Planner') || (Auth::user()->role=='Director DPDI'))
 
@@ -250,7 +2196,6 @@ input[type=radio]{
                                  <button class="spaces_tablinks" onclick="openSpaces(event, 'space_inbox')" id="defaultSelection"><strong>Inbox</strong></button>
                                  <button class="spaces_tablinks" onclick="openSpaces(event, 'space_outbox')"><strong>Outbox</strong></button>
                                  <button class="spaces_tablinks" onclick="openSpaces(event, 'approved_spaces')"><strong>Real Estate</strong></button>
-
 
                              </div>
 
@@ -2160,1829 +4105,18 @@ input[type=radio]{
                          </div>
 
                      @endif
+                     @endif
 
 
 
 
 
-                    <div id="insurance_inner" style="border: 1px solid #ccc; padding: 1%; border-bottom-left-radius: 50px 20px;" class="tabcontent_inner">
 
 
-                        @if($privileges=='Read only')
-                        @else
-                            <div style="float:left;">
 
 
-                                <a data-toggle="modal" data-target="#add_insurance" class="btn button_color active" style="  color: white;  background-color: #38c172;
 
-    padding: 10px;
-    margin-left: -2px;
-    margin-bottom: 15px;
-    margin-top: 4px;" role="button" aria-pressed="true">Add new Insurance Package</a>
-                            </div>
 
-
-
-                        @admin
-
-                            <div style="float:right;">
-                                <div style="float:left;"> <a data-toggle="modal" class="btn button_color active" style="background-color: #38c172; padding: 7px; color:white; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;"  data-target="#import_data_insurance_package" title="Import Data" role="button" aria-pressed="true">Import Data</a></div>
-
-                                <div style="float:right;"><a href="/get_insurance_packages_format" class="btn button_color active" style="background-color: #38c172; padding: 7px; color:white; margin-left: 5px;  margin-bottom: 5px; margin-top: 4px;"   title="Download Sample">Download Sample</a> </div>
-                                <div style="clear: both;"></div>
-                            </div>
-
-                            <div style="clear: both;"></div>
-
-
-                            <div class="modal fade" id="import_data_insurance_package" role="dialog">
-
-                                <div class="modal-dialog" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <b><h5 class="modal-title">Importing Data</h5></b>
-
-                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                        </div>
-
-                                        <div class="modal-body">
-
-                                            <form method="post" enctype="multipart/form-data" action="/import_insurance_packages">
-                                                {{csrf_field()}}
-
-                                                <div class="form-row">
-
-
-                                                    <div  class=" col-md-12 ">
-                                                        <div class="">
-                                                            <label for="">Select File for Upload (.xls, .xlsx) <span style="color: red;">*</span></label>
-                                                            <input type="file" class="" id="" name="import_data" value="" placeholder="" required accept=".xls,.xlsx" autocomplete="off">
-                                                            <div class="mt-2"><span style="font-weight: bold;">N.B </span><span class="pl-1" style="color:red;"> The header row as given in the sample must be included as the first row when uploading. Furthermore, the acceptable values as indicated in the header row are case sensitive for instance if acceptable value is "Individual" the value to be inserted should be "Individual" and not "individual" </span></div>
-                                                        </div>
-                                                    </div>
-                                                    <br>
-
-
-                                                </div>
-
-
-                                                <div align="right">
-                                                    <button  class="btn btn-primary" type="submit">Import</button>
-                                                    <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
-                                                </div>
-                                            </form>
-
-
-
-
-
-
-
-
-
-                                        </div>
-                                    </div>
-                                </div>
-
-
-                            </div>
-
-                            @endadmin
-
-
-
-
-
-                        @endif
-
-
-                        <div class="">
-
-
-{{--                            <center><h3><strong>Insurance Packages</strong></h3></center>--}}
-{{--                            <hr>--}}
-                            <div class="modal fade" id="add_insurance" role="dialog">
-
-                                <div class="modal-dialog" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <b><h5 class="modal-title">New Insurance Package</h5></b>
-
-                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                        </div>
-
-                                        <div class="modal-body">
-                                            <form method="post" action="{{ route('add_insurance')}}"  id="form1">
-                                                {{csrf_field()}}
-
-
-                                                <div class="form-group">
-                                                    <div class="form-wrapper">
-                                                        <label for="insurance_class"><strong>Class <span style="color: red;"> *</span></strong></label>
-
-
-                                                        <select id="insurance_class" class="form-control" Required name="class">
-                                                            <?php
-                                                            $classes=DB::table('insurance_parameters')->get();
-                                                            ?>
-                                                            <option value=""></option>
-                                                            @foreach($classes as $class)
-                                                                @if($class->classes!=null)
-                                                                    <option value="{{$class->classes}}">{{$class->classes}}</option>
-                                                                @else
-                                                                @endif
-                                                            @endforeach
-                                                        </select>
-
-
-                                                    </div>
-                                                </div>
-
-
-
-                                                <div  id="insurance_companyDiv" class="form-group" style="display: none;" >
-                                                    <div class="form-wrapper">
-                                                        <label for="insurance_company"  ><strong>Insurance Company <span style="color: red;"> *</span></strong></label>
-                                                        <?php
-                                                        $companies=DB::table('insurance_parameters')->get();
-                                                        ?>
-                                                        <select id="insurance_company" class="form-control" required name="insurance_company">
-                                                            <option value=""></option>
-                                                            @foreach($companies as $var)
-                                                                @if($var->company!=null)
-                                                                    <option value="{{$var->company}}" >{{$var->company}}</option>
-                                                                @else
-                                                                @endif
-                                                            @endforeach
-                                                        </select>
-
-
-                                                    </div>
-                                                </div>
-
-
-                                                <div id="TypeDiv" class="form-group" style="display: none;">
-                                                    <div class="form-wrapper">
-                                                        <label for="insurance_type"  ><strong>Type <span style="color: red;"> *</span></strong></label>
-                                                        <select id="insurance_type"  class="form-control" name="insurance_type" required>
-                                                            <option value=""></option>
-                                                            <option value="THIRD PARTY" id="Option" >THIRD PARTY</option>
-                                                            <option value="COMPREHENSIVE" id="Option" >COMPREHENSIVE</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-
-
-                                                <div id="TypeDivNA" class="form-group" style="display: none;">
-                                                    <div class="form-wrapper">
-                                                        <label for="insurance_type_na"  ><strong>Type <span style="color: red;"> *</span></strong></label>
-
-                                                        <input type="text" class="form-control" id="insurance_type_na" name="insurance_type" readonly  value="N/A" autocomplete="off">
-
-                                                    </div>
-                                                </div>
-
-
-
-
-
-
-                                                <div id="commissionDiv" class="form-group"  style="display: none;">
-
-                                                        <div  id=""  class="form-group row">
-
-                                                            <div class="col-12 inline_block form-wrapper">
-                                                                <label  for="commission_percentage" class=" col-form-label"><strong>Commission percentage (%)</strong><strong><span style="color: red;"> *</span></strong></label>
-                                                                <div class="">
-                                                                    <input type="number"  min="1" max="100" step="0.01" class="form-control"  name="commission_percentage" required value=""  id="commission_percentage" autocomplete="off">
-                                                                </div>
-                                                            </div>
-
-
-                                                        </div>
-
-
-                                                </div>
-
-
-
-                                                <div align="right">
-                                                    <button class="btn btn-primary" type="submit">Save</button>
-                                                    <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
-                                                </div>
-                                            </form>
-
-
-                                        </div>
-                                    </div>
-                                </div>
-
-
-                            </div>
-
-
-
-
-
-                            <table class="hover table table-striped table-bordered" id="myTable2">
-                                <thead class="thead-dark">
-                                <tr>
-                                    <th scope="col" style="color:#fff;"><center>S/N</center></th>
-                                    <th scope="col" style="color:#fff;"><center>Class</center></th>
-                                    <th scope="col" style="color:#fff;"><center>Insurance Company</center></th>
-                                    <th scope="col" style="color:#fff;"><center>Type</center></th>
-                                    <th scope="col"  style="color:#fff;"><center>Commission</center></th>
-
-                                    @if($privileges=='Read only')
-                                    @else
-                                        <th scope="col"  style="color:#fff;"><center>Action</center></th>
-                                    @endif
-                                </tr>
-                                </thead>
-                                <tbody>
-
-                                @foreach($insurance as $var)
-                                    <tr>
-
-                                        <td class="counterCell text-center"></td>
-                                        <td><center>{{$var->class}}</center></td>
-                                        <td><center>{{$var->insurance_company}}</center></td>
-                                        <td><center>{{$var->insurance_type}}</center></td>
-                                        <td><center>{{$var->commission_percentage}}%</center></td>
-
-                                        @if($privileges=='Read only')
-                                        @else
-                                            <td><center>
-
-
-
-                                                    <a data-toggle="modal" data-target="#edit_insurance{{$var->id}}" role="button" aria-pressed="true" title="Edit insurance information" name="editC"><i class="fa fa-edit" style="font-size:20px; color: green;"></i></a>
-                                                    <a href="/insurance_contract_on_fly/{{$var->id}}" title="Sell insurance"><i class="fa fa-file-text" aria-hidden="true" style="font-size:20px;"></i></a>
-
-                                                    <a data-toggle="modal" title="Delete insurance package" data-target="#deactivate_insurance{{$var->id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px; color:red;"></i></a>
-                                                    <div class="modal fade" id="edit_insurance{{$var->id}}" role="dialog">
-
-                                                        <div class="modal-dialog" role="document">
-                                                            <div class="modal-content">
-                                                                <div class="modal-header">
-                                                                    <b><h5 class="modal-title">Edit Insurance Package Information</h5></b>
-
-                                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                                </div>
-
-                                                                <div class="modal-body">
-                                                                    <form method="post" action="{{ route('edit_insurance',$var->id)}}"  id="form1" >
-                                                                        {{csrf_field()}}
-
-
-                                                                        <div class="form-group">
-                                                                            <div class="form-wrapper">
-                                                                                <label for="insurance_class"><strong>Class <span style="color: red;"> *</span></strong></label>
-
-                                                                                <input type="text" id="insurance_class_edit" class="form-control" Required name="class" readonly  value="{{$var->class}}" autocomplete="off">
-
-                                                                            </div>
-                                                                        </div>
-                                                                        <br>
-
-
-
-                                                                        <div   class="form-group"  >
-                                                                            <div class="form-wrapper">
-                                                                                <label for="insurance_company"><strong>Insurance Company <span style="color: red;"> *</span></strong></label>
-
-                                                                                <input type="text" id="insurance_company_edit" class="form-control" required name="insurance_company" readonly  value="{{$var->insurance_company}}" autocomplete="off">
-
-                                                                            </div>
-                                                                        </div>
-                                                                        <br>
-
-
-                                                                        <div  class="form-group">
-                                                                            <div class="form-wrapper">
-                                                                                <label for="insurance_type"  ><strong>Type <span style="color: red;"> *</span></strong></label>
-                                                                                <input type="text" id="insurance_type_edit"  class="form-control" name="insurance_type" readonly  value="{{$var->insurance_type}}" autocomplete="off">
-                                                                            </div>
-                                                                        </div>
-                                                                        <br>
-
-
-
-
-                                                                        <div  class="form-group" >
-
-
-
-                                                                                    <div class="form-wrapper">
-                                                                                        <label  for="commission_percentage" class=" col-form-label"><strong>Commission percentage (%)</strong> <strong> <span style="color: red;"> *</span></strong></label>
-
-                                                                                            <input type="number" min="1" max="100" step="0.01" class="form-control"  name="commission_percentage" required value="{{$var->commission_percentage}}"  id="commission_percentage_edit" autocomplete="off">
-
-                                                                                    </div>
-
-
-
-
-
-
-
-
-
-
-                                                                        </div>
-                                                                        <br>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                                                                        <div align="right">
-                                                                            <button class="btn btn-primary" type="submit">Save</button>
-                                                                            <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
-                                                                        </div>
-                                                                    </form>
-
-
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-
-                                                    </div>
-
-
-
-                                                    <div class="modal fade" id="deactivate_insurance{{$var->id}}" role="dialog">
-
-                                                        <div class="modal-dialog" role="document">
-                                                            <div class="modal-content">
-                                                                <div class="modal-header">
-                                                                    <b><h5 class="modal-title">Are you sure you want to deactivate {{$var->insurance_company}}'s {{$var->insurance_type}} insurance?</h5></b>
-
-                                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                                </div>
-
-                                                                <div class="modal-body">
-                                                                    <form method="get" action="{{ route('deactivate_insurance',$var->id)}}" >
-                                                                        {{csrf_field()}}
-
-
-
-                                                                        <div align="right">
-                                                                            <button class="btn btn-primary" type="submit" id="newdata">Yes</button>
-                                                                            <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">No</button>
-                                                                        </div>
-
-
-                                                                    </form>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-
-                                                    </div>
-
-
-                                                </center>
-                                            </td>
-                                        @endif
-                                    </tr>
-                                @endforeach
-
-
-
-
-
-                                </tbody>
-                            </table>
-
-                        </div>
-
-
-                    </div>
-
-                    <div id="research_flats_inner" style="border-bottom-left-radius: 50px 20px; border: 1px solid #ccc; padding: 1%;" class="tabcontent_inner">
-                        @if($privileges=='Read only')
-                        @else
-                            @admin
-                        <div style="float: left;">
-
-
-                            <a title="Add New Room" data-toggle="modal" data-target="#addroom" class="btn btn-success  active" style=" padding: 10px; background-color: #38c172; cursor: pointer; border: none;  margin-bottom: 2px;    margin-top: 4px;" role="button" aria-pressed="true">Add Room</a>
-                        </div>
-
-    <div class="modal fade" id="addroom" role="dialog">
-
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-              <div class="modal-header">
-                <b><h5 class="modal-title">Fill the form below to add new room</h5></b>
-
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                </div>
-
-                 <div class="modal-body">
-                  <form method="post" action="{{ route('addflat') }}">
-                      {{csrf_field()}}
-
-                    <div class="form-group">
-                      <div class="form-wrapper">
-                        <label for="room_no">Room No.<span style="color: red;">*</span></label>
-                        <input type="text" id="room_no" name="room_no" class="form-control" required="" >
-                      </div>
-                    </div>
-
-                    <div class="form-group">
-                      <div class="form-wrapper">
-                        <label for="category">Category<span style="color: red;">*</span></label>
-                          <select class="form-control" required="" id="category" name="category" required="">
-                              <option value=""disabled selected hidden>Select Category</option>
-                              <option value="Shared Room">Shared Room</option>
-                              <option value="Single Room">Single Room</option>
-                              <option value="Suit Room">Suit Room</option>
-                          </select>
-                      </div>
-                    </div>
-
-                    <div class="form-group">
-                      <div class="form-wrapper">
-                        <label for="currency">Currency<span style="color: red;">*</span></label>
-                          <select class="form-control" required="" id="currency" name="currency" required="">
-                              <option value=""disabled selected hidden>Select Currency</option>
-                              <option value="TZS">TZS</option>
-                              <option value="USD">USD</option>
-                          </select>
-                      </div>
-                    </div>
-
-                    <div class="form-group">
-                        <div class="form-wrapper">
-                            <label for="charge_workers">Staff Rate<span style="color: red;">*</span></label>
-                              <input type="text" id="charge_workers" name="charge_workers" class="form-control" required="" onkeypress="if((this.value.length<15)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <div class="form-wrapper">
-                            <label for="charge_students">Students Rate<span style="color: red;">*</span></label>
-                              <input type="text" id="charge_students" name="charge_students" class="form-control" required="" onkeypress="if((this.value.length<15)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
-                        </div>
-                    </div>
-
-
-
-
-                      <div class="form-group">
-                          <div class="form-wrapper">
-                              <label for="currency">Status<span style="color: red;">*</span></label>
-                              <select class="form-control" required="" id="currency" name="occupational_status" required="">
-                                  <option value=""></option>
-                                  <option value="Vacant">Vacant</option>
-                                  <option value="Occupied">Occupied</option>
-                              </select>
-                          </div>
-                      </div>
-
-
-
-
-
-                    <div align="right">
-                      <button class="btn btn-primary" type="submit">Save</button>
-                      <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
-                    </div>
-
-                  </form>
-                 </div>
-        </div>
-      </div>
-    </div>
-
-
-
-                            <div style="float:right;">
-                                <div style="float:left;"> <a data-toggle="modal" class="btn button_color active" style="background-color: #38c172; padding: 7px; color:white; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;"  data-target="#import_data_logsheets" title="Import Data" role="button" aria-pressed="true">Import Data</a></div>
-
-                                <div style="float:right;"><a href="/get_research_rooms_format" class="btn button_color active" style="background-color: #38c172; padding: 7px; color:white; margin-left: 5px;  margin-bottom: 5px; margin-top: 4px;"   title="Download Sample">Download Sample</a> </div>
-                                <div style="clear: both;"></div>
-                            </div>
-
-                            <div style="clear: both;"></div>
-
-
-                            <div class="modal fade" id="import_data_logsheets" role="dialog">
-
-                                <div class="modal-dialog" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <b><h5 class="modal-title">Importing Data</h5></b>
-
-                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                        </div>
-
-                                        <div class="modal-body">
-
-                                            <form method="post" enctype="multipart/form-data" action="/import_research_rooms">
-                                                {{csrf_field()}}
-
-                                                <div class="form-row">
-
-
-                                                    <div  class=" col-md-12 ">
-                                                        <div class="">
-                                                            <label for="">Select File for Upload (.xls, .xlsx) <span style="color: red;">*</span></label>
-                                                            <input type="file" class="" id="" name="import_data" value="" placeholder="" required accept=".xls,.xlsx" autocomplete="off">
-                                                            <div class="mt-2"><span style="font-weight: bold;">N.B </span><span class="pl-1" style="color:red;"> The header row as given in the sample must be included as the first row when uploading. Furthermore, the acceptable values as indicated in the header row are case sensitive for instance if acceptable value is "Individual" the value to be inserted should be "Individual" and not "individual" </span></div>
-                                                        </div>
-                                                    </div>
-                                                    <br>
-
-
-                                                </div>
-
-
-                                                <div align="right">
-                                                    <button  class="btn btn-primary" type="submit">Import</button>
-                                                    <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
-                                                </div>
-                                            </form>
-
-
-
-
-
-
-
-
-
-                                        </div>
-                                    </div>
-                                </div>
-
-
-                            </div>
-
-
-
-
-
-
-
-                            @endadmin
-                        @endif
-
-@if(count($rooms)!=0)
-<?php $i=1; ?>
-    <br><br>
-     <table class="hover table table-striped table-bordered" id="TableResearch">
-        <thead class="thead-dark">
-          <tr>
-            <th scope="col" style="color:#fff; width: 5%;"><center>S/N</center></th>
-            <th scope="col" style="color:#fff;"><center>Room No.</center></th>
-            <th scope="col" style="color:#fff;"><center>Category</center></th>
-            <th scope="col" style="color:#fff;"><center>Currency</center></th>
-            <th scope="col" style="color:#fff; width: 20%;"><center>Staff Rate</center></th>
-            <th scope="col" style="color:#fff;width: 20%;"><center>Students Rate</center></th>
-            <th scope="col" style="color:#fff;width: 20%;"><center>Status</center></th>
-                @if($privileges=='Read only')
-                @else
-                    @admin
-                    <th scope="col" style="color:#fff;"><center>Action</center></th>
-                    @endadmin
-                @endif
-          </tr>
-        </thead>
-      <tbody>
-        @foreach($rooms as $room)
-          <tr>
-            <td style="text-align: center;">{{$i}}.</td>
-            <td>{{$room->room_no}}</td>
-            <td>{{$room->category}}</td>
-            <td><center>{{$room->currency}}</center></td>
-            <td style="text-align: right;">{{number_format($room->charge_workers)}}</td>
-            <td style="text-align: right;">{{number_format($room->charge_students)}}</td>
-            <td style="text-align: left;">{{$room->occupational_status}}</td>
-            @if($privileges=='Read only')
-            @else
-                  @admin
-                  <td>
-                <center>
-
-              <a title="Edit Room Details" data-toggle="modal" data-target="#editroom{{$room->id}}" role="button" aria-pressed="true"><i class="fa fa-edit" style="font-size:20px; color: green; cursor: pointer;"></i></a>
-              <div class="modal fade" id="editroom{{$room->id}}" role="dialog">
-                <div class="modal-dialog" role="document">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                        <b><h5 class="modal-title">Fill the form below to edit room details</h5></b>
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    </div>
-
-                 <div class="modal-body">
-                  <form method="post" action="{{ route('editflat') }}">
-                    {{csrf_field()}}
-                    <div class="form-group">
-                      <div class="form-wrapper">
-                        <label for="room_no{{$room->id}}">Room No.<span style="color: red;">*</span></label>
-                        <input type="text" id="room_no{{$room->id}}" name="room_no" class="form-control" required="" value="{{$room->room_no}}">
-                      </div>
-                    </div>
-                    <br>
-                    <div class="form-group">
-                      <div class="form-wrapper">
-                        <label for="category{{$room->id}}">Category<span style="color: red;">*</span></label>
-                          <select class="form-control" required="" id="category{{$room->id}}" name="category" required="">
-                              <option value="{{$room->category}}">{{$room->category}}</option>
-                              @if($room->category!='Shared Room')
-                                <option value="Shared Room">Shared Room</option>
-                              @endif
-                              @if($room->category!='Single Room')
-                                <option value="Single Room">Single Room</option>
-                              @endif
-                              @if($room->category!='Suit Room')
-                                <option value="Suit Room">Suit Room</option>
-                              @endif
-                          </select>
-                      </div>
-                    </div>
-                    <br>
-                    <div class="form-group">
-                      <div class="form-wrapper">
-                        <label for="currency{{$room->id}}">Currency<span style="color: red;">*</span></label>
-                          <select class="form-control" required="" id="currency{{$room->id}}" name="currency" required="">
-                              <option value="{{$room->currency}}">{{$room->currency}}</option>
-                                @if($room->currency!='TZS')
-                                  <option value="TZS">TZS</option>
-                                @endif
-                                @if($room->currency!='USD')
-                                  <option value="USD">USD</option>
-                                @endif
-                          </select>
-                      </div>
-                    </div>
-                    <br>
-                    <div class="form-group">
-                        <div class="form-wrapper">
-                            <label for="charge_workers{{$room->id}}">Staff Rate<span style="color: red;">*</span></label>
-                              <input type="text" id="charge_workers{{$room->id}}" name="charge_workers" class="form-control" required="" value="{{$room->charge_workers}}" onkeypress="if((this.value.length<15)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
-                        </div>
-                    </div>
-                    <br>
-                    <div class="form-group">
-                        <div class="form-wrapper">
-                            <label for="charge_students{{$room->id}}">Students Rate<span style="color: red;">*</span></label>
-                              <input type="text" id="charge_students{{$room->id}}" name="charge_students" class="form-control" required="" value="{{$room->charge_students}}" onkeypress="if((this.value.length<15)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
-                        </div>
-                    </div>
-                    <br>
-                    <input type="text" name="room_id" value="{{$room->id}}" hidden="">
-
-
-
-                      <div class="form-group">
-                          <div class="form-wrapper">
-                              <label for="currency">Status<span style="color: red;">*</span></label>
-                              <select class="form-control" required="" id="currency" name="occupational_status" required="">
-
-                                  <option value="{{$room->occupational_status}}">{{$room->occupational_status}}</option>
-                                  @if($room->occupational_status!='Vacant')
-                                      <option value="Vacant">Vacant</option>
-                                  @endif
-                                  @if($room->occupational_status!='Occupied')
-                                      <option value="Occupied">Occupied</option>
-                                  @endif
-
-
-
-                              </select>
-                          </div>
-                      </div>
-
-<br>
-
-                    <div align="right">
-                      <button class="btn btn-primary" type="submit">Save</button>
-                      <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
-                    </div>
-                  </form>
-                </div>
-              </div>
-            </div>
-          </div>
-
-               <a title="Delete this room" data-toggle="modal" data-target="#Deleteroom{{$room->id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px; color:red; cursor: pointer;"></i></a>
-
-        <div class="modal fade" id="Deleteroom{{$room->id}}" role="dialog">
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <b><h5 class="modal-title" style="color: red;"><b>WARNING</b></h5></b>
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-              </div>
-
-           <div class="modal-body">
-            <p style="font-size: 20px;">Are you sure you want to delete {{$room->room_no}}?</p>
-            <br>
-            <div align="right">
-                <a class="btn btn-info" href="{{route('deleteflat',$room->id)}}">Proceed</a>
-                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
-            </div>
-
-</div>
-</div>
-</div>
-</div>
-
-                </center>
-            </td>
-                  @endadmin
-            @endif
-          </tr>
-          <?php $i = $i + 1; ?>
-          @endforeach
-      </tbody>
-  </table>
-  @else
-    <br><br>
-    <p style="font-size: 18px;">No room has been added yet.</p>
-  @endif
-
-                    </div>
-
-
-                    <div id="car_rental_inner" style=" padding-top: 1%;" class="tabcontent_inner">
-
-                        <div class="tab">
-                            <button class="tablinks" onclick="openContracts(event, 'car_list')" id="defaultOpen"><strong>VEHICLES</strong></button>
-                            {{-- <button class="tablinks" onclick="openContracts(event, 'Operational')"><strong>OPERATIONAL EXPENDITURE</strong></button> --}}
-{{--                            <button class="tablinks" onclick="openContracts(event, 'hire')"><strong>HIRE RATE</strong></button>--}}
-{{--                            <button class="tablinks" onclick="openContracts(event, 'cost_centres')"><strong>COST CENTRES</strong></button>--}}
-{{--                            <button class="tablinks" onclick="openContracts(event, 'availability')"><strong>VEHICLE AVAILABILITY</strong></button>--}}
-
-                        </div>
-                        <div id="car_list" style="border-bottom-left-radius: 50px 20px;   border: 1px solid #ccc; padding: 1%;" class="tabcontent">
-
-
-                             @if($privileges=='Read only')
-                            @else
-
-                                 @if(Auth::user()->role=='Transport Officer-CPTU')
-
-                                <a title="Add a Vehicle" data-toggle="modal" data-target="#car" class="btn btn-success button_color active" style="padding: 10px; margin-bottom: 5px;margin-top: 4px;" role="button" aria-pressed="true">Add Vehicle</a>
-
-                                <div class="modal fade" id="car" role="dialog">
-
-                                    <div class="modal-dialog" role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <b><h5 class="modal-title">Fill the form below to add new vehicle</h5></b>
-
-                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                            </div>
-
-                                            <div class="modal-body">
-                                                <form method="post" action="{{ route('addCar') }}">
-                                                    {{csrf_field()}}
-                                                    <div class="form-group" id="regNodiv">
-                                                        <div class="form-wrapper">
-                                                            <label for="reg_no">Vehicle Registration No<span style="color: red;">*</span></label>
-                                                            <input type="text" id="reg_no" name="vehicle_reg_no" class="form-control" required="" onblur="this.value=removeSpaces(this.value); javascript:this.value=this.value.toUpperCase();">
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="form-group" id="modeldiv">
-                                                        <div class="form-wrapper">
-                                                            <label for="model">Vehicle Model<span style="color: red;">*</span></label>
-                                                            <select class="form-control" required="" id="model" name="model" required="">
-                                                                <option value=""disabled selected hidden>select Vehicle Model</option>
-                                                                @foreach($model as $models)
-                                                                    <option value="{{$models->vehicle_model}}">{{$models->vehicle_model}}</option>
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="form-group">
-                                                        <div class="form-wrapper" id="clientdiv">
-                                                            <label for="vehicle_status">Vehicle Status<span style="color: red;">*</span></label>
-                                                            <select class="form-control" required="" id="vehicle_status" name="vehicle_status" required="">
-                                                                <option value=""disabled selected hidden>select Vehicle status</option>
-                                                                <option value="Running">Running</option>
-                                                                <option value="Minor Repair">Minor Repair</option>
-                                                                <option value="Grounded">Grounded</option>
-                                                            </select>
-
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="form-group" id="hirediv">
-                                                        <div class="form-wrapper">
-                                                            <label for="hire_rate">Hire Rate/KM<span style="color: red;">*</span></label>
-                                                            <input type="text" id="hire_rate" name="hire_rate" class="form-control" readonly="" onkeypress="if((this.value.length<15)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
-                                                        </div>
-                                                    </div>
-
-
-
-
-                                                    <div class="form-group">
-                                                        <div class="form-wrapper" >
-                                                            <label for="hire_status">Hire Status<span style="color: red;">*</span></label>
-                                                            <select class="form-control" required="" id="hire_status" name="hire_status" required="">
-                                                                <option value=""></option>
-                                                                <option value="Hired">Hired</option>
-                                                                <option value="Available">Available</option>
-                                                            </select>
-
-                                                        </div>
-                                                    </div>
-
-
-
-
-
-                                                    <div align="right">
-                                                        <button class="btn btn-primary" type="submit">Forward</button>
-                                                        <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                @else
-                                     @endif
-                                <br>
-
-                            @endif
-
-
-                     @if((Auth::user()->role=='Transport Officer-CPTU') || (Auth::user()->role=='DVC Administrator'))
-                        <div class="tab">
-                            <button class="tablinks_fleet" onclick="openfleet(event, 'car_inbox')" id="defaultOpenfleet"><strong>Inbox</strong></button>
-                            <button class="tablinks_fleet" onclick="openfleet(event, 'car_outbox')"><strong>Outbox</strong></button>
-                            <button class="tablinks_fleet" onclick="openfleet(event, 'car_fleet')"><strong>Vehicles</strong></button>
-                        </div>
-
-                        @if(Auth::user()->role=='Transport Officer-CPTU')
-                          <div id="car_inbox" style="border-bottom-left-radius: 50px 20px;   border: 1px solid #ccc; padding: 1%;" class="tabcontent_fleet">
-                            <br>
-                                @if(count($inbox)>0)
-                                <?php $c =1; ?>
-                                <table>
-                                    <thead>
-                                        <tr>
-                                            <th style="width: 14%"><center>SN.</center></th>
-                                            <th style="width: 14%"><center>Vehicle Registration No.</center></th>
-                                            <th style="width: 14%"><center>Vehicle Model</center></th>
-                                            <th style="width: 14%"><center>Vehicle Status</center></th>
-                                            <th style="width: 14%"><center>Hire Rate</center></th>
-                                            <th style="width: 14%"><center>Action</center></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach($inbox as $car)
-                                            <tr>
-                                              <td><center>{{$c}}.</center></td>
-                                              <td><center>{{$car->vehicle_reg_no}}</center></td>
-                                              <td><center>{{$car->vehicle_model}}</center></td>
-                                              <td><center>{{$car->vehicle_status}}</center></td>
-                                              <td><center>{{number_format($car->hire_rate)}}</center></td>
-                                              <td>
-                                                  <a title="View More Details" data-toggle="modal" data-target="#viewmore{{$car->id}}" role="button" aria-pressed="true" id="{{$car->id}}"><i class="fa fa-eye" style="font-size:20px; color: blue; cursor: pointer;padding-left: 70px;"></i></a>
-
-                                                  <a title="Delete this application" data-toggle="modal" data-target="#Delete_app{{$car->id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px; color:red; cursor: pointer;"></i></a>
-
-                                                  <div class="modal fade" id="Delete_app{{$car->id}}" role="dialog">
-
-                                                    <div class="modal-dialog" role="document">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                              <b><h5 class="modal-title" style="color: red;"><b>WARNING</b></h5></b>
-                                                              <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                              </div>
-
-                                                               <div class="modal-body">
-                                                                <p style="font-size: 18px;">Are you sure you want to delete this application?</p>
-                                                                <br>
-                                                                <div align="right">
-                                                          <a class="btn btn-info" href="{{route('addCar_step4',$car->id)}}">Proceed</a>
-                                                          <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
-                                                    </div>
-
-                                                    </div>
-                                                    </div>
-                                                    </div>
-                                                </div>
-                                                  <div class="modal fade" id="viewmore{{$car->id}}" role="dialog">
-
-                                                        <div class="modal-dialog" role="document">
-                                                            <div class="modal-content">
-                                                                <div class="modal-header">
-                                                                    <b><h5 class="modal-title">Vehicle Details</h5></b>
-                                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                                </div>
-
-                                                                <div class="modal-body">
-                                                                    <form method="post" action="{{ route('addCar_step3') }}">
-                                                                        {{csrf_field()}}
-                                <div class="form-group">
-                                        <div class="form-wrapper">
-                                            <label for="remarks" style="color: red;">This Vehicle has been declined due to the following reason(s):</label>
-                                            <textarea type="text" id="remarks{{$car->id}}" name="reason" class="form-control" readonly="">{{$car->comments}}</textarea>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group">
-                    <div class="form-wrapper">
-                        <label for="reg_no{{$car->id}}">Vehicle Registration No<span style="color: red;">*</span></label>
-                        <input type="text" id="reg_no{{$car->id}}" name="vehicle_reg_no" class="form-control" required="" value="{{$car->vehicle_reg_no}}" onblur="this.value=removeSpaces(this.value); javascript:this.value=this.value.toUpperCase();">
-                    </div>
-                </div>
-
-                <div class="form-group" id="modeldiv">
-                    <div class="form-wrapper">
-                        <label for="model{{$car->id}}">Vehicle Model<span style="color: red;">*</span></label>
-            <select class="form-control" required="" id="model{{$car->id}}" name="model" required="">
-              <option value="{{$car->vehicle_model}}">{{$car->vehicle_model}}</option>
-              @foreach($model as $models)
-                @if($models->vehicle_model != $car->vehicle_model)
-                    <option value="{{$models->vehicle_model}}">{{$models->vehicle_model}}</option>
-                @endif
-              @endforeach
-            </select>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <div class="form-wrapper" id="clientdiv">
-          <label for="vehicle_status">Vehicle Status<span style="color: red;">*</span></label>
-            <select class="form-control" required="" id="vehicle_status" name="vehicle_status">
-              <option value="{{$car->vehicle_status}}">{{$car->vehicle_status}}</option>
-                @if($car->vehicle_status != 'Running')
-                    <option value="Running">Running</option>
-                @endif
-                @if($car->vehicle_status!='Minor Repair')
-                    <option value="Minor Repair">Minor Repair</option>
-                @endif
-                @if($car->vehicle_status!='Grounded')
-                    <option value="Grounded">Grounded</option>
-                @endif
-            </select>
-
-        </div>
-    </div>
-
-                <div class="form-group" id="hirediv">
-                    <div class="form-wrapper">
-                        <label for="hire_rate">Hire Rate/KM<span style="color: red;">*</span></label>
-                        <input type="text" id="hire_rate" name="hire_rate" value="{{$car->hire_rate}}" class="form-control" required="" onkeypress="if((this.value.length<15)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
-                    </div>
-                </div>
-                <input type="text" name="vehicle_id" value="{{$car->id}}" hidden="">
-                <div align="right">
-                    <button class="btn btn-primary" type="submit">Forward</button>
-                    <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
-                </div>
-                                                </form>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                              </td>
-                                            </tr>
-                                             <?php $c = $c + 1; ?>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                                @else
-                                    <p style="line-height: 1.5;font-size: 17px;"><i class="fa fa-envelope-o" style="font-size:25px;color:#3490dc;"></i> No new message</p>
-                                @endif
-                          </div>
-
-                          <div id="car_outbox" style="border-bottom-left-radius: 50px 20px;   border: 1px solid #ccc; padding: 1%;" class="tabcontent_fleet">
-                            <br>
-                                @if(count($outbox)>0)
-                                <?php $c =1; ?>
-                                <table>
-                                    <thead>
-                                        <tr>
-                                            <th style="width: 14%"><center>SN.</center></th>
-                                            <th style="width: 14%"><center>Vehicle Registration No.</center></th>
-                                            <th style="width: 14%"><center>Vehicle Model</center></th>
-                                            <th style="width: 14%"><center>Vehicle Status</center></th>
-                                            <th style="width: 14%"><center>Hire Rate</center></th>
-                                            <th style="width: 14%"><center>Form Status</center></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach($outbox as $car)
-                                            <tr>
-                                              <td><center>{{$c}}.</center></td>
-                                              <td><center>{{$car->vehicle_reg_no}}</center></td>
-                                              <td><center>{{$car->vehicle_model}}</center></td>
-                                              <td><center>{{$car->vehicle_status}}</center></td>
-                                              <td><center>{{number_format($car->hire_rate)}}</center></td>
-                                              <td><center>
-
-
-
-                                                      @if($car->form_status=='DVC Administrator')
-                                                          DVC Administration
-                                                      @else
-                                                          @endif
-                                                      </center></td>
-                                            </tr>
-                                             <?php $c = $c + 1; ?>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                                @else
-                                    <p style="line-height: 1.5;font-size: 17px;"><i class="fa fa-envelope-o" style="font-size:25px;color:#3490dc;"></i> No new message</p>
-                                @endif
-                          </div>
-                        @elseif(Auth::user()->role=='DVC Administrator')
-                            <div id="car_inbox" style="border-bottom-left-radius: 50px 20px;   border: 1px solid #ccc; padding: 1%;" class="tabcontent_fleet">
-                            <br>
-                                @if(count($inbox)>0)
-                                     <?php $c =1; ?>
-                                    <table>
-                                        <thead>
-                                            <tr>
-                                                <th style="width: 14%"><center>SN.</center></th>
-                                                <th style="width: 14%"><center>Vehicle Registration No.</center></th>
-                                                <th style="width: 14%"><center>Vehicle Model</center></th>
-                                                <th style="width: 14%"><center>Vehicle Status</center></th>
-                                                <th style="width: 14%"><center>Hire Rate</center></th>
-                                                <th style="width: 14%"><center>Action</center></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach($inbox as $car)
-                                                <tr>
-                                                  <td><center>{{$c}}.</center></td>
-                                                  <td><center>{{$car->vehicle_reg_no}}</center></td>
-                                                  <td><center>{{$car->vehicle_model}}</center></td>
-                                                  <td><center>{{$car->vehicle_status}}</center></td>
-                                                  <td><center>{{number_format($car->hire_rate)}}</center></td>
-                                                  <td>
-                                                      <a title="Approve this Vehicle" data-toggle="modal" data-target="#approve{{$car->id}}" role="button" aria-pressed="true" id="{{$car->id}}"><center><i class="fa fa-eye" style="font-size:20px; color: blue; cursor: pointer;"></i></center></a>
-                                                      <div class="modal fade" id="approve{{$car->id}}" role="dialog">
-
-                                                        <div class="modal-dialog" role="document">
-                                                            <div class="modal-content">
-                                                                <div class="modal-header">
-                                                                    <b><h5 class="modal-title">CONFIRMATION</h5></b>
-                                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                                </div>
-
-                                                                <div class="modal-body">
-                                                 <form method='post' action="{{ route('addCar_step2') }}">
-                                                    {{csrf_field()}}
-                                        <div class="form-group">
-                                            <div class="row">
-                                                <div class="form-wrapper col-12">
-                                                    <label for="approval_status">Do you approve the additional of this vehicle?</label>
-                                                </div>
-                                            </div>
-                                                  <div class="row">
-                                                    <div class="form-wrapper col-6">
-                                                        <input class="form-check-input" type="radio" name="approval_status" id="Approve{{$car->id}}" value="Accepted" checked="">
-                                                        <label for="Approve{{$car->id}}" class="form-check-label">Approve</label>
-                                                    </div>
-
-                                                    <div class="form-wrapper col-6">
-                                                        <input class="form-check-input" type="radio" name="approval_status" id="Reject{{$car->id}}" value="Rejected">
-                                                        <label for="Reject{{$car->id}}" class="form-check-label">Decline</label>
-                                                    </div>
-
-                                            </div>
-                                        </div>
-
-                                    <div class="form-group" id="remarksDiv{{$car->id}}" style="display: none;">
-                                        <div class="form-wrapper">
-                                            <label for="remarks">Remark(s)<span style="color: red;">*</span></label>
-                                            <span id="remarksmsg{{$car->id}}"></span>
-                                            <textarea type="text" id="remarks{{$car->id}}" name="reason"  class="form-control"></textarea>
-                                        </div>
-                                    </div>
-
-                                    <input type="text" name="vehicle_id" value="{{$car->id}}" hidden="">
-
-                                    <div align="right">
-                                      <button class="btn btn-primary" type="submit" id="{{$car->id}}" onclick=" return validate(this.id)">Forward</button>
-                                      <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
-                                    </div>
-
-                                </form>
-
-
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                  </td>
-                                                </tr>
-                                                 <?php $c = $c + 1; ?>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
-                                @else
-                                    <p style="line-height: 1.5;font-size: 17px;"><i class="fa fa-envelope-o" style="font-size:25px;color:#3490dc;"></i> No new message</p>
-                                @endif
-                          </div>
-
-                          <div id="car_outbox" style="border-bottom-left-radius: 50px 20px;   border: 1px solid #ccc; padding: 1%;" class="tabcontent_fleet">
-                            <br>
-                                @if(count($outbox)>0)
-                                       <?php $c =1; ?>
-                                <table>
-                                    <thead>
-                                        <tr>
-                                            <th style="width: 14%"><center>SN.</center></th>
-                                            <th style="width: 14%"><center>Vehicle Registration No.</center></th>
-                                            <th style="width: 14%"><center>Vehicle Model</center></th>
-                                            <th style="width: 14%"><center>Vehicle Status</center></th>
-                                            <th style="width: 14%"><center>Hire Rate</center></th>
-                                            <th style="width: 14%"><center>Form Status</center></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach($outbox as $car)
-                                            <tr>
-                                              <td><center>{{$c}}.</center></td>
-                                              <td><center>{{$car->vehicle_reg_no}}</center></td>
-                                              <td><center>{{$car->vehicle_model}}</center></td>
-                                              <td><center>{{$car->vehicle_status}}</center></td>
-                                              <td><center>{{number_format($car->hire_rate)}}</center></td>
-                                              <td><center>{{$car->form_status}}</center></td>
-                                            </tr>
-                                             <?php $c = $c + 1; ?>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                                @else
-                                    <p style="line-height: 1.5;font-size: 17px;"><i class="fa fa-envelope-o" style="font-size:25px;color:#3490dc;"></i> No new message</p>
-                                @endif
-                          </div>
-                        @endif
-
-                          <div id="car_fleet" style="border-bottom-left-radius: 50px 20px;   border: 1px solid #ccc; padding: 1%;" class="tabcontent_fleet">
-
-
-
-{{--                            <br>--}}
-{{--                            <center><h3><strong>VEHICLES</strong></h3></center>--}}
-{{--                            <hr>--}}
-{{--                            <br>--}}
-                            {{-- @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR (Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator')) --}}
-
-
-                            <?php $i = 1; ?>
-                            <table class="hover table table-striped table-bordered" id="myTable3">
-                                <thead class="thead-dark">
-                                <tr>
-                                    <th scope="col" style="color:#fff; width: 5%;"><center>S/N</center></th>
-                                    <th scope="col" style="color:#fff;"><center>Vehicle Registration No.</center></th>
-                                    <th scope="col" style="color:#fff;"><center>Vehicle Model</center></th>
-                                    <th scope="col" style="color:#fff;"><center>Vehicle Status</center></th>
-                                    <th scope="col" style="color:#fff;"><center>Hire Rate/KM (TZS)</center></th>
-                                    <th scope="col" style="color:#fff;"><center>Hire Status</center></th>
-                                    <th scope="col" style="color:#fff;"><center>Action</center></th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                @foreach($cars as $cars)
-                                    <tr>
-                                        <th scope="row">{{ $i }}.</th>
-                                        <td><center>{{ $cars->vehicle_reg_no}}</center></td>
-                                        <td>{{$cars->vehicle_model}}</td>
-                                        <td>{{ $cars->vehicle_status}}</td>
-                                        <td><center>{{ number_format($cars->hire_rate)}}</center></td>
-                                        <td><center>{{ $cars->hire_status}}</center></td>
-                                        <td><center>
-                                                <a title="View More Details" role="button" href="{{ route('CarViewMore') }}?vehicle_reg_no={{$cars->vehicle_reg_no}}"><i class="fa fa-eye" aria-hidden="true" style="font-size:20px; color:#3490dc; cursor: pointer;"></i></a>
-                                               {{--  @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR (Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator')) --}}
-                                               @if($privileges=='Read only')
-                                                @else
-                                                   @admin
-                                                    <a title="Edit Car Details" data-toggle="modal" data-target="#edit{{$cars->id}}" role="button" aria-pressed="true" id="{{$cars->id}}"><i class="fa fa-edit" style="font-size:20px; color: green; cursor: pointer;"></i></a>
-                                                    <div class="modal fade" id="edit{{$cars->id}}" role="dialog">
-
-                                                        <div class="modal-dialog" role="document">
-                                                            <div class="modal-content">
-                                                                <div class="modal-header">
-                                                                    <b><h5 class="modal-title">Fill the form below to edit car details</h5></b>
-
-                                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                                </div>
-
-                                                                <div class="modal-body">
-                                                                    <form method="get" action="{{ route('editcar') }}">
-                                                                        {{csrf_field()}}
-                                                                        <div class="form-group">
-                                                                            <div class="form-wrapper">
-                                                                                <label for="reg_no">Vehicle Registration No<span style="color: red;">*</span></label>
-                                                                                <input type="text" id="reg_no{{$cars->id}}" name="vehicle_reg_no" class="form-control" value="{{$cars->vehicle_reg_no}}" required="" onblur="this.value=removeSpaces(this.value); javascript:this.value=this.value.toUpperCase();">
-                                                                            </div>
-                                                                        </div>
-                                                                        <br>
-
-                                                                        <div class="form-group">
-                                                                            <div class="form-wrapper">
-                                                                                <label for="model">Vehicle Model<span style="color: red;">*</span></label>
-                                                                                <select class="form-control" required="" id="model{{$cars->id}}" name="model" required="">
-                                                                                    <option value="{{$cars->vehicle_model}}">{{$cars->vehicle_model}}</option>
-                                                                                    @foreach($model1 as $model)
-                                                                                        @if($model->vehicle_model != $cars->vehicle_model)
-                                                                                            <option value="{{$model->vehicle_model}}">{{$model->vehicle_model}}</option>
-                                                                                        @endif
-                                                                                    @endforeach
-                                                                                </select>
-                                                                            </div>
-                                                                        </div>
-                                                                        <br>
-                                                                        <div class="form-group">
-                                                                            <div class="form-wrapper">
-                                                                                <label for="vehicle_status">Vehicle Status<span style="color: red;">*</span></label>
-                                                                                <select class="form-control" required="" id="vehicle_status{{$cars->id}}" name="vehicle_status" required="">
-                                                                                    <option value="{{$cars->vehicle_status}}">{{$cars->vehicle_status}}</option>
-                                                                                    @if($cars->vehicle_status != 'Running')
-                                                                                        <option value="Running">Running</option>
-                                                                                    @endif
-                                                                                    @if($cars->vehicle_status != 'Minor Repair')
-                                                                                        <option value="Minor Repair">Minor Repair</option>
-                                                                                    @endif
-                                                                                    @if($cars->vehicle_status != 'Grounded')
-                                                                                        <option value="Grounded">Grounded</option>
-                                                                                    @endif
-                                                                                </select>
-
-                                                                            </div>
-                                                                        </div>
-                                                                        <br>
-                                                                        <div class="form-group">
-                                                                            <div class="form-wrapper">
-                                                                                <label for="hire_rate">Hire Rate/KM<span style="color: red;">*</span></label>
-                                                                                <input type="text" id="hire_rate{{$cars->id}}" name="hire_rate" class="form-control" value="{{$cars->hire_rate}}" required="" onkeypress="if((this.value.length<10)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
-                                                                            </div>
-                                                                        </div>
-                                                                        <br>
-
-                                                                        <div class="form-group">
-                                                                            <div class="form-wrapper" >
-                                                                                <label for="hire_status">Hire Status<span style="color: red;">*</span></label>
-                                                                                <select class="form-control" required="" id="hire_status" name="hire_status" required="">
-                                                                                    <option value="{{$cars->hire_status}}">{{$cars->hire_status}}</option>
-                                                                                    @if($cars->hire_status != 'Hired')
-                                                                                        <option value="Hired">Hired</option>
-                                                                                    @endif
-                                                                                    @if($cars->hire_status != 'Available')
-                                                                                        <option value="Available">Available</option>
-                                                                                    @endif
-
-                                                                                </select>
-
-                                                                            </div>
-                                                                        </div>
-
-<br>
-
-
-                                                                        <input type="text" name="id" value="{{$cars->id}}" hidden="">
-
-                                                                        <div align="right">
-                                                                            <button class="btn btn-primary" type="submit">Submit</button>
-                                                                            <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
-                                                                        </div>
-                                                                    </form>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-
-
-                                                    <a title="Delete this Car" data-toggle="modal" data-target="#Deactivate{{$cars->id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px; color:red; cursor: pointer;"></i></a>
-                                                    <div class="modal fade" id="Deactivate{{$cars->id}}" role="dialog">
-
-                                                        <div class="modal-dialog" role="document">
-                                                            <div class="modal-content">
-                                                                <div class="modal-header">
-                                                                    <b><h5 class="modal-title" style="color: red;"><b>WARNING</b></h5></b>
-                                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                                </div>
-
-                                                                <div class="modal-body">
-                                                                    <p style="font-size: 20px;">Are you sure you want to delete this car?</p>
-                                                                    <br>
-                                                                    <div align="right">
-                                                                        <a class="btn btn-info" href="{{route('deletecar',$cars->id)}}">Proceed</a>
-                                                                        <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
-                                                                    </div>
-
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                   @endadmin
-                                                @endif
-                                            </center>
-                                        </td>
-
-
-                                    </tr>
-                                    <?php
-                                    $i= $i+1;
-                                    ?>
-                                @endforeach
-
-                                </tbody>
-                            </table>
-                        </div>
-                        @else
-
-
-
-                                     @admin
-
-                                     <div style="float:right;">
-                                         <div style="float:left;"> <a data-toggle="modal" class="btn button_color active" style="background-color: #38c172; padding: 7px; color:white; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;"  data-target="#import_vehicles" title="Import Data" role="button" aria-pressed="true">Import Data</a></div>
-
-                                         <div style="float:right;"><a href="/get_vehicles_format" class="btn button_color active" style="background-color: #38c172; padding: 7px; color:white; margin-left: 5px;  margin-bottom: 5px; margin-top: 4px;"   title="Download Sample">Download Sample</a> </div>
-                                         <div style="clear: both;"></div>
-                                     </div>
-
-                                     <div style="clear: both;"></div>
-
-
-                                     <div class="modal fade" id="import_vehicles" role="dialog">
-
-                                         <div class="modal-dialog" role="document">
-                                             <div class="modal-content">
-                                                 <div class="modal-header">
-                                                     <b><h5 class="modal-title">Importing Data</h5></b>
-
-                                                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                 </div>
-
-                                                 <div class="modal-body">
-
-                                                     <form method="post" enctype="multipart/form-data" action="/import_vehicles">
-                                                         {{csrf_field()}}
-
-                                                         <div class="form-row">
-
-
-                                                             <div  class=" col-md-12 ">
-                                                                 <div class="">
-                                                                     <label for="">Select File for Upload (.xls, .xlsx) <span style="color: red;">*</span></label>
-                                                                     <input type="file" class="" id="" name="import_data" value="" placeholder="" required accept=".xls,.xlsx" autocomplete="off">
-                                                                     <div class="mt-2"><span style="font-weight: bold;">N.B </span><span class="pl-1" style="color:red;"> The header row as given in the sample must be included as the first row when uploading. Furthermore, the acceptable values as indicated in the header row are case sensitive for instance if acceptable value is "Individual" the value to be inserted should be "Individual" and not "individual" </span></div>
-                                                                 </div>
-                                                             </div>
-                                                             <br>
-
-
-                                                         </div>
-
-
-                                                         <div align="right">
-                                                             <button  class="btn btn-primary" type="submit">Import</button>
-                                                             <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
-                                                         </div>
-                                                     </form>
-
-
-
-
-
-
-
-
-
-                                                 </div>
-                                             </div>
-                                         </div>
-
-
-                                     </div>
-
-                                     @endadmin
-
-{{--                            <br>--}}
-{{--                            <center><h3><strong>VEHICLES</strong></h3></center>--}}
-{{--                            <hr>--}}
-{{--                            <br>--}}
-                            {{-- @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR (Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator')) --}}
-
-
-                            <?php $i = 1; ?>
-                            <table class="hover table table-striped table-bordered" id="myTable3">
-                                <thead class="thead-dark">
-                                <tr>
-                                    <th scope="col" style="color:#fff; width: 5%;"><center>S/N</center></th>
-                                    <th scope="col" style="color:#fff;"><center>Vehicle Registration No.</center></th>
-                                    <th scope="col" style="color:#fff;"><center>Vehicle Model</center></th>
-                                    <th scope="col" style="color:#fff;"><center>Vehicle Status</center></th>
-                                    <th scope="col" style="color:#fff;"><center>Hire Rate/KM (TZS)</center></th>
-                                    <th scope="col" style="color:#fff;"><center>Hire Status</center></th>
-                                    <th scope="col" style="color:#fff;"><center>Action</center></th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                @foreach($cars as $cars)
-                                    <tr>
-                                        <th scope="row">{{ $i }}.</th>
-                                        <td><center>{{ $cars->vehicle_reg_no}}</center></td>
-                                        <td>{{$cars->vehicle_model}}</td>
-                                        <td>{{ $cars->vehicle_status}}</td>
-                                        <td><center>{{ number_format($cars->hire_rate)}}</center></td>
-                                        <td><center>{{$cars->hire_status}}</center></td>
-                                        <td><center>
-                                                <a title="View More Details" role="button" href="{{ route('CarViewMore') }}?vehicle_reg_no={{$cars->vehicle_reg_no}}"><i class="fa fa-eye" aria-hidden="true" style="font-size:20px; color:#3490dc; cursor: pointer;"></i></a>
-                                               {{--  @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR (Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator')) --}}
-                                               @if($privileges=='Read only')
-                                                @else
-                                                   @admin
-                                                    <a title="Edit Car Details" data-toggle="modal" data-target="#edit{{$cars->id}}" role="button" aria-pressed="true" id="{{$cars->id}}"><i class="fa fa-edit" style="font-size:20px; color: green; cursor: pointer;"></i></a>
-                                                    <div class="modal fade" id="edit{{$cars->id}}" role="dialog">
-
-                                                        <div class="modal-dialog" role="document">
-                                                            <div class="modal-content">
-                                                                <div class="modal-header">
-                                                                    <b><h5 class="modal-title">Fill the form below to edit car details</h5></b>
-
-                                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                                </div>
-
-                                                                <div class="modal-body">
-                                                                    <form method="get" action="{{ route('editcar') }}">
-                                                                        {{csrf_field()}}
-                                                                        <div class="form-group">
-                                                                            <div class="form-wrapper">
-                                                                                <label for="reg_no">Vehicle Registration No<span style="color: red;">*</span></label>
-                                                                                <input type="text" id="reg_no{{$cars->id}}" name="vehicle_reg_no" class="form-control" value="{{$cars->vehicle_reg_no}}" required="" onblur="this.value=removeSpaces(this.value); javascript:this.value=this.value.toUpperCase();">
-                                                                            </div>
-                                                                        </div>
-                                                                        <br>
-
-                                                                        <div class="form-group">
-                                                                            <div class="form-wrapper">
-                                                                                <label for="model">Vehicle Model<span style="color: red;">*</span></label>
-                                                                                <select class="form-control" required="" id="model{{$cars->id}}" name="model" required="">
-                                                                                    <option value="{{$cars->vehicle_model}}">{{$cars->vehicle_model}}</option>
-                                                                                    @foreach($model1 as $model)
-                                                                                        @if($model->vehicle_model != $cars->vehicle_model)
-                                                                                            <option value="{{$model->vehicle_model}}">{{$model->vehicle_model}}</option>
-                                                                                        @endif
-                                                                                    @endforeach
-                                                                                </select>
-                                                                            </div>
-                                                                        </div>
-                                                                        <br>
-                                                                        <div class="form-group">
-                                                                            <div class="form-wrapper">
-                                                                                <label for="vehicle_status">Vehicle Status<span style="color: red;">*</span></label>
-                                                                                <select class="form-control" required="" id="vehicle_status{{$cars->id}}" name="vehicle_status" required="">
-                                                                                    <option value="{{$cars->vehicle_status}}">{{$cars->vehicle_status}}</option>
-                                                                                    @if($cars->vehicle_status != 'Running')
-                                                                                        <option value="Running">Running</option>
-                                                                                    @endif
-                                                                                    @if($cars->vehicle_status != 'Minor Repair')
-                                                                                        <option value="Minor Repair">Minor Repair</option>
-                                                                                    @endif
-                                                                                    @if($cars->vehicle_status != 'Grounded')
-                                                                                        <option value="Grounded">Grounded</option>
-                                                                                    @endif
-                                                                                </select>
-
-                                                                            </div>
-                                                                        </div>
-                                                                        <br>
-                                                                        <div class="form-group">
-                                                                            <div class="form-wrapper">
-                                                                                <label for="hire_rate">Hire Rate/KM<span style="color: red;">*</span></label>
-                                                                                <input type="text" id="hire_rate{{$cars->id}}" name="hire_rate" class="form-control" value="{{$cars->hire_rate}}" required="" onkeypress="if((this.value.length<10)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
-                                                                            </div>
-                                                                        </div>
-                                                                        <br>
-
-                                                                        <div class="form-group">
-                                                                            <div class="form-wrapper" >
-                                                                                <label for="hire_status">Hire Status<span style="color: red;">*</span></label>
-                                                                                <select class="form-control" required="" id="hire_status" name="hire_status" required="">
-                                                                                    <option value="{{$cars->hire_status}}">{{$cars->hire_status}}</option>
-                                                                                    @if($cars->hire_status != 'Hired')
-                                                                                        <option value="Hired">Hired</option>
-                                                                                    @endif
-                                                                                    @if($cars->hire_status != 'Available')
-                                                                                        <option value="Available">Available</option>
-                                                                                    @endif
-
-                                                                                </select>
-
-                                                                            </div>
-                                                                        </div>
-                                                                        <br>
-
-
-                                                                        <input type="text" name="id" value="{{$cars->id}}" hidden="">
-
-                                                                        <div align="right">
-                                                                            <button class="btn btn-primary" type="submit">Submit</button>
-                                                                            <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
-                                                                        </div>
-                                                                    </form>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-
-
-                                                    <a title="Delete this Car" data-toggle="modal" data-target="#Deactivate{{$cars->id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px; color:red; cursor: pointer;"></i></a>
-                                                    <div class="modal fade" id="Deactivate{{$cars->id}}" role="dialog">
-
-                                                        <div class="modal-dialog" role="document">
-                                                            <div class="modal-content">
-                                                                <div class="modal-header">
-                                                                    <b><h5 class="modal-title" style="color: red;"><b>WARNING</b></h5></b>
-                                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                                </div>
-
-                                                                <div class="modal-body">
-                                                                    <p style="font-size: 20px;">Are you sure you want to delete this car?</p>
-                                                                    <br>
-                                                                    <div align="right">
-                                                                        <a class="btn btn-info" href="{{route('deletecar',$cars->id)}}">Proceed</a>
-                                                                        <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
-                                                                    </div>
-
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                   @endadmin
-                                                @endif
-                                            </center>
-                                        </td>
-
-
-                                    </tr>
-                                    <?php
-                                    $i= $i+1;
-                                    ?>
-                                @endforeach
-
-                                </tbody>
-                            </table>
-
-                        @endif
-                    </div>
-
-{{--                        <div id="hire" style="border-bottom-left-radius: 50px 20px;   border: 1px solid #ccc; padding: 1%;" class="tabcontent" >--}}
-{{--                            <br>--}}
-{{--                            <center><h3><strong>Hire Rates</strong></h3></center>--}}
-{{--                            <hr>--}}
-{{--                            --}}{{-- @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR (Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator')) --}}
-{{--                            @if($privileges=='Read only')--}}
-{{--                                @else--}}
-
-{{--                                <div style="float:left;">--}}
-
-{{--                                    <a data-toggle="modal" data-target="#hiree" class="btn btn-success  active" style="background-color: #38c172; border: none;    padding: 10px;--}}
-
-{{--    margin-bottom: 5px;--}}
-{{--    margin-top: 4px;" role="button" aria-pressed="true">Add Rate</a>--}}
-{{--                                </div>--}}
-
-
-
-
-{{--                                @admin--}}
-
-{{--                                <div style="float:right;">--}}
-{{--                                    <div style="float:left;"> <a data-toggle="modal" class="btn button_color active" style="background-color: #38c172; padding: 7px; color:white; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;"  data-target="#import_data_hire_rate" title="Import Data" role="button" aria-pressed="true">Import Data</a></div>--}}
-
-{{--                                    <div style="float:right;"><a href="/get_hire_rate_format" class="btn button_color active" style="background-color: #38c172; padding: 7px; color:white; margin-left: 5px;  margin-bottom: 5px; margin-top: 4px;"   title="Download Sample">Download Sample</a> </div>--}}
-{{--                                    <div style="clear: both;"></div>--}}
-{{--                                </div>--}}
-
-{{--                                <div style="clear: both;"></div>--}}
-
-
-{{--                                <div class="modal fade" id="import_data_hire_rate" role="dialog">--}}
-
-{{--                                    <div class="modal-dialog" role="document">--}}
-{{--                                        <div class="modal-content">--}}
-{{--                                            <div class="modal-header">--}}
-{{--                                                <b><h5 class="modal-title">Importing Data</h5></b>--}}
-
-{{--                                                <button type="button" class="close" data-dismiss="modal">&times;</button>--}}
-{{--                                            </div>--}}
-
-{{--                                            <div class="modal-body">--}}
-
-{{--                                                <form method="post" enctype="multipart/form-data" action="/import_hire_rate">--}}
-{{--                                                    {{csrf_field()}}--}}
-
-{{--                                                    <div class="form-row">--}}
-
-
-{{--                                                        <div  class=" col-md-12 ">--}}
-{{--                                                            <div class="">--}}
-{{--                                                                <label for="">Select File for Upload (.xls, .xlsx) <span style="color: red;">*</span></label>--}}
-{{--                                                                <input type="file" class="" id="" name="import_data" value="" placeholder="" required accept=".xls,.xlsx" autocomplete="off">--}}
-{{--                                                                <div class="mt-2"><span style="font-weight: bold;">N.B </span><span class="pl-1" style="color:red;"> The header row as given in the sample must be included as the first row when uploading. Furthermore, the acceptable values as indicated in the header row are case sensitive for instance if acceptable value is "Individual" the value to be inserted should be "Individual" and not "individual" </span></div>--}}
-{{--                                                            </div>--}}
-{{--                                                        </div>--}}
-{{--                                                        <br>--}}
-
-
-{{--                                                    </div>--}}
-
-
-{{--                                                    <div align="right">--}}
-{{--                                                        <button  class="btn btn-primary" type="submit">Import</button>--}}
-{{--                                                        <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>--}}
-{{--                                                    </div>--}}
-{{--                                                </form>--}}
-
-
-
-
-
-
-
-
-
-{{--                                            </div>--}}
-{{--                                        </div>--}}
-{{--                                    </div>--}}
-
-
-{{--                                </div>--}}
-
-{{--                                @endadmin--}}
-
-
-
-{{--                                <div class="modal fade" id="hiree" role="dialog">--}}
-
-{{--                                    <div class="modal-dialog" role="document">--}}
-{{--                                        <div class="modal-content">--}}
-{{--                                            <div class="modal-header">--}}
-{{--                                                <b><h5 class="modal-title">Fill the form below to add new hire rate</h5></b>--}}
-
-{{--                                                <button type="button" class="close" data-dismiss="modal">&times;</button>--}}
-{{--                                            </div>--}}
-
-{{--                                            <div class="modal-body">--}}
-{{--                                                <form method="post" action="{{ route('addhirerate') }}" onsubmit="return gethire()">--}}
-{{--                                                    {{csrf_field()}}--}}
-{{--                                                    <div class="form-group" id="modeldiv">--}}
-{{--                                                        <div class="form-wrapper">--}}
-{{--                                                            <label for="model">Vehicle Model<span style="color: red;">*</span></label>--}}
-{{--                                                            <input type="text" id="hire_model" name="vehicle_model" class="form-control" required="" autocomplete="off">--}}
-{{--                                                        </div>--}}
-{{--                                                    </div>--}}
-
-{{--                                                    <div class="form-group" id="hirediv">--}}
-{{--                                                        <div class="form-wrapper">--}}
-{{--                                                            <label for="hire_hire_rate">Hire Rate/Km<span style="color: red;">*</span></label>--}}
-{{--                                                            <span id="ratemessage"></span>--}}
-{{--                                                            <input type="text" id="hire_hire_rate" name="hire_rate" class="form-control" required="" onkeypress="if((this.value.length<10)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">--}}
-{{--                                                        </div>--}}
-{{--                                                    </div>--}}
-
-{{--                                                    <div align="right">--}}
-{{--                                                        <button class="btn btn-primary" type="submit">Save</button>--}}
-{{--                                                        <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>--}}
-{{--                                                    </div>--}}
-{{--                                                </form>--}}
-{{--                                            </div>--}}
-{{--                                        </div>--}}
-{{--                                    </div>--}}
-{{--                                </div>--}}
-{{--                                <br>--}}
-{{--                            @endif--}}
-{{--                             <div class="" style="width: 100%;">--}}
-{{--                                <table class="hover table table-striped table-bordered"  id="myTable4">--}}
-{{--                                    <thead class="thead-dark">--}}
-{{--                                    <tr>--}}
-{{--                                        <th scope="col" style="color:#fff; width: 3%;"><center>S/N</center></th>--}}
-{{--                                        <th scope="col" style="color:#fff;"><center>Vehicle Model</center></th>--}}
-{{--                                        <th scope="col" style="color:#fff;"><center>Hire Rate/KM (TZS)</center></th>--}}
-{{--                                        --}}{{-- @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR (Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator')) --}}
-{{--                                        @if($privileges=='Read only')--}}
-{{--                                        @else--}}
-{{--                                            <th scope="col" style="color:#fff;"><center>Action</center></th>--}}
-{{--                                        @endif--}}
-{{--                                    </tr>--}}
-{{--                                    </thead>--}}
-{{--                                    <tbody>--}}
-{{--                                    @foreach($rate as $rate)--}}
-{{--                                        <tr>--}}
-{{--                                            <th scope="row" class="counterCell text-center">.</th>--}}
-{{--                                            <td>{{$rate->vehicle_model}}</td>--}}
-{{--                                            <td><center>{{number_format($rate->hire_rate)}}</center></td>--}}
-{{--                                           --}}{{--  @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR (Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator')) --}}
-{{--                                           @if($privileges=='Read only')--}}
-{{--                                            @else--}}
-{{--                                                <td><center>--}}
-{{--                                                        <a title="Edit this Hire Rate" data-toggle="modal" data-target="#hire{{$rate->id}}" role="button" aria-pressed="true" id="{{$rate->id}}"><i class="fa fa-edit" style="font-size:20px; color: green;cursor: pointer;"></i></a>--}}
-{{--                                                        <div class="modal fade" id="hire{{$rate->id}}" role="dialog">--}}
-
-{{--                                                            <div class="modal-dialog modal-dialog-scrollable" role="document">--}}
-{{--                                                                <div class="modal-content">--}}
-{{--                                                                    <div class="modal-header">--}}
-{{--                                                                        <b><h5 class="modal-title">Fill the form below to edit hire rate details</h5></b>--}}
-
-{{--                                                                        <button type="button" class="close" data-dismiss="modal">&times;</button>--}}
-{{--                                                                    </div>--}}
-
-{{--                                                                    <div class="modal-body">--}}
-{{--                                                                        <form method="post" action="{{ route('edithirerate') }}">--}}
-{{--                                                                            {{csrf_field()}}--}}
-{{--                                                                            <div class="form-group">--}}
-{{--                                                                                <div class="form-wrapper">--}}
-{{--                                                                                    <label for="hire_vehicle_model{{$rate->id}}">Vehicle Model<span style="color: red;">*</span></label>--}}
-{{--                                                                                    <input type="text" id="hire_vehicle_model{{$rate->id}}" name="hire_vehicle_model" class="form-control" required="" autocomplete="off" value="{{$rate->vehicle_model}}">--}}
-{{--                                                                                </div>--}}
-{{--                                                                            </div>--}}
-{{--                                                                            <br>--}}
-
-{{--                                                                            <div class="form-group">--}}
-{{--                                                                                <div class="form-wrapper">--}}
-{{--                                                                                    <label for="hire_hire_rate{{$rate->id}}">Hire Rate/KM<span style="color: red;">*</span><span id="ratemessage{{$rate->id}}"></span></label>--}}
-
-{{--                                                                                    <input type="text" id="hire_hire_rate{{$rate->id}}" name="hire_hire_rate" class="form-control" required="" value="{{$rate->hire_rate}}" onkeypress="if((this.value.length<10)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">--}}
-{{--                                                                                </div>--}}
-{{--                                                                            </div>--}}
-{{--                                                                            <br>--}}
-{{--                                                                            <input type="text" name="id" value="{{$rate->id}}" hidden="">--}}
-
-{{--                                                                            <div align="right">--}}
-{{--                                                                                <button class="btn btn-primary" type="submit" name="rate_editSubmit" id="{{$rate->id}}">Submit</button>--}}
-{{--                                                                                <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>--}}
-{{--                                                                            </div>--}}
-
-{{--                                                                        </form>--}}
-
-{{--                                                                    </div>--}}
-{{--                                                                </div>--}}
-{{--                                                            </div>--}}
-{{--                                                        </div>--}}
-
-{{--                                                        <a title="Delete this Hire Rate" data-toggle="modal" data-target="#Deactivatehire{{$rate->id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px; color:red; cursor: pointer;"></i></a>--}}
-{{--                                                        <div class="modal fade" id="Deactivatehire{{$rate->id}}" role="dialog">--}}
-{{--                                                            <div class="modal-dialog" role="document">--}}
-{{--                                                                <div class="modal-content">--}}
-{{--                                                                    <div class="modal-header">--}}
-{{--                                                                        <b><h5 class="modal-title" style="color: red;"><b>WARNING</b></h5></b>--}}
-{{--                                                                        <button type="button" class="close" data-dismiss="modal">&times;</button>--}}
-{{--                                                                    </div>--}}
-
-{{--                                                                    <div class="modal-body">--}}
-{{--                                                                        <p style="font-size: 20px;">Are you sure you want to delete this hire rate?</p>--}}
-{{--                                                                        <br>--}}
-{{--                                                                        <div align="right">--}}
-{{--                                                                            <a class="btn btn-info" href="{{route('deletehirerate',$rate->id)}}">Proceed</a>--}}
-{{--                                                                            <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>--}}
-{{--                                                                        </div>--}}
-
-{{--                                                                    </div>--}}
-{{--                                                                </div>--}}
-{{--                                                            </div>--}}
-{{--                                                        </div></center>--}}
-{{--                                                </td>--}}
-{{--                                            @endif--}}
-{{--                                        </tr>--}}
-{{--                                    @endforeach--}}
-{{--                                    </tbody>--}}
-{{--                                </table>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
-
-                        <?php
-                        $today=date('Y-m-d');
-                        ?>
-
-
-
-                        <?php $k=1;?>
-
-                    </div>
 
             </div>
         </div>
@@ -4823,7 +4957,11 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
             document.getElementById(evtName).style.display = "block";
             evt.currentTarget.className += " active";
         }
+
+        @if((Auth::user()->role=='Transport Officer-CPTU') || (Auth::user()->role=='DVC Administrator'))
         document.getElementById("defaultOpen").click();
+@else
+            @endif
 
         <?php $role = Auth::user()->role; ?>
 
@@ -4852,9 +4990,13 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
                 document.getElementById(evtName).style.display = "block";
                 evt.currentTarget.className += " active";
             }
-            if(role!='Transport Officer-CPTU'){
-                document.getElementById("defaultSelection").click();
-            }
+
+
+            @if((Auth::user()->role=='DPDI Planner') || (Auth::user()->role=='Director DPDI'))
+            document.getElementById("defaultSelection").click();
+            @else
+            @endif
+
 
 
             function openfleet(evt, evtName) {
@@ -4882,8 +5024,8 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
 
 
 
-
     </script>
+
     <script type="text/javascript">
         $(document).ready(function(){
             $('#op_vehicle_reg_no').keyup(function(e){
@@ -5045,89 +5187,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
     </script>
 
 
-    <script type="text/javascript">
-        window.onload=function(){
-                <?php
-                $category=DB::table('general_settings')->where('user_roles',Auth::user()->role)->value('category');
-                $space_status=0;
-                $insurance_status=0;
-                $car_status=0;
-                $research_status=0;
 
-                if ($category=='Real Estate only' OR $category=='All') {
-                    $space_status=1;
-                }
-                else{
-
-                }
-
-                if ($category=='CPTU only' OR $category=='All') {
-                    $car_status=1;
-                }
-                else{
-
-                }
-
-                if ($category=='Insurance only' OR $category=='All') {
-                    $insurance_status=1;
-                }
-                else{
-
-                }
-
-
-                if ($category=='Research Flats only' OR $category=='All') {
-                    $research_status=1;
-                }
-                else{
-
-                }
-
-
-                ?>
-
-            var space_x={!! json_encode($space_status) !!};
-            var insurance_x={!! json_encode($insurance_status) !!};
-            var car_x={!! json_encode($car_status) !!};
-            var research_x={!! json_encode($research_status) !!};
-
-            if(space_x==1){
-
-                $(".insurance_identity").removeClass("defaultBusiness");
-                $(".car_identity").removeClass("defaultBusiness");
-                $('.research_flats_identity').removeClass('defaultBusiness');
-                $('.space_identity').addClass('defaultBusiness');
-
-
-            }else if(insurance_x==1){
-                $(".space_identity").removeClass("defaultBusiness");
-                $(".car_identity").removeClass("defaultBusiness");
-                $('.research_flats_identity').removeClass('defaultBusiness');
-                $('.insurance_identity').addClass('defaultBusiness');
-
-            }else if(car_x==1){
-                $(".space_identity").removeClass("defaultBusiness");
-                $(".insurance_identity").removeClass("defaultBusiness");
-                $('.research_flats_identity').removeClass('defaultBusiness');
-                $('.car_identity').addClass('defaultBusiness');
-
-            }else if(research_x==1){
-                $(".space_identity").removeClass("defaultBusiness");
-                $(".insurance_identity").removeClass("defaultBusiness");
-                $('.car_identity').removeClass('defaultBusiness');
-                $('.research_flats_identity').addClass('defaultBusiness');
-
-            }
-            else{
-
-            }
-
-
-
-            document.querySelector('.defaultBusiness').click();
-
-        };
-    </script>
 
     <script type="text/javascript">
         function validate(ids){
