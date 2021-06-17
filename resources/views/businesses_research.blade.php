@@ -107,7 +107,7 @@ input[type=radio]{
 
 @section('content')
     <div class="wrapper">
-        <div id="coverScreen"  class="pageLoad"></div>
+{{--        <div id="coverScreen"  class="pageLoad"></div>--}}
         <div class="sidebar">
             <ul style="list-style-type:none;">
 

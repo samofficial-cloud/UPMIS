@@ -94,6 +94,43 @@ class PaymentController extends Controller
     }
 
 
+
+
+    public function paymentManagementInsurance(){
+
+
+        $insurance_payments=DB::table('insurance_payments')->join('insurance_invoices','insurance_payments.invoice_number','=','insurance_invoices.invoice_number')->where('insurance_invoices.payment_status','Partially Paid')->orWhere('insurance_invoices.payment_status','Paid')->get();
+        $insurance_clients_payments=DB::table('insurance_clients_payments')->join('insurance_invoices_clients','insurance_clients_payments.invoice_number','=','insurance_invoices_clients.invoice_number')->where('insurance_invoices_clients.payment_status','Partially Paid')->orWhere('insurance_invoices_clients.payment_status','Paid')->get();
+
+
+        return view('payments_management_insurance')->with('insurance_payments',$insurance_payments)->with('insurance_clients_payments',$insurance_clients_payments);
+
+    }
+
+    public function paymentManagementResearch(){
+
+
+        $research_payments=DB::table('research_flats_payments')->join('research_flats_invoices','research_flats_payments.invoice_number','=','research_flats_invoices.invoice_number')->where('research_flats_invoices.payment_status','Partially Paid')->orWhere('research_flats_invoices.payment_status','Paid')->get();
+
+        return view('payments_management_research')->with('research_payments',$research_payments);
+
+    }
+
+
+    public function paymentManagementCarRental(){
+
+
+        if(Auth::user()->role=='Vote Holder' || Auth::user()->role=='Accountant-Cost Centre'){
+            $car_rental_payments=DB::table('car_rental_payments')->join('car_rental_invoices','car_rental_payments.invoice_number','=','car_rental_invoices.invoice_number')->join('car_contracts','car_contracts.id','=','car_rental_invoices.contract_id')->where('cost_centre',Auth::user()->cost_centre)->where('car_rental_invoices.payment_status','Partially Paid')->orWhere('car_rental_invoices.payment_status','Paid')->get();
+        }
+        else{
+            $car_rental_payments=DB::table('car_rental_payments')->join('car_rental_invoices','car_rental_payments.invoice_number','=','car_rental_invoices.invoice_number')->where('car_rental_invoices.payment_status','Partially Paid')->orWhere('car_rental_invoices.payment_status','Paid')->get();
+        }
+
+        return view('payments_management_car_rental')->with('car_rental_payments',$car_rental_payments);
+
+    }
+
     public function CreateSpacePaymentManually(Request $request)
     {
         $amount_to_be_paid=DB::table('invoices')->where('invoice_number_votebook', $request->get('invoice_number'))->value('amount_to_be_paid');

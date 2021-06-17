@@ -156,6 +156,11 @@ Route::post('/login/custom', [
         //payment
         Route::get('/payment_management', 'PaymentController@paymentManagement');
 
+        Route::get('/payment_management/insurance', 'PaymentController@paymentManagementInsurance');
+        Route::get('/payment_management/research', 'PaymentController@paymentManagementResearch');
+        Route::get('/payment_management/car_rental', 'PaymentController@paymentManagementCarRental');
+
+
         Route::get('/payment_management/filtered', 'PaymentController@payment_filtered');
 
         Route::get('/check_availability_car', 'PaymentController@checkAvailabilityCar')->name('check_availability_car');
