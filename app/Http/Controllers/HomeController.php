@@ -7,6 +7,7 @@ use App\hire_rate;
 use App\research_flats_contract;
 use App\research_flats_invoice;
 use App\research_flats_payment;
+use App\research_flats_room;
 use App\Rules\PasswordValidate;
 use Illuminate\Http\Request;
 use PDF;
@@ -21,6 +22,7 @@ use App\space;
 Use App\User;
 use Hash;
 use Auth;
+use Carbon\Carbon;
 use Riskihajar\Terbilang\Facades\Terbilang;
 
 
@@ -109,32 +111,414 @@ class HomeController extends Controller
 
 
 
+        //Hire rates starts
+
+
+        $hire_rate_inbox=null;
+        $hire_rate_outbox=null;
+
+
+
+        $rate=DB::table('hire_rates')->where('flag','1')->where('stage','3')->orderBy('vehicle_model','asc')->get();
+
+
+        $hire_rate_approval_stage=hire_rate::where('stage','1')->orderBy('updated_at','desc')->orderBy('id','desc')->get();
+        $hire_rate_approval_stage_planner=hire_rate::where('stage','1')->orWhere('stage','1b')->orderBy('updated_at','desc')->orderBy('id','desc')->get();
+        $hire_rate_approval_second_stage=hire_rate::where('stage','1b')->orderBy('updated_at','desc')->orderBy('id','desc')->get();
+        $hire_rate_declined_stage=hire_rate::where('stage','2')->orderBy('updated_at','desc')->orderBy('id','desc')->get();
+        $hire_rate_declined_dvc_stage=hire_rate::where('stage','2')->where('rejected_by','DVC')->orderBy('updated_at','desc')->orderBy('id','desc')->get();
+        $hire_rate_declined_approval_stage=hire_rate::where('stage','2')->orWhere('stage','1b')->orderBy('updated_at','desc')->orderBy('id','desc')->get();
+
+
+
+
+
+        if(Auth::user()->role=='Transport Officer-CPTU'){
+
+            if(count($hire_rate_declined_stage)==0){
+
+
+            }else{
+
+                $hire_rate_inbox=$hire_rate_declined_stage;
+            }
+
+
+
+            if(count($hire_rate_approval_stage_planner)==0){
+
+
+
+            }else{
+
+                $hire_rate_outbox=$hire_rate_approval_stage_planner;
+
+            }
+
+
+
+        }else if (Auth::user()->role=='Director DPDI'){
+
+            if(count($hire_rate_approval_stage)==0){
+
+
+            }else{
+
+                $hire_rate_inbox=$hire_rate_approval_stage;
+            }
+
+            if(count($hire_rate_declined_approval_stage)==0){
+
+
+            }else{
+
+                $hire_rate_outbox=$hire_rate_declined_approval_stage;
+
+            }
+
+
+
+
+        }  else if (Auth::user()->role=='DVC Administrator'){
+
+            if(count($hire_rate_approval_second_stage)==0){
+
+
+            }else{
+
+                $hire_rate_inbox=$hire_rate_approval_second_stage;
+            }
+
+            if(count($hire_rate_declined_dvc_stage)==0){
+
+
+            }else{
+
+                $hire_rate_outbox=$hire_rate_declined_dvc_stage;
+
+            }
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+        else{
+
+
+
+        }
+
+
+        //Hire rates ends
+
+
+
+        //Rooms start
+
+        $room_inbox=null;
+        $room_outbox=null;
+
+
+
+
+
+        $room_approval_stage=research_flats_room::where('stage','1')->orderBy('updated_at','desc')->orderBy('id','desc')->get();
+        $room_approval_stage_planner=research_flats_room::where('stage','1')->orWhere('stage','1b')->orderBy('updated_at','desc')->orderBy('id','desc')->get();
+        $room_approval_second_stage=research_flats_room::where('stage','1b')->orderBy('updated_at','desc')->orderBy('id','desc')->get();
+        $room_declined_stage=research_flats_room::where('stage','2')->orderBy('updated_at','desc')->orderBy('id','desc')->get();
+        $room_declined_dvc_stage=research_flats_room::where('stage','2')->where('rejected_by','DVC')->orderBy('updated_at','desc')->orderBy('id','desc')->get();
+        $room_declined_approval_stage=research_flats_room::where('stage','2')->orWhere('stage','1b')->orderBy('updated_at','desc')->orderBy('id','desc')->get();
+
+        $rooms = DB::table('research_flats_rooms')->where('status','1')->where('stage','3')->orderby('room_no','asc')->get();
+
+
+
+
+        if(Auth::user()->role=='Research Flats Officer'){
+
+            if(count($room_declined_stage)==0){
+
+
+            }else{
+
+                $room_inbox=$room_declined_stage;
+            }
+
+
+
+            if(count($room_approval_stage_planner)==0){
+
+
+
+            }else{
+
+                $room_outbox=$room_approval_stage_planner;
+
+            }
+
+
+
+        }else if (Auth::user()->role=='Director DPDI'){
+
+            if(count($room_approval_stage)==0){
+
+
+            }else{
+
+                $room_inbox=$room_approval_stage;
+            }
+
+            if(count($room_declined_approval_stage)==0){
+
+
+            }else{
+
+                $room_outbox=$room_declined_approval_stage;
+
+            }
+
+
+        }  else if (Auth::user()->role=='DVC Administrator'){
+
+            if(count($room_approval_second_stage)==0){
+
+
+            }else{
+
+                $room_inbox=$room_approval_second_stage;
+            }
+
+            if(count($room_declined_dvc_stage)==0){
+
+
+            }else{
+
+                $room_outbox=$room_declined_dvc_stage;
+
+            }
+
+
+
+
+        }
+
+        else{
+
+
+
+        }
+
+        //Rooms end
+
+
+
+
+
+        //Cars start
+
+        $car_inbox=null;
+        $car_outbox=null;
+
+
+
+
+
+        $car_approval_stage=carRental::where('stage','1')->orderBy('updated_at','desc')->orderBy('id','desc')->get();
+        $car_approval_stage_planner=carRental::where('stage','1')->orWhere('stage','1b')->orderBy('updated_at','desc')->orderBy('id','desc')->get();
+        $car_approval_second_stage=carRental::where('stage','1b')->orderBy('updated_at','desc')->orderBy('id','desc')->get();
+        $car_declined_stage=carRental::where('stage','2')->orderBy('updated_at','desc')->orderBy('id','desc')->get();
+        $car_declined_dvc_stage=carRental::where('stage','2')->where('rejected_by','DVC')->orderBy('updated_at','desc')->orderBy('id','desc')->get();
+        $car_declined_approval_stage=carRental::where('stage','2')->orWhere('stage','1b')->orderBy('updated_at','desc')->orderBy('id','desc')->get();
+
+        $cars=carRental::where('flag','1')->orderBy('vehicle_status','dsc')->where('stage','3')->get();
+
+
+        if(Auth::user()->role=='Transport Officer-CPTU'){
+
+            if(count($car_declined_stage)==0){
+
+
+            }else{
+
+                $car_inbox=$car_declined_stage;
+            }
+
+
+
+            if(count($car_approval_stage_planner)==0){
+
+
+
+            }else{
+
+                $car_outbox=$car_approval_stage_planner;
+
+            }
+
+
+
+        }else if (Auth::user()->role=='Director DPDI'){
+
+            if(count($car_approval_stage)==0){
+
+
+            }else{
+
+                $car_inbox=$car_approval_stage;
+            }
+
+            if(count($car_declined_approval_stage)==0){
+
+
+            }else{
+
+                $car_outbox=$car_declined_approval_stage;
+
+            }
+
+
+        }  else if (Auth::user()->role=='DVC Administrator'){
+
+            if(count($car_approval_second_stage)==0){
+
+
+            }else{
+
+                $car_inbox=$car_approval_second_stage;
+            }
+
+            if(count($car_declined_dvc_stage)==0){
+
+
+            }else{
+
+                $car_outbox=$car_declined_dvc_stage;
+
+            }
+
+
+
+
+        }
+
+        else{
+
+
+
+        }
+
+        //Cars end
+
+
+
 
 
         $insurance=DB::table('insurance')->where('status',1)->get();
-        $cars=carRental::where('flag','1')->orderBy('vehicle_status','dsc')->get();
+
         $operational=operational_expenditure::where('flag','1')->get();
-        $rate=hire_rate::where('flag','1')->orderBy('vehicle_model','asc')->get();
+
         $costcentres=cost_centre::orderBy('costcentre_id','asc')->where('status',1)->get();
-        $rooms = DB::table('research_flats_rooms')->where('status','1')->orderby('room_no','asc')->get();
-
-         if(Auth::user()->role=='Transport Officer-CPTU'){
-          $car_inbox = carRental::where('form_status','Transport Officer-CPTU')->where('flag',0)->orderBy('vehicle_status','dsc')->where('cptu_msg_status','inbox')->get();
-          $car_outbox = carRental::where('flag',0)->orderBy('vehicle_status','dsc')->where('cptu_msg_status','outbox')->get();
-        }
-        elseif(Auth::user()->role=='DVC Administrator'){
-          $car_inbox = carRental::where('form_status','DVC Administrator')->where('flag',0)->orderBy('vehicle_status','dsc')->where('dvc_msg_status','inbox')->get();
-          $car_outbox = carRental::where('flag',0)->orderBy('vehicle_status','dsc')->where('dvc_msg_status','outbox')->get();
-        }
-        else{
-           $car_inbox = carRental::where('flag',-1)->orderBy('vehicle_status','dsc')->get();
-          $car_outbox = carRental::where('flag',-1)->orderBy('vehicle_status','dsc')->get();
-        }
 
 
-        return view('businesses')->with('spaces',$spaces)->with('insurance',$insurance)->with('cars',$cars)->with('operational',$operational)->with('rate',$rate)->with('costcentres',$costcentres)->with('inbox', $car_inbox)->with('outbox', $car_outbox)->with('rooms',$rooms)->with('space_inbox',$space_inbox)->with('space_outbox',$space_outbox);
+
+//         if(Auth::user()->role=='Transport Officer-CPTU'){
+//          $car_inbox = carRental::where('form_status','Transport Officer-CPTU')->where('flag',0)->orderBy('vehicle_status','dsc')->where('cptu_msg_status','inbox')->get();
+//          $car_outbox = carRental::where('flag',0)->orderBy('vehicle_status','dsc')->where('cptu_msg_status','outbox')->get();
+//        }
+//        elseif(Auth::user()->role=='DVC Administrator'){
+//          $car_inbox = carRental::where('form_status','DVC Administrator')->where('flag',0)->orderBy('vehicle_status','dsc')->where('dvc_msg_status','inbox')->get();
+//          $car_outbox = carRental::where('flag',0)->orderBy('vehicle_status','dsc')->where('dvc_msg_status','outbox')->get();
+//        }
+//        else{
+//           $car_inbox = carRental::where('flag',-1)->orderBy('vehicle_status','dsc')->get();
+//          $car_outbox = carRental::where('flag',-1)->orderBy('vehicle_status','dsc')->get();
+//        }
+
+
+
+
+        return view('businesses')->with('spaces',$spaces)->with('hire_rate_inbox',$hire_rate_inbox)->with('hire_rate_outbox',$hire_rate_outbox)->with('room_inbox',$room_inbox)->with('room_outbox',$room_outbox)->with('insurance',$insurance)->with('cars',$cars)->with('operational',$operational)->with('hire_rates',$rate)->with('costcentres',$costcentres)->with('car_inbox', $car_inbox)->with('car_outbox', $car_outbox)->with('rooms',$rooms)->with('space_inbox',$space_inbox)->with('space_outbox',$space_outbox);
 
     }
+
+
+
+
+    public function HireRateApprovalResponse(Request $request)
+    {
+
+        if($request->get('approval_status')=='Rejected'){
+
+            $hire_rate=hire_rate::where('id',$request->get('id'))->first();
+            $hire_rate->stage=2;
+            $hire_rate->edit_status=0;
+            $hire_rate->rejected_by='DIRECTOR';
+            $hire_rate->updated_at=Carbon::now()->toDateTimeString();
+            $hire_rate->approval_remarks=$request->get('approval_remarks');
+            $hire_rate->save();
+
+            return redirect('/businesses')
+                ->with('success', 'Operation completed successfully');
+
+        }else{
+
+            $hire_rate=hire_rate::where('id',$request->get('id'))->first();
+            $hire_rate->stage='1b';
+
+            $hire_rate->updated_at=Carbon::now()->toDateTimeString();
+            $hire_rate->save();
+
+            return redirect('/businesses')
+                ->with('success', 'Hire Rate approved successfully');
+        }
+
+
+    }
+
+
+    public function HireRateSecondApprovalResponse(Request $request)
+    {
+
+        if($request->get('approval_status')=='Rejected'){
+
+            $hire_rate=hire_rate::where('id',$request->get('id'))->first();
+            $hire_rate->stage=2;
+            $hire_rate->edit_status=0;
+            $hire_rate->rejected_by='DVC';
+            $hire_rate->updated_at=Carbon::now()->toDateTimeString();
+            $hire_rate->approval_remarks=$request->get('approval_remarks');
+            $hire_rate->save();
+
+            return redirect('/businesses')
+                ->with('success', 'Operation completed successfully');
+
+        }else{
+
+            $hire_rate=hire_rate::where('id',$request->get('id'))->first();
+            $hire_rate->stage=3;
+            $hire_rate->edit_status=0;
+            $hire_rate->rejected_by=0;
+            $hire_rate->updated_at=Carbon::now()->toDateTimeString();
+            $hire_rate->save();
+
+            return redirect('/businesses')
+                ->with('success', 'Hire Rate approved successfully');
+        }
+
+
+    }
+
+
+
 
     public function businessesInsurance(){
         $insurance=DB::table('insurance')->where('status',1)->get();
@@ -143,35 +527,336 @@ class HomeController extends Controller
     }
 
     public function businessesResearch(){
-        $rooms = DB::table('research_flats_rooms')->where('status','1')->orderby('room_no','asc')->get();
+        //Rooms start
 
-        return view('businesses_research')->with('rooms',$rooms);
+        $room_inbox=null;
+        $room_outbox=null;
+
+
+
+
+
+        $room_approval_stage=research_flats_room::where('stage','1')->orderBy('updated_at','desc')->orderBy('id','desc')->get();
+        $room_approval_stage_planner=research_flats_room::where('stage','1')->orWhere('stage','1b')->orderBy('updated_at','desc')->orderBy('id','desc')->get();
+        $room_approval_second_stage=research_flats_room::where('stage','1b')->orderBy('updated_at','desc')->orderBy('id','desc')->get();
+        $room_declined_stage=research_flats_room::where('stage','2')->orderBy('updated_at','desc')->orderBy('id','desc')->get();
+        $room_declined_dvc_stage=research_flats_room::where('stage','2')->where('rejected_by','DVC')->orderBy('updated_at','desc')->orderBy('id','desc')->get();
+        $room_declined_approval_stage=research_flats_room::where('stage','2')->orWhere('stage','1b')->orderBy('updated_at','desc')->orderBy('id','desc')->get();
+
+        $rooms = DB::table('research_flats_rooms')->where('status','1')->where('stage','3')->orderby('room_no','asc')->get();
+
+
+
+
+        if(Auth::user()->role=='Research Flats Officer'){
+
+            if(count($room_declined_stage)==0){
+
+
+            }else{
+
+                $room_inbox=$room_declined_stage;
+            }
+
+
+
+            if(count($room_approval_stage_planner)==0){
+
+
+
+            }else{
+
+                $room_outbox=$room_approval_stage_planner;
+
+            }
+
+
+
+        }else if (Auth::user()->role=='Director DPDI'){
+
+            if(count($room_approval_stage)==0){
+
+
+            }else{
+
+                $room_inbox=$room_approval_stage;
+            }
+
+            if(count($room_declined_approval_stage)==0){
+
+
+            }else{
+
+                $room_outbox=$room_declined_approval_stage;
+
+            }
+
+
+        }  else if (Auth::user()->role=='DVC Administrator'){
+
+            if(count($room_approval_second_stage)==0){
+
+
+            }else{
+
+                $room_inbox=$room_approval_second_stage;
+            }
+
+            if(count($room_declined_dvc_stage)==0){
+
+
+            }else{
+
+                $room_outbox=$room_declined_dvc_stage;
+
+            }
+
+
+
+
+        }
+
+        else{
+
+
+
+        }
+
+        //Rooms end
+        return view('businesses_research')->with('rooms',$rooms)->with('room_inbox',$room_inbox)->with('room_outbox',$room_outbox);
     }
+
 
 
     public function businessesCarRental(){
 
-        $cars=carRental::where('flag','1')->orderBy('vehicle_status','dsc')->get();
+
         $operational=operational_expenditure::where('flag','1')->get();
-        $rate=hire_rate::where('flag','1')->orderBy('vehicle_model','asc')->get();
+
         $costcentres=cost_centre::orderBy('costcentre_id','asc')->where('status',1)->get();
+
+        //Cars start
+
+        $car_inbox=null;
+        $car_outbox=null;
+
+
+
+
+
+        $car_approval_stage=carRental::where('stage','1')->orderBy('updated_at','desc')->orderBy('id','desc')->get();
+        $car_approval_stage_planner=carRental::where('stage','1')->orWhere('stage','1b')->orderBy('updated_at','desc')->orderBy('id','desc')->get();
+        $car_approval_second_stage=carRental::where('stage','1b')->orderBy('updated_at','desc')->orderBy('id','desc')->get();
+        $car_declined_stage=carRental::where('stage','2')->orderBy('updated_at','desc')->orderBy('id','desc')->get();
+        $car_declined_dvc_stage=carRental::where('stage','2')->where('rejected_by','DVC')->orderBy('updated_at','desc')->orderBy('id','desc')->get();
+        $car_declined_approval_stage=carRental::where('stage','2')->orWhere('stage','1b')->orderBy('updated_at','desc')->orderBy('id','desc')->get();
+
+        $cars=carRental::where('flag','1')->orderBy('vehicle_status','dsc')->where('stage','3')->get();
 
 
         if(Auth::user()->role=='Transport Officer-CPTU'){
-            $car_inbox = carRental::where('form_status','Transport Officer-CPTU')->where('flag',0)->orderBy('vehicle_status','dsc')->where('cptu_msg_status','inbox')->get();
-            $car_outbox = carRental::where('flag',0)->orderBy('vehicle_status','dsc')->where('cptu_msg_status','outbox')->get();
+
+            if(count($car_declined_stage)==0){
+
+
+            }else{
+
+                $car_inbox=$car_declined_stage;
+            }
+
+
+
+            if(count($car_approval_stage_planner)==0){
+
+
+
+            }else{
+
+                $car_outbox=$car_approval_stage_planner;
+
+            }
+
+
+
+        }else if (Auth::user()->role=='Director DPDI'){
+
+            if(count($car_approval_stage)==0){
+
+
+            }else{
+
+                $car_inbox=$car_approval_stage;
+            }
+
+            if(count($car_declined_approval_stage)==0){
+
+
+            }else{
+
+                $car_outbox=$car_declined_approval_stage;
+
+            }
+
+
+        }  else if (Auth::user()->role=='DVC Administrator'){
+
+            if(count($car_approval_second_stage)==0){
+
+
+            }else{
+
+                $car_inbox=$car_approval_second_stage;
+            }
+
+            if(count($car_declined_dvc_stage)==0){
+
+
+            }else{
+
+                $car_outbox=$car_declined_dvc_stage;
+
+            }
+
+
+
+
         }
-        elseif(Auth::user()->role=='DVC Administrator'){
-            $car_inbox = carRental::where('form_status','DVC Administrator')->where('flag',0)->orderBy('vehicle_status','dsc')->where('dvc_msg_status','inbox')->get();
-            $car_outbox = carRental::where('flag',0)->orderBy('vehicle_status','dsc')->where('dvc_msg_status','outbox')->get();
-        }
+
         else{
-            $car_inbox = carRental::where('flag',-1)->orderBy('vehicle_status','dsc')->get();
-            $car_outbox = carRental::where('flag',-1)->orderBy('vehicle_status','dsc')->get();
+
+
+
+        }
+
+        //Cars end
+
+
+        //Hire rates starts
+
+
+        $hire_rate_inbox=null;
+        $hire_rate_outbox=null;
+
+
+
+        $rate=hire_rate::where('flag','1')->where('stage','3')->orderBy('vehicle_model','asc')->get();
+
+        $hire_rate_approval_stage=hire_rate::where('stage','1')->orderBy('updated_at','desc')->orderBy('id','desc')->get();
+        $hire_rate_approval_stage_planner=hire_rate::where('stage','1')->orWhere('stage','1b')->orderBy('updated_at','desc')->orderBy('id','desc')->get();
+        $hire_rate_approval_second_stage=hire_rate::where('stage','1b')->orderBy('updated_at','desc')->orderBy('id','desc')->get();
+        $hire_rate_declined_stage=hire_rate::where('stage','2')->orderBy('updated_at','desc')->orderBy('id','desc')->get();
+        $hire_rate_declined_dvc_stage=hire_rate::where('stage','2')->where('rejected_by','DVC')->orderBy('updated_at','desc')->orderBy('id','desc')->get();
+        $hire_rate_declined_approval_stage=hire_rate::where('stage','2')->orWhere('stage','1b')->orderBy('updated_at','desc')->orderBy('id','desc')->get();
+
+
+
+
+
+        if(Auth::user()->role=='Transport Officer-CPTU'){
+
+            if(count($hire_rate_declined_stage)==0){
+
+
+            }else{
+
+                $hire_rate_inbox=$hire_rate_declined_stage;
+            }
+
+
+
+            if(count($hire_rate_approval_stage_planner)==0){
+
+
+
+            }else{
+
+                $hire_rate_outbox=$hire_rate_approval_stage_planner;
+
+            }
+
+
+
+        }else if (Auth::user()->role=='Director DPDI'){
+
+            if(count($hire_rate_approval_stage)==0){
+
+
+            }else{
+
+                $hire_rate_inbox=$hire_rate_approval_stage;
+            }
+
+            if(count($hire_rate_declined_approval_stage)==0){
+
+
+            }else{
+
+                $hire_rate_outbox=$hire_rate_declined_approval_stage;
+
+            }
+
+
+
+
+        }  else if (Auth::user()->role=='DVC Administrator'){
+
+            if(count($hire_rate_approval_second_stage)==0){
+
+
+            }else{
+
+                $hire_rate_inbox=$hire_rate_approval_second_stage;
+            }
+
+            if(count($hire_rate_declined_dvc_stage)==0){
+
+
+            }else{
+
+                $hire_rate_outbox=$hire_rate_declined_dvc_stage;
+
+            }
+
+
+
+
         }
 
 
-        return view('businesses_car_rental')->with('cars',$cars)->with('operational',$operational)->with('rate',$rate)->with('costcentres',$costcentres)->with('inbox', $car_inbox)->with('outbox', $car_outbox);
+
+
+
+
+
+
+
+        else{
+
+
+
+        }
+
+
+        //Hire rates ends
+
+
+
+
+//        if(Auth::user()->role=='Transport Officer-CPTU'){
+//            $car_inbox = carRental::where('form_status','Transport Officer-CPTU')->where('flag',0)->orderBy('vehicle_status','dsc')->where('cptu_msg_status','inbox')->get();
+//            $car_outbox = carRental::where('flag',0)->orderBy('vehicle_status','dsc')->where('cptu_msg_status','outbox')->get();
+//        }
+//        elseif(Auth::user()->role=='DVC Administrator'){
+//            $car_inbox = carRental::where('form_status','DVC Administrator')->where('flag',0)->orderBy('vehicle_status','dsc')->where('dvc_msg_status','inbox')->get();
+//            $car_outbox = carRental::where('flag',0)->orderBy('vehicle_status','dsc')->where('dvc_msg_status','outbox')->get();
+//        }
+//        else{
+//            $car_inbox = carRental::where('flag',-1)->orderBy('vehicle_status','dsc')->get();
+//            $car_outbox = carRental::where('flag',-1)->orderBy('vehicle_status','dsc')->get();
+//        }
+
+
+        return view('businesses_car_rental')->with('cars',$cars)->with('hire_rate_inbox',$hire_rate_inbox)->with('hire_rate_outbox',$hire_rate_outbox)->with('operational',$operational)->with('hire_rates',$rate)->with('costcentres',$costcentres)->with('car_inbox', $car_inbox)->with('car_outbox', $car_outbox);
 
     }
 
@@ -339,6 +1024,74 @@ class HomeController extends Controller
       return redirect()->route('contracts_management')->with('success', 'Contract Created Successfully');
     }
 
+
+
+    public function FlatsApprovalResponse(Request $request)
+    {
+        if($request->get('approval_status')=='Rejected'){
+
+            $research_flats_room=research_flats_room::where('id',$request->get('id'))->first();
+            $research_flats_room->stage=2;
+            $research_flats_room->edit_status=0;
+            $research_flats_room->rejected_by='DIRECTOR';
+            $research_flats_room->updated_at=Carbon::now()->toDateTimeString();
+            $research_flats_room->approval_remarks=$request->get('approval_remarks');
+            $research_flats_room->save();
+
+            return redirect('/businesses')
+                ->with('success', 'Operation completed successfully');
+
+        }else{
+
+            $research_flats_room=research_flats_room::where('id',$request->get('id'))->first();
+            $research_flats_room->stage='1b';
+
+            $research_flats_room->updated_at=Carbon::now()->toDateTimeString();
+            $research_flats_room->save();
+
+            return redirect('/businesses')
+                ->with('success', 'Room approved successfully');
+        }
+
+
+    }
+
+
+    public function FlatsSecondApprovalResponse(Request $request)
+    {
+
+        if($request->get('approval_status')=='Rejected'){
+
+            $research_flats_room=research_flats_room::where('id',$request->get('id'))->first();
+            $research_flats_room->stage=2;
+            $research_flats_room->edit_status=0;
+            $research_flats_room->rejected_by='DVC';
+            $research_flats_room->updated_at=Carbon::now()->toDateTimeString();
+            $research_flats_room->approval_remarks=$request->get('approval_remarks');
+            $research_flats_room->save();
+
+            return redirect('/businesses')
+                ->with('success', 'Operation completed successfully');
+
+        }else{
+
+            $research_flats_room=research_flats_room::where('id',$request->get('id'))->first();
+            $research_flats_room->stage=3;
+            $research_flats_room->edit_status=0;
+            $research_flats_room->rejected_by=0;
+            $research_flats_room->updated_at=Carbon::now()->toDateTimeString();
+            $research_flats_room->save();
+
+            return redirect('/businesses')
+                ->with('success', 'Room approved successfully');
+        }
+
+
+    }
+
+
+
+
     public function printResearchForm(){
       $pdf=PDF::loadView('research_contractpdf');
       return $pdf->stream('Research Flats Accomodation Form.pdf');
@@ -355,9 +1108,9 @@ class HomeController extends Controller
 
     public function hireRatesReport(Request $request){
 
-        $rate=hire_rate::where('flag','1')->orderBy('vehicle_model','asc')->get();
+        $rate=hire_rate::where('flag','1')->where('stage','3')->orderBy('vehicle_model','asc')->get();
 
-        return view('hire_rates_report')->with('rate',$rate);
+        return view('hire_rates_report')->with('hire_rates',$rate);
     }
 
 
@@ -472,9 +1225,20 @@ class HomeController extends Controller
         return redirect()->back()->with('errors', 'Room Could not be be added because it already exists');
       }
       else{
-         DB::table('research_flats_rooms')->insert(
-            ['room_no' => $request->get('room_no'), 'category'=>$request->get('category'), 'currency'=>$request->get('currency'),'charge_workers'=>$request->get('charge_workers'),'charge_students'=>$request->get('charge_students'),'occupational_status'=>$request->get('occupational_status')]);
-       return redirect()->back()->with('success', 'Room Added Successfully');
+
+
+         $research_flats_rooms= new research_flats_room();
+         $research_flats_rooms->room_no=$request->get('room_no');
+         $research_flats_rooms->category=$request->get('category');
+         $research_flats_rooms->currency=$request->get('currency');
+         $research_flats_rooms->charge_workers=$request->get('charge_workers');
+         $research_flats_rooms->charge_students=$request->get('charge_students');
+         $research_flats_rooms->occupational_status=$request->get('occupational_status');
+         $research_flats_rooms->save();
+
+
+
+         return redirect()->back()->with('success', 'Room Added Successfully');
       }
 
      }
@@ -486,30 +1250,27 @@ class HomeController extends Controller
      public function editresearchflats(Request $request){
       $id = $request->get('room_id');
 
-       DB::table('research_flats_rooms')
-      ->where('id', $id)
-      ->update(['room_no' => $request->get('room_no')]);
+         $research_flats_rooms=research_flats_room::find($id);
+         $research_flats_rooms->room_no=$request->get('room_no');
+         $research_flats_rooms->category=$request->get('category');
+         $research_flats_rooms->currency=$request->get('currency');
+         $research_flats_rooms->charge_workers=$request->get('charge_workers');
+         $research_flats_rooms->charge_students=$request->get('charge_students');
+         $research_flats_rooms->occupational_status=$request->get('occupational_status');
 
-      DB::table('research_flats_rooms')
-      ->where('id', $id)
-      ->update(['category' => $request->get('category')]);
+         if($request->get('rejected_by')=='DVC'){
 
-      DB::table('research_flats_rooms')
-      ->where('id', $id)
-      ->update(['currency' => $request->get('currency')]);
+             $research_flats_rooms->stage='1b';
+         }else{
 
-      DB::table('research_flats_rooms')
-      ->where('id', $id)
-      ->update(['charge_workers' => $request->get('charge_workers')]);
-
-      DB::table('research_flats_rooms')
-      ->where('id', $id)
-      ->update(['charge_students' => $request->get('charge_students')]);
+             $research_flats_rooms->stage=1;
+         }
 
 
-      DB::table('research_flats_rooms')
-      ->where('id', $id)
-      ->update(['occupational_status'=>$request->get('occupational_status')]);
+
+
+         $research_flats_rooms->save();
+
 
       return redirect()->back()->with('success', 'Room Details Edited Successfully');
      }
@@ -519,6 +1280,15 @@ class HomeController extends Controller
       ->where('id', $id)
       ->update(['status' => '0']);
       return redirect()->back()->with('success', 'Room Deleted Successfully');
+     }
+
+     public function deleteresearchflatsPermanently($id){
+
+
+         research_flats_room::where('id',$id)->delete();
+
+
+      return redirect()->back()->with('success', 'Request Deleted Successfully');
      }
 
 

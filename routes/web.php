@@ -95,8 +95,17 @@ Route::post('/login/custom', [
     Route::get('/businesses/insurance', 'HomeController@businessesInsurance')->name('businesses_insurance');
     Route::get('/businesses/car_rental', 'HomeController@businessesCarRental')->name('businesses_car_rental');
 
+    Route::post('/hire_rate_approval_response', 'HomeController@HireRateApprovalResponse')->name('hire_rate_approval_response');
+    Route::post('/hire_rate_second_approval_response', 'HomeController@HireRateSecondApprovalResponse')->name('hire_rate_second_approval_response');
 
-    Route::get('/businesses/research_flats', 'HomeController@researchflats')->name('research_flats');
+
+
+        Route::post('/flats_approval_response', 'HomeController@FlatsApprovalResponse')->name('flats_approval_response');
+        Route::post('/flats_second_approval_response', 'HomeController@FlatsSecondApprovalResponse')->name('flats_second_approval_response');
+
+
+
+        Route::get('/businesses/research_flats', 'HomeController@researchflats')->name('research_flats');
 
 
     Route::post('/businesses/research_flats/add', 'HomeController@addresearchflats')->name('addflat');
@@ -104,6 +113,7 @@ Route::post('/login/custom', [
     Route::post('/businesses/research_flats/edit', 'HomeController@editresearchflats')->name('editflat');
 
     Route::get('/businesses/research_flats/delete/{id}', 'HomeController@deleteresearchflats')->name('deleteflat');
+    Route::get('/businesses/research_flats/delete_permanently/{id}', 'HomeController@deleteresearchflatsPermanently')->name('deleteflat_permanently');
 
     Route::get('/contracts_management/research_flats', 'HomeController@contractresearchflats')->name('contractflat');
 
@@ -220,6 +230,11 @@ Route::post('/car/add_car/step3','carRentalController@newcar_step3')->name('addC
 
 Route::get('/car/add_car/step4/{id}','carRentalController@newcar_step4')->name('addCar_step4');
 
+
+        Route::post('/car_approval_response', 'carRentalController@CarApprovalResponse')->name('car_approval_response');
+        Route::post('/car_second_approval_response', 'carRentalController@CarSecondApprovalResponse')->name('car_second_approval_response');
+
+
 Route::get('/car','carRentalController@index');
 
 Route::post('/car/operational_expenditure/add','operational_expenditureController@addOperational')->name('addOperational');
@@ -246,6 +261,7 @@ Route::post('/car/hire_rate/add','hireRateController@addhirerate')->name('addhir
 Route::post('/car/hire_rate/edit','hireRateController@edithirerate')->name('edithirerate');
 
 Route::get('/car/hire_rate/delete/{id}','hireRateController@deletehirerate')->name('deletehirerate');
+Route::get('/car/hire_rate/delete_permanent/{id}','hireRateController@deletehireratePermanently')->name('deletehireratepermanent');
 
 Route::post('/car/cost_centres/add','carRentalController@addcentre')->name('addcentre');
 
@@ -254,6 +270,7 @@ Route::post('/car/cost_centres/edit','carRentalController@editcentre')->name('ed
 Route::get('/car/cost_centres/delete/{id}','carRentalController@deletecentre')->name('deletecentre');
 
 Route::get('/car/delete_car/{id}', 'carRentalController@deletecar')->name('deletecar');
+Route::get('/car/delete_car_permanently/{id}', 'carRentalController@deletecarPermanently')->name('deletecar_permanently');
 
 Route::get('/contracts/car_rental','carContractsController@index')->name('carContracts');
 
@@ -486,6 +503,7 @@ Route::group(['middleware' => ['auth', 'space']], function() {
     Route::get('/renew_space_contract/{id}', 'ContractsController@RenewSpaceContract')->name('renew_space_contract');
     Route::get('/space_contract_approval/{id}', 'ContractsController@ApproveSpaceContractForm')->name('space_contract_approval');
     Route::post('/space_contract_approval_response', 'ContractsController@SpaceContractApprovalResponse')->name('space_contract_approval_response');
+    Route::post('/space_contract_second_approval_response', 'ContractsController@SpaceContractSecondApprovalResponse')->name('space_contract_second_approval_response');
     Route::get('/terminate_space_contract/{id}', 'ContractsController@terminateSpaceContract')->name('terminate_space_contract');
     Route::get('/contract_availability_space', 'InvoicesController@contractAvailabilitySpace')->name('contract_availability_space');
     Route::get('/get_parent_currency', 'ContractsController@getParentCurrency')->name('get_parent_currency');

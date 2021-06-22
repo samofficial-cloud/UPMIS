@@ -611,6 +611,7 @@
 
 
 
+                                                    <input type="hidden"  class="form-control" id="" name="rejected_by" value="{{$var->rejected_by}}"  autocomplete="off">
 
 
 

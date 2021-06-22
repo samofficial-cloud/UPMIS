@@ -36,10 +36,14 @@ class ContractsController extends Controller
      */
     public function ContractsManagement()
     {
-        $space_contracts_approval_stage=DB::table('space_contracts')->join('clients','clients.full_name','=','space_contracts.full_name')->where('space_contracts.contract_stage',1)->orderBy('space_contracts.updated_at','desc')->orderBy('space_contracts.contract_id','desc')->get();
-        $space_contracts_declined_stage=DB::table('space_contracts')->join('clients','clients.full_name','=','space_contracts.full_name')->where('space_contracts.contract_stage',2)->orderBy('space_contracts.updated_at','desc')->orderBy('space_contracts.contract_id','desc')->get();
+        $space_contracts_approval_stage=DB::table('space_contracts')->join('clients','clients.full_name','=','space_contracts.full_name')->where('space_contracts.contract_stage','1')->orderBy('space_contracts.updated_at','desc')->orderBy('space_contracts.contract_id','desc')->get();
+        $space_contracts_approval_stage_planner=DB::table('space_contracts')->join('clients','clients.full_name','=','space_contracts.full_name')->where('space_contracts.contract_stage','1')->orWhere('space_contracts.contract_stage','1b')->orderBy('space_contracts.updated_at','desc')->orderBy('space_contracts.contract_id','desc')->get();
+        $space_contracts_approval_second_stage=DB::table('space_contracts')->join('clients','clients.full_name','=','space_contracts.full_name')->where('space_contracts.contract_stage','1b')->orderBy('space_contracts.updated_at','desc')->orderBy('space_contracts.contract_id','desc')->get();
+        $space_contracts_declined_stage=DB::table('space_contracts')->join('clients','clients.full_name','=','space_contracts.full_name')->where('space_contracts.contract_stage','2')->orderBy('space_contracts.updated_at','desc')->orderBy('space_contracts.contract_id','desc')->get();
+        $space_contracts_declined_dvc_stage=DB::table('space_contracts')->join('clients','clients.full_name','=','space_contracts.full_name')->where('space_contracts.contract_stage','2')->where('space_contracts.rejected_by','DVC')->orderBy('space_contracts.updated_at','desc')->orderBy('space_contracts.contract_id','desc')->get();
+        $space_contracts_declined_approval_stage=DB::table('space_contracts')->join('clients','clients.full_name','=','space_contracts.full_name')->where('space_contracts.contract_stage','2')->orWhere('space_contracts.contract_stage','1b')->orderBy('space_contracts.updated_at','desc')->orderBy('space_contracts.contract_id','desc')->get();
 
-        $space_contracts=DB::table('space_contracts')->join('clients','clients.full_name','=','space_contracts.full_name')->select('clients.full_name','space_contracts.start_date','space_contracts.end_date','space_contracts.space_id_contract','space_contracts.creation_date','space_contracts.contract_status','space_contracts.contract_id','clients.client_id','clients.tin','clients.address','space_contracts.has_clients','space_contracts.academic_dependence','space_contracts.academic_season','space_contracts.currency','space_contracts.amount','space_contracts.vacation_season','clients.type','clients.phone_number','clients.first_name','clients.email','clients.last_name')->where('space_contracts.under_client',0)->where('space_contracts.contract_stage',3)->orderBy('space_contracts.contract_id','desc')->get();
+        $space_contracts=DB::table('space_contracts')->join('clients','clients.full_name','=','space_contracts.full_name')->select('clients.full_name','space_contracts.start_date','space_contracts.end_date','space_contracts.space_id_contract','space_contracts.creation_date','space_contracts.contract_status','space_contracts.contract_id','clients.client_id','clients.tin','clients.address','space_contracts.has_clients','space_contracts.academic_dependence','space_contracts.academic_season','space_contracts.currency','space_contracts.amount','space_contracts.vacation_season','clients.type','clients.phone_number','clients.first_name','clients.email','clients.last_name')->where('space_contracts.under_client',0)->where('space_contracts.contract_stage','3')->orderBy('space_contracts.contract_id','desc')->get();
 
         $space_contract_inbox=null;
         $space_contract_outbox=null;
@@ -47,6 +51,7 @@ class ContractsController extends Controller
 
 
         if(Auth::user()->role=='DPDI Planner'){
+
             if(count($space_contracts_declined_stage)==0){
 
 
@@ -57,13 +62,13 @@ class ContractsController extends Controller
 
 
 
-            if(count($space_contracts_approval_stage)==0){
+            if(count($space_contracts_approval_stage_planner)==0){
 
 
 
             }else{
 
-                $space_contract_outbox=$space_contracts_approval_stage;
+                $space_contract_outbox=$space_contracts_approval_stage_planner;
 
             }
 
@@ -79,12 +84,34 @@ class ContractsController extends Controller
                 $space_contract_inbox=$space_contracts_approval_stage;
             }
 
-            if(count($space_contracts_declined_stage)==0){
+            if(count($space_contracts_declined_approval_stage)==0){
 
 
             }else{
 
-                $space_contract_outbox=$space_contracts_declined_stage;
+                $space_contract_outbox=$space_contracts_declined_approval_stage;
+
+            }
+
+
+
+
+        }  else if (Auth::user()->role=='DVC Administrator'){
+
+            if(count($space_contracts_approval_second_stage)==0){
+
+
+            }else{
+
+                $space_contract_inbox=$space_contracts_approval_second_stage;
+            }
+
+            if(count($space_contracts_declined_dvc_stage)==0){
+
+
+            }else{
+
+                $space_contract_outbox=$space_contracts_declined_dvc_stage;
 
             }
 
@@ -92,6 +119,7 @@ class ContractsController extends Controller
 
 
         }
+
 
 
 
@@ -1183,61 +1211,63 @@ if($privileges=='Read only') {
     public function SpaceContractApprovalResponse(Request $request)
     {
 
-
         if($request->get('approval_status')=='Rejected'){
 
-
-            DB::table('space_contracts')
-                ->where('contract_id', $request->get('contract_id'))
-                ->update(['contract_stage' => 2]);
-
-
-            DB::table('space_contracts')
-                ->where('contract_id', $request->get('contract_id'))
-                ->update(['updated_at' => Carbon::now()->toDateTimeString()]);
-
-
-            DB::table('space_contracts')
-                ->where('contract_id', $request->get('contract_id'))
-                ->update(['edit_status' => 0]);
-
-
-            DB::table('space_contracts')
-                ->where('contract_id', $request->get('contract_id'))
-                ->update(['approval_remarks' => $request->get('approval_remarks')]);
-
-
+            $space_contract=space_contract::where('contract_id',$request->get('contract_id'))->first();
+            $space_contract->contract_stage=2;
+            $space_contract->edit_status=0;
+            $space_contract->rejected_by='DIRECTOR';
+            $space_contract->updated_at=Carbon::now()->toDateTimeString();
+            $space_contract->approval_remarks=$request->get('approval_remarks');
+            $space_contract->save();
 
             return redirect('/contracts_management')
                 ->with('success', 'Operation completed successfully');
 
         }else{
 
+            $space_contract=space_contract::where('contract_id',$request->get('contract_id'))->first();
+            $space_contract->contract_stage='1b';
 
-            DB::table('space_contracts')
-                ->where('contract_id', $request->get('contract_id'))
-                ->update(['contract_stage' => 3]);
-
-            DB::table('space_contracts')
-                ->where('contract_id', $request->get('contract_id'))
-                ->update(['edit_status' => 0]);
-
-
-            DB::table('space_contracts')
-                ->where('contract_id', $request->get('contract_id'))
-                ->update(['updated_at' => Carbon::now()->toDateTimeString()]);
-
-
+            $space_contract->updated_at=Carbon::now()->toDateTimeString();
+            $space_contract->save();
 
             return redirect('/contracts_management')
                 ->with('success', 'Contract approved successfully');
-
-
-
-
         }
 
 
+    }
+
+
+    public function SpaceContractSecondApprovalResponse(Request $request)
+    {
+
+        if($request->get('approval_status')=='Rejected'){
+
+            $space_contract=space_contract::where('contract_id',$request->get('contract_id'))->first();
+            $space_contract->contract_stage=2;
+            $space_contract->edit_status=0;
+            $space_contract->rejected_by='DVC';
+            $space_contract->updated_at=Carbon::now()->toDateTimeString();
+            $space_contract->approval_remarks=$request->get('approval_remarks');
+            $space_contract->save();
+
+            return redirect('/contracts_management')
+                ->with('success', 'Operation completed successfully');
+
+        }else{
+
+            $space_contract=space_contract::where('contract_id',$request->get('contract_id'))->first();
+            $space_contract->contract_stage=3;
+            $space_contract->edit_status=0;
+            $space_contract->rejected_by=0;
+            $space_contract->updated_at=Carbon::now()->toDateTimeString();
+            $space_contract->save();
+
+            return redirect('/contracts_management')
+                ->with('success', 'Contract approved successfully');
+        }
 
 
     }
@@ -3101,11 +3131,12 @@ if($privileges=='Read only') {
     {
 
         $contract_data = DB::table('space_contracts')->join('clients','clients.full_name','=','space_contracts.full_name')->join('spaces','spaces.space_id','=','space_contracts.space_id_contract')->where('space_contracts.contract_id', $id)->get();
+        $rejected_by = DB::table('space_contracts')->join('clients','clients.full_name','=','space_contracts.full_name')->join('spaces','spaces.space_id','=','space_contracts.space_id_contract')->where('space_contracts.contract_id', $id)->value('rejected_by');
 
         $client_id = DB::table('space_contracts')->join('clients','clients.full_name','=','space_contracts.full_name')->join('spaces','spaces.space_id','=','space_contracts.space_id_contract')->where('space_contracts.contract_id', $id)->value('clients.client_id');
         $start_date = DB::table('space_contracts')->join('clients','clients.full_name','=','space_contracts.full_name')->join('spaces','spaces.space_id','=','space_contracts.space_id_contract')->where('space_contracts.contract_id', $id)->value('space_contracts.start_date');
 
-        return view('space_contract_form_edit')->with('contract_data',$contract_data)->with('contract_id',$id)->with('client_id',$client_id)->with('start_date',$start_date);
+        return view('space_contract_form_edit')->with('contract_data',$contract_data)->with('contract_id',$id)->with('client_id',$client_id)->with('start_date',$start_date)->with('rejected_by',$rejected_by);
     }
 
 
@@ -3386,16 +3417,27 @@ if($privileges=='Read only') {
                 ->update(['rent_sqm' => $rent_sqm]);
 
 
-            DB::table('space_contracts')
-                ->where('contract_id', $contract_id)
-                ->update(['contract_stage' => 1]);
+
+
+            if($request->get('rejected_by')=='DVC'){
+
+                DB::table('space_contracts')
+                    ->where('contract_id', $contract_id)
+                    ->update(['contract_stage' => '1b']);
+            }else{
+
+                DB::table('space_contracts')
+                    ->where('contract_id', $contract_id)
+                    ->update(['contract_stage' => 1]);
+
+            }
+
 
 
 
             DB::table('space_contracts')
                 ->where('contract_id', $contract_id)
                 ->update(['edit_status' => 1]);
-
 
 
             DB::table('space_contracts')
@@ -3685,9 +3727,18 @@ if($privileges=='Read only') {
                 ->update(['rent_sqm' => $rent_sqm]);
 
 
-            DB::table('space_contracts')
-                ->where('contract_id', $contract_id)
-                ->update(['contract_stage' => 1]);
+            if($request->get('rejected_by')=='DVC'){
+
+                DB::table('space_contracts')
+                    ->where('contract_id', $contract_id)
+                    ->update(['contract_stage' => '1b']);
+            }else{
+
+                DB::table('space_contracts')
+                    ->where('contract_id', $contract_id)
+                    ->update(['contract_stage' => 1]);
+
+            }
 
 
 

@@ -30,7 +30,7 @@ private static $installed = array (
     'aliases' => 
     array (
     ),
-    'reference' => '678d922c703e6499722a4c30af0865c0d1200512',
+    'reference' => '07bc3a4d0680045642c4deb0404ebf2b227cbda0',
     'name' => 'laravel/laravel',
   ),
   'versions' => 
@@ -43,6 +43,15 @@ private static $installed = array (
       array (
       ),
       'reference' => 'e2b0ab888342b0716f1f0628e2fa13b345c5f276',
+    ),
+    'barryvdh/laravel-debugbar' => 
+    array (
+      'pretty_version' => 'v3.2.2',
+      'version' => '3.2.2.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => 'ba046deba51f3899963c7d09840bf623c4ebf5ed',
     ),
     'barryvdh/laravel-dompdf' => 
     array (
@@ -484,7 +493,7 @@ private static $installed = array (
       'aliases' => 
       array (
       ),
-      'reference' => '678d922c703e6499722a4c30af0865c0d1200512',
+      'reference' => '07bc3a4d0680045642c4deb0404ebf2b227cbda0',
     ),
     'laravel/nexmo-notification-channel' => 
     array (
@@ -566,6 +575,15 @@ private static $installed = array (
       array (
       ),
       'reference' => 'f5540c4ba3ac50cebd98b09ca42e61f926ef299f',
+    ),
+    'maximebf/debugbar' => 
+    array (
+      'pretty_version' => 'v1.15.1',
+      'version' => '1.15.1.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '6c4277f6117e4864966c9cb58fb835cee8c74a1e',
     ),
     'mockery/mockery' => 
     array (

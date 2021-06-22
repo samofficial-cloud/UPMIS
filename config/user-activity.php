@@ -21,7 +21,8 @@ return [
         'invoice' => "App\invoice",
         'space_payment' => "App\space_payment",
         'research_flats_invoice' => "App\research_flats_invoice",
-        'research_flats_payment' => "App\research_flats_payment"
+        'research_flats_payment' => "App\research_flats_payment",
+        'research_flats_room' => "App\research_flats_room"
 
 
     ],

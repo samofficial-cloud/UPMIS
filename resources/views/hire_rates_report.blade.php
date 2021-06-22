@@ -149,7 +149,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        @foreach($rate as $rate)
+                        @foreach($hire_rates as $rate)
                             <tr>
                                 <th scope="row" class="counterCell text-center">.</th>
                                 <td>{{$rate->vehicle_model}}</td>

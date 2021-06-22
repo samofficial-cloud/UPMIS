@@ -244,352 +244,1284 @@ input[type=radio]{
 
 
 
-                     <div id="research_flats_inner" style="border-bottom-left-radius: 50px 20px; border: 1px solid #ccc; padding: 1%;" class="tabcontent_inner">
-                         @if($privileges=='Read only')
-                         @else
-                             @admin
-                             <div style="float: left;">
+                     @if((Auth::user()->role=='Research Flats Officer') || (Auth::user()->role=='Director DPDI')  || (Auth::user()->role=='DVC Administrator'))
+                         <div id="research_flats_inner" style="border-bottom-left-radius: 50px 20px; border: 1px solid #ccc; padding: 1%;" class="tabcontent_inner">
 
 
-                                 <a title="Add New Room" data-toggle="modal" data-target="#addroom" class="btn btn-success  active" style=" padding: 10px; background-color: #38c172; cursor: pointer; border: none;  margin-bottom: 2px;    margin-top: 4px;" role="button" aria-pressed="true">Add Room</a>
-                             </div>
-
-                             <div class="modal fade" id="addroom" role="dialog">
-
-                                 <div class="modal-dialog" role="document">
-                                     <div class="modal-content">
-                                         <div class="modal-header">
-                                             <b><h5 class="modal-title">Fill the form below to add new room</h5></b>
-
-                                             <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                         </div>
-
-                                         <div class="modal-body">
-                                             <form method="post" action="{{ route('addflat') }}">
-                                                 {{csrf_field()}}
-
-                                                 <div class="form-group">
-                                                     <div class="form-wrapper">
-                                                         <label for="room_no">Room No.<span style="color: red;">*</span></label>
-                                                         <input type="text" id="room_no" name="room_no" class="form-control" required="" >
-                                                     </div>
-                                                 </div>
-
-                                                 <div class="form-group">
-                                                     <div class="form-wrapper">
-                                                         <label for="category">Category<span style="color: red;">*</span></label>
-                                                         <select class="form-control" required="" id="category" name="category" required="">
-                                                             <option value=""disabled selected hidden>Select Category</option>
-                                                             <option value="Shared Room">Shared Room</option>
-                                                             <option value="Single Room">Single Room</option>
-                                                             <option value="Suit Room">Suit Room</option>
-                                                         </select>
-                                                     </div>
-                                                 </div>
-
-                                                 <div class="form-group">
-                                                     <div class="form-wrapper">
-                                                         <label for="currency">Currency<span style="color: red;">*</span></label>
-                                                         <select class="form-control" required="" id="currency" name="currency" required="">
-                                                             <option value=""disabled selected hidden>Select Currency</option>
-                                                             <option value="TZS">TZS</option>
-                                                             <option value="USD">USD</option>
-                                                         </select>
-                                                     </div>
-                                                 </div>
-
-                                                 <div class="form-group">
-                                                     <div class="form-wrapper">
-                                                         <label for="charge_workers">Staff Rate<span style="color: red;">*</span></label>
-                                                         <input type="text" id="charge_workers" name="charge_workers" class="form-control" required="" onkeypress="if((this.value.length<15)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
-                                                     </div>
-                                                 </div>
-
-                                                 <div class="form-group">
-                                                     <div class="form-wrapper">
-                                                         <label for="charge_students">Students Rate<span style="color: red;">*</span></label>
-                                                         <input type="text" id="charge_students" name="charge_students" class="form-control" required="" onkeypress="if((this.value.length<15)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
-                                                     </div>
-                                                 </div>
-
-
-
-
-                                                 <div class="form-group">
-                                                     <div class="form-wrapper">
-                                                         <label for="currency">Status<span style="color: red;">*</span></label>
-                                                         <select class="form-control" required="" id="currency" name="occupational_status" required="">
-                                                             <option value=""></option>
-                                                             <option value="Vacant">Vacant</option>
-                                                             <option value="Occupied">Occupied</option>
-                                                         </select>
-                                                     </div>
-                                                 </div>
-
-
-
-
-
-                                                 <div align="right">
-                                                     <button class="btn btn-primary" type="submit">Save</button>
-                                                     <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
-                                                 </div>
-
-                                             </form>
-                                         </div>
-                                     </div>
-                                 </div>
+                             <div class="tab" style="">
+                                 <button class="tablinks_room" onclick="openRoom(event, 'room_inbox')" id="defaultOpenRoom"><strong>Inbox</strong></button>
+                                 <button class="tablinks_room" onclick="openRoom(event, 'room_outbox')"><strong>Outbox</strong></button>
+                                 <button class="tablinks_room" onclick="openRoom(event, 'room_complete')"><strong>Rooms</strong></button>
                              </div>
 
 
+                             @if((Auth::user()->role=='Director DPDI')  || (Auth::user()->role=='DVC Administrator'))
+                                 <div id="room_inbox" class="tabcontent_room">
+                                     <?php $i=1; ?>
 
-                             <div style="float:right;">
-                                 <div style="float:left;"> <a data-toggle="modal" class="btn button_color active" style="background-color: #38c172; padding: 7px; color:white; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;"  data-target="#import_data_logsheets" title="Import Data" role="button" aria-pressed="true">Import Data</a></div>
-
-                                 <div style="float:right;"><a href="/get_research_rooms_format" class="btn button_color active" style="background-color: #38c172; padding: 7px; color:white; margin-left: 5px;  margin-bottom: 5px; margin-top: 4px;"   title="Download Sample">Download Sample</a> </div>
-                                 <div style="clear: both;"></div>
-                             </div>
-
-                             <div style="clear: both;"></div>
-
-
-                             <div class="modal fade" id="import_data_logsheets" role="dialog">
-
-                                 <div class="modal-dialog" role="document">
-                                     <div class="modal-content">
-                                         <div class="modal-header">
-                                             <b><h5 class="modal-title">Importing Data</h5></b>
-
-                                             <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                         </div>
-
-                                         <div class="modal-body">
-
-                                             <form method="post" enctype="multipart/form-data" action="/import_research_rooms">
-                                                 {{csrf_field()}}
-
-                                                 <div class="form-row">
+                                     @if($room_inbox!='')
+                                         <table class="table">
+                                             <thead class="">
+                                             <tr>
+                                                 <th scope="col" style=" width: 5%;"><center>S/N</center></th>
+                                                 <th scope="col" style=""><center>Room No.</center></th>
+                                                 <th scope="col" style=""><center>Category</center></th>
+                                                 <th scope="col" style=""><center>Currency</center></th>
+                                                 <th scope="col" style=" width: 20%;"><center>Staff Rate</center></th>
+                                                 <th scope="col" style="width: 20%;"><center>Students Rate</center></th>
+                                                 <th scope="col" style="width: 20%;"><center>Status</center></th>
+                                                     <th scope="col" style=""><center>Action</center></th>
 
 
-                                                     <div  class=" col-md-12 ">
-                                                         <div class="">
-                                                             <label for="">Select File for Upload (.xls, .xlsx) <span style="color: red;">*</span></label>
-                                                             <input type="file" class="" id="" name="import_data" value="" placeholder="" required accept=".xls,.xlsx" autocomplete="off">
-                                                             <div class="mt-2"><span style="font-weight: bold;">N.B </span><span class="pl-1" style="color:red;"> The header row as given in the sample must be included as the first row when uploading. Furthermore, the acceptable values as indicated in the header row are case sensitive for instance if acceptable value is "Individual" the value to be inserted should be "Individual" and not "individual" </span></div>
-                                                         </div>
-                                                     </div>
-                                                     <br>
+                                             </tr>
+                                             </thead>
+                                             <tbody>
+                                             @foreach($room_inbox as $room)
+                                                 <tr>
+                                                     <td style="text-align: center;">{{$i}}.</td>
+                                                     <td style="text-align: center;">{{$room->room_no}}</td>
+                                                     <td style="text-align: center;">{{$room->category}}</td>
+                                                     <td style="text-align: center;"><center>{{$room->currency}}</center></td>
+                                                     <td style="text-align: center;">{{number_format($room->charge_workers)}}</td>
+                                                     <td style="text-align: center;">{{number_format($room->charge_students)}}</td>
+                                                     <td style="text-align: center;">{{$room->occupational_status}}</td>
 
 
-                                                 </div>
+                                                         <td>
+                                                             <center>
 
+                                                                 <a title="Review" data-toggle="modal" data-target="#editroom{{$room->id}}" role="button" aria-pressed="true"><i style="color: #3490dc; cursor: pointer;" class="fas fa-reply"></i></a>
+                                                                 <div class="modal fade" id="editroom{{$room->id}}" role="dialog">
+                                                                     <div class="modal-dialog" role="document">
+                                                                         <div class="modal-content">
+                                                                             <div class="modal-header">
+                                                                                 <b><h5 class="modal-title">Approval for Research Flats Room</h5></b>
+                                                                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                             </div>
 
-                                                 <div align="right">
-                                                     <button  class="btn btn-primary" type="submit">Import</button>
-                                                     <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
-                                                 </div>
-                                             </form>
+                                                                             <div class="modal-body">
 
 
 
+                                                                                 @if(Auth::user()->role=='Director DPDI')
+
+                                                                                 <form method="post" action="{{ route('flats_approval_response')}}">
+                                                                                     {{csrf_field()}}
+                                                                                     <div class="form-group">
+                                                                                         <div class="form-wrapper">
+                                                                                             <label for="room_no{{$room->id}}">Room No.</label>
+                                                                                             <input type="text" id="room_no{{$room->id}}" readonly name="room_no" class="form-control" required="" value="{{$room->room_no}}">
+                                                                                         </div>
+                                                                                     </div>
+                                                                                     <br>
+
+                                                                                     <div class="form-group">
+                                                                                         <div class="form-wrapper">
+                                                                                             <label for="category{{$room->id}}">Category</label>
+                                                                                             <input type="text" id="category{{$room->id}}" readonly name="category" class="form-control" required="" value="{{$room->category}}">
+                                                                                         </div>
+                                                                                     </div>
+                                                                                     <br>
+                                                                                     <div class="form-group">
+                                                                                         <div class="form-wrapper">
+                                                                                             <label for="currency{{$room->id}}">Currency</label>
+                                                                                             <input type="text" id="currency{{$room->id}}" readonly name="currency" class="form-control" required="" value="{{$room->currency}}">
+                                                                                         </div>
+                                                                                     </div>
+                                                                                     <br>
+                                                                                     <div class="form-group">
+                                                                                         <div class="form-wrapper">
+                                                                                             <label for="charge_workers{{$room->id}}">Staff Rate</label>
+                                                                                             <input type="text" id="charge_workers{{$room->id}}" readonly name="charge_workers" class="form-control" required="" value="{{$room->charge_workers}}" onkeypress="if((this.value.length<15)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
+                                                                                         </div>
+                                                                                     </div>
+                                                                                     <br>
+                                                                                     <div class="form-group">
+                                                                                         <div class="form-wrapper">
+                                                                                             <label for="charge_students{{$room->id}}">Students Rate</label>
+                                                                                             <input type="text" id="charge_students{{$room->id}}" readonly name="charge_students" class="form-control" required="" value="{{$room->charge_students}}" onkeypress="if((this.value.length<15)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
+                                                                                         </div>
+                                                                                     </div>
+                                                                                     <br>
+                                                                                     <input type="text" name="id" value="{{$room->id}}" hidden="">
+
+
+
+                                                                                     <div class="form-group">
+                                                                                         <div class="form-wrapper">
+                                                                                             <label for="currency">Status</label>
+                                                                                             <input type="text" readonly name="occupational_status" class="form-control" required="" value="{{$room->occupational_status}}" >
+                                                                                         </div>
+                                                                                     </div>
+
+                                                                                     <div class="row">
+                                                                                         <div class="form-wrapper col-12">
+                                                                                             <label for="approval_status">Do you approve this Room?</label>
+                                                                                         </div>
+                                                                                     </div>
+
+                                                                                     <div class="form-group">
 
 
 
 
+                                                                                         <div class="row">
+                                                                                             <div class="form-wrapper col-6">
+                                                                                                 <input class="form-check-input" type="radio" name="approval_status" id="Approve{{$room->id}}" value="Accepted" checked="">
+                                                                                                 <label for="Approve{{$room->id}}" class="form-check-label">Approve</label>
+                                                                                             </div>
+
+                                                                                             <div class="form-wrapper col-6">
+                                                                                                 <input class="form-check-input" type="radio" name="approval_status" id="Reject{{$room->id}}" value="Rejected">
+                                                                                                 <label for="Reject{{$room->id}}" class="form-check-label">Decline</label>
+                                                                                             </div>
+
+                                                                                         </div>
+                                                                                     </div>
+
+                                                                                     <div class="form-group" id="remarksDiv{{$room->id}}" style="display: none;">
+                                                                                         <div class="form-wrapper">
+                                                                                             <label for="remarks">Reason<span style="color: red;">*</span></label>
+                                                                                             <span id="remarksmsg{{$room->id}}"></span>
+                                                                                             <textarea  type="text" id="remarks{{$room->id}}" name="approval_remarks" class="form-control"></textarea>
+                                                                                         </div>
+                                                                                     </div>
 
 
-                                         </div>
-                                     </div>
-                                 </div>
+                                                                                     <br>
+
+                                                                                     <div align="right">
+                                                                                         <button class="btn btn-primary" type="submit">Save</button>
+                                                                                         <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                                                                     </div>
+                                                                                 </form>
+                                                                                 @elseif(Auth::user()->role=='DVC Administrator')
+                                                                                     <form method="post" action="{{ route('flats_second_approval_response') }}">
+                                                                                         {{csrf_field()}}
+                                                                                         <div class="form-group">
+                                                                                             <div class="form-wrapper">
+                                                                                                 <label for="room_no{{$room->id}}">Room No.</label>
+                                                                                                 <input type="text" id="room_no{{$room->id}}" readonly name="room_no" class="form-control" required="" value="{{$room->room_no}}">
+                                                                                             </div>
+                                                                                         </div>
+                                                                                         <br>
+
+                                                                                         <div class="form-group">
+                                                                                             <div class="form-wrapper">
+                                                                                                 <label for="category{{$room->id}}">Category</label>
+                                                                                                 <input type="text" id="category{{$room->id}}" readonly name="category" class="form-control" required="" value="{{$room->category}}">
+                                                                                             </div>
+                                                                                         </div>
+                                                                                         <br>
+                                                                                         <div class="form-group">
+                                                                                             <div class="form-wrapper">
+                                                                                                 <label for="currency{{$room->id}}">Currency</label>
+                                                                                                 <input type="text" id="currency{{$room->id}}" readonly name="currency" class="form-control" required="" value="{{$room->currency}}">
+                                                                                             </div>
+                                                                                         </div>
+                                                                                         <br>
+                                                                                         <div class="form-group">
+                                                                                             <div class="form-wrapper">
+                                                                                                 <label for="charge_workers{{$room->id}}">Staff Rate</label>
+                                                                                                 <input type="text" id="charge_workers{{$room->id}}" readonly name="charge_workers" class="form-control" required="" value="{{$room->charge_workers}}" onkeypress="if((this.value.length<15)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
+                                                                                             </div>
+                                                                                         </div>
+                                                                                         <br>
+                                                                                         <div class="form-group">
+                                                                                             <div class="form-wrapper">
+                                                                                                 <label for="charge_students{{$room->id}}">Students Rate</label>
+                                                                                                 <input type="text" id="charge_students{{$room->id}}" readonly name="charge_students" class="form-control" required="" value="{{$room->charge_students}}" onkeypress="if((this.value.length<15)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
+                                                                                             </div>
+                                                                                         </div>
+                                                                                         <br>
+                                                                                         <input type="text" name="id" value="{{$room->id}}" hidden="">
 
 
-                             </div>
+
+                                                                                         <div class="form-group">
+                                                                                             <div class="form-wrapper">
+                                                                                                 <label for="currency">Status</label>
+                                                                                                 <input type="text" readonly name="occupational_status" class="form-control" required="" value="{{$room->occupational_status}}" >
+                                                                                             </div>
+                                                                                         </div>
+
+                                                                                         <div class="row">
+                                                                                             <div class="form-wrapper col-12">
+                                                                                                 <label for="approval_status">Do you approve this Room?</label>
+                                                                                             </div>
+                                                                                         </div>
+
+                                                                                         <div class="form-group">
 
 
 
 
+                                                                                             <div class="row">
+                                                                                                 <div class="form-wrapper col-6">
+                                                                                                     <input class="form-check-input" type="radio" name="approval_status" id="Approve{{$room->id}}" value="Accepted" checked="">
+                                                                                                     <label for="Approve{{$room->id}}" class="form-check-label">Approve</label>
+                                                                                                 </div>
+
+                                                                                                 <div class="form-wrapper col-6">
+                                                                                                     <input class="form-check-input" type="radio" name="approval_status" id="Reject{{$room->id}}" value="Rejected">
+                                                                                                     <label for="Reject{{$room->id}}" class="form-check-label">Decline</label>
+                                                                                                 </div>
+
+                                                                                             </div>
+                                                                                         </div>
+
+                                                                                         <div class="form-group" id="remarksDiv{{$room->id}}" style="display: none;">
+                                                                                             <div class="form-wrapper">
+                                                                                                 <label for="remarks">Reason<span style="color: red;">*</span></label>
+                                                                                                 <span id="remarksmsg{{$room->id}}"></span>
+                                                                                                 <textarea  type="text" id="remarks{{$room->id}}" name="approval_remarks" class="form-control"></textarea>
+                                                                                             </div>
+                                                                                         </div>
+
+
+                                                                                         <br>
+
+                                                                                         <div align="right">
+                                                                                             <button class="btn btn-primary" type="submit">Save</button>
+                                                                                             <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                                                                         </div>
+                                                                                     </form>
+                                                                                 @endif
+
+
+                                                                             </div>
+                                                                         </div>
+                                                                     </div>
+                                                                 </div>
 
 
 
-                             @endadmin
-                         @endif
+                                                             </center>
+                                                         </td>
 
-                         @if(count($rooms)!=0)
-                             <?php $i=1; ?>
-                             <br><br>
-                             <table class="hover table table-striped table-bordered" id="TableResearch">
-                                 <thead class="thead-dark">
-                                 <tr>
-                                     <th scope="col" style="color:#fff; width: 5%;"><center>S/N</center></th>
-                                     <th scope="col" style="color:#fff;"><center>Room No.</center></th>
-                                     <th scope="col" style="color:#fff;"><center>Category</center></th>
-                                     <th scope="col" style="color:#fff;"><center>Currency</center></th>
-                                     <th scope="col" style="color:#fff; width: 20%;"><center>Staff Rate</center></th>
-                                     <th scope="col" style="color:#fff;width: 20%;"><center>Students Rate</center></th>
-                                     <th scope="col" style="color:#fff;width: 20%;"><center>Status</center></th>
-                                     @if($privileges=='Read only')
+                                                 </tr>
+                                                 <?php $i = $i + 1; ?>
+                                             @endforeach
+                                             </tbody>
+                                         </table>
                                      @else
-                                         @admin
-                                         <th scope="col" style="color:#fff;"><center>Action</center></th>
-                                         @endadmin
+                                         <p class="mt-4" style="text-align:center;">No records found</p>
                                      @endif
-                                 </tr>
-                                 </thead>
-                                 <tbody>
-                                 @foreach($rooms as $room)
+                                 </div>
+                             @else
+
+                                 <div id="room_inbox" class="tabcontent_room">
+                                     <?php $i=1; ?>
+                                     @if($room_inbox!='')
+                                         <table class="table">
+                                             <thead class="">
+                                             <tr>
+                                                 <th scope="col" style=" width: 5%;"><center>S/N</center></th>
+                                                 <th scope="col" style=""><center>Room No.</center></th>
+                                                 <th scope="col" style=""><center>Category</center></th>
+                                                 <th scope="col" style=""><center>Currency</center></th>
+                                                 <th scope="col" style=" width: 20%;"><center>Staff Rate</center></th>
+                                                 <th scope="col" style="width: 20%;"><center>Students Rate</center></th>
+                                                 <th scope="col" style="width: 20%;"><center>Status</center></th>
+                                                 <th scope="col"  ><center>Description</center></th>
+                                                 <th scope="col"  ><center>From</center></th>
+
+                                                 <th scope="col" style=""><center>Action</center></th>
+
+
+                                             </tr>
+                                             </thead>
+                                             <tbody>
+                                             @foreach($room_inbox as $room)
+                                                 <tr>
+                                                     <td style="text-align: center;">{{$i}}.</td>
+                                                     <td style="text-align: center;">{{$room->room_no}}</td>
+                                                     <td style="text-align: center;">{{$room->category}}</td>
+                                                     <td style="text-align: center;"><center>{{$room->currency}}</center></td>
+                                                     <td style="text-align: center;">{{number_format($room->charge_workers)}}</td>
+                                                     <td style="text-align: center;">{{number_format($room->charge_students)}}</td>
+                                                     <td style="text-align: center;">{{$room->occupational_status}}</td>
+                                                     <td><center>
+
+
+                                                             <a title="View Reason" style="cursor: pointer; color:#3490dc;"  class="" data-toggle="modal" data-target="#reason{{$room->id}}" aria-pressed="true">View Reason</a>
+
+                                                             <div class="modal fade" id="reason{{$room->id}}" role="dialog">
+
+                                                                 <div class="modal-dialog" role="document">
+                                                                     <div class="modal-content">
+                                                                         <div class="modal-header">
+                                                                             <b><h5 class="modal-title">Reason</h5></b>
+
+                                                                             <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                         </div>
+
+                                                                         <div class="modal-body">
+                                                                             <form method="post" action=""   >
+                                                                                 {{csrf_field()}}
+
+
+                                                                                 <div class="form-row">
+
+
+                                                                                     <div class="form-group col-12">
+                                                                                         <div class="form-wrapper">
+                                                                                             <label for="remarks" style="color: red;"></label>
+                                                                                             <textarea type="text"  name="reason" class="form-control" readonly="">{{$room->approval_remarks}}</textarea>
+                                                                                         </div>
+                                                                                     </div>
+                                                                                     <br>
+                                                                                     <br>
+
+
+
+                                                                                 </div>
+
+
+                                                                                 <div align="right">
+
+                                                                                     <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button>
+                                                                                 </div>
+                                                                             </form>
+
+                                                                         </div>
+                                                                     </div>
+                                                                 </div>
+                                                             </div>
+
+
+                                                         </center></td>
+                                                     <td><center>
+                                                             @if($room->rejected_by=='DVC')
+                                                                 DVC Administration
+                                                             @elseif($room->rejected_by=='DIRECTOR')
+                                                                 Director DPDI
+
+                                                             @endif
+                                                         </center></td>
+
+
+
+
+                                                     <td>
+                                                         <center>
+
+                                                             <a title="Edit Room Details" data-toggle="modal" data-target="#editroom{{$room->id}}" role="button" aria-pressed="true"><i class="fa fa-edit" style="font-size:20px; color: green; cursor: pointer;"></i></a>
+                                                             <div class="modal fade" id="editroom{{$room->id}}" role="dialog">
+                                                                 <div class="modal-dialog" role="document">
+                                                                     <div class="modal-content">
+                                                                         <div class="modal-header">
+                                                                             <b><h5 class="modal-title">Fill the form below to edit room details</h5></b>
+                                                                             <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                         </div>
+
+                                                                         <div class="modal-body">
+                                                                             <form method="post" action="{{ route('editflat') }}">
+                                                                                 {{csrf_field()}}
+                                                                                 <div class="form-group">
+                                                                                     <div class="form-wrapper">
+                                                                                         <label for="room_no{{$room->id}}">Room No.<span style="color: red;">*</span></label>
+                                                                                         <input type="text" id="room_no{{$room->id}}" name="room_no" class="form-control" required="" value="{{$room->room_no}}">
+                                                                                     </div>
+                                                                                 </div>
+                                                                                 <br>
+                                                                                 <div class="form-group">
+                                                                                     <div class="form-wrapper">
+                                                                                         <label for="category{{$room->id}}">Category<span style="color: red;">*</span></label>
+                                                                                         <select class="form-control" required="" id="category{{$room->id}}" name="category" required="">
+                                                                                             <option value="{{$room->category}}">{{$room->category}}</option>
+                                                                                             @if($room->category!='Shared Room')
+                                                                                                 <option value="Shared Room">Shared Room</option>
+                                                                                             @endif
+                                                                                             @if($room->category!='Single Room')
+                                                                                                 <option value="Single Room">Single Room</option>
+                                                                                             @endif
+                                                                                             @if($room->category!='Suit Room')
+                                                                                                 <option value="Suit Room">Suit Room</option>
+                                                                                             @endif
+                                                                                         </select>
+                                                                                     </div>
+                                                                                 </div>
+                                                                                 <br>
+                                                                                 <div class="form-group">
+                                                                                     <div class="form-wrapper">
+                                                                                         <label for="currency{{$room->id}}">Currency<span style="color: red;">*</span></label>
+                                                                                         <select class="form-control" required="" id="currency{{$room->id}}" name="currency" required="">
+                                                                                             <option value="{{$room->currency}}">{{$room->currency}}</option>
+                                                                                             @if($room->currency!='TZS')
+                                                                                                 <option value="TZS">TZS</option>
+                                                                                             @endif
+                                                                                             @if($room->currency!='USD')
+                                                                                                 <option value="USD">USD</option>
+                                                                                             @endif
+                                                                                         </select>
+                                                                                     </div>
+                                                                                 </div>
+                                                                                 <br>
+                                                                                 <div class="form-group">
+                                                                                     <div class="form-wrapper">
+                                                                                         <label for="charge_workers{{$room->id}}">Staff Rate<span style="color: red;">*</span></label>
+                                                                                         <input type="text" id="charge_workers{{$room->id}}" name="charge_workers" class="form-control" required="" value="{{$room->charge_workers}}" onkeypress="if((this.value.length<15)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
+                                                                                     </div>
+                                                                                 </div>
+                                                                                 <br>
+                                                                                 <div class="form-group">
+                                                                                     <div class="form-wrapper">
+                                                                                         <label for="charge_students{{$room->id}}">Students Rate<span style="color: red;">*</span></label>
+                                                                                         <input type="text" id="charge_students{{$room->id}}" name="charge_students" class="form-control" required="" value="{{$room->charge_students}}" onkeypress="if((this.value.length<15)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
+                                                                                     </div>
+                                                                                 </div>
+                                                                                 <br>
+                                                                                 <input type="text" name="room_id" value="{{$room->id}}" hidden="">
+
+                                                                                 <input type="text" name="rejected_by" value="{{$room->rejected_by}}" hidden="">
+
+
+
+                                                                                 <div class="form-group">
+                                                                                     <div class="form-wrapper">
+                                                                                         <label for="currency">Status<span style="color: red;">*</span></label>
+                                                                                         <select class="form-control" required="" id="currency" name="occupational_status" required="">
+
+                                                                                             <option value="{{$room->occupational_status}}">{{$room->occupational_status}}</option>
+                                                                                             @if($room->occupational_status!='Vacant')
+                                                                                                 <option value="Vacant">Vacant</option>
+                                                                                             @endif
+                                                                                             @if($room->occupational_status!='Occupied')
+                                                                                                 <option value="Occupied">Occupied</option>
+                                                                                             @endif
+
+
+
+                                                                                         </select>
+                                                                                     </div>
+                                                                                 </div>
+
+                                                                                 <br>
+
+                                                                                 <div align="right">
+                                                                                     <button class="btn btn-primary" type="submit">Save</button>
+                                                                                     <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                                                                 </div>
+                                                                             </form>
+                                                                         </div>
+                                                                     </div>
+                                                                 </div>
+                                                             </div>
+
+                                                             <a title="Delete this room" data-toggle="modal" data-target="#Deleteroom{{$room->id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px; color:red; cursor: pointer;"></i></a>
+
+                                                             <div class="modal fade" id="Deleteroom{{$room->id}}" role="dialog">
+                                                                 <div class="modal-dialog" role="document">
+                                                                     <div class="modal-content">
+                                                                         <div class="modal-header">
+                                                                             <b><h5 class="modal-title" style="color: red;"><b>WARNING</b></h5></b>
+                                                                             <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                         </div>
+
+                                                                         <div class="modal-body">
+                                                                             <p style="font-size: 20px;">Are you sure you want to delete this request?</p>
+                                                                             <br>
+                                                                             <div align="right">
+                                                                                 <a class="btn btn-info" href="{{route('deleteflat_permanently',$room->id)}}">Proceed</a>
+                                                                                 <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                                                                             </div>
+
+                                                                         </div>
+                                                                     </div>
+                                                                 </div>
+                                                             </div>
+
+                                                         </center>
+                                                     </td>
+
+                                                 </tr>
+                                                 <?php $i = $i + 1; ?>
+                                             @endforeach
+                                             </tbody>
+                                         </table>
+
+                                     @else
+                                         <p class="mt-4" style="text-align:center;">No records found</p>
+                                     @endif
+                                 </div>
+                             @endif
+
+                             <div id="room_outbox"  class="tabcontent_room">
+                                 <?php $i=1; ?>
+
+                                 @if($room_outbox!='')
+                                 <table class="table">
+                                     <thead class="">
                                      <tr>
-                                         <td style="text-align: center;">{{$i}}.</td>
-                                         <td>{{$room->room_no}}</td>
-                                         <td>{{$room->category}}</td>
-                                         <td><center>{{$room->currency}}</center></td>
-                                         <td style="text-align: right;">{{number_format($room->charge_workers)}}</td>
-                                         <td style="text-align: right;">{{number_format($room->charge_students)}}</td>
-                                         <td style="text-align: left;">{{$room->occupational_status}}</td>
+                                         <th scope="col" style=" width: 5%;"><center>S/N</center></th>
+                                         <th scope="col" style=""><center>Room No.</center></th>
+                                         <th scope="col" style=""><center>Category</center></th>
+                                         <th scope="col" style=""><center>Currency</center></th>
+                                         <th scope="col" style=" width: 20%;"><center>Staff Rate</center></th>
+                                         <th scope="col" style="width: 20%;"><center>Students Rate</center></th>
+                                         <th scope="col" style="width: 20%;"><center>Status</center></th>
+                                         <th scope="col" style="width: 20%;"><center>Stage</center></th>
                                          @if($privileges=='Read only')
                                          @else
                                              @admin
-                                             <td>
-                                                 <center>
-
-                                                     <a title="Edit Room Details" data-toggle="modal" data-target="#editroom{{$room->id}}" role="button" aria-pressed="true"><i class="fa fa-edit" style="font-size:20px; color: green; cursor: pointer;"></i></a>
-                                                     <div class="modal fade" id="editroom{{$room->id}}" role="dialog">
-                                                         <div class="modal-dialog" role="document">
-                                                             <div class="modal-content">
-                                                                 <div class="modal-header">
-                                                                     <b><h5 class="modal-title">Fill the form below to edit room details</h5></b>
-                                                                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                                 </div>
-
-                                                                 <div class="modal-body">
-                                                                     <form method="post" action="{{ route('editflat') }}">
-                                                                         {{csrf_field()}}
-                                                                         <div class="form-group">
-                                                                             <div class="form-wrapper">
-                                                                                 <label for="room_no{{$room->id}}">Room No.<span style="color: red;">*</span></label>
-                                                                                 <input type="text" id="room_no{{$room->id}}" name="room_no" class="form-control" required="" value="{{$room->room_no}}">
-                                                                             </div>
-                                                                         </div>
-                                                                         <br>
-                                                                         <div class="form-group">
-                                                                             <div class="form-wrapper">
-                                                                                 <label for="category{{$room->id}}">Category<span style="color: red;">*</span></label>
-                                                                                 <select class="form-control" required="" id="category{{$room->id}}" name="category" required="">
-                                                                                     <option value="{{$room->category}}">{{$room->category}}</option>
-                                                                                     @if($room->category!='Shared Room')
-                                                                                         <option value="Shared Room">Shared Room</option>
-                                                                                     @endif
-                                                                                     @if($room->category!='Single Room')
-                                                                                         <option value="Single Room">Single Room</option>
-                                                                                     @endif
-                                                                                     @if($room->category!='Suit Room')
-                                                                                         <option value="Suit Room">Suit Room</option>
-                                                                                     @endif
-                                                                                 </select>
-                                                                             </div>
-                                                                         </div>
-                                                                         <br>
-                                                                         <div class="form-group">
-                                                                             <div class="form-wrapper">
-                                                                                 <label for="currency{{$room->id}}">Currency<span style="color: red;">*</span></label>
-                                                                                 <select class="form-control" required="" id="currency{{$room->id}}" name="currency" required="">
-                                                                                     <option value="{{$room->currency}}">{{$room->currency}}</option>
-                                                                                     @if($room->currency!='TZS')
-                                                                                         <option value="TZS">TZS</option>
-                                                                                     @endif
-                                                                                     @if($room->currency!='USD')
-                                                                                         <option value="USD">USD</option>
-                                                                                     @endif
-                                                                                 </select>
-                                                                             </div>
-                                                                         </div>
-                                                                         <br>
-                                                                         <div class="form-group">
-                                                                             <div class="form-wrapper">
-                                                                                 <label for="charge_workers{{$room->id}}">Staff Rate<span style="color: red;">*</span></label>
-                                                                                 <input type="text" id="charge_workers{{$room->id}}" name="charge_workers" class="form-control" required="" value="{{$room->charge_workers}}" onkeypress="if((this.value.length<15)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
-                                                                             </div>
-                                                                         </div>
-                                                                         <br>
-                                                                         <div class="form-group">
-                                                                             <div class="form-wrapper">
-                                                                                 <label for="charge_students{{$room->id}}">Students Rate<span style="color: red;">*</span></label>
-                                                                                 <input type="text" id="charge_students{{$room->id}}" name="charge_students" class="form-control" required="" value="{{$room->charge_students}}" onkeypress="if((this.value.length<15)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
-                                                                             </div>
-                                                                         </div>
-                                                                         <br>
-                                                                         <input type="text" name="room_id" value="{{$room->id}}" hidden="">
-
-
-
-                                                                         <div class="form-group">
-                                                                             <div class="form-wrapper">
-                                                                                 <label for="currency">Status<span style="color: red;">*</span></label>
-                                                                                 <select class="form-control" required="" id="currency" name="occupational_status" required="">
-
-                                                                                     <option value="{{$room->occupational_status}}">{{$room->occupational_status}}</option>
-                                                                                     @if($room->occupational_status!='Vacant')
-                                                                                         <option value="Vacant">Vacant</option>
-                                                                                     @endif
-                                                                                     @if($room->occupational_status!='Occupied')
-                                                                                         <option value="Occupied">Occupied</option>
-                                                                                     @endif
-
-
-
-                                                                                 </select>
-                                                                             </div>
-                                                                         </div>
-
-                                                                         <br>
-
-                                                                         <div align="right">
-                                                                             <button class="btn btn-primary" type="submit">Save</button>
-                                                                             <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
-                                                                         </div>
-                                                                     </form>
-                                                                 </div>
-                                                             </div>
-                                                         </div>
-                                                     </div>
-
-                                                     <a title="Delete this room" data-toggle="modal" data-target="#Deleteroom{{$room->id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px; color:red; cursor: pointer;"></i></a>
-
-                                                     <div class="modal fade" id="Deleteroom{{$room->id}}" role="dialog">
-                                                         <div class="modal-dialog" role="document">
-                                                             <div class="modal-content">
-                                                                 <div class="modal-header">
-                                                                     <b><h5 class="modal-title" style="color: red;"><b>WARNING</b></h5></b>
-                                                                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                                 </div>
-
-                                                                 <div class="modal-body">
-                                                                     <p style="font-size: 20px;">Are you sure you want to delete {{$room->room_no}}?</p>
-                                                                     <br>
-                                                                     <div align="right">
-                                                                         <a class="btn btn-info" href="{{route('deleteflat',$room->id)}}">Proceed</a>
-                                                                         <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
-                                                                     </div>
-
-                                                                 </div>
-                                                             </div>
-                                                         </div>
-                                                     </div>
-
-                                                 </center>
-                                             </td>
+                                             <th scope="col" style=""><center>Action</center></th>
                                              @endadmin
                                          @endif
                                      </tr>
-                                     <?php $i = $i + 1; ?>
-                                 @endforeach
-                                 </tbody>
-                             </table>
-                         @else
-                             <br><br>
-                             <p style="font-size: 18px;">No room has been added yet.</p>
-                         @endif
+                                     </thead>
+                                     <tbody>
+                                     @foreach($room_outbox as $room)
+                                         <tr>
+                                             <td style="text-align: center;">{{$i}}.</td>
+                                             <td style="text-align: center;">{{$room->room_no}}</td>
+                                             <td style="text-align: center;">{{$room->category}}</td>
+                                             <td><center>{{$room->currency}}</center></td>
+                                             <td style="text-align: center;">{{number_format($room->charge_workers)}}</td>
+                                             <td style="text-align: center;">{{number_format($room->charge_students)}}</td>
+                                             <td style="text-align: center;">{{$room->occupational_status}}</td>
 
-                     </div>
+
+                                                 @if(Auth::user()->role=='Director DPDI')
+
+                                                     @if($room->stage=='1b')
+                                                         <td><center>DVC Administration</center></td>
+                                                     @else
+                                                         <td><center>Research Flats Officer</center></td>
+                                                     @endif
+                                                 @elseif(Auth::user()->role=='DVC Administrator')
+                                                     <td><center>Research Flats Officer</center></td>
+
+                                                 @elseif(Auth::user()->role=='Research Flats Officer' AND $room->stage=='1')
+                                                     <td><center>Director DPDI</center></td>
+
+                                                 @elseif(Auth::user()->role=='Research Flats Officer' AND $room->stage=='1b')
+                                                     <td><center>DVC Administration</center></td>
+                                                 @else
+                                                 @endif
+
+
+                                         </tr>
+                                         <?php $i = $i + 1; ?>
+                                     @endforeach
+                                     </tbody>
+                                 </table>
+                                     @else
+                                         <p class="mt-4" style="text-align:center;">No records found</p>
+                                     @endif
+
+                             </div>
+                             <div id="room_complete"  class="tabcontent_room">
+
+                                 @if($privileges=='Read only')
+                                 @else
+
+                                     @if(Auth::user()->role=='Research Flats Officer')
+                                         <br>
+                                         <div style="float: left;">
+
+
+                                             <a title="Add New Room" data-toggle="modal" data-target="#addroom" class="btn btn-success  active" style=" padding: 10px; background-color: #38c172; cursor: pointer; border: none;  margin-bottom: 2px;    margin-top: 4px;" role="button" aria-pressed="true">Add Room</a>
+                                         </div>
+
+                                         <div class="modal fade" id="addroom" role="dialog">
+
+                                             <div class="modal-dialog" role="document">
+                                                 <div class="modal-content">
+                                                     <div class="modal-header">
+                                                         <b><h5 class="modal-title">Fill the form below to add new room</h5></b>
+
+                                                         <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                     </div>
+
+                                                     <div class="modal-body">
+                                                         <form method="post" action="{{ route('addflat') }}">
+                                                             {{csrf_field()}}
+
+                                                             <div class="form-group">
+                                                                 <div class="form-wrapper">
+                                                                     <label for="room_no">Room No.<span style="color: red;">*</span></label>
+                                                                     <input type="text" id="room_no" name="room_no" class="form-control" required="" >
+                                                                 </div>
+                                                             </div>
+
+                                                             <div class="form-group">
+                                                                 <div class="form-wrapper">
+                                                                     <label for="category">Category<span style="color: red;">*</span></label>
+                                                                     <select class="form-control" required="" id="category" name="category" required="">
+                                                                         <option value=""disabled selected hidden>Select Category</option>
+                                                                         <option value="Shared Room">Shared Room</option>
+                                                                         <option value="Single Room">Single Room</option>
+                                                                         <option value="Suit Room">Suit Room</option>
+                                                                     </select>
+                                                                 </div>
+                                                             </div>
+
+                                                             <div class="form-group">
+                                                                 <div class="form-wrapper">
+                                                                     <label for="currency">Currency<span style="color: red;">*</span></label>
+                                                                     <select class="form-control" required="" id="currency" name="currency" required="">
+                                                                         <option value=""disabled selected hidden>Select Currency</option>
+                                                                         <option value="TZS">TZS</option>
+                                                                         <option value="USD">USD</option>
+                                                                     </select>
+                                                                 </div>
+                                                             </div>
+
+                                                             <div class="form-group">
+                                                                 <div class="form-wrapper">
+                                                                     <label for="charge_workers">Staff Rate<span style="color: red;">*</span></label>
+                                                                     <input type="text" id="charge_workers" name="charge_workers" class="form-control" required="" onkeypress="if((this.value.length<15)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
+                                                                 </div>
+                                                             </div>
+
+                                                             <div class="form-group">
+                                                                 <div class="form-wrapper">
+                                                                     <label for="charge_students">Students Rate<span style="color: red;">*</span></label>
+                                                                     <input type="text" id="charge_students" name="charge_students" class="form-control" required="" onkeypress="if((this.value.length<15)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
+                                                                 </div>
+                                                             </div>
+
+
+
+
+                                                             <div class="form-group">
+                                                                 <div class="form-wrapper">
+                                                                     <label for="currency">Status<span style="color: red;">*</span></label>
+                                                                     <select class="form-control" required="" id="currency" name="occupational_status" required="">
+                                                                         <option value=""></option>
+                                                                         <option value="Vacant">Vacant</option>
+                                                                         <option value="Occupied">Occupied</option>
+                                                                     </select>
+                                                                 </div>
+                                                             </div>
+
+
+
+
+
+                                                             <div align="right">
+                                                                 <button class="btn btn-primary" type="submit">Save</button>
+                                                                 <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                                             </div>
+
+                                                         </form>
+                                                     </div>
+                                                 </div>
+                                             </div>
+                                         </div>
+                                     @endif
+
+                                     @admin
+                                     <div style="float:right;">
+                                         <div style="float:left;"> <a data-toggle="modal" class="btn button_color active" style="background-color: #38c172; padding: 7px; color:white; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;"  data-target="#import_data_logsheets" title="Import Data" role="button" aria-pressed="true">Import Data</a></div>
+
+                                         <div style="float:right;"><a href="/get_research_rooms_format" class="btn button_color active" style="background-color: #38c172; padding: 7px; color:white; margin-left: 5px;  margin-bottom: 5px; margin-top: 4px;"   title="Download Sample">Download Sample</a> </div>
+                                         <div style="clear: both;"></div>
+                                     </div>
+
+                                     <div style="clear: both;"></div>
+
+
+                                     <div class="modal fade" id="import_data_logsheets" role="dialog">
+
+                                         <div class="modal-dialog" role="document">
+                                             <div class="modal-content">
+                                                 <div class="modal-header">
+                                                     <b><h5 class="modal-title">Importing Data</h5></b>
+
+                                                     <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                 </div>
+
+                                                 <div class="modal-body">
+
+                                                     <form method="post" enctype="multipart/form-data" action="/import_research_rooms">
+                                                         {{csrf_field()}}
+
+                                                         <div class="form-row">
+
+
+                                                             <div  class=" col-md-12 ">
+                                                                 <div class="">
+                                                                     <label for="">Select File for Upload (.xls, .xlsx) <span style="color: red;">*</span></label>
+                                                                     <input type="file" class="" id="" name="import_data" value="" placeholder="" required accept=".xls,.xlsx" autocomplete="off">
+                                                                     <div class="mt-2"><span style="font-weight: bold;">N.B </span><span class="pl-1" style="color:red;"> The header row as given in the sample must be included as the first row when uploading. Furthermore, the acceptable values as indicated in the header row are case sensitive for instance if acceptable value is "Individual" the value to be inserted should be "Individual" and not "individual" </span></div>
+                                                                 </div>
+                                                             </div>
+                                                             <br>
+
+
+                                                         </div>
+
+
+                                                         <div align="right">
+                                                             <button  class="btn btn-primary" type="submit">Import</button>
+                                                             <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                                         </div>
+                                                     </form>
+
+
+
+
+
+
+
+
+
+                                                 </div>
+                                             </div>
+                                         </div>
+
+
+                                     </div>
+
+
+
+
+
+
+
+                                     @endadmin
+                                 @endif
+
+                                 @if(count($rooms)!=0)
+                                     <div>
+                                         <?php $i=1; ?>
+                                         <br><br>
+                                         <table class="hover table table-striped table-bordered" id="TableResearch">
+                                             <thead class="thead-dark">
+                                             <tr>
+                                                 <th scope="col" style="color:#fff; width: 5%;"><center>S/N</center></th>
+                                                 <th scope="col" style="color:#fff;"><center>Room No.</center></th>
+                                                 <th scope="col" style="color:#fff;"><center>Category</center></th>
+                                                 <th scope="col" style="color:#fff;"><center>Currency</center></th>
+                                                 <th scope="col" style="color:#fff; width: 20%;"><center>Staff Rate</center></th>
+                                                 <th scope="col" style="color:#fff;width: 20%;"><center>Students Rate</center></th>
+                                                 <th scope="col" style="color:#fff;width: 20%;"><center>Status</center></th>
+                                                 @if($privileges=='Read only')
+                                                 @else
+                                                     @admin
+                                                     <th scope="col" style="color:#fff;"><center>Action</center></th>
+                                                     @endadmin
+                                                 @endif
+                                             </tr>
+                                             </thead>
+                                             <tbody>
+                                             @foreach($rooms as $room)
+                                                 <tr>
+                                                     <td style="text-align: center;">{{$i}}.</td>
+                                                     <td>{{$room->room_no}}</td>
+                                                     <td>{{$room->category}}</td>
+                                                     <td><center>{{$room->currency}}</center></td>
+                                                     <td style="text-align: right;">{{number_format($room->charge_workers)}}</td>
+                                                     <td style="text-align: right;">{{number_format($room->charge_students)}}</td>
+                                                     <td style="text-align: left;">{{$room->occupational_status}}</td>
+                                                     @if($privileges=='Read only')
+                                                     @else
+                                                         @admin
+                                                         <td>
+                                                             <center>
+
+                                                                 <a title="Edit Room Details" data-toggle="modal" data-target="#editroom{{$room->id}}" role="button" aria-pressed="true"><i class="fa fa-edit" style="font-size:20px; color: green; cursor: pointer;"></i></a>
+                                                                 <div class="modal fade" id="editroom{{$room->id}}" role="dialog">
+                                                                     <div class="modal-dialog" role="document">
+                                                                         <div class="modal-content">
+                                                                             <div class="modal-header">
+                                                                                 <b><h5 class="modal-title">Fill the form below to edit room details</h5></b>
+                                                                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                             </div>
+
+                                                                             <div class="modal-body">
+                                                                                 <form method="post" action="{{ route('editflat') }}">
+                                                                                     {{csrf_field()}}
+                                                                                     <div class="form-group">
+                                                                                         <div class="form-wrapper">
+                                                                                             <label for="room_no{{$room->id}}">Room No.<span style="color: red;">*</span></label>
+                                                                                             <input type="text" id="room_no{{$room->id}}" name="room_no" class="form-control" required="" value="{{$room->room_no}}">
+                                                                                         </div>
+                                                                                     </div>
+                                                                                     <br>
+                                                                                     <div class="form-group">
+                                                                                         <div class="form-wrapper">
+                                                                                             <label for="category{{$room->id}}">Category<span style="color: red;">*</span></label>
+                                                                                             <select class="form-control" required="" id="category{{$room->id}}" name="category" required="">
+                                                                                                 <option value="{{$room->category}}">{{$room->category}}</option>
+                                                                                                 @if($room->category!='Shared Room')
+                                                                                                     <option value="Shared Room">Shared Room</option>
+                                                                                                 @endif
+                                                                                                 @if($room->category!='Single Room')
+                                                                                                     <option value="Single Room">Single Room</option>
+                                                                                                 @endif
+                                                                                                 @if($room->category!='Suit Room')
+                                                                                                     <option value="Suit Room">Suit Room</option>
+                                                                                                 @endif
+                                                                                             </select>
+                                                                                         </div>
+                                                                                     </div>
+                                                                                     <br>
+                                                                                     <div class="form-group">
+                                                                                         <div class="form-wrapper">
+                                                                                             <label for="currency{{$room->id}}">Currency<span style="color: red;">*</span></label>
+                                                                                             <select class="form-control" required="" id="currency{{$room->id}}" name="currency" required="">
+                                                                                                 <option value="{{$room->currency}}">{{$room->currency}}</option>
+                                                                                                 @if($room->currency!='TZS')
+                                                                                                     <option value="TZS">TZS</option>
+                                                                                                 @endif
+                                                                                                 @if($room->currency!='USD')
+                                                                                                     <option value="USD">USD</option>
+                                                                                                 @endif
+                                                                                             </select>
+                                                                                         </div>
+                                                                                     </div>
+                                                                                     <br>
+                                                                                     <div class="form-group">
+                                                                                         <div class="form-wrapper">
+                                                                                             <label for="charge_workers{{$room->id}}">Staff Rate<span style="color: red;">*</span></label>
+                                                                                             <input type="text" id="charge_workers{{$room->id}}" name="charge_workers" class="form-control" required="" value="{{$room->charge_workers}}" onkeypress="if((this.value.length<15)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
+                                                                                         </div>
+                                                                                     </div>
+                                                                                     <br>
+                                                                                     <div class="form-group">
+                                                                                         <div class="form-wrapper">
+                                                                                             <label for="charge_students{{$room->id}}">Students Rate<span style="color: red;">*</span></label>
+                                                                                             <input type="text" id="charge_students{{$room->id}}" name="charge_students" class="form-control" required="" value="{{$room->charge_students}}" onkeypress="if((this.value.length<15)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
+                                                                                         </div>
+                                                                                     </div>
+                                                                                     <br>
+                                                                                     <input type="text" name="room_id" value="{{$room->id}}" hidden="">
+
+
+
+                                                                                     <div class="form-group">
+                                                                                         <div class="form-wrapper">
+                                                                                             <label for="currency">Status<span style="color: red;">*</span></label>
+                                                                                             <select class="form-control" required="" id="currency" name="occupational_status" required="">
+
+                                                                                                 <option value="{{$room->occupational_status}}">{{$room->occupational_status}}</option>
+                                                                                                 @if($room->occupational_status!='Vacant')
+                                                                                                     <option value="Vacant">Vacant</option>
+                                                                                                 @endif
+                                                                                                 @if($room->occupational_status!='Occupied')
+                                                                                                     <option value="Occupied">Occupied</option>
+                                                                                                 @endif
+
+
+
+                                                                                             </select>
+                                                                                         </div>
+                                                                                     </div>
+
+                                                                                     <br>
+
+                                                                                     <div align="right">
+                                                                                         <button class="btn btn-primary" type="submit">Save</button>
+                                                                                         <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                                                                     </div>
+                                                                                 </form>
+                                                                             </div>
+                                                                         </div>
+                                                                     </div>
+                                                                 </div>
+
+                                                                 <a title="Delete this room" data-toggle="modal" data-target="#Deleteroom{{$room->id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px; color:red; cursor: pointer;"></i></a>
+
+                                                                 <div class="modal fade" id="Deleteroom{{$room->id}}" role="dialog">
+                                                                     <div class="modal-dialog" role="document">
+                                                                         <div class="modal-content">
+                                                                             <div class="modal-header">
+                                                                                 <b><h5 class="modal-title" style="color: red;"><b>WARNING</b></h5></b>
+                                                                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                             </div>
+
+                                                                             <div class="modal-body">
+                                                                                 <p style="font-size: 20px;">Are you sure you want to delete {{$room->room_no}}?</p>
+                                                                                 <br>
+                                                                                 <div align="right">
+                                                                                     <a class="btn btn-info" href="{{route('deleteflat',$room->id)}}">Proceed</a>
+                                                                                     <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                                                                                 </div>
+
+                                                                             </div>
+                                                                         </div>
+                                                                     </div>
+                                                                 </div>
+
+                                                             </center>
+                                                         </td>
+                                                         @endadmin
+                                                     @endif
+                                                 </tr>
+                                                 <?php $i = $i + 1; ?>
+                                             @endforeach
+                                             </tbody>
+                                         </table>
+                                     </div>
+                                 @else
+                                     <br><br>
+                                     <p style="font-size: 18px;">No room has been added yet.</p>
+                                 @endif
+
+
+
+
+                             </div>
+
+
+
+                         </div>
+
+
+                     @else
+
+                         <div id="research_flats_inner" style="border-bottom-left-radius: 50px 20px; border: 1px solid #ccc; padding: 1%;" class="tabcontent_inner">
+                             @if($privileges=='Read only')
+                             @else
+
+                                 @if(Auth::user()->role=='Research Flats Officer')
+                                     <br>
+                                     <div style="float: left;">
+
+                                         <a title="Add New Room" data-toggle="modal" data-target="#addroom" class="btn btn-success  active" style=" padding: 10px; background-color: #38c172; cursor: pointer; border: none;  margin-bottom: 2px;    margin-top: 4px;" role="button" aria-pressed="true">Add Room</a>
+                                     </div>
+
+                                     <div class="modal fade" id="addroom" role="dialog">
+
+                                         <div class="modal-dialog" role="document">
+                                             <div class="modal-content">
+                                                 <div class="modal-header">
+                                                     <b><h5 class="modal-title">Fill the form below to add new room</h5></b>
+
+                                                     <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                 </div>
+
+                                                 <div class="modal-body">
+                                                     <form method="post" action="{{ route('addflat') }}">
+                                                         {{csrf_field()}}
+
+                                                         <div class="form-group">
+                                                             <div class="form-wrapper">
+                                                                 <label for="room_no">Room No.<span style="color: red;">*</span></label>
+                                                                 <input type="text" id="room_no" name="room_no" class="form-control" required="" >
+                                                             </div>
+                                                         </div>
+
+                                                         <div class="form-group">
+                                                             <div class="form-wrapper">
+                                                                 <label for="category">Category<span style="color: red;">*</span></label>
+                                                                 <select class="form-control" required="" id="category" name="category" required="">
+                                                                     <option value=""disabled selected hidden>Select Category</option>
+                                                                     <option value="Shared Room">Shared Room</option>
+                                                                     <option value="Single Room">Single Room</option>
+                                                                     <option value="Suit Room">Suit Room</option>
+                                                                 </select>
+                                                             </div>
+                                                         </div>
+
+                                                         <div class="form-group">
+                                                             <div class="form-wrapper">
+                                                                 <label for="currency">Currency<span style="color: red;">*</span></label>
+                                                                 <select class="form-control" required="" id="currency" name="currency" required="">
+                                                                     <option value=""disabled selected hidden>Select Currency</option>
+                                                                     <option value="TZS">TZS</option>
+                                                                     <option value="USD">USD</option>
+                                                                 </select>
+                                                             </div>
+                                                         </div>
+
+                                                         <div class="form-group">
+                                                             <div class="form-wrapper">
+                                                                 <label for="charge_workers">Staff Rate<span style="color: red;">*</span></label>
+                                                                 <input type="text" id="charge_workers" name="charge_workers" class="form-control" required="" onkeypress="if((this.value.length<15)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
+                                                             </div>
+                                                         </div>
+
+                                                         <div class="form-group">
+                                                             <div class="form-wrapper">
+                                                                 <label for="charge_students">Students Rate<span style="color: red;">*</span></label>
+                                                                 <input type="text" id="charge_students" name="charge_students" class="form-control" required="" onkeypress="if((this.value.length<15)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
+                                                             </div>
+                                                         </div>
+
+
+
+
+                                                         <div class="form-group">
+                                                             <div class="form-wrapper">
+                                                                 <label for="currency">Status<span style="color: red;">*</span></label>
+                                                                 <select class="form-control" required="" id="currency" name="occupational_status" required="">
+                                                                     <option value=""></option>
+                                                                     <option value="Vacant">Vacant</option>
+                                                                     <option value="Occupied">Occupied</option>
+                                                                 </select>
+                                                             </div>
+                                                         </div>
+
+
+
+
+
+                                                         <div align="right">
+                                                             <button class="btn btn-primary" type="submit">Save</button>
+                                                             <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                                         </div>
+
+                                                     </form>
+                                                 </div>
+                                             </div>
+                                         </div>
+                                     </div>
+                                 @endif
+
+                                 @admin
+                                 <div style="float:right;">
+                                     <div style="float:left;"> <a data-toggle="modal" class="btn button_color active" style="background-color: #38c172; padding: 7px; color:white; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;"  data-target="#import_data_logsheets" title="Import Data" role="button" aria-pressed="true">Import Data</a></div>
+
+                                     <div style="float:right;"><a href="/get_research_rooms_format" class="btn button_color active" style="background-color: #38c172; padding: 7px; color:white; margin-left: 5px;  margin-bottom: 5px; margin-top: 4px;"   title="Download Sample">Download Sample</a> </div>
+                                     <div style="clear: both;"></div>
+                                 </div>
+
+                                 <div style="clear: both;"></div>
+
+
+                                 <div class="modal fade" id="import_data_logsheets" role="dialog">
+
+                                     <div class="modal-dialog" role="document">
+                                         <div class="modal-content">
+                                             <div class="modal-header">
+                                                 <b><h5 class="modal-title">Importing Data</h5></b>
+
+                                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                             </div>
+
+                                             <div class="modal-body">
+
+                                                 <form method="post" enctype="multipart/form-data" action="/import_research_rooms">
+                                                     {{csrf_field()}}
+
+                                                     <div class="form-row">
+
+
+                                                         <div  class=" col-md-12 ">
+                                                             <div class="">
+                                                                 <label for="">Select File for Upload (.xls, .xlsx) <span style="color: red;">*</span></label>
+                                                                 <input type="file" class="" id="" name="import_data" value="" placeholder="" required accept=".xls,.xlsx" autocomplete="off">
+                                                                 <div class="mt-2"><span style="font-weight: bold;">N.B </span><span class="pl-1" style="color:red;"> The header row as given in the sample must be included as the first row when uploading. Furthermore, the acceptable values as indicated in the header row are case sensitive for instance if acceptable value is "Individual" the value to be inserted should be "Individual" and not "individual" </span></div>
+                                                             </div>
+                                                         </div>
+                                                         <br>
+
+
+                                                     </div>
+
+
+                                                     <div align="right">
+                                                         <button  class="btn btn-primary" type="submit">Import</button>
+                                                         <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                                     </div>
+                                                 </form>
+
+
+
+
+
+
+
+
+
+                                             </div>
+                                         </div>
+                                     </div>
+
+
+                                 </div>
+
+
+
+
+
+
+
+                                 @endadmin
+                             @endif
+
+                             @if(count($rooms)!=0)
+                                 <?php $i=1; ?>
+                                 <br><br>
+                                 <table class="hover table table-striped table-bordered" id="TableResearch">
+                                     <thead class="thead-dark">
+                                     <tr>
+                                         <th scope="col" style="color:#fff; width: 5%;"><center>S/N</center></th>
+                                         <th scope="col" style="color:#fff;"><center>Room No.</center></th>
+                                         <th scope="col" style="color:#fff;"><center>Category</center></th>
+                                         <th scope="col" style="color:#fff;"><center>Currency</center></th>
+                                         <th scope="col" style="color:#fff; width: 20%;"><center>Staff Rate</center></th>
+                                         <th scope="col" style="color:#fff;width: 20%;"><center>Students Rate</center></th>
+                                         <th scope="col" style="color:#fff;width: 20%;"><center>Status</center></th>
+                                         @if($privileges=='Read only')
+                                         @else
+                                             @admin
+                                             <th scope="col" style="color:#fff;"><center>Action</center></th>
+                                             @endadmin
+                                         @endif
+                                     </tr>
+                                     </thead>
+                                     <tbody>
+                                     @foreach($rooms as $room)
+                                         <tr>
+                                             <td style="text-align: center;">{{$i}}.</td>
+                                             <td>{{$room->room_no}}</td>
+                                             <td>{{$room->category}}</td>
+                                             <td><center>{{$room->currency}}</center></td>
+                                             <td style="text-align: right;">{{number_format($room->charge_workers)}}</td>
+                                             <td style="text-align: right;">{{number_format($room->charge_students)}}</td>
+                                             <td style="text-align: left;">{{$room->occupational_status}}</td>
+                                             @if($privileges=='Read only')
+                                             @else
+                                                 @admin
+                                                 <td>
+                                                     <center>
+
+                                                         <a title="Edit Room Details" data-toggle="modal" data-target="#editroom{{$room->id}}" role="button" aria-pressed="true"><i class="fa fa-edit" style="font-size:20px; color: green; cursor: pointer;"></i></a>
+                                                         <div class="modal fade" id="editroom{{$room->id}}" role="dialog">
+                                                             <div class="modal-dialog" role="document">
+                                                                 <div class="modal-content">
+                                                                     <div class="modal-header">
+                                                                         <b><h5 class="modal-title">Fill the form below to edit room details</h5></b>
+                                                                         <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                     </div>
+
+                                                                     <div class="modal-body">
+                                                                         <form method="post" action="{{ route('editflat') }}">
+                                                                             {{csrf_field()}}
+                                                                             <div class="form-group">
+                                                                                 <div class="form-wrapper">
+                                                                                     <label for="room_no{{$room->id}}">Room No.<span style="color: red;">*</span></label>
+                                                                                     <input type="text" id="room_no{{$room->id}}" name="room_no" class="form-control" required="" value="{{$room->room_no}}">
+                                                                                 </div>
+                                                                             </div>
+                                                                             <br>
+                                                                             <div class="form-group">
+                                                                                 <div class="form-wrapper">
+                                                                                     <label for="category{{$room->id}}">Category<span style="color: red;">*</span></label>
+                                                                                     <select class="form-control" required="" id="category{{$room->id}}" name="category" required="">
+                                                                                         <option value="{{$room->category}}">{{$room->category}}</option>
+                                                                                         @if($room->category!='Shared Room')
+                                                                                             <option value="Shared Room">Shared Room</option>
+                                                                                         @endif
+                                                                                         @if($room->category!='Single Room')
+                                                                                             <option value="Single Room">Single Room</option>
+                                                                                         @endif
+                                                                                         @if($room->category!='Suit Room')
+                                                                                             <option value="Suit Room">Suit Room</option>
+                                                                                         @endif
+                                                                                     </select>
+                                                                                 </div>
+                                                                             </div>
+                                                                             <br>
+                                                                             <div class="form-group">
+                                                                                 <div class="form-wrapper">
+                                                                                     <label for="currency{{$room->id}}">Currency<span style="color: red;">*</span></label>
+                                                                                     <select class="form-control" required="" id="currency{{$room->id}}" name="currency" required="">
+                                                                                         <option value="{{$room->currency}}">{{$room->currency}}</option>
+                                                                                         @if($room->currency!='TZS')
+                                                                                             <option value="TZS">TZS</option>
+                                                                                         @endif
+                                                                                         @if($room->currency!='USD')
+                                                                                             <option value="USD">USD</option>
+                                                                                         @endif
+                                                                                     </select>
+                                                                                 </div>
+                                                                             </div>
+                                                                             <br>
+                                                                             <div class="form-group">
+                                                                                 <div class="form-wrapper">
+                                                                                     <label for="charge_workers{{$room->id}}">Staff Rate<span style="color: red;">*</span></label>
+                                                                                     <input type="text" id="charge_workers{{$room->id}}" name="charge_workers" class="form-control" required="" value="{{$room->charge_workers}}" onkeypress="if((this.value.length<15)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
+                                                                                 </div>
+                                                                             </div>
+                                                                             <br>
+                                                                             <div class="form-group">
+                                                                                 <div class="form-wrapper">
+                                                                                     <label for="charge_students{{$room->id}}">Students Rate<span style="color: red;">*</span></label>
+                                                                                     <input type="text" id="charge_students{{$room->id}}" name="charge_students" class="form-control" required="" value="{{$room->charge_students}}" onkeypress="if((this.value.length<15)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
+                                                                                 </div>
+                                                                             </div>
+                                                                             <br>
+                                                                             <input type="text" name="room_id" value="{{$room->id}}" hidden="">
+
+
+
+                                                                             <div class="form-group">
+                                                                                 <div class="form-wrapper">
+                                                                                     <label for="currency">Status<span style="color: red;">*</span></label>
+                                                                                     <select class="form-control" required="" id="currency" name="occupational_status" required="">
+
+                                                                                         <option value="{{$room->occupational_status}}">{{$room->occupational_status}}</option>
+                                                                                         @if($room->occupational_status!='Vacant')
+                                                                                             <option value="Vacant">Vacant</option>
+                                                                                         @endif
+                                                                                         @if($room->occupational_status!='Occupied')
+                                                                                             <option value="Occupied">Occupied</option>
+                                                                                         @endif
+
+
+
+                                                                                     </select>
+                                                                                 </div>
+                                                                             </div>
+
+                                                                             <br>
+
+                                                                             <div align="right">
+                                                                                 <button class="btn btn-primary" type="submit">Save</button>
+                                                                                 <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                                                             </div>
+                                                                         </form>
+                                                                     </div>
+                                                                 </div>
+                                                             </div>
+                                                         </div>
+
+                                                         <a title="Delete this room" data-toggle="modal" data-target="#Deleteroom{{$room->id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px; color:red; cursor: pointer;"></i></a>
+
+                                                         <div class="modal fade" id="Deleteroom{{$room->id}}" role="dialog">
+                                                             <div class="modal-dialog" role="document">
+                                                                 <div class="modal-content">
+                                                                     <div class="modal-header">
+                                                                         <b><h5 class="modal-title" style="color: red;"><b>WARNING</b></h5></b>
+                                                                         <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                     </div>
+
+                                                                     <div class="modal-body">
+                                                                         <p style="font-size: 20px;">Are you sure you want to delete {{$room->room_no}}?</p>
+                                                                         <br>
+                                                                         <div align="right">
+                                                                             <a class="btn btn-info" href="{{route('deleteflat',$room->id)}}">Proceed</a>
+                                                                             <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                                                                         </div>
+
+                                                                     </div>
+                                                                 </div>
+                                                             </div>
+                                                         </div>
+
+                                                     </center>
+                                                 </td>
+                                                 @endadmin
+                                             @endif
+                                         </tr>
+                                         <?php $i = $i + 1; ?>
+                                     @endforeach
+                                     </tbody>
+                                 </table>
+                             @else
+                                 <br><br>
+                                 <p style="font-size: 18px;">No room has been added yet.</p>
+                             @endif
+
+                         </div>
+
+                     @endif
 
 
 
@@ -851,12 +1783,14 @@ input[type=radio]{
 
                 if(query =='Rejected'){
                     $('#remarksDiv'+id).show();
+                    document.getElementById('remarks'+id).required=true;
                 }
                 else{
                     $('#remarksDiv'+id).hide();
+                    document.getElementById('remarks'+id).required=false;
                 }
 
-            })
+            });
 
 
 
@@ -1801,6 +2735,33 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
     </script>
 
     <script type="text/javascript">
+
+
+        function openRoom(evt, evtName) {
+            // Declare all variables
+            var i, tabcontent, tablinks;
+
+            // Get all elements with class="tabcontent" and hide them
+            tabcontent = document.getElementsByClassName("tabcontent_room");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+
+            // Get all elements with class="tablinks" and remove the class "active"
+            tablinks = document.getElementsByClassName("tablinks_room");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+
+            // Show the current tab, and add an "active" class to the button that opened the tab
+            document.getElementById(evtName).style.display = "block";
+            evt.currentTarget.className += " active";
+        }
+        document.getElementById("defaultOpenRoom").click();
+
+
+
+
         function validate(ids){
             var query = document.querySelector('input[name="approval_status"]:checked').value;
             if(query=='Rejected'){

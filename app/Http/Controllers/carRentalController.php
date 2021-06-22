@@ -10,6 +10,7 @@ use App\hire_rate;
 use App\carContract;
 use App\cost_centre;
 use View;
+use Carbon\Carbon;
 
 class carRentalController extends Controller
 {
@@ -28,31 +29,16 @@ class carRentalController extends Controller
        $validate=carRental::select('vehicle_reg_no')->where('vehicle_reg_no',$vehicle_reg_no)->where('flag','1')->value('vehicle_reg_no');
 
        if(is_null($validate)){
-        $deactivated = carRental::where('vehicle_reg_no',$vehicle_reg_no)->where('flag','0')->first();
-          if(is_null($deactivated)){
-            $vehicle_model = $request->input('model');
-            $vehicle_status = $request->input('vehicle_status');
-            $hire_rate = $request->input('hire_rate');
-            $hire_status = $request->input('hire_status');
-            $data=array('vehicle_reg_no'=>$vehicle_reg_no,"vehicle_model"=>$vehicle_model,'vehicle_status'=>$vehicle_status, 'hire_rate'=>$hire_rate, 'flag'=>'0', 'form_status'=>'DVC Administrator','cptu_msg_status'=>'outbox','dvc_msg_status'=>'inbox','hire_status'=>$hire_status);
-            $id = DB::table('car_rentals')->insertGetId($data);
 
-//              carRental::insert($data);
-//              $id =carRental::latest()->first()->id;
+            $car= new carRental();
+            $car->vehicle_model = $request->input('model');
+            $car->hire_rate=$request->input('hire_rate');
+            $car->hire_status=$request->input('hire_status');
+            $car->vehicle_status=$request->input('vehicle_status');
+            $car->vehicle_reg_no=$vehicle_reg_no;
+            $car->save();
 
-
-          }
-          else{
-            $id = $deactivated->id;
-            $deactivated->vehicle_model = $request->input('model');
-            $deactivated->hire_rate=$request->input('hire_rate');
-            $deactivated->hire_status=$request->input('hire_status');
-            $deactivated->form_status = 'DVC Administrator';
-            $deactivated->cptu_msg_status = 'outbox';
-            $deactivated->dvc_msg_status = 'inbox';
-
-            $deactivated->save();
-          }
+           $id = DB::table('car_rentals')->orderBy('id','desc')->limit(1)->value('id');
 
            DB::table('car_notifications')->insert(['role'=>'DVC Administrator', 'message'=>'You have a new pending car to approve', 'flag'=>'1','car_id'=>$id]);
 
@@ -147,6 +133,73 @@ class carRentalController extends Controller
 
 }
 
+
+
+    public function CarApprovalResponse(Request $request)
+    {
+        if($request->get('approval_status')=='Rejected'){
+
+            $research_flats_room=carRental::where('id',$request->get('id'))->first();
+            $research_flats_room->stage=2;
+            $research_flats_room->edit_status=0;
+            $research_flats_room->rejected_by='DIRECTOR';
+            $research_flats_room->updated_at=Carbon::now()->toDateTimeString();
+            $research_flats_room->approval_remarks=$request->get('approval_remarks');
+            $research_flats_room->save();
+
+            return redirect('/businesses')
+                ->with('success', 'Operation completed successfully');
+
+        }else{
+
+            $research_flats_room=carRental::where('id',$request->get('id'))->first();
+            $research_flats_room->stage='1b';
+
+            $research_flats_room->updated_at=Carbon::now()->toDateTimeString();
+            $research_flats_room->save();
+
+            return redirect('/businesses')
+                ->with('success', 'Car approved successfully');
+        }
+
+
+    }
+
+
+    public function CarSecondApprovalResponse(Request $request)
+    {
+
+        if($request->get('approval_status')=='Rejected'){
+
+            $research_flats_room=carRental::where('id',$request->get('id'))->first();
+            $research_flats_room->stage=2;
+            $research_flats_room->edit_status=0;
+            $research_flats_room->rejected_by='DVC';
+            $research_flats_room->updated_at=Carbon::now()->toDateTimeString();
+            $research_flats_room->approval_remarks=$request->get('approval_remarks');
+            $research_flats_room->save();
+
+            return redirect('/businesses')
+                ->with('success', 'Operation completed successfully');
+
+        }else{
+
+            $research_flats_room=carRental::where('id',$request->get('id'))->first();
+            $research_flats_room->stage=3;
+            $research_flats_room->edit_status=0;
+            $research_flats_room->rejected_by=0;
+            $research_flats_room->updated_at=Carbon::now()->toDateTimeString();
+            $research_flats_room->save();
+
+            return redirect('/businesses')
+                ->with('success', 'Car approved successfully');
+        }
+
+
+    }
+
+
+
 public function editcar(Request $request){
 	$id=$request->get('id');
 	$car=carRental::find($id);
@@ -155,6 +208,15 @@ public function editcar(Request $request){
 	$car->vehicle_status=$request->get('vehicle_status');
 	$car->hire_rate=$request->get('hire_rate');
 	$car->hire_status=$request->get('hire_status');
+
+    if($request->get('rejected_by')=='DVC'){
+
+        $car->stage='1b';
+    }else{
+
+        $car->stage=1;
+    }
+
 
 	$car->save();
 	return redirect()->back()->with('success', 'Car Details Edited Successfully');
@@ -167,6 +229,16 @@ public function deletecar($id){
     return redirect()->back()->with('success', 'Car Deleted Successfully');
 
 }
+
+
+
+    public function deletecarPermanently($id){
+        $car=carRental::where('id',$id)->delete();
+
+        return redirect()->back()->with('success', 'Request Deleted Successfully');
+
+    }
+
 
 public function addcentre(Request $request){
  $centre_id=$request->get('costcentreid');

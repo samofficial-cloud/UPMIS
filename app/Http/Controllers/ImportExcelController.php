@@ -1627,6 +1627,7 @@ class ImportExcelController extends Controller
                 $research_flats_room->charge_students=$value["charging_price_for_students"];
                 $research_flats_room->currency=$value["currencytzs_or_usd"];
                 $research_flats_room->status=1;
+                $research_flats_room->stage=3;
 
                 $research_flats_room->save();
 
@@ -1751,6 +1752,7 @@ class ImportExcelController extends Controller
                 $insurance->vehicle_model=$value["vehicle_model"];
                 $insurance->hire_rate=$value["hire_rate"];
                 $insurance->flag=1;
+                $insurance->stage=3;
                 $insurance->save();
 
 
@@ -1815,6 +1817,7 @@ class ImportExcelController extends Controller
                 $insurance->vehicle_model=$value["vehicle_model"];
                 $insurance->vehicle_status=$value["vehicle_statusrunningminor_repair_or_grounded"];
                 $insurance->hire_rate=$value["hire_rate"];
+                $insurance->stage=3;
                 $insurance->flag=1;
                 $insurance->save();
 

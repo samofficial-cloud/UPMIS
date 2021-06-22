@@ -375,7 +375,7 @@
 
 
 
-
+                <div id="coverScreen"  class="pageLoad"></div>
         <main>
             @yield('content')
         </main>
@@ -389,6 +389,16 @@
     @yield('pagescript')
 
     <script>
+
+
+
+        window.onload=function(){
+            $("#coverScreen").hide();
+        };
+
+        // $(document).ready(function () {
+        //     $("#coverScreen").hide();
+        // });
 
         $(".date_datepicker").datepicker({
             dateFormat: 'dd/mm/yy',

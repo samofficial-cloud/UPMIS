@@ -16,34 +16,40 @@ class hireRateController extends Controller
         return redirect()->back()->with('errors', "'$model' Model Already Exists.");
       }
       else{
-        $deactivated = hire_rate::where('vehicle_model',$model)->where('flag',0)->first();
-        if(is_null($deactivated)){
-            DB::table('hire_rates')
-             ->insert(['vehicle_model' => strtoupper($request->get('vehicle_model')), 'hire_rate' => $request->get('hire_rate')]);
-        }
-        else{
-          $deactivated->flag = '1';
-          $deactivated->hire_rate = $request->get('hire_rate');
-          $deactivated->save();
-        }
-      
 
-              return redirect()->back()->with('success', 'Hire Rate Details Added Successfully');
+
+        $hire_rate=new hire_rate();
+        $hire_rate->vehicle_model=strtoupper($request->get('vehicle_model'));
+        $hire_rate->hire_rate=$request->get('hire_rate');
+        $hire_rate->reason_for_forwarding='New';
+        $hire_rate->save();
+
+              return redirect()->back()->with('success', 'Request Sent Successfully');
       }
-      
+
 
     }
 
     public function edithirerate(Request $request){
-    	DB::table('hire_rates')
-       ->where('id', $request->get('id'))
-       ->update(['vehicle_model' => $request->get('hire_vehicle_model')]);
 
-       DB::table('hire_rates')
-       ->where('id', $request->get('id'))
-       ->update(['hire_rate' => $request->get('hire_hire_rate')]);
 
-       return redirect()->back()->with('success', 'Hire Rate Details Edited Successfully');
+       $hire_rate=hire_rate::where('id', $request->get('id'))->first();
+       $hire_rate->vehicle_model=$request->get('hire_vehicle_model');
+       $hire_rate->hire_rate=$request->get('hire_hire_rate');
+
+        if($request->get('rejected_by')=='DVC'){
+
+            $hire_rate->stage='1b';
+        }else{
+
+            $hire_rate->stage=1;
+        }
+
+
+
+       $hire_rate->save();
+
+       return redirect()->back()->with('success', 'Request Sent Successfully');
 
 
     }
@@ -57,4 +63,15 @@ class hireRateController extends Controller
       $hire->save();
    return redirect()->back()->with('success', 'Hire Rate Deleted Successfully');
     }
+
+
+
+    public function deletehireratePermanently($id){
+
+        hire_rate::where('id',$id)->delete();
+
+        return redirect()->back()->with('success', 'Hire Rate Deleted Successfully');
+    }
+
+
 }
