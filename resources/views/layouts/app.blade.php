@@ -36,6 +36,7 @@
     <script src="{{ asset('js/jquery-ui.js') }}" ></script>
     <script src="{{ asset('js/jquery.timepicker.min.js') }}" ></script>
     <script src="{{ asset('js/flatpickr.js') }}" ></script>
+    <script src="{{ asset('js/main_loader.js') }}" ></script>
 {{--    <script src="{{ asset('js/all.js') }}" ></script>--}}
 
     <!-- Fonts -->
@@ -43,6 +44,7 @@
     <link href="{{ asset('css/font-1.css') }}" rel="stylesheet">
 
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/style2.css') }}" rel="stylesheet">
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
     <link href="{{ asset('css/jquery.dataTables.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/font-awesome.min.css') }}" rel="stylesheet">
@@ -372,10 +374,21 @@
         </nav>
 
 
+                <!-- Preloader Start -->
+                <div id="preloader-active">
+                    <div class="preloader d-flex align-items-center justify-content-center">
+                        <div class="preloader-inner position-relative">
+                            <div class="preloader-circle"></div>
+                            <div class="preloader-img pere-text">
+                                <img src="{{ asset('images/loader.jpg')}}" alt="">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Preloader Start -->
 
 
-
-                <div id="coverScreen"  class="pageLoad"></div>
+{{--                <div id="coverScreen"  class="pageLoad"></div>--}}
         <main>
             @yield('content')
         </main>
@@ -392,9 +405,9 @@
 
 
 
-        window.onload=function(){
-            $("#coverScreen").hide();
-        };
+        // window.onload=function(){
+        //     $("#coverScreen").hide();
+        // };
 
         // $(document).ready(function () {
         //     $("#coverScreen").hide();

@@ -1107,8 +1107,8 @@
 
                                                 <div class="form-group">
                                                     <div class="form-wrapper">
-                                                        <label for="remarks">Reason(s) for Editing the Contract<span style="color: red;">*</span></label>
-                                                        <textarea  required type="text"  name="reason_for_forwarding" class="form-control"></textarea>
+                                                        <label for="remarks">Changes made to the contract<span style="color: red;">*</span></label>
+                                                        <textarea  required type="text"  name="reason_for_forwarding"  class="form-control"></textarea>
                                                     </div>
                                                 </div>
 

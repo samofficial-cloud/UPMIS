@@ -4699,14 +4699,14 @@ div.dt-buttons{
 
                                 @if($var->edit_status=='1')
                                     <td><center>
-                                    <div ><span style="cursor: pointer;  background-color: orange; color:white !important;  padding:3px;   text-align: center;"><a title="View Reason" style="color:white !important; display:inline-block;"  class="" data-toggle="modal"  data-target="#reason{{$var->contract_id}}" style="cursor: pointer;" aria-pressed="true">View Reason</a></span> </div>
+                                    <div ><span style="cursor: pointer;  background-color: orange; color:white !important;  padding:3px;   text-align: center;"><a title="View Reason" style="color:white !important; display:inline-block;"  class="" data-toggle="modal"  data-target="#reason{{$var->contract_id}}" style="cursor: pointer;" aria-pressed="true">View</a></span> </div>
 
                                     <div class="modal fade" id="reason{{$var->contract_id}}" role="dialog">
 
                                         <div class="modal-dialog" role="document">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <b><h5 class="modal-title">Reason(s) for Editing the Contract</h5></b>
+                                                    <b><h5 class="modal-title">Changes made to the contract</h5></b>
 
                                                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                                                 </div>
