@@ -5246,8 +5246,17 @@ ACTIVE
 @if(($var->contract_status==1 AND $var->end_date>=date('Y-m-d')))
 @if($privileges=='Read only')
 @else
-<a title="Click to edit this contract"   href="/edit_space_contract/{{$var->contract_id}}" ><i class="fa fa-edit" style="font-size:20px; color: green;"></i></a>
 
+    @if(Auth::user()->role=='DPDI Planner')
+                    @if($var->has_clients=='1')
+                        <a title="Click to edit this contract" href="/edit_space_contract_parent_client/{{$var->contract_id}}"> <i class="fa fa-edit" style="font-size:20px; color: green;"></i></a>
+                    @else
+                        <a title="Click to edit this contract" href="/edit_space_contract/{{$var->contract_id}}"> <i class="fa fa-edit" style="font-size:20px; color: green;"></i></a>
+                    @endif
+
+
+
+                @endif
 
 
 <a data-toggle="modal" title="Click to terminate this contract" data-target="#terminate{{$var->contract_id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px; color:red;"></i></a>
@@ -5727,8 +5736,13 @@ ACTIVE
 @if(($var->contract_status==1 AND $var->end_date>=date('Y-m-d')))
 @if($privileges=='Read only')
 @else
-<a title="Click to edit this contract"   href="/edit_space_contract/{{$var->contract_id}}" ><i class="fa fa-edit" style="font-size:20px; color: green;"></i></a>
-
+                @if(Auth::user()->role=='DPDI Planner')
+                    @if($var->has_clients=='1')
+                        <a title="Click to edit this contract" href="/edit_space_contract_parent_client/{{$var->contract_id}}"> <i class="fa fa-edit" style="font-size:20px; color: green;"></i></a>
+                    @else
+                        <a title="Click to edit this contract" href="/edit_space_contract/{{$var->contract_id}}"> <i class="fa fa-edit" style="font-size:20px; color: green;"></i></a>
+                    @endif
+@endif
 
 
 <a data-toggle="modal" title="Click to terminate this contract" data-target="#terminate{{$var->contract_id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px; color:red;"></i></a>

@@ -1895,6 +1895,7 @@ if($privileges=='Read only') {
                 'escalation_rate'   => $request->get('escalation_rate'),
                 'currency'   => $request->get('currency'),
                 'client_type_contract'   => $request->get('client_type_contract'),
+                'percentage_to_pay'   => $request->get('percentage_to_pay')
 
             ];
 
@@ -3147,8 +3148,10 @@ if($privileges=='Read only') {
         $contract_data = DB::table('space_contracts')->join('clients','clients.full_name','=','space_contracts.full_name')->where('space_contracts.contract_id', $id)->get();
 
         $client_id = DB::table('space_contracts')->join('clients','clients.full_name','=','space_contracts.full_name')->where('space_contracts.contract_id', $id)->value('clients.client_id');
+        $start_date = DB::table('space_contracts')->join('clients','clients.full_name','=','space_contracts.full_name')->where('space_contracts.contract_id', $id)->value('space_contracts.start_date');
+        $rejected_by = DB::table('space_contracts')->join('clients','clients.full_name','=','space_contracts.full_name')->where('space_contracts.contract_id', $id)->value('rejected_by');
 
-        return view('space_contract_form_edit')->with('contract_data',$contract_data)->with('contract_id',$id)->with('client_id',$client_id);
+        return view('space_contract_form_edit_parent')->with('contract_data',$contract_data)->with('contract_id',$id)->with('client_id',$client_id)->with('start_date',$start_date)->with('rejected_by',$rejected_by);
     }
 
 
@@ -3482,6 +3485,8 @@ if($privileges=='Read only') {
                 'payment_cycle'   => $request->get('payment_cycle'),
                 'escalation_rate'   => $request->get('escalation_rate'),
                 'currency'   => $request->get('currency'),
+                'client_type_contract'   => $request->get('client_type_contract'),
+                'percentage_to_pay'   => $request->get('percentage_to_pay')
 
             ];
 

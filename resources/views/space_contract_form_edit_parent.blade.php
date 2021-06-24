@@ -337,7 +337,7 @@
                                     <!-- progressbar -->
                                         <ul id="progressbar">
                                             <li class="active" id="personal"><strong>Client</strong></li>
-                                            <li  id="renting_space"><strong>Real Estate</strong></li>
+
                                             <li id="payment"><strong>Payment</strong></li>
                                             <li id="confirm"><strong>Confirm</strong></li>
                                             {{--                                            <li id="invoice"><strong>Invoice</strong></li>--}}
@@ -360,7 +360,6 @@
                                                         @else
                                                         @endif
                                                     </div>
-
                                                 </div>
 
                                                 <div class="form-group row" id="namediv" >
@@ -468,122 +467,8 @@
                                             <input type="button" class="btn btn-danger action-button" value="Cancel" onclick="history.back()" style="background-color: red !important;">
                                             {{-- <a href="/contracts_management" style="background-color: red !important;" class="btn  action-button" >Cancel</a> --}}
                                         </fieldset>
-                                        {{-- Second Form --}}
-                                        <fieldset>
-                                            <div class="form-card">
-                                                <h2 class="fs-title">Real Estate Information</h2>
 
 
-
-                                                <div class="form-group row">
-
-
-
-
-                                                    <div class="form-wrapper col-12 pt-1">
-                                                        <label for="major_industry"  ><strong>Category <span style="color: red;"> *</span></strong></label>
-                                                        <span id="major_msg"></span>
-                                                        <select id="getMajor"  class="form-control" name="major_industry" >
-                                                            <option value="{{$var->major_industry}}" selected>{{$var->major_industry}}</option>
-
-                                                            <?php
-                                                            $major_industries=DB::table('space_classification')->get();
-
-
-                                                            $tempOut = array();
-                                                            foreach($major_industries as $values){
-                                                                $iterator = new RecursiveIteratorIterator(new RecursiveArrayIterator($values));
-                                                                $val = (iterator_to_array($iterator,true));
-                                                                $tempoIn=$val['major_industry'];
-
-                                                                if(!in_array($tempoIn, $tempOut))
-                                                                {
-                                                                    if($val['major_industry']!=$var->major_industry){
-                                                                    print('<option value="'.$val['major_industry'].'">'.$val['major_industry'].'</option>');
-                                                                    }
-                                                                    array_push($tempOut,$tempoIn);
-                                                                }
-
-                                                            }
-                                                            ?>
-                                                        </select>
-                                                    </div>
-
-                                                    <div class="form-wrapper col-12 pt-2">
-                                                        <label for=""  ><strong>Sub Category <span style="color: red;"> *</span></strong></label>
-                                                        <span id="minor_msg"></span>
-                                                        <select id="minor_list"  class="form-control" name="minor_industry" >
-                                                            <option value="{{$var->minor_industry}}" selected>{{$var->minor_industry}}</option>
-
-                                                        </select>
-                                                    </div>
-
-
-                                                    <div class="form-wrapper col-12 pt-2">
-                                                        <label for="space_location"  ><strong>Location <span style="color: red;"> *</span></strong></label>
-                                                        <span id="location_msg"></span>
-                                                        <select class="form-control" id="space_location"  name="space_location" >
-                                                            <option value="{{$var->location}}" selected>{{$var->location}}</option>
-
-
-                                                        </select>
-                                                    </div>
-
-
-
-                                                    <div class="form-wrapper col-12 pt-2">
-                                                        <label for="space_location"  ><strong>Sub location <span style="color: red;"> *</span></strong></label>
-                                                        <span id="sub_location_msg"></span>
-                                                        <select class="form-control" id="space_sub_location"  name="space_sub_location" >
-                                                            <option value="{{$var->sub_location}}" selected>{{$var->sub_location}}</option>
-                                                        </select>
-
-
-                                                    </div>
-
-
-
-                                                    <div class="form-wrapper col-12 pt-2">
-                                                        <label for="" ><strong>Real Estate Number <span style="color: red;"> *</span></strong></label>
-                                                        <span id="space_id_msg"></span>
-
-                                                        <select class="form-control" id="space_id_contract"  name="space_id_contract" >
-                                                            <option value="{{$var->space_id}}" selected>{{$var->space_id}}</option>
-                                                        </select>
-                                                    </div>
-
-
-
-
-                                                    <input type="hidden"  step="0.01" class="form-control" id="space_size" name="space_size" value=""  autocomplete="off">
-
-                                                    <input type="hidden"  class="form-control" id="has_water_bill" name="has_water_bill" value=""  autocomplete="off">
-
-                                                    <input type="hidden"  class="form-control" id="has_electricity_bill" name="has_electricity_bill" value=""  autocomplete="off">
-
-
-
-
-
-
-                                                </div>
-
-
-
-
-
-
-
-
-
-
-
-                                            </div>
-                                            <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
-                                            <input type="button" id="next2" name="next" class="next action-button" value="Next Step" />
-                                            <input type="button" class="btn btn-danger action-button" value="Cancel" onclick="history.back()" style="background-color: red !important;" />
-                                            {{--  <a href="/contracts_management" style="background-color: red !important;" class="btn  action-button" >Cancel</a> --}}
-                                        </fieldset>
                                         {{-- Third Form --}}
                                         <fieldset>
                                             <div class="form-card">
@@ -657,7 +542,7 @@
                                                     <div id="percentage_to_payDiv"  class="form-wrapper pt-4 col-12">
                                                         <label for="percentage_to_pay">Percentage to be paid(Of total collection) <span style="color: red;"> *</span></label>
                                                         <span id="percentage_to_pay_msg"></span>
-                                                        <input type="number" step="0.01" id="percentage_to_pay" name="percentage_to_pay" class="form-control">
+                                                        <input type="number" step="0.01" id="percentage_to_pay" value="{{$var->percentage}}" name="percentage_to_pay" class="form-control">
                                                     </div>
 
 
@@ -904,29 +789,7 @@
 
 
 
-                                                    @if($var->academic_dependence=='No')
-                                                    <div class="form-wrapper col-12" id="escalation_rateDiv" >
-                                                        <label for="escalation_rate">Escalation Rate <span style="color: red;"> *</span></label>
-                                                        <span id="escalation_rate_msg"></span>
-                                                        <input type="number"  id="escalation_rate" value="{{$var->escalation_rate}}" name="escalation_rate" class="form-control" >
-                                                    </div>
-                                                    @else
 
-                                                    <div class="form-wrapper col-6" id="escalation_rate_vacationDiv" >
-                                                        <label for="escalation_rate_vacation">Escalation Rate(Vacation season) <span style="color: red;"> *</span></label>
-                                                        <span id="escalation_rate_vacation_msg"></span>
-                                                        <input type="number"  id="escalation_rate_vacation" value="{{$var->escalation_rate_vacation}}" name="escalation_rate_vacation" class="form-control" >
-                                                    </div>
-
-
-
-                                                    <div class="form-wrapper col-6" id="escalation_rate_academicDiv" >
-                                                        <label for="escalation_rate_academic">Escalation Rate(Academic season) <span style="color: red;"> *</span></label>
-                                                        <span id="escalation_rate_academic_msg"></span>
-                                                        <input type="number"  id="escalation_rate_academic" value="{{$var->escalation_rate_academic}}" name="escalation_rate_academic" class="form-control" >
-                                                    </div>
-
-                                                    @endif
 
 
                                                 </div>
@@ -991,51 +854,7 @@
                                                         <td id="address_confirm"></td>
                                                     </tr>
 
-                                                    <tr>
-                                                        <td> Category:</td>
-                                                        <td id="major_industry_confirm"></td>
-                                                    </tr>
 
-
-                                                    <tr>
-                                                        <td> Sub Category:</td>
-                                                        <td id="minor_industry_confirm"></td>
-                                                    </tr>
-
-
-                                                    <tr>
-                                                        <td> Location:</td>
-                                                        <td id="location_confirm"></td>
-                                                    </tr>
-
-
-                                                    <tr>
-                                                        <td>Sub location:</td>
-                                                        <td id="sub_location_confirm"></td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td>Real Estate number:</td>
-                                                        <td id="space_number_confirm"></td>
-                                                    </tr>
-
-
-
-                                                    <tr>
-                                                        <td>Real Estate size(SQM):</td>
-                                                        <td id="space_size_confirm"></td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td>Has electricity bill:</td>
-                                                        <td id="has_electricity_bill_confirm"></td>
-                                                    </tr>
-
-
-                                                    <tr>
-                                                        <td>Has water bill:</td>
-                                                        <td id="has_water_bill_confirm"></td>
-                                                    </tr>
 
 
                                                     <tr>
@@ -1049,33 +868,13 @@
                                                     </tr>
 
 
-
                                                     <tr>
-                                                        <td>Depend on academic year:</td>
-                                                        <td id="academic_dependance_confirm"></td>
+                                                        <td>Percentage to be paid(Of total collection):</td>
+                                                        <td id="percentage_to_pay_confirm"></td>
                                                     </tr>
 
 
-                                                    <tr id="amount_academic_row_confirm" style="display: none;" >
-                                                        <td>Amount(Academic season):</td>
-                                                        <td id="amount_academic_confirm"></td>
-                                                    </tr>
 
-                                                    <tr id="amount_vacation_row_confirm" style="display: none;">
-                                                        <td>Amount(Vacation season):</td>
-                                                        <td id="amount_vacation_confirm"></td>
-                                                    </tr>
-
-                                                    <tr id="amount_row_confirm" style="display: none;">
-                                                        <td>Amount:</td>
-                                                        <td id="amount_confirm"></td>
-                                                    </tr>
-
-
-                                                    <tr >
-                                                        <td>Rent/SQM:</td>
-                                                        <td id="rent_sqm_confirm"></td>
-                                                    </tr>
 
 
 
@@ -1084,10 +883,7 @@
                                                         <td id="payment_cycle_confirm"></td>
                                                     </tr>
 
-                                                    <tr>
-                                                        <td>Escalation Rate:</td>
-                                                        <td id="escalation_rate_confirm"></td>
-                                                    </tr>
+
 
 
 
@@ -1871,7 +1667,15 @@
                 var parent_client=$("#parent_client").val();
 
 
-                if(clientType=="1"){
+    var start_date={!! json_encode($start_date) !!};
+
+
+    $('#start_date_alternate').val(start_date);
+
+
+
+
+    if(clientType=="1"){
                     $('#ctypemsg').hide();
                     $('#client_type').attr('style','border: 1px solid #ccc');
                     if(firstName==""){
@@ -2056,138 +1860,138 @@
 
                 }
 
-                if (client_type_contract=='Indirect'){
+    if (client_type_contract=='Indirect'){
 
-                    //old indirect code starts
-                    $('#business_licenseDiv').hide();
-                    $('#contract_categoryDiv').hide();
-                    $('#has_additional_businessesDiv').show();
+        //old indirect code starts
+        $('#business_licenseDiv').hide();
+        $('#contract_categoryDiv').hide();
+        $('#has_additional_businessesDiv').show();
 
-                    $('#has_security_depositDiv').hide();
-
-
-                    $('#percentage_to_payDiv').hide();
-                    $('#academic_dependenceDiv').show();
-                    // $('#academicDiv').show();
-                    // $('#vacationDiv').show();
-                    // $('#amountDiv').show();
-                    $('#rent_sqmDiv').show();
-                    $('#currencydiv').show();
-                    $('#currency_clause').hide();
-                    //old indirect code ends
-
-                    var query=parent_client;
-
-                    $.ajax({
-                        url:"{{ route('get_parent_currency') }}",
-                        method:"get",
-                        data:{query:query},
-                        success:function(data){
-                            if(data=='0'){
+        $('#has_security_depositDiv').hide();
 
 
-                                $('#currency_tzs').show();
-                                $('#currency_usd').show();
+        $('#percentage_to_payDiv').hide();
+        $('#academic_dependenceDiv').show();
+        // $('#academicDiv').show();
+        // $('#vacationDiv').show();
+        // $('#amountDiv').show();
+        $('#rent_sqmDiv').show();
+        $('#currencydiv').show();
+        $('#currency_clause').hide();
+        //old indirect code ends
 
-                            }
-                            else{
+        var query=parent_client;
 
+        $.ajax({
+            url:"{{ route('get_parent_currency') }}",
+            method:"get",
+            data:{query:query},
+            success:function(data){
+                if(data=='0'){
 
-
-
-
-                                if(data=='TZS'){
-
-
-
-
-                                    $('#currency_usd').hide();
-                                    $('#currency_tzs').show();
-                                }else if(data=='USD'){
-
-                                    $('#currency_tzs').hide();
-                                    $('#currency_usd').show();
-
-                                }else{
-
-                                    $('#currency_tzs').show();
-                                    $('#currency_usd').show();
-
-                                }
-
-
-
-
-
-                            }
-                        }
-                    });
-
-
-
-
-
-
-
-
-
-
-                    if(p1=='1' & p2=='1' & p3=='1'  & p5=='1' & p6=='1' & p7=='1' ){
-                        gonext();
-                    }
-
-
-                }else if(client_type_contract=='Direct and has clients'){
 
                     $('#currency_tzs').show();
                     $('#currency_usd').show();
 
-
-                    $('#percentage_to_payDiv').show();
-                    $('#business_licenseDiv').show();
-
-                    $('#academic_dependenceDiv').hide();
-                    $('#academicDiv').hide();
-                    $('#vacationDiv').hide();
-                    $('#amountDiv').hide();
-                    $('#rent_sqmDiv').hide();
-                    $('#currencydiv').show();
-                    $('#currency_clause').show();
-                    $('#contract_categoryDiv').hide();
-                    $('#has_additional_businessesDiv').hide();
-
-                    $('#has_security_depositDiv').hide();
-
-
-                    if(p1=='1' & p2=='1' & p3=='1'  & p5=='1' & p6=='1' ){
-                        gonext();
-                    }
-
                 }
-
                 else{
 
-                    $('#currency_tzs').show();
-                    $('#currency_usd').show();
 
 
-                    $('#business_licenseDiv').hide();
-                    $('#percentage_to_payDiv').hide();
-                    $('#academic_dependenceDiv').show();
-                    $('#contract_categoryDiv').show();
-                    $('#has_additional_businessesDiv').show();
-                    $('#has_security_depositDiv').show();
 
 
-                    $('#rent_sqmDiv').show();
-                    $('#currencydiv').show();
-                    $('#currency_clause').hide();
+                    if(data=='TZS'){
 
-                    if(p1=='1' & p2=='1' & p3=='1'  & p5=='1' & p6=='1' ){
-                        gonext();
+
+
+
+                        $('#currency_usd').hide();
+                        $('#currency_tzs').show();
+                    }else if(data=='USD'){
+
+                        $('#currency_tzs').hide();
+                        $('#currency_usd').show();
+
+                    }else{
+
+                        $('#currency_tzs').show();
+                        $('#currency_usd').show();
+
                     }
 
+
+
+
+
                 }
+            }
+        });
+
+
+
+
+
+
+
+
+
+
+        if(p1=='1' & p2=='1' & p3=='1'  & p5=='1' & p6=='1' & p7=='1' ){
+            gonext();
+        }
+
+
+    }else if(client_type_contract=='Direct and has clients'){
+
+        $('#currency_tzs').show();
+        $('#currency_usd').show();
+
+
+        $('#percentage_to_payDiv').show();
+        $('#business_licenseDiv').show();
+
+        $('#academic_dependenceDiv').hide();
+        $('#academicDiv').hide();
+        $('#vacationDiv').hide();
+        $('#amountDiv').hide();
+        $('#rent_sqmDiv').hide();
+        $('#currencydiv').show();
+        $('#currency_clause').show();
+        $('#contract_categoryDiv').hide();
+        $('#has_additional_businessesDiv').hide();
+
+        $('#has_security_depositDiv').hide();
+
+
+        if(p1=='1' & p2=='1' & p3=='1'  & p5=='1' & p6=='1' ){
+            gonext();
+        }
+
+    }
+
+    else{
+
+        $('#currency_tzs').show();
+        $('#currency_usd').show();
+
+
+        $('#business_licenseDiv').hide();
+        $('#percentage_to_payDiv').hide();
+        $('#academic_dependenceDiv').show();
+        $('#contract_categoryDiv').show();
+        $('#has_additional_businessesDiv').show();
+        $('#has_security_depositDiv').show();
+
+
+        $('#rent_sqmDiv').show();
+        $('#currencydiv').show();
+        $('#currency_clause').hide();
+
+        if(p1=='1' & p2=='1' & p3=='1'  & p5=='1' & p6=='1' ){
+            gonext();
+        }
+
+    }
 
 
 
@@ -2205,6 +2009,7 @@
 
 
                 var start_date={!! json_encode($start_date) !!};
+
 
                 $('#start_date_alternate').val(start_date);
 
@@ -2413,18 +2218,18 @@
                 var duration_period=$('#duration_period').val();
 
                 var academic_dependence=document.getElementById('academic_dependence').value;
-                var vacation_season=$('#vacation_season').val();
-                var academic_season=$('#academic_season').val();
-                var amount= $('#amount').val();
+                var vacation_season=30;
+                var academic_season=30;
+                var amount= 30;
                 var rent_sqm=document.getElementById('rent_sqm').value;
                 var currency=document.getElementById('currency').value;
                 var payment_cycle=document.getElementById('payment_cycle').value;
-                var escalation_rate=$('#escalation_rate').val();
-                var escalation_rate_vacation=$('#escalation_rate_vacation').val();
-                var escalation_rate_academic= $('#escalation_rate_academic').val();
-                var space_size=document.getElementById('space_size').value;
-                var has_water_bill=document.getElementById('has_water_bill').value;
-                var has_electricity_bill=document.getElementById('has_electricity_bill').value;
+                var escalation_rate=30;
+                var escalation_rate_vacation=30;
+                var escalation_rate_academic= 30;
+                // var space_size=document.getElementById('space_size').value;
+                // var has_water_bill=document.getElementById('has_water_bill').value;
+                // var has_electricity_bill=document.getElementById('has_electricity_bill').value;
 
 
                 var tin=$("#tin").val();
@@ -2437,11 +2242,11 @@
                 var tcra_registration=$("#tcra_registration").val();
                 var brela_registration=$("#brela_registration").val();
                 var additional_businesses_list=$("#additional_businesses_list").val();
-                var additional_businesses_amount=$("#additional_businesses_amount").val();
+                var additional_businesses_amount=30;
                 var total_amount=$("#total_amount").val();
                 var academic_season_total=$("#academic_season_total").val();
                 var vacation_season_total=$("#vacation_season_total").val();
-                var security_deposit=$("#security_deposit").val();
+                var security_deposit=30;
                 var has_security_deposit=$("#has_security_deposit").val();
 
 
@@ -2950,7 +2755,7 @@
 
 
                 var new_start_date_alternate = new Date(start_date_alternate);
-
+                console.log("here"+start_date_alternate);
 
                 const output = (('0' + new_start_date_alternate.getDate()).slice(-2) + '/'
                     + ('0' + (new_start_date_alternate.getMonth()+1)).slice(-2) + '/'+new_start_date_alternate.getFullYear());
@@ -2995,34 +2800,34 @@
                 $("#address_confirm").html(address);
                 $("#address_confirm").css('font-weight', 'bold');
 
-                $("#major_industry_confirm").html(major);
-                $("#major_industry_confirm").css('font-weight', 'bold');
-
-                $("#minor_industry_confirm").html(minor);
-                $("#minor_industry_confirm").css('font-weight', 'bold');
-
-
-                $("#location_confirm").html(location);
-                $("#location_confirm").css('font-weight', 'bold');
-
-                $("#sub_location_confirm").html(sub_location);
-                $("#sub_location_confirm").css('font-weight', 'bold');
-
-
-                $("#space_number_confirm").html(space_id);
-                $("#space_number_confirm").css('font-weight', 'bold');
-
-                $("#space_size_confirm").html(space_size);
-                $("#space_size_confirm").css('font-weight', 'bold');
-
-
-                $("#has_electricity_bill_confirm").html(has_electricity_bill);
-                $("#has_electricity_bill_confirm").css('font-weight', 'bold');
-
-
-                $("#has_water_bill_confirm").html(has_water_bill);
-                $("#has_water_bill_confirm").css('font-weight', 'bold');
-
+                // $("#major_industry_confirm").html(major);
+                // $("#major_industry_confirm").css('font-weight', 'bold');
+                //
+                // $("#minor_industry_confirm").html(minor);
+                // $("#minor_industry_confirm").css('font-weight', 'bold');
+                //
+                //
+                // $("#location_confirm").html(location);
+                // $("#location_confirm").css('font-weight', 'bold');
+                //
+                // $("#sub_location_confirm").html(sub_location);
+                // $("#sub_location_confirm").css('font-weight', 'bold');
+                //
+                //
+                // $("#space_number_confirm").html(space_id);
+                // $("#space_number_confirm").css('font-weight', 'bold');
+                //
+                // $("#space_size_confirm").html(space_size);
+                // $("#space_size_confirm").css('font-weight', 'bold');
+                //
+                //
+                // $("#has_electricity_bill_confirm").html(has_electricity_bill);
+                // $("#has_electricity_bill_confirm").css('font-weight', 'bold');
+                //
+                //
+                // $("#has_water_bill_confirm").html(has_water_bill);
+                // $("#has_water_bill_confirm").css('font-weight', 'bold');
+                //
 
 
 
@@ -3067,13 +2872,26 @@
                 }
 
 
+if(payment_cycle=='1'){
 
-                $("#payment_cycle_confirm").html(payment_cycle);
-                $("#payment_cycle_confirm").css('font-weight', 'bold');
+    $("#payment_cycle_confirm").html(payment_cycle +" Month");
+    $("#payment_cycle_confirm").css('font-weight', 'bold');
+
+}else{
+
+    $("#payment_cycle_confirm").html(payment_cycle +" Months");
+    $("#payment_cycle_confirm").css('font-weight', 'bold');
+
+
+}
 
 
                 $("#escalation_rate_confirm").html(escalation_rate);
                 $("#escalation_rate_confirm").css('font-weight', 'bold');
+
+
+                $("#percentage_to_pay_confirm").html(percentage_to_pay+"%");
+                $("#percentage_to_pay_confirm").css('font-weight', 'bold');
 
 
 

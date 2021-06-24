@@ -335,6 +335,7 @@
                                     {{csrf_field()}}
 
                                     <!-- progressbar -->
+
                                         <ul id="progressbar">
                                             <li class="active" id="personal"><strong>Client</strong></li>
                                             <li  id="renting_space"><strong>Real Estate</strong></li>
@@ -880,7 +881,7 @@
                                                 <br>
 
                                             </div>
-                                            <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
+                                            <input type="button" id="previous3" name="previous" class=" action-button-previous" value="Previous" />
 
                                             <input type="button" id="next3" name="next" class="next action-button" value="Next" />
                                             <input type="button" class="btn btn-danger action-button" value="Cancel" onclick="history.back()" style="background-color: red !important;">
@@ -1428,6 +1429,7 @@
                 if(query=='Direct and has clients'){
 
                     $('#renting_space').hide();
+
                     properNext();
 
                 }else{
@@ -4594,6 +4596,51 @@
                     duration: 600
                 });
             });
+
+
+
+            $("#previous3").click(function(){
+
+
+                current_fs = $(this).parent();
+
+                var client_type_contract=$("#client_type_contract").val();
+
+                if(client_type_contract=='Direct and has clients'){
+
+                    previous_fs = $(this).parent().prev().prev();
+                }else{
+
+                    previous_fs = $(this).parent().prev();
+
+                }
+
+
+
+
+//Remove class active
+                $("#progressbar li").eq($("fieldset").index(current_fs)).removeClass("active");
+
+//show the previous fieldset
+                previous_fs.show();
+
+//hide the current fieldset with style
+                current_fs.animate({opacity: 0}, {
+                    step: function(now) {
+// for making fielset appear animation
+                        opacity = 1 - now;
+
+                        current_fs.css({
+                            'display': 'none',
+                            'position': 'relative'
+                        });
+                        previous_fs.css({'opacity': opacity});
+                    },
+                    duration: 600
+                });
+            });
+
+
 
             $(".submit").click(function(){
                 console.log(2);

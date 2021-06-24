@@ -224,7 +224,7 @@
     @else
     @endif
 
-
+    @if($client_type_contract!='Direct and has clients')
     <div style="width: 100%; clear: both; ">
         <div class="horizontal_align" style="text-align: left; padding-left: 4%; ">Rent/SQM:</div>
         <div style="text-align: left" class="dottedUnderline horizontal_align_right"><b>@if($rent_sqm=='')
@@ -237,8 +237,16 @@
             </b></div>
 
     </div>
+    @endif
 
+    @if($client_type_contract=='Direct and has clients')
+        <div style="width: 100%; clear: both; ">
+            <div class="horizontal_align" style="text-align: left; padding-left: 4%; ">Percentage to be paid(Of total collection):</div>
+            <div style="text-align: left" class="dottedUnderline horizontal_align_right"><b>{{$percentage_to_pay}}%</b></div>
 
+        </div>
+
+    @endif
 
     <div style="width: 100%; clear: both; ">
         <div class="horizontal_align" style="text-align: left; padding-left: 4%; ">Payment cycle:</div>
@@ -247,12 +255,13 @@
     </div>
 
 
-
+    @if($client_type_contract!='Direct and has clients')
     <div style="width: 100%; clear: both;">
         <div class="horizontal_align" style="text-align: left; padding-left: 4%; ">Escalation rate:</div>
         <div style="text-align: left" class="dottedUnderline horizontal_align_right"><b>{{$escalation_rate}} </b></div>
 
     </div>
+    @endif
 
 
 {{--    <table class="table  " style="width: 100%; ">--}}
