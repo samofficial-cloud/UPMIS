@@ -376,6 +376,9 @@ $i='1';
         </div>
     </div>
 
+
+
+
 				<div class="form-group" id="hirediv">
 					<div class="form-wrapper">
 						<label for="hire_rate">Hire Rate/KM<span style="color: red;">*</span></label>
