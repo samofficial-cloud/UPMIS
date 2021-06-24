@@ -182,6 +182,7 @@ return [
        //dompdf
         Barryvdh\DomPDF\ServiceProvider::class,
         Collective\Html\HtmlServiceProvider::class,
+        Barryvdh\Debugbar\ServiceProvider::class,
 
     ],
 
