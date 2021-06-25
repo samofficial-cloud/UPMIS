@@ -382,7 +382,7 @@ div.dt-buttons{
                                             </div>
                                         </div>
                                     </td>
-                                    <td style="text-align: center;">{{$var->id}}</td>
+                                    <td style="text-align: right;">{{$var->id}}</td>
                                     <td>
                                         <a class="link_style" data-toggle="modal" data-target="#flat_room{{$var->id}}" style="color: blue !important; text-decoration: underline !important;  cursor: pointer;" aria-pressed="true">{{$var->room_no}}</a>
 
@@ -477,12 +477,12 @@ div.dt-buttons{
 
                                     </td>
 
-                                    <td style="text-align: center;">{{date("d/m/Y",strtotime($var->arrival_date))}}</td>
-                                    <td style="text-align: center;">{{date("d/m/Y",strtotime($var->departure_date))}}</td>
+                                    <td style="text-align: left;">{{date("d/m/Y",strtotime($var->arrival_date))}}</td>
+                                    <td style="text-align: left;">{{date("d/m/Y",strtotime($var->departure_date))}}</td>
 
                                     <td style="text-align: right;">{{number_format($var->total_usd)}}</td>
                                     <td style="text-align: right;">{{number_format($var->total_tzs)}}</td>
-                                    <td style="text-align: right;">
+                                    <td style="text-align: left;">
 
                                         @if($var->contract_status==0)
                                             TERMINATED

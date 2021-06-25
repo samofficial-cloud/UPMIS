@@ -328,24 +328,24 @@
 
                                         <td class="counterCell text-center"></td>
                                         <td>{{$var->full_name}}</td>
-                                        <td>{{$var->id}}</td>
+                                        <td class="text-right">{{$var->id}}</td>
                                         <td>{{$var->insurance_class}}</td>
-                                        <td><center>{{$var->principal}}</center></td>
+                                        <td>{{$var->principal}}</td>
 
-                                        <td><center>{{date("d/m/Y",strtotime($var->commission_date))}}</center></td>
-                                        <td><center>{{date("d/m/Y",strtotime($var->end_date))}}</center></td>
+                                        <td>{{date("d/m/Y",strtotime($var->commission_date))}}</td>
+                                        <td>{{date("d/m/Y",strtotime($var->end_date))}}</td>
 
-                                        <td><center>{{number_format($var->premium)}} {{$var->currency}}</center></td>
+                                        <td class="text-right">{{number_format($var->premium)}} {{$var->currency}}</td>
 
-                                        <td><center>
-                                                @if($var->contract_status==0)
-                                                    TERMINATED
-                                                @elseif($var->end_date<date('Y-m-d'))
-                                                    EXPIRED
-                                                @else
-                                                    ACTIVE
-                                                @endif
-                                            </center></td>
+                                        <td class="text-left">
+                                            @if($var->contract_status==0)
+                                                TERMINATED
+                                            @elseif($var->end_date<date('Y-m-d'))
+                                                EXPIRED
+                                            @else
+                                                ACTIVE
+                                            @endif
+                                        </td>
 
                                         <td><center>
                                                 <a title="View more details"  style="color:#3490dc !important; display:inline-block;" href="{{route('contract_details_insurance',$var->id)}}" class=""   style="cursor: pointer;" ><center><i class="fa fa-eye" style="font-size:20px;" aria-hidden="true"></i></center></a>
@@ -902,38 +902,38 @@
                 "pageLength": 100,
                 "bLengthChange": false,
                 "orderClasses": false,
-                processing:true,
-                serverSide:true,
-                ajax: {
-                    url:"{{ route('get_insurance_contracts') }}"
+                {{--processing:true,--}}
+                {{--serverSide:true,--}}
+                {{--ajax: {--}}
+                {{--    url:"{{ route('get_insurance_contracts') }}"--}}
 
-                },
-                columnDefs: [ {
-                    "searchable": false,
-                    "orderable": false,
-                    "targets": 0
-                } ],
-                "order": [[ 1, 'asc' ]],
+                {{--},--}}
+                {{--columnDefs: [ {--}}
+                {{--    "searchable": false,--}}
+                {{--    "orderable": false,--}}
+                {{--    "targets": 0--}}
+                {{--} ],--}}
+                {{--"order": [[ 1, 'asc' ]],--}}
 
-                columns: [
+                {{--columns: [--}}
 
-                    {data: 'DT_RowIndex', className: 'text-center', name: 'DT_RowIndex'},
-                    {data: 'full_name' , className: 'text-center'},
-                    {data: 'id' , className: 'text-center'},
-                    {data: 'insurance_class', className: 'text-center'},
-                    {data: 'principal', className: 'text-center'},
+                {{--    {data: 'DT_RowIndex', className: 'text-center', name: 'DT_RowIndex'},--}}
+                {{--    {data: 'full_name' , className: 'text-center'},--}}
+                {{--    {data: 'id' , className: 'text-center'},--}}
+                {{--    {data: 'insurance_class', className: 'text-center'},--}}
+                {{--    {data: 'principal', className: 'text-center'},--}}
 
-                    {data: 'commission_date', className: 'text-center'},
-                    {data: 'end_date', className: 'text-center'},
-                    {data: 'premium', className: 'text-center'},
-
-
-                    {data: 'contract_status', className: 'text-center'},
-                    {data: 'action', className: 'text-center', name: 'action', orderable: false, searchable: false},
+                {{--    {data: 'commission_date', className: 'text-center'},--}}
+                {{--    {data: 'end_date', className: 'text-center'},--}}
+                {{--    {data: 'premium', className: 'text-center'},--}}
 
 
+                {{--    {data: 'contract_status', className: 'text-center'},--}}
+                {{--    {data: 'action', className: 'text-center', name: 'action', orderable: false, searchable: false},--}}
 
-                ],
+
+
+                {{--],--}}
 
 
                 buttons: [

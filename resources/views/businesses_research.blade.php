@@ -1011,7 +1011,7 @@ input[type=radio]{
                                                      <td style="text-align: center;">{{$i}}.</td>
                                                      <td>{{$room->room_no}}</td>
                                                      <td>{{$room->category}}</td>
-                                                     <td><center>{{$room->currency}}</center></td>
+                                                     <td>{{$room->currency}}</td>
                                                      <td style="text-align: right;">{{number_format($room->charge_workers)}}</td>
                                                      <td style="text-align: right;">{{number_format($room->charge_students)}}</td>
                                                      <td style="text-align: left;">{{$room->occupational_status}}</td>
@@ -1371,7 +1371,7 @@ input[type=radio]{
                                              <td style="text-align: center;">{{$i}}.</td>
                                              <td>{{$room->room_no}}</td>
                                              <td>{{$room->category}}</td>
-                                             <td><center>{{$room->currency}}</center></td>
+                                             <td>{{$room->currency}}</td>
                                              <td style="text-align: right;">{{number_format($room->charge_workers)}}</td>
                                              <td style="text-align: right;">{{number_format($room->charge_students)}}</td>
                                              <td style="text-align: left;">{{$room->occupational_status}}</td>

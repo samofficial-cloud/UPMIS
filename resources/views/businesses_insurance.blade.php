@@ -484,12 +484,12 @@ input[type=radio]{
                                      <tr>
 
                                          <td class="counterCell text-center"></td>
-                                         <td><center>{{$var->class}}</center></td>
-                                         <td><center>{{$var->insurance_company}}</center></td>
-                                         <td><center>{{$var->insurance_type}}</center></td>
-                                         <td><center>{{$var->commission_percentage}}%</center></td>
+                                         <td>{{$var->class}}</td>
+                                         <td>{{$var->insurance_company}}</td>
+                                         <td>{{$var->insurance_type}}</td>
+                                         <td class="text-right">{{$var->commission_percentage}}%</td>
 
-                                         @if($privileges=='Read only')
+                                     @if($privileges=='Read only')
                                          @else
                                              <td><center>
 

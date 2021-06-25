@@ -1013,7 +1013,7 @@ input[type=radio]{
                                                             <td style="text-align: center;">{{$i}}.</td>
                                                             <td>{{$room->room_no}}</td>
                                                             <td>{{$room->category}}</td>
-                                                            <td><center>{{$room->currency}}</center></td>
+                                                            <td>{{$room->currency}}</td>
                                                             <td style="text-align: right;">{{number_format($room->charge_workers)}}</td>
                                                             <td style="text-align: right;">{{number_format($room->charge_students)}}</td>
                                                             <td style="text-align: left;">{{$room->occupational_status}}</td>
@@ -1813,12 +1813,12 @@ input[type=radio]{
                                              <tr>
 
                                                  <td class="counterCell text-center"></td>
-                                                 <td><center>{{$var->class}}</center></td>
-                                                 <td><center>{{$var->insurance_company}}</center></td>
-                                                 <td><center>{{$var->insurance_type}}</center></td>
-                                                 <td><center>{{$var->commission_percentage}}%</center></td>
+                                                 <td>{{$var->class}}</td>
+                                                 <td>{{$var->insurance_company}}</td>
+                                                 <td>{{$var->insurance_type}}</td>
+                                                 <td class="text-right">{{$var->commission_percentage}}%</td>
 
-                                                 @if($privileges=='Read only')
+                                             @if($privileges=='Read only')
                                                  @else
                                                      <td><center>
 
@@ -2675,12 +2675,12 @@ input[type=radio]{
                                                  <tbody>
                                                  @foreach($cars as $cars)
                                                      <tr>
-                                                         <th scope="row">{{ $i }}.</th>
-                                                         <td><center>{{ $cars->vehicle_reg_no}}</center></td>
+                                                         <th scope="row" class="text-center">{{ $i }}.</th>
+                                                         <td>{{ $cars->vehicle_reg_no}}</td>
                                                          <td>{{$cars->vehicle_model}}</td>
                                                          <td>{{ $cars->vehicle_status}}</td>
-                                                         <td><center>{{ number_format($cars->hire_rate)}}</center></td>
-                                                         <td><center>{{ $cars->hire_status}}</center></td>
+                                                         <td class="text-right">{{ number_format($cars->hire_rate)}}</td>
+                                                         <td>{{ $cars->hire_status}}</td>
                                                          <td><center>
                                                                  <a title="View More Details" role="button" href="{{ route('CarViewMore') }}?vehicle_reg_no={{$cars->vehicle_reg_no}}"><i class="fa fa-eye" aria-hidden="true" style="font-size:20px; color:#3490dc; cursor: pointer;"></i></a>
                                                                  {{--  @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR (Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator')) --}}
@@ -2928,12 +2928,12 @@ input[type=radio]{
                                                  <tbody>
                                                  @foreach($cars as $cars)
                                                      <tr>
-                                                         <th scope="row">{{ $i }}.</th>
-                                                         <td><center>{{ $cars->vehicle_reg_no}}</center></td>
+                                                         <th scope="row" class="text-center">{{ $i }}.</th>
+                                                         <td>{{ $cars->vehicle_reg_no}}</td>
                                                          <td>{{$cars->vehicle_model}}</td>
                                                          <td>{{ $cars->vehicle_status}}</td>
-                                                         <td><center>{{ number_format($cars->hire_rate)}}</center></td>
-                                                         <td><center>{{$cars->hire_status}}</center></td>
+                                                         <td class="text-right">{{ number_format($cars->hire_rate)}}</td>
+                                                         <td>{{ $cars->hire_status}}</td>
                                                          <td><center>
                                                                  <a title="View More Details" role="button" href="{{ route('CarViewMore') }}?vehicle_reg_no={{$cars->vehicle_reg_no}}"><i class="fa fa-eye" aria-hidden="true" style="font-size:20px; color:#3490dc; cursor: pointer;"></i></a>
                                                                  {{--  @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR (Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator')) --}}
@@ -3505,7 +3505,7 @@ input[type=radio]{
                                                         <tr>
                                                             <th scope="row" class="counterCell text-center">.</th>
                                                             <td>{{$rate->vehicle_model}}</td>
-                                                            <td><center>{{number_format($rate->hire_rate)}}</center></td>
+                                                            <td class="text-right">{{number_format($rate->hire_rate)}}</td>
                                                             {{--  @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR Auth::user()->role=='System Administrator') --}}
                                                             @if($privileges=='Read only')
                                                             @else
@@ -4586,13 +4586,13 @@ input[type=radio]{
                                                      <td>{{$var->location}}</td>
                                                      <td>{{$var->sub_location}}</td>
 
-                                                     <td><center>  @if($var->size==null)
+                                                     <td class="text-right">  @if($var->size==null)
                                                                  N/A
                                                              @else
                                                                  {{$var->size}}
                                                              @endif
 
-                                                         </center></td>
+                                                        </td>
 
 
 
@@ -5316,13 +5316,13 @@ input[type=radio]{
                                                  <td>{{$var->location}}</td>
                                                  <td>{{$var->sub_location}}</td>
 
-                                                 <td><center>  @if($var->size==null)
+                                                 <td class="text-right"> @if($var->size==null)
                                                              N/A
                                                          @else
                                                              {{$var->size}}
                                                          @endif
 
-                                                     </center></td>
+                                                    </td>
 
 
 
@@ -5336,7 +5336,7 @@ input[type=radio]{
 
                                                  {{--                </center></td>--}}
 
-                                                 <td><center>
+                                                 <td>
                                                          @if($var->occupation_status==1)
                                                              Occupied
                                                          @else
@@ -5344,7 +5344,7 @@ input[type=radio]{
                                                          @endif
 
 
-                                                     </center></td>
+                                                    </td>
 
                                                  <td><center>
                                                          <a title="View more information" class="link_style" data-toggle="modal" data-target="#space_id{{$var->id}}" style="color: blue !important; text-decoration: underline !important;  cursor: pointer; display: inline-block" aria-pressed="true"><center><i class="fa fa-eye" style="font-size:20px;" aria-hidden="true"></i></center></a>

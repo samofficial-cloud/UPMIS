@@ -896,12 +896,12 @@ input[type=radio]{
                                          <tbody>
                                          @foreach($cars as $cars)
                                              <tr>
-                                                 <th scope="row">{{ $i }}.</th>
-                                                 <td><center>{{ $cars->vehicle_reg_no}}</center></td>
+                                                 <th scope="row" class="text-center">{{ $i }}.</th>
+                                                 <td>{{ $cars->vehicle_reg_no}}</td>
                                                  <td>{{$cars->vehicle_model}}</td>
                                                  <td>{{ $cars->vehicle_status}}</td>
-                                                 <td><center>{{ number_format($cars->hire_rate)}}</center></td>
-                                                 <td><center>{{ $cars->hire_status}}</center></td>
+                                                 <td class="text-right">{{ number_format($cars->hire_rate)}}</td>
+                                                 <td>{{ $cars->hire_status}}</td>
                                                  <td><center>
                                                          <a title="View More Details" role="button" href="{{ route('CarViewMore') }}?vehicle_reg_no={{$cars->vehicle_reg_no}}"><i class="fa fa-eye" aria-hidden="true" style="font-size:20px; color:#3490dc; cursor: pointer;"></i></a>
                                                          {{--  @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR (Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator')) --}}
@@ -1149,12 +1149,12 @@ input[type=radio]{
                                          <tbody>
                                          @foreach($cars as $cars)
                                              <tr>
-                                                 <th scope="row">{{ $i }}.</th>
-                                                 <td><center>{{ $cars->vehicle_reg_no}}</center></td>
+                                                 <th scope="row" class="text-center">{{ $i }}.</th>
+                                                 <td>{{ $cars->vehicle_reg_no}}</td>
                                                  <td>{{$cars->vehicle_model}}</td>
                                                  <td>{{ $cars->vehicle_status}}</td>
-                                                 <td><center>{{ number_format($cars->hire_rate)}}</center></td>
-                                                 <td><center>{{$cars->hire_status}}</center></td>
+                                                 <td class="text-right">{{ number_format($cars->hire_rate)}}</td>
+                                                 <td>{{ $cars->hire_status}}</td>
                                                  <td><center>
                                                          <a title="View More Details" role="button" href="{{ route('CarViewMore') }}?vehicle_reg_no={{$cars->vehicle_reg_no}}"><i class="fa fa-eye" aria-hidden="true" style="font-size:20px; color:#3490dc; cursor: pointer;"></i></a>
                                                          {{--  @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR (Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator')) --}}
@@ -1805,7 +1805,7 @@ margin-top: 4px;" role="button" aria-pressed="true">Add Rate</a>
 <tr>
 <th scope="row" class="counterCell text-center">.</th>
 <td>{{$rate->vehicle_model}}</td>
-<td><center>{{number_format($rate->hire_rate)}}</center></td>
+    <td class="text-right">{{number_format($rate->hire_rate)}}</td>
 {{--  @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR Auth::user()->role=='System Administrator') --}}
 @if($privileges=='Read only')
 @else

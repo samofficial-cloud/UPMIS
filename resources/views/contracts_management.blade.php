@@ -390,8 +390,8 @@ div.dt-buttons{
                                                 </div>
                                             </div>
                                         </td>
-                                        <td style="text-align: center;">{{$var->id}}</td>
-                                        <td>
+                                        <td style="text-align: right;">{{$var->id}}</td>
+                                        <td class="text-left">
                                             <a class="link_style" data-toggle="modal" data-target="#flat_room{{$var->id}}" style="color: blue !important; text-decoration: underline !important;  cursor: pointer;" aria-pressed="true">{{$var->room_no}}</a>
 
                                             <div class="modal fade" id="flat_room{{$var->id}}" role="dialog">
@@ -485,12 +485,12 @@ div.dt-buttons{
 
                                         </td>
 
-                                        <td style="text-align: center;">{{date("d/m/Y",strtotime($var->arrival_date))}}</td>
-                                        <td style="text-align: center;">{{date("d/m/Y",strtotime($var->departure_date))}}</td>
+                                        <td style="text-align: left;">{{date("d/m/Y",strtotime($var->arrival_date))}}</td>
+                                        <td style="text-align: left;">{{date("d/m/Y",strtotime($var->departure_date))}}</td>
 
                                         <td style="text-align: right;">{{number_format($var->total_usd)}}</td>
                                         <td style="text-align: right;">{{number_format($var->total_tzs)}}</td>
-                                        <td style="text-align: right;">
+                                        <td style="text-align: left;">
 
                                             @if($var->contract_status==0)
                                                 TERMINATED
@@ -739,24 +739,24 @@ div.dt-buttons{
 
                                         <td class="counterCell text-center"></td>
                                         <td>{{$var->full_name}}</td>
-                                        <td>{{$var->id}}</td>
+                                        <td class="text-right">{{$var->id}}</td>
                                         <td>{{$var->insurance_class}}</td>
-                                        <td><center>{{$var->principal}}</center></td>
+                                        <td>{{$var->principal}}</td>
 
-                                        <td><center>{{date("d/m/Y",strtotime($var->commission_date))}}</center></td>
-                                        <td><center>{{date("d/m/Y",strtotime($var->end_date))}}</center></td>
+                                        <td>{{date("d/m/Y",strtotime($var->commission_date))}}</td>
+                                        <td>{{date("d/m/Y",strtotime($var->end_date))}}</td>
 
-                                        <td><center>{{number_format($var->premium)}} {{$var->currency}}</center></td>
+                                        <td class="text-right">{{number_format($var->premium)}} {{$var->currency}}</td>
 
-                                        <td><center>
-                                                @if($var->contract_status==0)
-                                                    TERMINATED
-                                                @elseif($var->end_date<date('Y-m-d'))
-                                                    EXPIRED
-                                                @else
-                                                    ACTIVE
-                                                @endif
-                                            </center></td>
+                                        <td class="text-left">
+                                            @if($var->contract_status==0)
+                                                TERMINATED
+                                            @elseif($var->end_date<date('Y-m-d'))
+                                                EXPIRED
+                                            @else
+                                                ACTIVE
+                                            @endif
+                                        </td>
 
                                         <td><center>
                                                 <a title="View more details"  style="color:#3490dc !important; display:inline-block;" href="{{route('contract_details_insurance',$var->id)}}" class=""   style="cursor: pointer;" ><center><i class="fa fa-eye" style="font-size:20px;" aria-hidden="true"></i></center></a>
@@ -5125,7 +5125,7 @@ $i=1;
 <tr>
 
 <td><center>{{$i}}</center></td>
-<td><a class="link_style" data-toggle="modal" data-target="#client{{$var->contract_id}}" style="color: blue !important; text-decoration: underline !important;  cursor: pointer;" aria-pressed="true">{{$var->full_name}}</a>
+<td class="text-left"><a class="link_style" data-toggle="modal" data-target="#client{{$var->contract_id}}" style="color: blue !important; text-decoration: underline !important;  cursor: pointer;" aria-pressed="true">{{$var->full_name}}</a>
 
 @if($var->has_clients==1)
 &nbsp; <a href="{{route('space_contracts_subclients',$var->client_id)}}"><i  class=" fas fa-angle-double-down"></i></a>
@@ -5184,19 +5184,19 @@ $i=1;
 </div>
 </div>
 </td>
-<td>{{$var->contract_id}} </td>
+<td class="text-right">{{$var->contract_id}} </td>
 <td>
 
 @if($var->space_id_contract!='')
-<a class="link_style" href="{{route('space_details',$var->space_id_contract)}}" style="color: blue !important; text-decoration: underline !important;  cursor: pointer;" aria-pressed="true"><center>{{$var->space_id_contract}}</center></a>
+<a class="link_style" href="{{route('space_details',$var->space_id_contract)}}" style="color: blue !important; text-decoration: underline !important;  cursor: pointer;" aria-pressed="true">{{$var->space_id_contract}}</a>
 @else
 @endif
 </td>
 
-<td><center>{{date('d/m/Y',strtotime($var->start_date))}}</center></td>
-<td><center>{{date('d/m/Y',strtotime($var->end_date))}}</center></td>
+<td>{{date('d/m/Y',strtotime($var->start_date))}}</td>
+<td>{{date('d/m/Y',strtotime($var->end_date))}}</td>
 
-<td>@if($var->has_clients=="1")
+<td class="text-right">@if($var->has_clients=="1")
 @else
 @if($var->academic_dependence=='Yes')
 {{number_format($var->academic_season)}} {{$var->currency}}
@@ -5207,7 +5207,7 @@ $i=1;
 @endif
 
 </td>
-<td>
+<td class="text-right">
 @if($var->has_clients=="1")
 @else
 
@@ -5230,7 +5230,7 @@ $i=1;
 
 
 
-<td><center>
+<td>
 @if($var->contract_status==0)
 TERMINATED
 @elseif($var->end_date<date('Y-m-d'))
@@ -5238,9 +5238,10 @@ EXPIRED
 @else
 ACTIVE
 @endif
-</center></td>
+</td>
 <td><center>
 <a title="View more details"  style="color:#3490dc !important; display:inline-block;" href="{{route('contract_details',base64_encode(base64_encode(base64_encode($var->contract_id))))}}" class=""   style="cursor: pointer;" ><center><i class="fa fa-eye" style="font-size:20px;" aria-hidden="true"></i></center></a>
+
 
 
 @if(($var->contract_status==1 AND $var->end_date>=date('Y-m-d')))
@@ -5603,7 +5604,6 @@ $i=1;
 <th scope="col" style="color:#fff;" ><center>Amount(Academic season)</center></th>
 <th scope="col" style="color:#fff;" ><center>Amount(Vacation season)</center></th>
 
-
 <th scope="col"  style="color:#fff;"><center>Status</center></th>
 <th scope="col"  style="color:#fff;"><center>Action</center></th>
 </tr>
@@ -5674,19 +5674,20 @@ $i=1;
 </div>
 </div>
 </td>
-<td>{{$var->contract_id}} </td>
-<td>
 
+<td class="text-right">{{$var->contract_id}} </td>
+
+<td class="text-left">
 @if($var->space_id_contract!='')
-<a class="link_style" href="{{route('space_details',$var->space_id_contract)}}" style="color: blue !important; text-decoration: underline !important;  cursor: pointer;" aria-pressed="true"><center>{{$var->space_id_contract}}</center></a>
+<a class="link_style" href="{{route('space_details',$var->space_id_contract)}}" style="color: blue !important; text-decoration: underline !important;  cursor: pointer;" aria-pressed="true">{{$var->space_id_contract}}</a>
 @else
 @endif
 </td>
 
-<td><center>{{date('d/m/Y',strtotime($var->start_date))}}</center></td>
-<td><center>{{date('d/m/Y',strtotime($var->end_date))}}</center></td>
+<td class="text-left">{{date('d/m/Y',strtotime($var->start_date))}}</td>
+<td class="text-left">{{date('d/m/Y',strtotime($var->end_date))}}</td>
 
-<td>@if($var->has_clients=="1")
+<td class="text-right">@if($var->has_clients=="1")
 @else
 @if($var->academic_dependence=='Yes')
 {{number_format($var->academic_season)}} {{$var->currency}}
@@ -5697,7 +5698,8 @@ $i=1;
 @endif
 
 </td>
-<td>
+
+<td class="text-right">
 @if($var->has_clients=="1")
 @else
 
@@ -5720,7 +5722,7 @@ $i=1;
 
 
 
-<td><center>
+<td class="text-left">
 @if($var->contract_status==0)
 TERMINATED
 @elseif($var->end_date<date('Y-m-d'))
@@ -5728,7 +5730,7 @@ EXPIRED
 @else
 ACTIVE
 @endif
-</center></td>
+</td>
 <td><center>
 <a title="View more details"  style="color:#3490dc !important; display:inline-block;" href="{{route('contract_details',base64_encode(base64_encode(base64_encode($var->contract_id))))}}" class=""   style="cursor: pointer;" ><center><i class="fa fa-eye" style="font-size:20px;" aria-hidden="true"></i></center></a>
 
@@ -6422,38 +6424,38 @@ dom:
 "pageLength": 100,
 "bLengthChange": false,
 "orderClasses": false,
-processing:true,
-serverSide:true,
-ajax: {
-url:"{{ route('get_insurance_contracts') }}"
+{{--processing:true,--}}
+{{--serverSide:true,--}}
+{{--ajax: {--}}
+{{--url:"{{ route('get_insurance_contracts') }}"--}}
 
-},
-columnDefs: [ {
-"searchable": false,
-"orderable": false,
-"targets": 0
-} ],
-"order": [[ 1, 'asc' ]],
+{{--},--}}
+{{--columnDefs: [ {--}}
+{{--"searchable": false,--}}
+{{--"orderable": false,--}}
+{{--"targets": 0--}}
+{{--} ],--}}
+{{--"order": [[ 1, 'asc' ]],--}}
 
-columns: [
+{{--columns: [--}}
 
-{data: 'DT_RowIndex', className: 'text-center', name: 'DT_RowIndex'},
-{data: 'full_name' , className: 'text-center'},
-{data: 'id' , className: 'text-center'},
-{data: 'insurance_class', className: 'text-center'},
-{data: 'principal', className: 'text-center'},
+{{--{data: 'DT_RowIndex', className: 'text-center', name: 'DT_RowIndex'},--}}
+{{--{data: 'full_name' , className: 'text-center'},--}}
+{{--{data: 'id' , className: 'text-center'},--}}
+{{--{data: 'insurance_class', className: 'text-center'},--}}
+{{--{data: 'principal', className: 'text-center'},--}}
 
-{data: 'commission_date', className: 'text-center'},
-{data: 'end_date', className: 'text-center'},
-{data: 'premium', className: 'text-center'},
-
-
-{data: 'contract_status', className: 'text-center'},
-{data: 'action', className: 'text-center', name: 'action', orderable: false, searchable: false},
+{{--{data: 'commission_date', className: 'text-center'},--}}
+{{--{data: 'end_date', className: 'text-center'},--}}
+{{--{data: 'premium', className: 'text-center'},--}}
 
 
+{{--{data: 'contract_status', className: 'text-center'},--}}
+{{--{data: 'action', className: 'text-center', name: 'action', orderable: false, searchable: false},--}}
 
-],
+
+
+{{--],--}}
 
 
 buttons: [
