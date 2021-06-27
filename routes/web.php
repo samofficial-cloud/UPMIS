@@ -502,6 +502,7 @@ Route::group(['middleware' => ['auth', 'space']], function() {
     Route::post('/create_space_contract', 'ContractsController@CreateSpaceContract')->name('create_space_contract');
     Route::get('/renew_space_contract/{id}', 'ContractsController@RenewSpaceContract')->name('renew_space_contract');
     Route::get('/space_contract_approval/{id}', 'ContractsController@ApproveSpaceContractForm')->name('space_contract_approval');
+    Route::get('/space_contract_approval_parent/{id}', 'ContractsController@ApproveSpaceContractParentForm')->name('space_contract_approval_parent');
     Route::post('/space_contract_approval_response', 'ContractsController@SpaceContractApprovalResponse')->name('space_contract_approval_response');
     Route::post('/space_contract_second_approval_response', 'ContractsController@SpaceContractSecondApprovalResponse')->name('space_contract_second_approval_response');
     Route::get('/terminate_space_contract/{id}', 'ContractsController@terminateSpaceContract')->name('terminate_space_contract');

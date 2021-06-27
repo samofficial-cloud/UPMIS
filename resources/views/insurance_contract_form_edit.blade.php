@@ -1896,7 +1896,7 @@
                 var vehicle_use=$("#vehicle_use").val();
                 var tin=$('#tin').val();
 
-                if(insurance_type=='COMPREHENSIVE'){
+                if((insurance_type.indexOf('COMPREHENSIVE') > -1) || insurance_class=='FIRE'){
                     $('#mode_of_paymentDiv').show();
 
 
@@ -3411,13 +3411,12 @@
                 $("#receipt_no_confirm").css('font-weight', 'bold');
 
 
-                //to cut to the chase
-                gonext();
+
 
 
                 if(insurance_class=='MOTOR'){
 
-                    if(insurance_type=='COMPREHENSIVE'){
+                    if(insurance_type.indexOf('COMPREHENSIVE') > -1){
 
                         if(p1=='1' & p2=='1' & p3=='1' & p4=='1'  & p5=='1' & p6=='1'  & p7=='1'  & p9=='1'  & p10=='1') {
 
@@ -3468,7 +3467,7 @@
 
                 }else{
 
-                    if(p1=='1' & p2=='1' & p4=='1'  & p5=='1' & p6=='1'  & p7=='1' & p8=='1' & p9=='1'  & p10=='1' ) {
+                    if(p1=='1' & p2=='1' & p4=='1' & p7=='1' & p8=='1' & p9=='1'  & p10=='1') {
 
                         if (value>=20 ){
                             document.getElementById("validate_money_msg").innerHTML ='';

@@ -1206,6 +1206,18 @@ if($privileges=='Read only') {
 
     }
 
+    public function ApproveSpaceContractParentForm(Request $request,$id)
+    {
+        $contract_data = DB::table('space_contracts')->join('clients','clients.full_name','=','space_contracts.full_name')->where('space_contracts.contract_id', $id)->get();
+
+        $client_id = DB::table('space_contracts')->join('clients','clients.full_name','=','space_contracts.full_name')->where('space_contracts.contract_id', $id)->value('clients.client_id');
+        $start_date = DB::table('space_contracts')->join('clients','clients.full_name','=','space_contracts.full_name')->where('space_contracts.contract_id', $id)->value('space_contracts.start_date');
+
+
+        return view('space_contract_form_approval_parent')->with('contract_data',$contract_data)->with('contract_id',$id)->with('client_id',$client_id)->with('start_date',$start_date);
+
+    }
+
 
 
     public function SpaceContractApprovalResponse(Request $request)
@@ -1279,8 +1291,10 @@ if($privileges=='Read only') {
         $contract_data = DB::table('space_contracts')->join('clients','clients.full_name','=','space_contracts.full_name')->where('space_contracts.contract_id', $id)->get();
 
         $client_id = DB::table('space_contracts')->join('clients','clients.full_name','=','space_contracts.full_name')->where('space_contracts.contract_id', $id)->value('clients.client_id');
+        $start_date = DB::table('space_contracts')->join('clients','clients.full_name','=','space_contracts.full_name')->where('space_contracts.contract_id', $id)->value('space_contracts.start_date');
 
-        return view('space_contract_form_renew')->with('contract_data',$contract_data)->with('contract_id',$id)->with('client_id',$client_id);
+
+        return view('space_contract_form_renew_parent')->with('contract_data',$contract_data)->with('contract_id',$id)->with('client_id',$client_id)->with('start_date',$start_date);
 
     }
 
@@ -1853,13 +1867,32 @@ if($privileges=='Read only') {
 
 
             $space_contract=space_contract::where('contract_id', $contract_id_created)->first();
-            $space_contract->tbs_certificate=$tbs_certificates_path;
-            $space_contract->gpsa_certificate=$gpsa_certificates_path;
-            $space_contract->food_business_license=$food_business_licenses_path;
-            $space_contract->business_license=$business_licenses_path;
-            $space_contract->osha_certificate=$osha_certificates_path;
-            $space_contract->tcra_registration=$tcra_registration_path;
-            $space_contract->brela_registration=$brela_registration_path;
+
+
+            if($request->get('renew')=='True'){
+                $certificate_data=space_contract::where('contract_id', $request->get('id_contract'))->first();
+
+                $space_contract->tbs_certificate=$certificate_data->tbs_certificate;
+                $space_contract->gpsa_certificate=$certificate_data->gpsa_certificate;
+                $space_contract->food_business_license=$certificate_data->food_business_license;
+                $space_contract->business_license=$certificate_data->business_license;
+                $space_contract->osha_certificate=$certificate_data->osha_certificate;
+                $space_contract->tcra_registration=$certificate_data->tcra_registration;
+                $space_contract->brela_registration=$certificate_data->brela_registration;
+
+
+            }else{
+
+                $space_contract->tbs_certificate=$tbs_certificates_path;
+                $space_contract->gpsa_certificate=$gpsa_certificates_path;
+                $space_contract->food_business_license=$food_business_licenses_path;
+                $space_contract->business_license=$business_licenses_path;
+                $space_contract->osha_certificate=$osha_certificates_path;
+                $space_contract->tcra_registration=$tcra_registration_path;
+                $space_contract->brela_registration=$brela_registration_path;
+
+            }
+
             $space_contract->save();
             //File management ends
 
@@ -2000,10 +2033,14 @@ if($privileges=='Read only') {
             }
             //invoice creation ends
 
+            if($request->get('client_type_contract')!='Direct and has clients'){
 
-            $spaces=space::where('space_id', $request->get('space_id_contract'))->first();
-            $spaces->occupation_status=1;
-            $spaces->save();
+                $spaces=space::where('space_id', $request->get('space_id_contract'))->first();
+                $spaces->occupation_status=1;
+                $spaces->save();
+            }
+
+
 
             $created_contract_id = DB::table('space_contracts')->orderBy('contract_id', 'desc')->limit(1)->value('contract_id');
 
@@ -2503,14 +2540,35 @@ if($privileges=='Read only') {
             }
 
 
+
+
             $space_contract=space_contract::where('contract_id', $contract_id_created)->first();
-            $space_contract->tbs_certificate=$tbs_certificates_path;
-            $space_contract->gpsa_certificate=$gpsa_certificates_path;
-            $space_contract->food_business_license=$food_business_licenses_path;
-            $space_contract->business_license=$business_licenses_path;
-            $space_contract->osha_certificate=$osha_certificates_path;
-            $space_contract->tcra_registration=$tcra_registration_path;
-            $space_contract->brela_registration=$brela_registration_path;
+
+            if($request->get('renew')=='True'){
+
+                $certificate_data=space_contract::where('contract_id', $request->get('id_contract'))->first();
+
+                $space_contract->tbs_certificate=$certificate_data->tbs_certificate;
+                $space_contract->gpsa_certificate=$certificate_data->gpsa_certificate;
+                $space_contract->food_business_license=$certificate_data->food_business_license;
+                $space_contract->business_license=$certificate_data->business_license;
+                $space_contract->osha_certificate=$certificate_data->osha_certificate;
+                $space_contract->tcra_registration=$certificate_data->tcra_registration;
+                $space_contract->brela_registration=$certificate_data->brela_registration;
+
+
+            }else{
+
+                $space_contract->tbs_certificate=$tbs_certificates_path;
+                $space_contract->gpsa_certificate=$gpsa_certificates_path;
+                $space_contract->food_business_license=$food_business_licenses_path;
+                $space_contract->business_license=$business_licenses_path;
+                $space_contract->osha_certificate=$osha_certificates_path;
+                $space_contract->tcra_registration=$tcra_registration_path;
+                $space_contract->brela_registration=$brela_registration_path;
+
+            }
+
             $space_contract->save();
 
 
@@ -2617,9 +2675,12 @@ if($privileges=='Read only') {
 
             //Invoice creation ends
 
-            $spaces=space::where('space_id', $request->get('space_id_contract'))->first();
-            $spaces->occupation_status=1;
-            $spaces->save();
+            if($request->get('client_type_contract')!='Direct and has clients'){
+
+                $spaces=space::where('space_id', $request->get('space_id_contract'))->first();
+                $spaces->occupation_status=1;
+                $spaces->save();
+            }
 
             $created_contract_id = DB::table('space_contracts')->orderBy('contract_id', 'desc')->limit(1)->value('contract_id');
 
@@ -3304,8 +3365,6 @@ if($privileges=='Read only') {
                 $amount_total=$request->get('amount')+$request->get('additional_businesses_amount');
                 $academic_season_total=$request->get('academic_season')+$request->get('additional_businesses_amount');
                 $vacation_season_total=$request->get('vacation_season')+$request->get('additional_businesses_amount');
-
-
 
 
 

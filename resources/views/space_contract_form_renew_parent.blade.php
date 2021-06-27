@@ -287,7 +287,7 @@
                 @elseif($category=='Real Estate only')
                     <li><a href="{{ route('home4') }}"><i class="fas fa-home active"></i>Home</a></li>
                 @elseif($category=='Research Flats only')
-          <li><a href="{{ route('home6') }}"><i class="fas fa-home active"></i>Home</a></li>
+                    <li><a href="{{ route('home6') }}"><i class="fas fa-home active"></i>Home</a></li>
                 @endif
                 @if(($category=='CPTU only') && (Auth::user()->role!='Vote Holder') && (Auth::user()->role!='Accountant-Cost Centre'))
                     <li><a href="{{ route('home3') }}"><i class="fas fa-home active"></i>Home</a></li>
@@ -335,265 +335,140 @@
                                     {{csrf_field()}}
 
                                     <!-- progressbar -->
-
                                         <ul id="progressbar">
                                             <li class="active" id="personal"><strong>Client</strong></li>
-                                            <li  id="renting_space"><strong>Real Estate</strong></li>
+
                                             <li id="payment"><strong>Payment</strong></li>
                                             <li id="confirm"><strong>Confirm</strong></li>
-{{--                                            <li id="invoice"><strong>Invoice</strong></li>--}}
+                                            {{--                                            <li id="invoice"><strong>Invoice</strong></li>--}}
                                         </ul>
                                         <!-- fieldsets -->
                                         <fieldset>
-                                            <div class="form-card">
-                                                <h2 class="fs-title">Client Information</h2> <div class="form-group">
-                                                    <div class="form-wrapper" id="clientdiv">
-                                                        <label for="client_type">Client Category <span style="color: red;"> *</span></label>
-                                                        <span id="ctypemsg"></span>
-                                                        <select class="form-control"  id="client_type" name="client_type">
-                                                            <option value="0" disabled selected hidden>select client category</option>
-                                                            <option value="1">Individual</option>
-                                                            <option value="2">Company/Organization</option>
-                                                        </select>
+                                            @foreach ($contract_data as $var)
+                                                <div class="form-card">
+                                                    <h2 class="fs-title">Client Information</h2> <div class="form-group">
+                                                        <div class="form-wrapper" id="clientdiv">
+                                                            <label for="client_type">Client Category <span style="color: red;"> *</span></label>
+                                                            <span id="ctypemsg"></span>
+
+                                                            @if($var->type=='Company/Organization')
+                                                                <input type="text"   value="{{$var->type}}"  readonly class="form-control" >
+                                                                <input type="text" hidden="" id="client_type"  value="2" name="client_type" readonly class="form-control" >
+                                                            @elseif($var->type=='Individual')
+                                                                <input type="text"   value="{{$var->type}}"  readonly class="form-control" >
+                                                                <input type="text" hidden="" id="client_type"  value="1" name="client_type" readonly class="form-control" >
+                                                            @else
+                                                            @endif
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group row" id="namediv" >
+
+
+
+
+
+
+                                                        @if($var->type=="Individual")
+                                                            <div class="form-wrapper col-6">
+                                                                <label for="first_name">First Name <span style="color: red;"> *</span></label>
+                                                                <span id="name1msg"></span>
+                                                                <input type="text" id="first_name" readonly name="first_name" class="form-control"  value="{{$var->first_name}}">
+                                                            </div>
+                                                            <div class="form-wrapper col-6">
+                                                                <label for="last_name">Last Name <span style="color: red;"> *</span></label>
+                                                                <span id="name2msg"></span>
+                                                                <input type="text" id="last_name" readonly name="last_name" class="form-control"  value="{{$var->last_name}}">
+                                                            </div>
+
+                                                        @else
+                                                            <div class="form-group col-12" id="companydiv">
+                                                                <div class="form-wrapper">
+                                                                    <label for="company_name">Company Name <span style="color: red;"> *</span></label>
+                                                                    <span id="cnamemsg"></span>
+                                                                    <input type="text" id="company_name" readonly name="company_name" value="{{$var->first_name}}" class="form-control">
+                                                                </div>
+                                                            </div>
+                                                        @endif
+                                                    </div>
+                                                    <div class="form-group row">
+
+
+                                                        <div class="form-wrapper col-12">
+                                                            <label for="official_client_id">Client ID<span style="color: red;"> *</span></label>
+                                                            <span id="official_client_id_msg"></span>
+                                                            <input type="text" id="official_client_id" readonly value="{{$var->official_client_id}}" name="official_client_id" class="form-control">
+                                                        </div>
+
+
+                                                        <div class="form-wrapper col-6 pt-1">
+                                                            <label for="email">Email <span style="color: red;"> *</span></label>
+                                                            <span id="email_msg"></span>
+                                                            <input type="text" name="email" value="{{$var->email}}" readonly id="email" class="form-control" placeholder="someone@example.com">
+                                                        </div>
+
+
+                                                        <div class="form-wrapper col-6 pt-1">
+                                                            <label for="phone_number">Phone Number <span style="color: red;"> *</span></label>
+                                                            <span id="phone_msg"></span>
+                                                            <input type="text" id="phone_number" value="{{$var->phone_number}}" readonly name="phone_number" class="form-control" placeholder="0xxxxxxxxxx" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength = "10"  minlength = "10" onkeypress="if(this.value.length<10){return event.charCode >= 48 && event.charCode <= 57} else return false;">
+                                                        </div>
+
 
                                                     </div>
+
+
+                                                    <div class="form-group">
+                                                        <div class="form-wrapper">
+                                                            <label for="address">Address <span style="color: red;"> *</span></label>
+                                                            <span id="address_msg"></span>
+                                                            <input type="text" id="address" value="{{$var->address}}" readonly name="address" class="form-control">
+                                                        </div>
+                                                    </div>
+
+
+
+
+                                                    <div class="form-group">
+                                                        <div class="form-wrapper" >
+                                                            <label for="client_type_contract">Client Type<span style="color: red;"> *</span></label>
+                                                            <span id="ctype_contract_msg"></span>
+                                                            <input type="text" id="client_type_contract" readonly value="{{$var->client_type_contract}}" name="client_type_contract" class="form-control">
+                                                        </div>
+                                                    </div>
+
+
+                                                    @if($var->parent_client!='')
+                                                        <div class="form-group">
+                                                            <div id="parent_clientDiv" style="display: none;" class="form-wrapper  pt-1">
+                                                                <label for="parent_client"  ><strong>Parent client <span style="color: red;"> *</span></strong></label>
+                                                                <span id="parent_client_msg"></span>
+                                                                <?php
+                                                                $parent_client_name=DB::table('clients')->where('client_id',$var->parent_client)->value('full_name');
+
+                                                                ?>
+
+                                                                <input type="text" id="parent_client" value="{{$parent_client_name}}" readonly class="form-control">
+
+                                                            </div>
+                                                        </div>
+                                                    @else
+                                                    @endif
+
+
+
+
+
+
+
+
                                                 </div>
-
-                                                <div class="form-group row" id="namediv" style="display: none;">
-
-
-
-
-
-
-
-                                                    <div class="form-wrapper col-6">
-                                                        <label for="first_name">First Name <span style="color: red;"> *</span></label>
-                                                        <span id="name1msg"></span>
-                                                        <input type="text" id="first_name" name="first_name" class="form-control"  onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
-                                                    </div>
-                                                    <div class="form-wrapper col-6">
-                                                        <label for="last_name">Last Name <span style="color: red;"> *</span></label>
-                                                        <span id="name2msg"></span>
-                                                        <input type="text" id="last_name"  name="last_name" class="form-control"  onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
-                                                    </div>
-                                                </div>
-
-                                                <div class="form-group" id="companydiv" style="display: none;">
-                                                    <div class="form-wrapper">
-                                                        <label for="company_name">Company Name <span style="color: red;"> *</span></label>
-                                                        <span id="cnamemsg"></span>
-                                                        <input type="text" id="company_name"  name="company_name" class="form-control">
-                                                    </div>
-                                                </div>
-
-                                                <div class="form-group row">
-
-
-                                                    <div class="form-wrapper col-12">
-                                                        <label for="official_client_id">Client ID<span style="color: red;"> *</span></label>
-                                                        <span id="official_client_id_msg"></span>
-                                                        <input type="text" id="official_client_id" name="official_client_id" class="form-control">
-                                                    </div>
-
-
-                                                    <div class="form-wrapper col-6 pt-1">
-                                                        <label for="email">Email <span style="color: red;"> *</span></label>
-                                                        <span id="email_msg"></span>
-                                                        <input type="text" name="email"  id="email" class="form-control" placeholder="someone@example.com">
-                                                    </div>
-
-
-                                                    <div class="form-wrapper col-6 pt-1">
-                                                        <label for="phone_number">Phone Number <span style="color: red;"> *</span></label>
-                                                        <span id="phone_msg"></span>
-                                                        <input type="text" id="phone_number"  name="phone_number" class="form-control" placeholder="0xxxxxxxxxx" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength = "10"  minlength = "10" onkeypress="if(this.value.length<10){return event.charCode >= 48 && event.charCode <= 57} else return false;">
-                                                    </div>
-
-
-                                                </div>
-
-
-                                                <div class="form-group">
-                                                    <div class="form-wrapper">
-                                                        <label for="address">Address <span style="color: red;"> *</span></label>
-                                                        <span id="address_msg"></span>
-                                                        <input type="text" id="address"  name="address" class="form-control">
-                                                    </div>
-                                                </div>
-
-
-
-
-                                                <div class="form-group">
-                                                    <div class="form-wrapper" >
-                                                        <label for="client_type_contract">Client Type<span style="color: red;"> *</span></label>
-                                                        <span id="ctype_contract_msg"></span>
-                                                        <select class="form-control"  id="client_type_contract" name="client_type_contract">
-                                                            <option value=""></option>
-                                                            <option value="Direct">Direct</option>
-                                                            <option value="Direct and has clients">Direct and has clients</option>
-                                                            <option value="Indirect">Indirect</option>
-                                                        </select>
-
-                                                    </div>
-                                                </div>
-
-
-
-                                                <div class="form-group">
-                                                    <div id="parent_clientDiv" style="display: none;" class="form-wrapper  pt-1">
-                                                        <label for="parent_client"  ><strong>Parent client <span style="color: red;"> *</span></strong></label>
-                                                        <span id="parent_client_msg"></span>
-                                                        <select id="parent_client"  class="form-control" name="parent_client" >
-                                                            <option value="" selected></option>
-
-                                                            <?php
-                                                            $parent_clients=DB::table('space_contracts')->join('clients','clients.full_name','=','space_contracts.full_name')->where('space_contracts.has_clients',1)->where('space_contracts.contract_status',1)->where('space_contracts.end_date','>',date('Y-m-d'))->get();
-
-
-                                                            $tempOut = array();
-                                                            foreach($parent_clients as $values){
-                                                                $iterator = new RecursiveIteratorIterator(new RecursiveArrayIterator($values));
-                                                                $val = (iterator_to_array($iterator,true));
-                                                                $tempoIn=$val['full_name'];
-
-                                                                if(!in_array($tempoIn, $tempOut))
-                                                                {
-                                                                    print('<option value="'.$val['client_id'].'">'.$val['full_name'].'</option>');
-                                                                    array_push($tempOut,$tempoIn);
-                                                                }
-
-                                                            }
-                                                            ?>
-                                                        </select>
-                                                    </div>
-                                                </div>
-
-
-
-
-
-
-
-
-                                            </div>
-                                            <input type="button" name="next" id="next1" class="next action-button" value="Next Step" />
-                                            <input type="button" class="btn btn-danger action-button" value="Cancel" onclick="history.back()" style="background-color: red !important;">
-                                            {{-- <a href="/contracts_management" style="background-color: red !important;" class="btn  action-button" >Cancel</a> --}}
+                                                <input type="button" name="next" id="next1" class="next action-button" value="Next Step" />
+                                                <input type="button" class="btn btn-danger action-button" value="Cancel" onclick="history.back()" style="background-color: red !important;">
+                                                {{-- <a href="/contracts_management" style="background-color: red !important;" class="btn  action-button" >Cancel</a> --}}
                                         </fieldset>
-                                        {{-- Second Form --}}
-                                        <fieldset>
-                                            <div class="form-card">
-                                                <h2 class="fs-title">Real Estate Information</h2>
 
 
-
-                                                <div class="form-group row">
-
-
-
-
-                                                    <div class="form-wrapper col-12 pt-1">
-                                                        <label for="major_industry"  ><strong>Category <span style="color: red;"> *</span></strong></label>
-                                                        <span id="major_msg"></span>
-                                                        <select id="getMajor"  class="form-control" name="major_industry" >
-                                                            <option value="" selected></option>
-
-                                                            <?php
-                                                            $major_industries=DB::table('space_classification')->get();
-
-
-                                                            $tempOut = array();
-                                                            foreach($major_industries as $values){
-                                                                $iterator = new RecursiveIteratorIterator(new RecursiveArrayIterator($values));
-                                                                $val = (iterator_to_array($iterator,true));
-                                                                $tempoIn=$val['major_industry'];
-
-                                                                if(!in_array($tempoIn, $tempOut))
-                                                                {
-                                                                    print('<option value="'.$val['major_industry'].'">'.$val['major_industry'].'</option>');
-                                                                    array_push($tempOut,$tempoIn);
-                                                                }
-
-                                                            }
-                                                            ?>
-                                                        </select>
-                                                    </div>
-
-                                                    <div class="form-wrapper col-12 pt-2">
-                                                        <label for=""  ><strong>Sub Category<span style="color: red;"> *</span></strong></label>
-                                                        <span id="minor_msg"></span>
-                                                        <select id="minor_list"  class="form-control" name="minor_industry" >
-
-
-                                                        </select>
-                                                    </div>
-
-
-                                                    <div class="form-wrapper col-12 pt-2">
-                                                        <label for="space_location"  ><strong>Location <span style="color: red;"> *</span></strong></label>
-                                                        <span id="location_msg"></span>
-                                                        <select class="form-control" id="space_location"  name="space_location" >
-
-                                                        </select>
-                                                    </div>
-
-
-
-                                                    <div class="form-wrapper col-12 pt-2">
-                                                        <label for="space_location"  ><strong>Sub location <span style="color: red;"> *</span></strong></label>
-                                                        <span id="sub_location_msg"></span>
-                                                        <select class="form-control" id="space_sub_location"  name="space_sub_location" >
-
-                                                        </select>
-
-
-                                                    </div>
-
-
-
-                                                    <div class="form-wrapper col-12 pt-2">
-                                                        <label for="" ><strong>Real Estate Number <span style="color: red;"> *</span></strong></label>
-                                                        <span id="space_id_msg"></span>
-
-                                                        <select class="form-control" id="space_id_contract"  name="space_id_contract" >
-
-                                                        </select>
-                                                    </div>
-
-
-
-
-                                                    <input type="hidden"  step="0.01" class="form-control" id="space_size" name="space_size" value=""  autocomplete="off">
-
-                                                    <input type="hidden"  class="form-control" id="has_water_bill" name="has_water_bill" value=""  autocomplete="off">
-
-                                                    <input type="hidden"  class="form-control" id="has_electricity_bill" name="has_electricity_bill" value=""  autocomplete="off">
-
-
-
-
-
-
-                                                </div>
-
-
-
-
-
-
-
-
-
-
-
-                                            </div>
-                                            <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
-                                            <input type="button" id="next2" name="next" class="next action-button" value="Next Step" />
-                                            <input type="button" class="btn btn-danger action-button" value="Cancel" onclick="history.back()" style="background-color: red !important;" />
-                                            {{--  <a href="/contracts_management" style="background-color: red !important;" class="btn  action-button" >Cancel</a> --}}
-                                        </fieldset>
                                         {{-- Third Form --}}
                                         <fieldset>
                                             <div class="form-card">
@@ -605,102 +480,46 @@
                                                         <label for="contract_category">Category of contract <span style="color: red;"> *</span></label>
                                                         <span id="contract_category_msg"></span>
                                                         <select id="contract_category" class="form-control" name="contract_category" >
-                                                            <option value="" ></option>
-                                                            <option value="Solicited" >Solicited</option>
-                                                            <option value="Unsolicited" >Unsolicited</option>
+                                                            <option value="{{$var->contract_category}}" selected>{{$var->contract_category}}</option>
+
+                                                            @if($var->contract_category=='Solicited')
+                                                                <option value="Unsolicited" >Unsolicited</option>
+                                                            @elseif($var->contract_category=='Unsolicited')
+                                                                <option value="Solicited" >Solicited</option>
+                                                            @else
+                                                            @endif
                                                         </select>
                                                     </div>
 
 
 
-                                                    <div id="tinDiv" class="form-group col-6 pt-4">
+                                                    <div id="tinDiv" class="form-group col-12 pt-4">
                                                         <div class="form-wrapper">
                                                             <label for="tin">TIN <span style="color: red;"> *</span></label>
                                                             <span id="tin_msg"></span>
-                                                            <input type="number" id="tin" name="tin" class="form-control"  oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); minCharacters(this.value);" maxlength = "9">
+                                                            <input type="number" id="tin" value="" name="tin" class="form-control"  oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); minCharacters(this.value);" maxlength = "9">
                                                             <p id="error_tin"></p>
                                                         </div>
                                                     </div>
 
 
 
-                                                    <div id="tbs_certificateDiv" style="display: none;" class=" col-6 pt-4">
-                                                        <div class="">
-                                                            <label for="tbs_certificate">Certificate from TBS(Only pdf format is accepted) <span style="color: red;"> *</span></label>
-                                                            <span id="tbs_certificate_msg"></span>
-                                                            <input type="file" id="tbs_certificate" name="tbs_certificate" >
-                                                        </div>
-                                                    </div>
-
-
-                                                    <div id="gpsa_certificateDiv" style="display: none;"  class=" col-6 pt-4">
-                                                        <div class="">
-                                                            <label for="gpsa_certificate">Certificate from GPSA(Only pdf format is accepted) <span style="color: red;"> *</span></label>
-                                                            <span id="gpsa_certificate_msg"></span>
-                                                            <input type="file" id="gpsa_certificate" name="gpsa_certificate" >
-                                                        </div>
-                                                    </div>
-
-
-                                                    <div id="food_business_licenseDiv" style="display: none;" class=" col-6 pt-4">
-                                                        <div class="">
-                                                            <label for="food_business_license">Food business license(Only pdf format is accepted) <span style="color: red;"> *</span></label>
-                                                            <span id="food_business_license_msg"></span>
-                                                            <input type="file" id="food_business_license" name="food_business_license" >
-                                                        </div>
-                                                    </div>
-
-
-                                                    <div style="display: none;" id="business_licenseDiv" class=" col-6 pt-4">
-                                                        <div class="">
-                                                            <label for="business_license">Business license(Only pdf format is accepted)<span style="color: red;"> *</span></label>
-                                                            <span id="business_license_msg"></span>
-                                                            <input type="file" id="business_license"  name="business_license" >
-                                                        </div>
-                                                    </div>
-
-
-
-                                                    <div style="display: none;" id="osha_certificateDiv" class=" col-12 pt-4">
-                                                        <div class="">
-                                                            <label for="osha_certificate">Certificate from OSHA(Only pdf format is accepted)<span style="color: red;"> *</span></label>
-                                                            <span id="osha_certificate_msg"></span>
-                                                            <input type="file" id="osha_certificate"  name="osha_certificate" >
-                                                        </div>
-                                                    </div>
-
-
-                                                    <div style="display: none;" id="tcra_registrationDiv"  class=" col-6 pt-4">
-                                                        <div class="">
-                                                            <label for="tcra_registration">TCRA registration(Only pdf format is accepted)<span style="color: red;"> *</span></label>
-                                                            <span id="tcra_registration_msg"></span>
-                                                            <input type="file"  id="tcra_registration"  name="tcra_registration" >
-                                                        </div>
-                                                    </div>
-
-
-                                                    <div style="display: none;" id="brela_registrationDiv" class=" col-12">
-                                                        <div class="">
-                                                            <label for="brela_registration">BRELA registration(Only pdf format is accepted)<span style="color: red;"> *</span></label>
-                                                            <span id="brela_registration_msg"></span>
-                                                            <input type="file" id="brela_registration"  name="brela_registration" >
-                                                        </div>
-                                                    </div>
 
 
 
 
-                                                    <div class="form-wrapper col-12 " style="margin-top: 4.5rem !important;">
+
+                                                    <div class="form-wrapper col-12 " >
                                                         <label for="start_date">Start date of the contract<span style="color: red;"> *</span></label>
                                                         <span id="start_date_msg"></span>
-                                                        <input autocomplete="off" id="start_date"  class="form-control">
-                                                        <input type="hidden" id="start_date_alternate" name="start_date" class="form-control " >
+                                                        <input  id="start_date"  value="" class="form-control" autocomplete="off">
+                                                        <input type="hidden" id="start_date_alternate" name="start_date" class="form-control" >
                                                     </div>
 
                                                     <div class="form-wrapper col-6">
                                                         <label for="duration">Duration <span style="color: red;"> *</span></label>
                                                         <span id="duration_msg"></span>
-                                                        <input type="number"  id="duration" name="duration" class="form-control" >
+                                                        <input type="number"  id="duration" value="" name="duration" class="form-control" >
                                                     </div>
 
                                                     <div class="form-wrapper col-6">
@@ -718,7 +537,7 @@
                                                     <div id="percentage_to_payDiv"  class="form-wrapper pt-4 col-12">
                                                         <label for="percentage_to_pay">Percentage to be paid(Of total collection) <span style="color: red;"> *</span></label>
                                                         <span id="percentage_to_pay_msg"></span>
-                                                        <input type="number" step="0.01" id="percentage_to_pay" name="percentage_to_pay" class="form-control">
+                                                        <input type="number" step="0.01" id="percentage_to_pay" value="" name="percentage_to_pay" class="form-control">
                                                     </div>
 
 
@@ -729,98 +548,210 @@
                                                     <div id="academic_dependenceDiv" class="form-wrapper col-12">
                                                         <label for="currency">Depend on academic year <span style="color: red;"> *</span></label>
                                                         <span id="academic_dependence_msg"></span>
-                                                        <select id="academic_dependence" class="form-control" name="academic_dependence" >
-                                                            <option value="" ></option>
-                                                            <option value="No" >No</option>
-                                                            <option value="Yes" >Yes</option>
-                                                        </select>
+                                                        <input type="text" readonly id="academic_dependence" name="academic_dependence" value="{{$var->academic_dependence}}" class="form-control">
                                                     </div>
 
+                                                    @if($var->academic_dependence=='Yes')
 
-                                                    <div id="academicDiv" style="display: none" class="form-wrapper pt-4 col-6">
-                                                        <label for="amount">Amount per payment cycle(Academic season) <span style="color: red;"> *</span></label>
-                                                        <span id="academic_season_msg"></span>
-                                                        <input type="number"  id="academic_season" name="academic_season" class="form-control" >
-                                                    </div>
+                                                        @if($var->has_additional_businesses=='')
+                                                            <div id="academicDiv"  class="form-wrapper pt-4 col-6">
+                                                                <label for="amount">Amount per payment cycle(Academic season) <span style="color: red;"> *</span></label>
+                                                                <span id="academic_season_msg"></span>
+                                                                <input type="number" value="{{$var->academic_season}}" id="academic_season" name="academic_season" class="form-control">
+                                                            </div>
 
 
-                                                    <div id="vacationDiv" style="display: none" class="form-wrapper pt-4 col-6">
-                                                        <label for="amount">Amount per payment cycle(Vacation season) <span style="color: red;"> *</span></label>
-                                                        <span id="vacation_season_msg"></span>
-                                                        <input type="number"  id="vacation_season" name="vacation_season" class="form-control" >
-                                                    </div>
+                                                            <div id="vacationDiv"  class="form-wrapper pt-4 col-6">
+                                                                <label for="amount">Amount per payment cycle(Vacation season) <span style="color: red;"> *</span></label>
+                                                                <span id="vacation_season_msg"></span>
+                                                                <input type="number" value="{{$var->vacation_season}}" id="vacation_season" name="vacation_season" class="form-control" >
+                                                            </div>
 
-                                                    <div id="amountDiv" style="display: none" class="form-wrapper pt-4 col-12">
-                                                        <label for="amount">Amount per payment cycle <span style="color: red;"> *</span></label>
-                                                        <span id="amount_msg"></span>
-                                                        <input type="number"  id="amount" name="amount" class="form-control" >
-                                                    </div>
+                                                        @else
+                                                            <div id="academicDiv"  class="form-wrapper pt-4 col-6">
+                                                                <label for="amount">Amount per payment cycle(Academic season) <span style="color: red;"> *</span></label>
+                                                                <span id="academic_season_msg"></span>
+                                                                <input type="number" value="{{($var->academic_season-$var->additional_businesses_amount)}}" id="academic_season" name="academic_season" class="form-control">
+                                                            </div>
+
+
+                                                            <div id="vacationDiv"  class="form-wrapper pt-4 col-6">
+                                                                <label for="amount">Amount per payment cycle(Vacation season) <span style="color: red;"> *</span></label>
+                                                                <span id="vacation_season_msg"></span>
+                                                                <input type="number" value="{{($var->vacation_season-$var->additional_businesses_amount)}}" id="vacation_season" name="vacation_season" class="form-control" >
+                                                            </div>
+
+                                                        @endif
+
+                                                    @else
+                                                        @if($var->has_additional_businesses=='')
+                                                            <div id="amountDiv"  class="form-wrapper pt-4 col-12">
+                                                                <label for="amount">Amount per payment cycle <span style="color: red;"> *</span></label>
+                                                                <span id="amount_msg"></span>
+                                                                <input type="number"  value="{{$var->amount}}" id="amount" name="amount" class="form-control" >
+                                                            </div>
+                                                        @else
+                                                            <div id="amountDiv"  class="form-wrapper pt-4 col-12">
+                                                                <label for="amount">Amount per payment cycle <span style="color: red;"> *</span></label>
+                                                                <span id="amount_msg"></span>
+                                                                <input type="number"  value="{{($var->amount-$var->additional_businesses_amount)}}" id="amount" name="amount" class="form-control" >
+                                                            </div>
+                                                        @endif
+
+
+
+                                                    @endif
 
                                                     <div id="rent_sqmDiv"  class="form-wrapper pt-4 col-12">
                                                         <label for="rent_sqm">Rent/SQM <span >(Leave empty if not applicable)</span></label>
-                                                        <input type="number"  id="rent_sqm" name="rent_sqm"  class="form-control">
-                                                    </div>
-
-                                                    <div id="has_additional_businessesDiv" class="form-wrapper pt-4 col-12" style="display: none; text-align: left;">
-
-                                                        <label for="has_additional_businesses" style="display: inline-block;">Has additional businesses in the area</label>
-                                                        <input type="checkbox"  style="display: inline-block;" value="1" id="has_additional_businesses" onchange="showAdditionalBusinesses()"  name="has_additional_businesses" autocomplete="off">
-
+                                                        <input type="text" value="{{$var->rent_sqm}}"  id="rent_sqm" name="rent_sqm"  class="form-control">
                                                     </div>
 
 
+                                                    @if($var->has_additional_businesses!='')
+                                                        <div id="has_additional_businessesDiv" class="form-wrapper pt-4 col-12" style=" text-align: left;">
 
-                                                    <div id="additional_businesses_listDiv" class="form-wrapper pt-4 col-12" style="display: none;">
-                                                        <label for="">List of the businesses (Comma separated):<span style="color: red;"> *</span></label>
-                                                        <span id="additional_businesses_list_msg"></span>
-                                                        <textarea style="width: 100%;" id="additional_businesses_list" name="additional_businesses_list"></textarea>
+                                                            <label for="has_additional_businesses" style="display: inline-block;">Has additional businesses in the area</label>
+                                                            <input type="checkbox"  style="display: inline-block;" value="1" id="has_additional_businesses" onchange="showAdditionalBusinesses()" checked readonly  name="has_additional_businesses" autocomplete="off">
 
-                                                    </div>
-
-
-                                                    <div id="additional_businesses_amountDiv" style="display: none;" class="form-wrapper pt-4 col-12">
-                                                        <label for="additional_businesses_amount">Amount to be paid for additional businesses in the area<span style="color: red;"> *</span></label>
-                                                        <span id="additional_businesses_amount_msg"></span>
-                                                        <input type="number"  id="additional_businesses_amount" name="additional_businesses_amount" class="form-control">
-                                                    </div>
-
-                                                    <div id="total_amountDiv" style="display: none;" class="form-wrapper pt-4 col-12">
-                                                        <label for="total_amount">Total amount per payment cycle<span style="color: red;"> *</span></label>
-                                                        <span id="total_amount_msg"></span>
-                                                        <input type="text"  id="total_amount" readonly name="total_amount" class="form-control">
-                                                    </div>
+                                                        </div>
 
 
-                                                    <div id="academic_season_totalDiv" style="display: none" class="form-wrapper pt-4 col-6">
-                                                        <label for="academic_season_total">Total amount per payment cycle(Academic season) <span style="color: red;"> *</span></label>
-                                                        <span id="academic_season_total_msg"></span>
-                                                        <input type="text" readonly id="academic_season_total" name="academic_season_total" class="form-control">
-                                                    </div>
+
+                                                        <div id="additional_businesses_listDiv" class="form-wrapper pt-4 col-12" >
+                                                            <label for="">List of the businesses (Comma separated):<span style="color: red;"> *</span></label>
+                                                            <span id="additional_businesses_list_msg"></span>
+                                                            <textarea style="width: 100%;" id="additional_businesses_list" value="{{$var->additional_businesses_list}}" name="additional_businesses_list"></textarea>
+
+                                                        </div>
 
 
-                                                    <div id="vacation_season_totalDiv" style="display: none" class="form-wrapper pt-4 col-6">
-                                                        <label for="vacation_season_total">Total amount per payment cycle(Vacation season) <span style="color: red;"> *</span></label>
-                                                        <span id="vacation_season_total_msg"></span>
-                                                        <input type="text" readonly id="vacation_season_total" name="vacation_season_total" class="form-control">
-                                                    </div>
+                                                        <div id="additional_businesses_amountDiv"  class="form-wrapper pt-4 col-12">
+                                                            <label for="additional_businesses_amount">Amount to be paid for additional businesses in the area<span style="color: red;"> *</span></label>
+                                                            <span id="additional_businesses_amount_msg"></span>
+                                                            <input type="number"  id="additional_businesses_amount" value="{{$var->additional_businesses_amount}}" name="additional_businesses_amount" class="form-control">
+                                                        </div>
+
+                                                        @if($var->academic_dependence=='No')
+                                                            <div id="total_amountDiv"  class="form-wrapper pt-4 col-12">
+                                                                <label for="total_amount">Total amount per payment cycle<span style="color: red;"> *</span></label>
+                                                                <span id="total_amount_msg"></span>
+                                                                <input type="text"  id="total_amount" value="" readonly name="total_amount" class="form-control">
+                                                            </div>
+
+                                                        @else
+                                                            <div id="academic_season_totalDiv"  class="form-wrapper pt-4 col-6">
+                                                                <label for="academic_season_total">Total amount per payment cycle(Academic season) <span style="color: red;"> *</span></label>
+                                                                <span id="academic_season_total_msg"></span>
+                                                                <input type="text" readonly id="academic_season_total" name="academic_season_total" class="form-control">
+                                                            </div>
 
 
-                                                    <div id="has_security_depositDiv" class="form-wrapper col-12">
-                                                        <label for="has_security_deposit">Has security deposit?<span style="color: red;"> *</span></label>
-                                                        <span id="has_security_deposit_msg"></span>
-                                                        <select id="has_security_deposit" class="form-control" name="has_security_deposit">
-                                                            <option value="" ></option>
-                                                            <option value="No" >No</option>
-                                                            <option value="Yes" >Yes</option>
-                                                        </select>
-                                                    </div>
+                                                            <div id="vacation_season_totalDiv"  class="form-wrapper pt-4 col-6">
+                                                                <label for="vacation_season_total">Total amount per payment cycle(Vacation season) <span style="color: red;"> *</span></label>
+                                                                <span id="vacation_season_total_msg"></span>
+                                                                <input type="text" readonly id="vacation_season_total" name="vacation_season_total" class="form-control">
+                                                            </div>
+                                                        @endif
+
+                                                    @else
 
 
-                                                    <div id="security_depositDiv" style="display: none" class="form-wrapper pt-4 col-12">
-                                                        <label for="security_deposit">Security deposit<span style="color: red;"> *</span></label>
-                                                        <span id="security_deposit_msg"></span>
-                                                        <input type="text"  id="security_deposit" readonly name="security_deposit" class="form-control">
-                                                    </div>
+
+
+
+
+                                                        <div id="has_additional_businessesDiv" class="form-wrapper pt-4 col-12" style=" text-align: left;">
+
+                                                            <label for="has_additional_businesses" style="display: inline-block;">Has additional businesses in the area</label>
+                                                            <input type="checkbox"  style="display: inline-block;" value="1" id="has_additional_businesses" onchange="showAdditionalBusinesses()" readonly  name="has_additional_businesses" autocomplete="off">
+
+                                                        </div>
+
+
+
+                                                        <div id="additional_businesses_listDiv" class="form-wrapper pt-4 col-12"  style="display: none;">
+                                                            <label for="">List of the businesses (Comma separated):<span style="color: red;"> *</span></label>
+                                                            <span id="additional_businesses_list_msg"></span>
+                                                            <textarea style="width: 100%;" id="additional_businesses_list" value="" name="additional_businesses_list"></textarea>
+
+                                                        </div>
+
+
+                                                        <div id="additional_businesses_amountDiv"  class="form-wrapper pt-4 col-12" style="display: none;">
+                                                            <label for="additional_businesses_amount">Amount to be paid for additional businesses in the area<span style="color: red;"> *</span></label>
+                                                            <span id="additional_businesses_amount_msg"></span>
+                                                            <input type="number"  id="additional_businesses_amount" value="" name="additional_businesses_amount" class="form-control">
+                                                        </div>
+
+
+                                                        <div id="total_amountDiv" style="display: none;" class="form-wrapper pt-4 col-12">
+                                                            <label for="total_amount">Total amount per payment cycle<span style="color: red;"> *</span></label>
+                                                            <span id="total_amount_msg"></span>
+                                                            <input type="text"  id="total_amount" value="" readonly name="total_amount" class="form-control">
+                                                        </div>
+
+
+                                                        <div id="academic_season_totalDiv" style="display: none" class="form-wrapper pt-4 col-6">
+                                                            <label for="academic_season_total">Total amount per payment cycle(Academic season) <span style="color: red;"> *</span></label>
+                                                            <span id="academic_season_total_msg"></span>
+                                                            <input type="text" readonly id="academic_season_total" name="academic_season_total" class="form-control">
+                                                        </div>
+
+
+                                                        <div id="vacation_season_totalDiv" style="display: none" class="form-wrapper pt-4 col-6">
+                                                            <label for="vacation_season_total">Total amount per payment cycle(Vacation season) <span style="color: red;"> *</span></label>
+                                                            <span id="vacation_season_total_msg"></span>
+                                                            <input type="text" readonly id="vacation_season_total" name="vacation_season_total" class="form-control">
+                                                        </div>
+
+
+
+
+
+
+
+
+                                                    @endif
+
+                                                    @if($var->security_deposit=='0' || $var->security_deposit=='')
+                                                        <div id="has_security_depositDiv" class="form-wrapper col-12">
+                                                            <label for="has_security_deposit">Has security deposit?<span style="color: red;"> *</span></label>
+                                                            <span id="has_security_deposit_msg"></span>
+                                                            <input type="text"  id="has_security_deposit" value="No" readonly name="has_security_deposit" class="form-control">
+                                                        </div>
+
+
+
+                                                        {{--                                                        <div id="security_depositDiv"  class="form-wrapper pt-4 col-12">--}}
+                                                        {{--                                                            <label for="security_deposit">Security deposit<span style="color: red;"> *</span></label>--}}
+                                                        {{--                                                            <span id="security_deposit_msg"></span>--}}
+                                                        {{--                                                            <input type="text"  value="{{$var->security_deposit}}" id="security_deposit" readonly name="security_deposit" class="form-control">--}}
+                                                        {{--                                                        </div>--}}
+
+
+                                                    @else
+
+
+                                                        <div id="has_security_depositDiv" class="form-wrapper col-12">
+                                                            <label for="has_security_deposit">Has security deposit?<span style="color: red;"> *</span></label>
+                                                            <span id="has_security_deposit_msg"></span>
+                                                            <input type="text"  id="has_security_deposit" value="Yes" readonly name="has_security_deposit" class="form-control">
+                                                        </div>
+
+
+
+                                                        <div id="security_depositDiv"  class="form-wrapper pt-4 col-12">
+                                                            <label for="security_deposit">Security deposit<span style="color: red;"> *</span></label>
+                                                            <span id="security_deposit_msg"></span>
+                                                            <input type="text"  value="{{$var->security_deposit}}" id="security_deposit" readonly name="security_deposit" class="form-control">
+                                                        </div>
+
+
+                                                    @endif
+
+
+
 
 
 
@@ -844,31 +775,12 @@
                                                     <div class="form-wrapper col-12">
                                                         <label for="payment_cycle">Payment cycle duration(in months) <span style="color: red;"> *</span></label>
                                                         <span id="payment_cycle_msg"></span>
-                                                        <input type="number"  id="payment_cycle" name="payment_cycle" class="form-control">
+                                                        <input type="number"  id="payment_cycle" value="" name="payment_cycle" class="form-control">
 
                                                     </div>
 
-                                                    <div class="form-wrapper col-12" id="escalation_rateDiv" style="display: none;">
-                                                        <label for="escalation_rate">Escalation Rate <span style="color: red;"> *</span></label>
-                                                        <span id="escalation_rate_msg"></span>
-                                                        <input type="number"  id="escalation_rate" name="escalation_rate" class="form-control" >
-                                                    </div>
 
-
-                                                    <div class="form-wrapper col-6" id="escalation_rate_vacationDiv" style="display: none;">
-                                                        <label for="escalation_rate_vacation">Escalation Rate(Vacation season) <span style="color: red;"> *</span></label>
-                                                        <span id="escalation_rate_vacation_msg"></span>
-                                                        <input type="number"  id="escalation_rate_vacation" name="escalation_rate_vacation" class="form-control" >
-                                                    </div>
-
-
-
-
-                                                    <div class="form-wrapper col-6" id="escalation_rate_academicDiv" style="display: none;">
-                                                        <label for="escalation_rate_academic">Escalation Rate(Academic season) <span style="color: red;"> *</span></label>
-                                                        <span id="escalation_rate_academic_msg"></span>
-                                                        <input type="number"  id="escalation_rate_academic" name="escalation_rate_academic" class="form-control" >
-                                                    </div>
+                                                    <input type="hidden"  class="form-control"  name="renew" value="True"  autocomplete="off">
 
 
 
@@ -880,8 +792,11 @@
                                                 <br>
                                                 <br>
 
+                                                <input type="hidden"  class="form-control"  name="id_contract" value="{{$var->contract_id}}"  autocomplete="off">
+
+                                                @endforeach
                                             </div>
-                                            <input type="button" id="previous3" name="previous" class=" action-button-previous" value="Previous" />
+                                            <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
 
                                             <input type="button" id="next3" name="next" class="next action-button" value="Next" />
                                             <input type="button" class="btn btn-danger action-button" value="Cancel" onclick="history.back()" style="background-color: red !important;">
@@ -934,51 +849,7 @@
                                                         <td id="address_confirm"></td>
                                                     </tr>
 
-                                                    <tr id="major_industry_row_confirm">
-                                                        <td> Category:</td>
-                                                        <td id="major_industry_confirm"></td>
-                                                    </tr>
 
-
-                                                    <tr id="minor_industry_row_confirm">
-                                                        <td> Sub Category:</td>
-                                                        <td id="minor_industry_confirm"></td>
-                                                    </tr>
-
-
-                                                    <tr id="location_row_confirm">
-                                                        <td> Location:</td>
-                                                        <td id="location_confirm"></td>
-                                                    </tr>
-
-
-                                                    <tr id="sub_location_row_confirm">
-                                                        <td>Sub location:</td>
-                                                        <td id="sub_location_confirm"></td>
-                                                    </tr>
-
-                                                    <tr id="space_number_row_confirm">
-                                                        <td>Real Estate number:</td>
-                                                        <td id="space_number_confirm"></td>
-                                                    </tr>
-
-
-
-                                                    <tr id="space_size_row_confirm">
-                                                        <td>Real Estate size(SQM):</td>
-                                                        <td id="space_size_confirm"></td>
-                                                    </tr>
-
-                                                    <tr id="has_electricity_bill_row_confirm">
-                                                        <td>Has electricity bill:</td>
-                                                        <td id="has_electricity_bill_confirm"></td>
-                                                    </tr>
-
-
-                                                    <tr id="has_water_bill_row_confirm">
-                                                        <td>Has water bill:</td>
-                                                        <td id="has_water_bill_confirm"></td>
-                                                    </tr>
 
 
                                                     <tr>
@@ -992,33 +863,13 @@
                                                     </tr>
 
 
-
-                                                    <tr id="academic_dependance_row_confirm">
-                                                        <td>Depend on academic year:</td>
-                                                        <td id="academic_dependance_confirm"></td>
+                                                    <tr>
+                                                        <td>Percentage to be paid(Of total collection):</td>
+                                                        <td id="percentage_to_pay_confirm"></td>
                                                     </tr>
 
 
-                                                    <tr id="amount_academic_row_confirm" style="display: none;" >
-                                                        <td>Amount(Academic season):</td>
-                                                        <td id="amount_academic_confirm"></td>
-                                                    </tr>
 
-                                                    <tr id="amount_vacation_row_confirm" style="display: none;">
-                                                        <td>Amount(Vacation season):</td>
-                                                        <td id="amount_vacation_confirm"></td>
-                                                    </tr>
-
-                                                    <tr id="amount_row_confirm" style="display: none;">
-                                                        <td>Amount:</td>
-                                                        <td id="amount_confirm"></td>
-                                                    </tr>
-
-
-                                                    <tr id="rent_sqm_row_confirm">
-                                                        <td>Rent/SQM:</td>
-                                                        <td id="rent_sqm_confirm"></td>
-                                                    </tr>
 
 
 
@@ -1027,10 +878,7 @@
                                                         <td id="payment_cycle_confirm"></td>
                                                     </tr>
 
-                                                    <tr id="escalation_rate_row_confirm">
-                                                        <td>Escalation Rate:</td>
-                                                        <td id="escalation_rate_confirm"></td>
-                                                    </tr>
+
 
 
 
@@ -1040,154 +888,17 @@
 
 
                                             </div>
-                                            <input type="button" id="previous4" name="previous" class="previous action-button-previous" value="Previous" />
-                                            <input type="button" id="next4" name="next" class="next action-button" value="Next" />
-                                            <input type="submit" id="submit4" name="submit" class="submit action-button" value="Save"/>
-                                            <input type="submit" id="save_and_print_btn4"  onclick="openNewTab();" name="submit" class="submit action-button" value="Save and print"/>
-                                            <input type="button" id="cancel4"  class="btn btn-danger action-button" value="Cancel" onclick="history.back()" style="background-color: red !important;">
-                                            {{-- <a href="/contracts_management" style="background-color: red !important;" class="btn  action-button" >Cancel</a> --}}
 
-                                        </fieldset>
-
-
-
-                                        <fieldset>
-                                            <div class="form-card">
-                                                <h2 class="fs-title">Invoice Information</h2>
-                                                <div class="form-group row">
-
-
-                                                    <div class="form-group col-12 pt-4"  >
-                                                        <div class="form-wrapper">
-                                                            <label for="debtor_name">Client Full Name </label>
-
-                                                            <input type="text" id="debtor_name" readonly name="debtor_name" class="form-control">
-                                                        </div>
-                                                    </div>
-
-
-                                                    <div  class="form-group col-6 pt-4">
-                                                        <div class="form-wrapper">
-                                                            <label for=""  >Client Account Code</label>
-                                                            <input type="text" class="form-control" id="debtor_account_code_space" readonly name="debtor_account_code" value=""  autocomplete="off">
-                                                        </div>
-                                                    </div>
-
-
-                                                    <div  class="form-group col-6 pt-4">
-                                                        <div class="form-wrapper">
-                                                            <label for="tin">TIN <span style="color: red;"> *</span></label>
-                                                            <input type="text" readonly id="tin_invoice"  name="tin_invoice" class="form-control">
-                                                        </div>
-                                                    </div>
-
-
-
-                                                    <div class="form-group col-12 pt-4">
-                                                        <div class="form-wrapper">
-                                                            <label for=""  >Client Address </label>
-                                                            <input type="text" class="form-control" id="debtor_address_space" name="debtor_address" value="" readonly autocomplete="off">
-                                                        </div>
-                                                    </div>
-
-
-
-{{--                                                    <div class="form-group col-12 pt-4">--}}
-{{--                                                        <div class="form-wrapper">--}}
-{{--                                                            <label for=""  >Inc Code<span style="color: red;">*</span></label>--}}
-{{--                                                            <input type="text" class="form-control"  name="inc_code" value=""  Required autocomplete="off">--}}
-{{--                                                        </div>--}}
-{{--                                                    </div>--}}
-
-
-
-                                                    <div class="form-group col-6 pt-4">
-                                                        <div class="form-wrapper">
-                                                            <label for=""  >Invoice Start Date <span style="color: red;"> *</span></label>
-                                                            <input  class="form-control " id="invoicing_period_start_date"   required autocomplete="off">
-                                                            <input  type="hidden" id="invoicing_period_start_date_alternate" name="invoicing_period_start_date" value="" required autocomplete="off">
-                                                        </div>
-                                                    </div>
-
-
-                                                    <div  class="form-group col-6 pt-4">
-                                                        <div class="form-wrapper">
-                                                            <label for="">Invoice End Date <span style="color: red;"> *</span></label>
-                                                            <input  class="form-control " id="invoicing_period_end_date"  value="" required  autocomplete="off">
-                                                            <input  type="hidden" id="invoicing_period_end_date_alternate" name="invoicing_period_end_date" value="" required  autocomplete="off">
-                                                        </div>
-                                                    </div>
-
-
-                                                    <div class="form-group col-6 pt-4">
-                                                        <div class="form-wrapper">
-                                                            <label for="">Period <span style="color: red;"> *</span></label>
-                                                            <input type="text" class="form-control" id="period_invoice" name="period" value=""  required  autocomplete="off">
-                                                        </div>
-                                                    </div>
-
-
-                                                    <div   class="form-group col-6 pt-4">
-                                                        <div class="form-wrapper">
-                                                            <label for="" >Project ID <span style="color: red;"> *</span></label>
-                                                            <input type="text" class="form-control" id="project_id_invoice" name="project_id" value="" required  autocomplete="off">
-                                                        </div>
-                                                    </div>
-
-
-
-
-                                                    <div  class="form-group col-6 pt-4">
-                                                        <div class="form-wrapper">
-                                                            <label for="">Amount <span style="color: red;"> *</span></label>
-                                                            <input type="number" min="20" class="form-control" id="amount_to_be_paid" name="amount_to_be_paid" value="" required  autocomplete="off">
-                                                        </div>
-                                                    </div>
-
-
-
-                                                    <div  class="form-group col-6 pt-4">
-                                                        <div  class="form-wrapper">
-                                                            <label>Currency  </label>
-                                                            <input type="text" class="form-control" id="currency_invoice" name="currency_invoice" value="" readonly  autocomplete="off">
-                                                        </div>
-                                                    </div>
-
-
-
-                                                    <div  class="form-group col-md-12 mt-1">
-                                                        <div class="form-wrapper">
-                                                            <label for="" >Status <span style="color: red;"> *</span></label>
-                                                            <input type="text" class="form-control" id="status" name="status" value="" required  autocomplete="off">
-                                                        </div>
-                                                    </div>
-
-
-                                                    <div  class="form-group col-md-12 mt-1">
-                                                        <div class="form-wrapper">
-                                                            <label for="" >Description <span style="color: red;"> *</span></label>
-                                                            <input type="text" class="form-control" id="description" name="description" value="" required autocomplete="off">
-                                                        </div>
-                                                    </div>
-
-
-                                                </div>
-
-
-
-
-
-
-
-
-                                            </div>
-                                            <input type="button" id="previous5" name="previous" class="previous action-button-previous" value="Previous"/>
+                                            <input type="button" id="previous5" name="previous" class="previous action-button-previous" value="Previous" />
                                             <input type="submit" id="submit5" name="submit" class="submit action-button" value="Save"/>
-                                            <input type="submit" id="save_and_print_btn"  onclick="openNewTab();" name="submit" class="submit action-button" value="Save and print"/>
+                                            <input type="submit" id="save_and_print_btn" onclick="openNewTab();" name="submit" class="submit action-button" value="Save and print"/>
                                             <input type="button" id="cancel5" class="btn btn-danger action-button" value="Cancel" onclick="history.back()" style="background-color: red !important;">
 
-
                                         </fieldset>
+
+
+
+
 
 
 
@@ -1222,16 +933,6 @@
             $("#submit5").hide();
             $("#save_and_print_btn").hide();
 
-
-            //No invoice
-            $("#cancel4").css("background-color", "#87ceeb");
-            $("#cancel4").val('Finish');
-            $("#previous4").hide();
-            $("#submit4").hide();
-            $("#save_and_print_btn4").hide();
-
-
-
             if(button_clicked=='Save and print'){
 
                 $("#msform").attr("target","_blank");
@@ -1245,6 +946,11 @@
             return true;
 
         }
+
+
+
+
+
 
 
 
@@ -1412,13 +1118,13 @@
 
 
 
-            p14=0;
-            p15=0;
-            p16=0;
-            p17=0;
-            p18=0;
-            p19=0;
-            p20=0;
+            p14=1;
+            p15=1;
+            p16=1;
+            p17=1;
+            p18=1;
+            p19=1;
+            p20=1;
 
 
             var temp;
@@ -1429,7 +1135,6 @@
                 if(query=='Direct and has clients'){
 
                     $('#renting_space').hide();
-
                     properNext();
 
                 }else{
@@ -1505,150 +1210,150 @@
             }
 
 
-            //File pond starts
+            {{--            //File pond starts--}}
 
-            FilePond.registerPlugin(FilePondPluginFileValidateType);
+            {{--            FilePond.registerPlugin(FilePondPluginFileValidateType);--}}
 
-            FilePond.registerPlugin(FilePondPluginFileValidateSize);
+            {{--            FilePond.registerPlugin(FilePondPluginFileValidateSize);--}}
 
 
 
-            const tbs_certificateinputElement = document.querySelector('#tbs_certificate');
-            const tbs_certificatepond = FilePond.create(tbs_certificateinputElement, {
-                onaddfile: (error, file) => {
+            {{--            const tbs_certificateinputElement = document.querySelector('#tbs_certificate');--}}
+            {{--            const tbs_certificatepond = FilePond.create(tbs_certificateinputElement, {--}}
+            {{--                onaddfile: (error, file) => {--}}
 
-                    if(error==null){
+            {{--                    if(error==null){--}}
 
 
-                        checkRequired(14);
+            {{--                        checkRequired(14);--}}
 
-                    }else{
+            {{--                    }else{--}}
 
 
 
-                    }
+            {{--                    }--}}
 
 
-                }
-                ,onremovefile: (error, file) => {
+            {{--                }--}}
+            {{--                ,onremovefile: (error, file) => {--}}
 
-                    if(error==null){
-                        onFileRemove(14);
+            {{--                    if(error==null){--}}
+            {{--                        onFileRemove(14);--}}
 
-                    }else{
+            {{--                    }else{--}}
 
 
 
-                    }
+            {{--                    }--}}
 
 
-                }
+            {{--                }--}}
 
-            });
+            {{--            });--}}
 
 
-            const gpsa_certificateinputElement = document.querySelector('#gpsa_certificate');
-            const gpsa_certificatepond = FilePond.create(gpsa_certificateinputElement, {
-                onaddfile: (error, file) => {
+            {{--            const gpsa_certificateinputElement = document.querySelector('#gpsa_certificate');--}}
+            {{--            const gpsa_certificatepond = FilePond.create(gpsa_certificateinputElement, {--}}
+            {{--                onaddfile: (error, file) => {--}}
 
-                    if(error==null){
+            {{--                    if(error==null){--}}
 
 
-                        checkRequired(15);
+            {{--                        checkRequired(15);--}}
 
-                    }else{
+            {{--                    }else{--}}
 
 
 
-                    }
+            {{--                    }--}}
 
 
-                }
-                ,onremovefile: (error, file) => {
+            {{--                }--}}
+            {{--                ,onremovefile: (error, file) => {--}}
 
-                    if(error==null){
-                        onFileRemove(15);
+            {{--                    if(error==null){--}}
+            {{--                        onFileRemove(15);--}}
 
-                    }else{
+            {{--                    }else{--}}
 
 
 
-                    }
+            {{--                    }--}}
 
 
-                }
+            {{--                }--}}
 
-            });
+            {{--            });--}}
 
 
 
 
 
-            const food_business_licenseinputElement = document.querySelector('#food_business_license');
-            const food_business_licensepond = FilePond.create(food_business_licenseinputElement, {
-                onaddfile: (error, file) => {
+            {{--            const food_business_licenseinputElement = document.querySelector('#food_business_license');--}}
+            {{--            const food_business_licensepond = FilePond.create(food_business_licenseinputElement, {--}}
+            {{--                onaddfile: (error, file) => {--}}
 
-                    if(error==null){
+            {{--                    if(error==null){--}}
 
-                        checkRequired(16);
+            {{--                        checkRequired(16);--}}
 
-                    }else{
+            {{--                    }else{--}}
 
 
 
-                    }
+            {{--                    }--}}
 
 
-                }
-                ,onremovefile: (error, file) => {
+            {{--                }--}}
+            {{--                ,onremovefile: (error, file) => {--}}
 
-                    if(error==null){
-                        onFileRemove(16);
+            {{--                    if(error==null){--}}
+            {{--                        onFileRemove(16);--}}
 
-                    }else{
+            {{--                    }else{--}}
 
 
 
-                    }
+            {{--                    }--}}
 
 
-                }
+            {{--                }--}}
 
-            });
+            {{--            });--}}
 
 
 
 
-            const business_licenseinputElement = document.querySelector('#business_license');
-            const business_licensepond = FilePond.create(business_licenseinputElement, {
-                onaddfile: (error, file) => {
+            {{--            const business_licenseinputElement = document.querySelector('#business_license');--}}
+            {{--            const business_licensepond = FilePond.create(business_licenseinputElement, {--}}
+            {{--                onaddfile: (error, file) => {--}}
 
-                    if(error==null){
+            {{--                    if(error==null){--}}
 
-                        checkRequired(17);
-                    }else{
+            {{--                        checkRequired(17);--}}
+            {{--                    }else{--}}
 
 
 
-                    }
+            {{--                    }--}}
 
 
-                }
-                ,onremovefile: (error, file) => {
+            {{--                }--}}
+            {{--                ,onremovefile: (error, file) => {--}}
 
-                    if(error==null){
-                        onFileRemove(17);
+            {{--                    if(error==null){--}}
+            {{--                        onFileRemove(17);--}}
 
-                    }else{
+            {{--                    }else{--}}
 
 
 
-                    }
+            {{--                    }--}}
 
 
-                }
+            {{--                }--}}
 
-            });
+            {{--            });--}}
 
 
 
@@ -1657,177 +1362,177 @@
 
 
 
-            const osha_certificateinputElement = document.querySelector('#osha_certificate');
-            const osha_certificatepond = FilePond.create(osha_certificateinputElement, {
-                onaddfile: (error, file) => {
+            {{--            const osha_certificateinputElement = document.querySelector('#osha_certificate');--}}
+            {{--            const osha_certificatepond = FilePond.create(osha_certificateinputElement, {--}}
+            {{--                onaddfile: (error, file) => {--}}
 
-                    if(error==null){
-                        checkRequired(18);
+            {{--                    if(error==null){--}}
+            {{--                        checkRequired(18);--}}
 
-                    }else{
+            {{--                    }else{--}}
 
 
 
-                    }
+            {{--                    }--}}
 
 
-                }
-                ,onremovefile: (error, file) => {
+            {{--                }--}}
+            {{--                ,onremovefile: (error, file) => {--}}
 
-                    if(error==null){
-                        onFileRemove(18);
+            {{--                    if(error==null){--}}
+            {{--                        onFileRemove(18);--}}
 
-                    }else{
+            {{--                    }else{--}}
 
 
 
-                    }
+            {{--                    }--}}
 
 
-                }
+            {{--                }--}}
 
-            });
+            {{--            });--}}
 
 
 
 
-            const tcra_registrationinputElement = document.querySelector('#tcra_registration');
-            const tcra_registrationpond = FilePond.create(tcra_registrationinputElement, {
-                onaddfile: (error, file) => {
+            {{--            const tcra_registrationinputElement = document.querySelector('#tcra_registration');--}}
+            {{--            const tcra_registrationpond = FilePond.create(tcra_registrationinputElement, {--}}
+            {{--                onaddfile: (error, file) => {--}}
 
-                    if(error==null){
-                        checkRequired(19);
+            {{--                    if(error==null){--}}
+            {{--                        checkRequired(19);--}}
 
-                    }else{
+            {{--                    }else{--}}
 
 
 
-                    }
+            {{--                    }--}}
 
 
-                }
-                ,onremovefile: (error, file) => {
+            {{--                }--}}
+            {{--                ,onremovefile: (error, file) => {--}}
 
-                    if(error==null){
-                        onFileRemove(19);
+            {{--                    if(error==null){--}}
+            {{--                        onFileRemove(19);--}}
 
-                    }else{
+            {{--                    }else{--}}
 
 
 
-                    }
+            {{--                    }--}}
 
 
-                }
+            {{--                }--}}
 
-            });
+            {{--            });--}}
 
 
 
 
-            const brela_registrationinputElement = document.querySelector('#brela_registration');
-            const brela_registrationpond = FilePond.create(brela_registrationinputElement, {
-                onaddfile: (error, file) => {
+            {{--            const brela_registrationinputElement = document.querySelector('#brela_registration');--}}
+            {{--            const brela_registrationpond = FilePond.create(brela_registrationinputElement, {--}}
+            {{--                onaddfile: (error, file) => {--}}
 
-                    if(error==null){
-                        checkRequired(20);
+            {{--                    if(error==null){--}}
+            {{--                        checkRequired(20);--}}
 
-                    }else{
+            {{--                    }else{--}}
 
 
 
-                    }
+            {{--                    }--}}
 
 
-                }
+            {{--                }--}}
 
-                ,onremovefile: (error, file) => {
+            {{--                ,onremovefile: (error, file) => {--}}
 
-                    if(error==null){
-                        onFileRemove(20);
+            {{--                    if(error==null){--}}
+            {{--                        onFileRemove(20);--}}
 
-                    }else{
+            {{--                    }else{--}}
 
 
 
-                    }
+            {{--                    }--}}
 
 
-                }
+            {{--                }--}}
 
 
 
 
 
-            });
+            {{--            });--}}
 
 
 
 
 
-            $(function(){
+            {{--            $(function(){--}}
 
-                // Turn input element into a pond with configuration options
-                $('input[type="file"]').filepond({
-                    allowMultiple: false
-                });
+            {{--                // Turn input element into a pond with configuration options--}}
+            {{--                $('input[type="file"]').filepond({--}}
+            {{--                    allowMultiple: false--}}
+            {{--                });--}}
 
 
 
-                // Listen for addfile event
-                $('input[type="file"]').on('FilePond:addfile', function(error, file) {
-                    console.log('file added event');
-                });
+            {{--                // Listen for addfile event--}}
+            {{--                $('input[type="file"]').on('FilePond:addfile', function(error, file) {--}}
+            {{--                    console.log('file added event');--}}
+            {{--                });--}}
 
-                // Manually add a file using the addfile method
-                // $('input[type="file"]').filepond('addFile', 'index.html').then(function(file){
-                //     console.log('file added', file);
-                // });
+            {{--                // Manually add a file using the addfile method--}}
+            {{--                // $('input[type="file"]').filepond('addFile', 'index.html').then(function(file){--}}
+            {{--                //     console.log('file added', file);--}}
+            {{--                // });--}}
 
 
 
 
 
-                FilePond.setOptions({
-                    server: {
-                        url: '/upload',
-                        headers: {
+            {{--                FilePond.setOptions({--}}
+            {{--                    server: {--}}
+            {{--                        url: '/upload',--}}
+            {{--                        headers: {--}}
 
-                            'X-CSRF-TOKEN': '{{csrf_token()}}'
-                        },
+            {{--                            'X-CSRF-TOKEN': '{{csrf_token()}}'--}}
+            {{--                        },--}}
 
-                        revert:{
+            {{--                        revert:{--}}
 
-                            url: '/revert_upload',
-                            headers: {
+            {{--                            url: '/revert_upload',--}}
+            {{--                            headers: {--}}
 
-                                'X-CSRF-TOKEN': '{{csrf_token()}}'
-                            },
+            {{--                                'X-CSRF-TOKEN': '{{csrf_token()}}'--}}
+            {{--                            },--}}
 
 
-                            onload: function (responce) {
-                                console.log(responce);
+            {{--                            onload: function (responce) {--}}
+            {{--                                console.log(responce);--}}
 
-                            },
+            {{--                            },--}}
 
 
 
-                        }
+            {{--                        }--}}
 
 
 
-                    },
+            {{--                    },--}}
 
-                    labelFileProcessing: 'Uploading',
+            {{--                    labelFileProcessing: 'Uploading',--}}
 
-                    acceptedFileTypes: ['application/pdf'],
+            {{--                    acceptedFileTypes: ['application/pdf'],--}}
 
-                    fileValidateTypeLabelExpectedTypes: 'Expects pdf',
+            {{--                    fileValidateTypeLabelExpectedTypes: 'Expects pdf',--}}
 
-                    maxFileSize: '15MB'
+            {{--                    maxFileSize: '15MB'--}}
 
 
-                });
+            {{--                });--}}
 
 
 
@@ -1837,73 +1542,73 @@
 
 
 
-            });
+            {{--            });--}}
 
 
 
-            function checkRequired(number){
-                if(number=='14'){
-                  p14=1;
-                }else if(number=='15'){
-                  p15=1;
+            {{--            function checkRequired(number){--}}
+            {{--                if(number=='14'){--}}
+            {{--                    p14=1;--}}
+            {{--                }else if(number=='15'){--}}
+            {{--                    p15=1;--}}
 
-                }else if(number=='16'){
+            {{--                }else if(number=='16'){--}}
 
-                  p16=1;
+            {{--                    p16=1;--}}
 
-                }else if(number=='17'){
+            {{--                }else if(number=='17'){--}}
 
-                    p17=1;
-                }else if(number=='18'){
+            {{--                    p17=1;--}}
+            {{--                }else if(number=='18'){--}}
 
-                    p18=1;
+            {{--                    p18=1;--}}
 
-                }else if(number=='19'){
+            {{--                }else if(number=='19'){--}}
 
-                    p19=1;
-                }else if(number=='20'){
+            {{--                    p19=1;--}}
+            {{--                }else if(number=='20'){--}}
 
-                    p20=1;
-                }else{
+            {{--                    p20=1;--}}
+            {{--                }else{--}}
 
 
 
-                }
-            }
+            {{--                }--}}
+            {{--            }--}}
 
 
 
-            function onFileRemove(number){
-                if(number=='14'){
-                    p14=0;
-                }else if(number=='15'){
-                    p15=0;
+            {{--            function onFileRemove(number){--}}
+            {{--                if(number=='14'){--}}
+            {{--                    p14=0;--}}
+            {{--                }else if(number=='15'){--}}
+            {{--                    p15=0;--}}
 
-                }else if(number=='16'){
+            {{--                }else if(number=='16'){--}}
 
-                    p16=0;
+            {{--                    p16=0;--}}
 
-                }else if(number=='17'){
+            {{--                }else if(number=='17'){--}}
 
-                    p17=0;
-                }else if(number=='18'){
+            {{--                    p17=0;--}}
+            {{--                }else if(number=='18'){--}}
 
-                    p18=0;
+            {{--                    p18=0;--}}
 
-                }else if(number=='19'){
+            {{--                }else if(number=='19'){--}}
 
-                    p19=0;
-                }else if(number=='20'){
+            {{--                    p19=0;--}}
+            {{--                }else if(number=='20'){--}}
 
-                    p20=0;
-                }else{
+            {{--                    p20=0;--}}
+            {{--                }else{--}}
 
 
 
-                }
-            }
+            {{--                }--}}
+            {{--            }--}}
 
-//Filepond ends
+            {{--//Filepond ends--}}
 
 
             $("#next1").click(function(){
@@ -1927,6 +1632,9 @@
                 var official_client_id=$("#official_client_id").val();
                 var client_type_contract=$("#client_type_contract").val();
                 var parent_client=$("#parent_client").val();
+
+
+
 
 
                 if(clientType=="1"){
@@ -2159,7 +1867,7 @@
 
 
 
-                                $('#currency_usd').hide();
+                                    $('#currency_usd').hide();
                                     $('#currency_tzs').show();
                                 }else if(data=='USD'){
 
@@ -2260,6 +1968,14 @@
                 var minor = $('#minor_list').val();
                 var major = $('#getMajor').val();
                 var space_id = $('#space_id_contract').val();
+
+
+                var start_date={!! json_encode($start_date) !!};
+
+
+                $('#start_date_alternate').val(start_date);
+
+
 
                 if(major==""){
                     p1=0;
@@ -2428,6 +2144,7 @@
                     });
 
 
+
                     gonext();
                 }
 
@@ -2440,9 +2157,9 @@
                 current_fs = $(this).parent();
                 next_fs = $(this).parent().next();
                 var p1,p2,p3,p4,p5,p6,p7,p8,p9,p10,p11,p12,p13,p21,p22,p23,p26;
-                var first_name=document.getElementById('first_name').value;
-                var last_name=document.getElementById('last_name').value;
-                var company_name=document.getElementById('company_name').value;
+                var first_name= $("#first_name").val();
+                var last_name= $("#last_name").val();
+                var company_name=$("#company_name").val();
                 var client_type=document.getElementById('client_type').value;
                 var email=$("#email").val();
                 var client_type_contract=$("#client_type_contract").val();
@@ -2458,22 +2175,23 @@
 
                 var start_date=document.getElementById('start_date').value;
                 var start_date_alternate=document.getElementById('start_date_alternate').value;
+
                 var duration= $('#duration').val();
                 var duration_period=$('#duration_period').val();
 
                 var academic_dependence=document.getElementById('academic_dependence').value;
-                var vacation_season=document.getElementById('vacation_season').value;
-                var academic_season=document.getElementById('academic_season').value;
-                var amount=document.getElementById('amount').value;
+                var vacation_season=30;
+                var academic_season=30;
+                var amount= 30;
                 var rent_sqm=document.getElementById('rent_sqm').value;
                 var currency=document.getElementById('currency').value;
                 var payment_cycle=document.getElementById('payment_cycle').value;
-                var escalation_rate=document.getElementById('escalation_rate').value;
-                var escalation_rate_vacation=document.getElementById('escalation_rate_vacation').value;
-                var escalation_rate_academic=document.getElementById('escalation_rate_academic').value;
-                var space_size=document.getElementById('space_size').value;
-                var has_water_bill=document.getElementById('has_water_bill').value;
-                var has_electricity_bill=document.getElementById('has_electricity_bill').value;
+                var escalation_rate=30;
+                var escalation_rate_vacation=30;
+                var escalation_rate_academic= 30;
+                // var space_size=document.getElementById('space_size').value;
+                // var has_water_bill=document.getElementById('has_water_bill').value;
+                // var has_electricity_bill=document.getElementById('has_electricity_bill').value;
 
 
                 var tin=$("#tin").val();
@@ -2486,12 +2204,13 @@
                 var tcra_registration=$("#tcra_registration").val();
                 var brela_registration=$("#brela_registration").val();
                 var additional_businesses_list=$("#additional_businesses_list").val();
-                var additional_businesses_amount=$("#additional_businesses_amount").val();
+                var additional_businesses_amount=30;
                 var total_amount=$("#total_amount").val();
                 var academic_season_total=$("#academic_season_total").val();
                 var vacation_season_total=$("#vacation_season_total").val();
-                var security_deposit=$("#security_deposit").val();
+                var security_deposit=30;
                 var has_security_deposit=$("#has_security_deposit").val();
+
 
 
 
@@ -2769,153 +2488,153 @@
 
 
 
-                if(p14=="0"){
-
-                    $('#tbs_certificate_msg').show();
-                    var message=document.getElementById('tbs_certificate_msg');
-                    message.style.color='red';
-                    message.innerHTML="Required";
-                    $('#tbs_certificate').attr('style','border-bottom:1px solid #f00');
-                }
-                else{
-
-                    $('#tbs_certificate_msg').hide();
-                    $('#tbs_certificate').attr('style','border-bottom: 1px solid #ccc');
-
-                }
-
-
-
-
-
-
-
-
-
-
-                if(p15=="0"){
-
-                    $('#gpsa_certificate_msg').show();
-                    var message=document.getElementById('gpsa_certificate_msg');
-                    message.style.color='red';
-                    message.innerHTML="Required";
-                    $('#gpsa_certificate').attr('style','border-bottom:1px solid #f00');
-                }
-                else{
-
-                    $('#gpsa_certificate_msg').hide();
-                    $('#gpsa_certificate').attr('style','border-bottom: 1px solid #ccc');
-
-                }
-
-
-
-
-
-
-
-
-
-                if(p16=="0"){
-
-                    $('#food_business_license_msg').show();
-                    var message=document.getElementById('food_business_license_msg');
-                    message.style.color='red';
-                    message.innerHTML="Required";
-                    $('#food_business_license').attr('style','border-bottom:1px solid #f00');
-                }
-                else{
-
-                    $('#food_business_license_msg').hide();
-                    $('#food_business_license').attr('style','border-bottom: 1px solid #ccc');
-
-                }
-
-
-
-
-
-
-
-                if(p17=="0"){
-
-                    $('#business_license_msg').show();
-                    var message=document.getElementById('business_license_msg');
-                    message.style.color='red';
-                    message.innerHTML="Required";
-                    $('#business_license').attr('style','border-bottom:1px solid #f00');
-                }
-                else{
-
-                    $('#business_license_msg').hide();
-                    $('#business_license').attr('style','border-bottom: 1px solid #ccc');
-
-                }
-
-
-
-
-
-
-
-                if(p18=="0"){
-
-                    $('#osha_certificate_msg').show();
-                    var message=document.getElementById('osha_certificate_msg');
-                    message.style.color='red';
-                    message.innerHTML="Required";
-                    $('#osha_certificate').attr('style','border-bottom:1px solid #f00');
-                }
-                else{
-
-                    $('#osha_certificate_msg').hide();
-                    $('#osha_certificate').attr('style','border-bottom: 1px solid #ccc');
-
-                }
-
-
-
-
-
-
-
-
-                if(p19=="0"){
-
-                    $('#tcra_registration_msg').show();
-                    var message=document.getElementById('tcra_registration_msg');
-                    message.style.color='red';
-                    message.innerHTML="Required";
-                    $('#tcra_registration').attr('style','border-bottom:1px solid #f00');
-                }
-                else{
-
-                    $('#tcra_registration_msg').hide();
-                    $('#tcra_registration').attr('style','border-bottom: 1px solid #ccc');
-
-                }
-
-
-
-
-
-
-
-
-                if(p20=="0"){
-
-                    $('#brela_registration_msg').show();
-                    var message=document.getElementById('brela_registration_msg');
-                    message.style.color='red';
-                    message.innerHTML="Required";
-                    $('#brela_registration').attr('style','border-bottom:1px solid #f00');
-                }
-                else{
-
-                    $('#brela_registration_msg').hide();
-                    $('#brela_registration').attr('style','border-bottom: 1px solid #ccc');
-
-                }
+                // if(p14=="0"){
+                //
+                //     $('#tbs_certificate_msg').show();
+                //     var message=document.getElementById('tbs_certificate_msg');
+                //     message.style.color='red';
+                //     message.innerHTML="Required";
+                //     $('#tbs_certificate').attr('style','border-bottom:1px solid #f00');
+                // }
+                // else{
+                //
+                //     $('#tbs_certificate_msg').hide();
+                //     $('#tbs_certificate').attr('style','border-bottom: 1px solid #ccc');
+                //
+                // }
+                //
+                //
+                //
+                //
+                //
+                //
+                //
+                //
+                //
+                //
+                // if(p15=="0"){
+                //
+                //     $('#gpsa_certificate_msg').show();
+                //     var message=document.getElementById('gpsa_certificate_msg');
+                //     message.style.color='red';
+                //     message.innerHTML="Required";
+                //     $('#gpsa_certificate').attr('style','border-bottom:1px solid #f00');
+                // }
+                // else{
+                //
+                //     $('#gpsa_certificate_msg').hide();
+                //     $('#gpsa_certificate').attr('style','border-bottom: 1px solid #ccc');
+                //
+                // }
+                //
+                //
+                //
+                //
+                //
+                //
+                //
+                //
+                //
+                // if(p16=="0"){
+                //
+                //     $('#food_business_license_msg').show();
+                //     var message=document.getElementById('food_business_license_msg');
+                //     message.style.color='red';
+                //     message.innerHTML="Required";
+                //     $('#food_business_license').attr('style','border-bottom:1px solid #f00');
+                // }
+                // else{
+                //
+                //     $('#food_business_license_msg').hide();
+                //     $('#food_business_license').attr('style','border-bottom: 1px solid #ccc');
+                //
+                // }
+                //
+                //
+                //
+                //
+                //
+                //
+                //
+                // if(p17=="0"){
+                //
+                //     $('#business_license_msg').show();
+                //     var message=document.getElementById('business_license_msg');
+                //     message.style.color='red';
+                //     message.innerHTML="Required";
+                //     $('#business_license').attr('style','border-bottom:1px solid #f00');
+                // }
+                // else{
+                //
+                //     $('#business_license_msg').hide();
+                //     $('#business_license').attr('style','border-bottom: 1px solid #ccc');
+                //
+                // }
+                //
+                //
+                //
+                //
+                //
+                //
+                //
+                // if(p18=="0"){
+                //
+                //     $('#osha_certificate_msg').show();
+                //     var message=document.getElementById('osha_certificate_msg');
+                //     message.style.color='red';
+                //     message.innerHTML="Required";
+                //     $('#osha_certificate').attr('style','border-bottom:1px solid #f00');
+                // }
+                // else{
+                //
+                //     $('#osha_certificate_msg').hide();
+                //     $('#osha_certificate').attr('style','border-bottom: 1px solid #ccc');
+                //
+                // }
+                //
+                //
+                //
+                //
+                //
+                //
+                //
+                //
+                // if(p19=="0"){
+                //
+                //     $('#tcra_registration_msg').show();
+                //     var message=document.getElementById('tcra_registration_msg');
+                //     message.style.color='red';
+                //     message.innerHTML="Required";
+                //     $('#tcra_registration').attr('style','border-bottom:1px solid #f00');
+                // }
+                // else{
+                //
+                //     $('#tcra_registration_msg').hide();
+                //     $('#tcra_registration').attr('style','border-bottom: 1px solid #ccc');
+                //
+                // }
+                //
+                //
+                //
+                //
+                //
+                //
+                //
+                //
+                // if(p20=="0"){
+                //
+                //     $('#brela_registration_msg').show();
+                //     var message=document.getElementById('brela_registration_msg');
+                //     message.style.color='red';
+                //     message.innerHTML="Required";
+                //     $('#brela_registration').attr('style','border-bottom:1px solid #f00');
+                // }
+                // else{
+                //
+                //     $('#brela_registration_msg').hide();
+                //     $('#brela_registration').attr('style','border-bottom: 1px solid #ccc');
+                //
+                // }
 
 
 
@@ -2991,18 +2710,17 @@
 
                 const monthNames = ["January", "February", "March", "April", "May", "June",
                     "July", "August", "September", "October", "November", "December"];
-                const dateObj = new Date(start_date_alternate);
+                const dateObj = new Date(start_date);
                 const month = dateObj.getMonth()+1;
                 const day = String(dateObj.getDate()).padStart(2, '0');
                 const year = dateObj.getFullYear();
-                // const output = day  + '/'+ month  + '/' + year;
+
 
                 var new_start_date_alternate = new Date(start_date_alternate);
-
+                console.log("here"+start_date_alternate);
 
                 const output = (('0' + new_start_date_alternate.getDate()).slice(-2) + '/'
                     + ('0' + (new_start_date_alternate.getMonth()+1)).slice(-2) + '/'+new_start_date_alternate.getFullYear());
-
 
 
 
@@ -3044,34 +2762,34 @@
                 $("#address_confirm").html(address);
                 $("#address_confirm").css('font-weight', 'bold');
 
-                $("#major_industry_confirm").html(major);
-                $("#major_industry_confirm").css('font-weight', 'bold');
-
-                $("#minor_industry_confirm").html(minor);
-                $("#minor_industry_confirm").css('font-weight', 'bold');
-
-
-                $("#location_confirm").html(location);
-                $("#location_confirm").css('font-weight', 'bold');
-
-                $("#sub_location_confirm").html(sub_location);
-                $("#sub_location_confirm").css('font-weight', 'bold');
-
-
-                $("#space_number_confirm").html(space_id);
-                $("#space_number_confirm").css('font-weight', 'bold');
-
-                $("#space_size_confirm").html(space_size);
-                $("#space_size_confirm").css('font-weight', 'bold');
-
-
-                $("#has_electricity_bill_confirm").html(has_electricity_bill);
-                $("#has_electricity_bill_confirm").css('font-weight', 'bold');
-
-
-                $("#has_water_bill_confirm").html(has_water_bill);
-                $("#has_water_bill_confirm").css('font-weight', 'bold');
-
+                // $("#major_industry_confirm").html(major);
+                // $("#major_industry_confirm").css('font-weight', 'bold');
+                //
+                // $("#minor_industry_confirm").html(minor);
+                // $("#minor_industry_confirm").css('font-weight', 'bold');
+                //
+                //
+                // $("#location_confirm").html(location);
+                // $("#location_confirm").css('font-weight', 'bold');
+                //
+                // $("#sub_location_confirm").html(sub_location);
+                // $("#sub_location_confirm").css('font-weight', 'bold');
+                //
+                //
+                // $("#space_number_confirm").html(space_id);
+                // $("#space_number_confirm").css('font-weight', 'bold');
+                //
+                // $("#space_size_confirm").html(space_size);
+                // $("#space_size_confirm").css('font-weight', 'bold');
+                //
+                //
+                // $("#has_electricity_bill_confirm").html(has_electricity_bill);
+                // $("#has_electricity_bill_confirm").css('font-weight', 'bold');
+                //
+                //
+                // $("#has_water_bill_confirm").html(has_water_bill);
+                // $("#has_water_bill_confirm").css('font-weight', 'bold');
+                //
 
 
 
@@ -3085,18 +2803,23 @@
                 $("#academic_dependance_confirm").html(academic_dependence);
                 $("#academic_dependance_confirm").css('font-weight', 'bold');
 
+                if(academic_season!=null) {
+                    $("#amount_academic_confirm").html(thousands_separators(academic_season) + " " + currency);
+                    $("#amount_academic_confirm").css('font-weight', 'bold');
+                }
 
-                $("#amount_academic_confirm").html(thousands_separators(academic_season)+" "+currency);
-                $("#amount_academic_confirm").css('font-weight', 'bold');
+                if(vacation_season!=null) {
+                    $("#amount_vacation_confirm").html(thousands_separators(vacation_season) + " " + currency);
+                    $("#amount_vacation_confirm").css('font-weight', 'bold');
+                }
 
 
-                $("#amount_vacation_confirm").html(thousands_separators(vacation_season)+" "+currency);
-                $("#amount_vacation_confirm").css('font-weight', 'bold');
+                if(amount!=null) {
+                    $("#amount_confirm").html(thousands_separators(amount) + " " + currency);
+                    $("#amount_confirm").css('font-weight', 'bold');
+                }
 
-                $("#amount_confirm").html(thousands_separators(amount)+" "+currency);
-                $("#amount_confirm").css('font-weight', 'bold');
-
-                if(rent_sqm==''){
+                if(rent_sqm=='' || rent_sqm=='N/A'){
 
                     $("#rent_sqm_confirm").html('N/A');
                     $("#rent_sqm_confirm").css('font-weight', 'bold');
@@ -3111,26 +2834,26 @@
                 }
 
 
+                if(payment_cycle=='1'){
 
-                $("#payment_cycle_confirm").html(payment_cycle);
-                $("#payment_cycle_confirm").css('font-weight', 'bold');
-
-
-
-                if(client_type_contract=='Direct and has clients'){
-
-                    $('#escalation_rate_row_confirm').hide();
+                    $("#payment_cycle_confirm").html(payment_cycle +" Month");
+                    $("#payment_cycle_confirm").css('font-weight', 'bold');
 
                 }else{
 
-                    $('#escalation_rate_row_confirm').show();
+                    $("#payment_cycle_confirm").html(payment_cycle +" Months");
+                    $("#payment_cycle_confirm").css('font-weight', 'bold');
 
-                    $("#escalation_rate_confirm").html(escalation_rate);
-                    $("#escalation_rate_confirm").css('font-weight', 'bold');
+
                 }
 
 
+                $("#escalation_rate_confirm").html(escalation_rate);
+                $("#escalation_rate_confirm").css('font-weight', 'bold');
 
+
+                $("#percentage_to_pay_confirm").html(percentage_to_pay+"%");
+                $("#percentage_to_pay_confirm").css('font-weight', 'bold');
 
 
 
@@ -3182,14 +2905,10 @@
                 }
 
 
-
-
                 if(academic_dependence=='Yes'){
                     escalation_rate=0;
 
                 }
-
-
 
 
                 if(client_type_contract=='Direct and has clients'){
@@ -3197,7 +2916,7 @@
 
                     if(p12=='1' & p17=='1' & p1=='1' & p2=='1' & p3=='1' & p11=='1' & p9=='1' & p10=='1' ){
 
-                    //check validity
+                        //check validity
                         if (duration>=1 & percentage_to_pay>=1 & payment_cycle>=1 & escalation_rate>=0){
 
                             document.getElementById("validate_money_msg").innerHTML ='';
@@ -4269,107 +3988,7 @@
 
 
 
-                if(client_type_contract=='Direct and has clients'){
 
-                    $('#next4').hide();
-                    $('#submit4').show();
-                    $('#save_and_print_btn4').show();
-
-
-
-                    $('#major_industry_row_confirm').hide();
-                    $('#minor_industry_row_confirm').hide();
-                    $('#location_row_confirm').hide();
-                    $('#sub_location_row_confirm').hide();
-                    $('#space_number_row_confirm').hide();
-                    $('#space_size_row_confirm').hide();
-                    $('#has_electricity_bill_row_confirm').hide();
-                    $('#has_water_bill_row_confirm').hide();
-                    $('#academic_dependance_row_confirm').hide();
-                    $('#amount_academic_row_confirm').hide();
-                    $('#amount_vacation_row_confirm').hide();
-                    $('#rent_sqm_row_confirm').hide();
-
-
-                    $('#invoicing_period_start_date').prop('required',false);
-                    $('#invoicing_period_start_date_alternate').prop('required',false);
-                    $('#invoicing_period_end_date').prop('required',false);
-                    $('#invoicing_period_end_date_alternate').prop('required',false);
-                    $('#period_invoice').prop('required',false);
-                    $('#project_id_invoice').prop('required',false);
-                    $('#amount_to_be_paid').prop('required',false);
-                    $('#status').prop('required',false);
-                    $('#description').prop('required',false);
-
-
-
-
-                }else if(client_type_contract=='Indirect'){
-
-                    $('#next4').hide();
-                    $('#submit4').show();
-                    $('#save_and_print_btn4').show();
-
-
-                    $('#major_industry_row_confirm').show();
-                    $('#minor_industry_row_confirm').show();
-                    $('#location_row_confirm').show();
-                    $('#sub_location_row_confirm').show();
-                    $('#space_number_row_confirm').show();
-                    $('#space_size_row_confirm').show();
-                    $('#has_electricity_bill_row_confirm').show();
-                    $('#has_water_bill_row_confirm').show();
-                    $('#academic_dependance_row_confirm').show();
-                    $('#amount_academic_row_confirm').show();
-                    $('#amount_vacation_row_confirm').show();
-                    $('#rent_sqm_row_confirm').show();
-
-
-                    $('#invoicing_period_start_date').prop('required',false);
-                    $('#invoicing_period_start_date_alternate').prop('required',false);
-                    $('#invoicing_period_end_date').prop('required',false);
-                    $('#invoicing_period_end_date_alternate').prop('required',false);
-                    $('#period_invoice').prop('required',false);
-                    $('#project_id_invoice').prop('required',false);
-                    $('#amount_to_be_paid').prop('required',false);
-                    $('#status').prop('required',false);
-                    $('#description').prop('required',false);
-
-
-                }
-                else{
-                    $('#next4').show();
-                    $('#submit4').hide();
-                    $('#save_and_print_btn4').hide();
-
-
-                    $('#major_industry_row_confirm').show();
-                    $('#minor_industry_row_confirm').show();
-                    $('#location_row_confirm').show();
-                    $('#sub_location_row_confirm').show();
-                    $('#space_number_row_confirm').show();
-                    $('#space_size_row_confirm').show();
-                    $('#has_electricity_bill_row_confirm').show();
-                    $('#has_water_bill_row_confirm').show();
-                    $('#academic_dependance_row_confirm').show();
-                    $('#amount_academic_row_confirm').show();
-                    $('#amount_vacation_row_confirm').show();
-                    $('#rent_sqm_row_confirm').show();
-
-
-                    $('#invoicing_period_start_date').prop('required',true);
-                    $('#invoicing_period_start_date_alternate').prop('required',true);
-                    $('#invoicing_period_end_date').prop('required',true);
-                    $('#invoicing_period_end_date_alternate').prop('required',true);
-                    $('#period_invoice').prop('required',true);
-                    $('#project_id_invoice').prop('required',true);
-                    $('#amount_to_be_paid').prop('required',true);
-                    $('#status').prop('required',true);
-                    $('#description').prop('required',true);
-
-
-
-                }
 
 
 
@@ -4383,135 +4002,6 @@
             $("#next4").click(function(){
                 current_fs = $(this).parent();
                 next_fs = $(this).parent().next();
-                var p1,p2,p3,p4,p5,p6,p7,p8,p9,p10,p11,p12,p13,p14,p15,p16,p17,p18,p19,p20,p21,p22,p23,p26;
-                var first_name=document.getElementById('first_name').value;
-                var last_name=document.getElementById('last_name').value;
-                var company_name=document.getElementById('company_name').value;
-                var client_type=document.getElementById('client_type').value;
-                var email=$("#email").val();
-                var official_client_id=$("#official_client_id").val();
-
-                var percentage_to_pay=$("#percentage_to_pay").val();
-                var phone_number=document.getElementById('phone_number').value;
-                var address=document.getElementById('address').value;
-                var sub_location = $('#space_sub_location').val();
-                var location = $('#space_location').val();
-                var minor = $('#minor_list').val();
-                var major = $('#getMajor').val();
-                var space_id = $('#space_id_contract').val();
-
-                var start_date=document.getElementById('start_date').value;
-                var start_date_alternate=document.getElementById('start_date_alternate').value;
-                var duration=document.getElementById('duration').value;
-                var duration_period=document.getElementById('duration_period').value;
-
-                var academic_dependence=document.getElementById('academic_dependence').value;
-                var vacation_season=document.getElementById('vacation_season').value;
-                var academic_season=document.getElementById('academic_season').value;
-                var amount=document.getElementById('amount').value;
-                var rent_sqm=document.getElementById('rent_sqm').value;
-                var currency=document.getElementById('currency').value;
-                var payment_cycle=document.getElementById('payment_cycle').value;
-                var escalation_rate=document.getElementById('escalation_rate').value;
-                var space_size=document.getElementById('space_size').value;
-                var has_water_bill=document.getElementById('has_water_bill').value;
-                var has_electricity_bill=document.getElementById('has_electricity_bill').value;
-
-
-                var tin=$("#tin").val();
-                var contract_category=$("#contract_category").val();
-                var tbs_certificate=$("#tbs_certificate").val();
-                var gpsa_certificate=$("#gpsa_certificate").val();
-                var food_business_license=$("#food_business_license").val();
-                var business_license=$("#business_license").val();
-                var osha_certificate=$("#osha_certificate").val();
-                var tcra_registration=$("#tcra_registration").val();
-                var brela_registration=$("#brela_registration").val();
-                var additional_businesses_list=$("#additional_businesses_list").val();
-                var additional_businesses_amount=$("#additional_businesses_amount").val();
-                var total_amount=$("#total_amount").val();
-                var academic_season_total=$("#academic_season_total").val();
-                var vacation_season_total=$("#vacation_season_total").val();
-                var security_deposit=$("#security_deposit").val();
-                var clientType=$("#client_type").val();
-
-
-
-
-                const monthNames = ["January", "February", "March", "April", "May", "June",
-                    "July", "August", "September", "October", "November", "December"];
-                const dateObj = new Date(start_date);
-                const month = dateObj.getMonth()+1;
-                const day = String(dateObj.getDate()).padStart(2, '0');
-                const year = dateObj.getFullYear();
-                const output = day  + '/'+ month  + '/' + year;
-
-
-                function thousands_separators(num)
-                {
-                    var num_parts = num.toString().split(".");
-                    num_parts[0] = num_parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-                    return num_parts.join(".");
-                }
-
-
-
-                // document.getElementById("client").innerHTML ='';
-
-
-
-
-                    if(client_type=='1'){
-
-                        $("#debtor_name").val(first_name+" "+last_name);
-
-                    }else if(client_type=='2'){
-
-                        $("#debtor_name").val(company_name);
-
-                    }else{
-
-
-                    }
-
-
-
-
-                $("#debtor_account_code_space").val(official_client_id);
-                $("#tin_invoice").val(tin);
-                $("#debtor_address_space").val(address);
-
-
-
-                $("#invoicing_period_start_date").val(start_date);
-
-
-
-
-                $("#invoicing_period_start_date_alternate").val(start_date_alternate);
-
-                var start_date2=new Date(start_date_alternate);
-
-                var calculated_end_date = new Date(start_date2.setMonth(start_date2.getMonth()+ +payment_cycle));
-
-               var invoicing_period_end_date_alternate = (calculated_end_date.getFullYear() + '-'
-                    + ('0' + (calculated_end_date.getMonth()+1)).slice(-2) + '-'+('0' + calculated_end_date.getDate()).slice(-2));
-
-
-
-                var invoicing_period_end_date = (('0' + calculated_end_date.getDate()).slice(-2) + '/'
-                    + ('0' + (calculated_end_date.getMonth()+1)).slice(-2) + '/'+calculated_end_date.getFullYear());
-
-
-
-
-
-                $("#invoicing_period_end_date").val(invoicing_period_end_date);
-                $("#invoicing_period_end_date_alternate").val(invoicing_period_end_date_alternate);
-
-
-
-                $("#currency_invoice").val(currency);
 
 
                 gonext();
@@ -4610,51 +4100,6 @@
                 });
             });
 
-
-
-            $("#previous3").click(function(){
-
-
-                current_fs = $(this).parent();
-
-                var client_type_contract=$("#client_type_contract").val();
-
-                if(client_type_contract=='Direct and has clients'){
-
-                    previous_fs = $(this).parent().prev().prev();
-                }else{
-
-                    previous_fs = $(this).parent().prev();
-
-                }
-
-
-
-
-//Remove class active
-                $("#progressbar li").eq($("fieldset").index(current_fs)).removeClass("active");
-
-//show the previous fieldset
-                previous_fs.show();
-
-//hide the current fieldset with style
-                current_fs.animate({opacity: 0}, {
-                    step: function(now) {
-// for making fielset appear animation
-                        opacity = 1 - now;
-
-                        current_fs.css({
-                            'display': 'none',
-                            'position': 'relative'
-                        });
-                        previous_fs.css({'opacity': opacity});
-                    },
-                    duration: 600
-                });
-            });
-
-
-
             $(".submit").click(function(){
                 console.log(2);
                 return true;
@@ -4677,6 +4122,8 @@
                 $('#total_amountDiv').hide();
                 $('#academic_season_totalDiv').hide();
                 $('#vacation_season_totalDiv').hide();
+
+
 
                 if(query=='Yes') {
 
@@ -4954,6 +4401,9 @@
 
     </script>
 
+
+
+
     <script>
 
         $( "#start_date").datepicker({
@@ -4972,44 +4422,12 @@
 
 
 
-        $( "#invoicing_period_start_date").datepicker({
-
-            dateFormat: 'dd/mm/yy',
-            calendarWeeks: true,
-            autoclose: true,
-            altField: "#invoicing_period_start_date_alternate",
-            altFormat: "yy-mm-dd",
-            todayHighlight: true,
-            rtl: true,
-
-            orientation:"auto"
-        });
-
-
-
-
-
-        $( "#invoicing_period_end_date").datepicker({
-
-            dateFormat: 'dd/mm/yy',
-            calendarWeeks: true,
-            autoclose: true,
-
-            altField: "#invoicing_period_end_date_alternate",
-            altFormat: "yy-mm-dd",
-            todayHighlight: true,
-            rtl: true,
-            orientation:"auto"
-        });
 
 
 
 
 
     </script>
-
-
-
 
 
 

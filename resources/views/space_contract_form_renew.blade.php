@@ -491,8 +491,14 @@ select.list-dt:focus {
                                             <label for="has_electricity_bill"  ><strong>Need to also pay Electricity bill</strong></label>
                                             <input type="text" readonly class="form-control" id="has_electricity_bill" name="has_electricity_bill" value="{{$var->has_electricity_bill_space}}"  autocomplete="off">
                                         </div>
+
+
+
+
                                     </div>
                                     @endif
+
+                                    <input type="hidden"  class="form-control"  name="id_contract" value="{{$var->contract_id}}"  autocomplete="off">
 
 
                                     @endforeach
@@ -779,6 +785,8 @@ select.list-dt:focus {
                                             <input type="number"  id="escalation_rate_academic" name="escalation_rate_academic" class="form-control" >
                                         </div>
 
+
+                                        <input type="hidden"  class="form-control"  name="renew" value="True"  autocomplete="off">
 
 
 

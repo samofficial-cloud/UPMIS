@@ -4758,10 +4758,12 @@ div.dt-buttons{
 
 
 
-
+        @if($var->has_clients=="1")
+            <a title="Review" href="/space_contract_approval_parent/{{$var->contract_id}}"> <i class="fas fa-reply"></i></a>
+        @else
 
 <a title="Review" href="/space_contract_approval/{{$var->contract_id}}"> <i class="fas fa-reply"></i></a>
-
+        @endif
 
 
 
@@ -5337,13 +5339,7 @@ ACTIVE
                 </div>
                 <br>
 
-                <div  class="form-group col-md-12 mt-1">
-                    <div class="form-wrapper">
-                        <label for=""  >Inc Code<span style="color: red;">*</span></label>
-                        <input type="text" class="form-control"  name="inc_code" value=""  Required autocomplete="off">
-                    </div>
-                </div>
-                <br>
+
 
 
                 <div class="form-group col-md-6 pt-2" id="invoicing_period_start_dateDiv" >
@@ -5462,10 +5458,15 @@ ACTIVE
 
 @if($var->contract_status==0 OR $var->end_date<date('Y-m-d'))
 {{--                    <a href="#"><i class="fa fa-print" style="font-size:28px;color: #3490dc;"></i></a>--}}
-@if($privileges=='Read only')
-@else
-<a href="{{ route('renew_space_contract_form',$var->contract_id) }}" style="display:inline-block;" title="Click to renew this contract"><center><i class="fa fa-refresh" style="font-size:20px;"></i></center></a>
-@endif
+            @if(Auth::user()->role=='DPDI Planner')
+
+                @if($var->has_clients=='1')
+                    <a href="{{ route('renew_space_contract_form_parent_client',$var->contract_id) }}" style="display:inline-block;" title="Click to renew this contract"><center><i class="fa fa-refresh" style="font-size:20px;"></i></center></a>
+                @else
+                    <a href="{{ route('renew_space_contract_form',$var->contract_id) }}" style="display:inline-block;" title="Click to renew this contract"><center><i class="fa fa-refresh" style="font-size:20px;"></i></center></a>
+                @endif
+
+            @endif
 
 @else
 @endif
@@ -5824,13 +5825,7 @@ ACTIVE
               </div>
               <br>
 
-              <div  class="form-group col-md-12 mt-1">
-                  <div class="form-wrapper">
-                      <label for=""  >Inc Code<span style="color: red;">*</span></label>
-                      <input type="text" class="form-control"  name="inc_code" value=""  Required autocomplete="off">
-                  </div>
-              </div>
-              <br>
+
 
 
               <div class="form-group col-md-6 pt-2" id="invoicing_period_start_dateDiv" >
@@ -5949,9 +5944,14 @@ ACTIVE
 
 @if($var->contract_status==0 OR $var->end_date<date('Y-m-d'))
 {{--                    <a href="#"><i class="fa fa-print" style="font-size:28px;color: #3490dc;"></i></a>--}}
-@if($privileges=='Read only')
-@else
-<a href="{{ route('renew_space_contract_form',$var->contract_id) }}" style="display:inline-block;" title="Click to renew this contract"><center><i class="fa fa-refresh" style="font-size:20px;"></i></center></a>
+@if(Auth::user()->role=='DPDI Planner')
+
+                @if($var->has_clients=='1')
+                    <a href="{{ route('renew_space_contract_form_parent_client',$var->contract_id) }}" style="display:inline-block;" title="Click to renew this contract"><center><i class="fa fa-refresh" style="font-size:20px;"></i></center></a>
+                @else
+                    <a href="{{ route('renew_space_contract_form',$var->contract_id) }}" style="display:inline-block;" title="Click to renew this contract"><center><i class="fa fa-refresh" style="font-size:20px;"></i></center></a>
+                @endif
+
 @endif
 
 @else

@@ -2502,6 +2502,12 @@ current_fs = $(this).parent();
 
 
 
+
+
+
+
+
+
     if(insurance_class=='FIDELITY GUARANTEE'){
 
         var number_of_employees=$('#number_of_employees').val();
@@ -2548,8 +2554,9 @@ current_fs = $(this).parent();
 
 
 
-    if(insurance_class=='MOTOR' || insurance_class=='FIRE'){
+    if((insurance_type.indexOf('COMPREHENSIVE') > -1) || insurance_class=='FIRE'){
         $('#mode_of_paymentDiv').show();
+
 
 
     }else{
@@ -4372,14 +4379,13 @@ $("#next2").click(function(){
     $("#receipt_no_confirm").html(receipt_no);
     $("#receipt_no_confirm").css('font-weight', 'bold');
 
-//to cut to the chase
-    gonext();
+
 
 
 
  if(insurance_class=='MOTOR'){
-
-     if(insurance_type=='COMPREHENSIVE'){
+//Case sensitive
+     if(insurance_type.indexOf('COMPREHENSIVE') > -1){
 
          //check for different mode of payments
 
@@ -4705,7 +4711,7 @@ $("#next2").click(function(){
 
     }else{
 
-     if(p1=='1' & p2=='1' & p4=='1'  & p5=='1' & p6=='1'  & p7=='1' & p8=='1' & p9=='1'  & p10=='1') {
+     if(p1=='1' & p2=='1' & p4=='1' & p7=='1' & p8=='1' & p9=='1'  & p10=='1') {
 
          if (sum_insured>=20 && actual_ex_vat>=20 && value>=20 ){
              document.getElementById("validate_money_msg").innerHTML ='';
