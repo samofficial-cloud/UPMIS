@@ -289,7 +289,7 @@
                                 <tbody>
                                 @foreach($active_carclients as $client)
                                     <tr>
-                                        <th scope="row" style="text-align: center;">{{$a3}}.</th>
+                                        <td scope="row" style="text-align: center;"></td>
                                         <td>{{$client->fullName}}</td>
                                         <td>
                                             @if($client->tin=='')
@@ -569,6 +569,7 @@
                     "<'top'<tr>>" +
                     "<'top'<'pull-left 'p>>",
                 "pageLength": 100,
+                "order": [[ 6, "asc" ]],
                 "bLengthChange": false,
                 "orderClasses": false,
                 buttons: [
@@ -667,7 +668,11 @@
 
 
 
-
+            table2.on( 'order.dtable2 search.dtable2', function () {
+                table2.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
+                    cell.innerHTML = i+1;
+                } );
+            } ).draw();
 
 
 

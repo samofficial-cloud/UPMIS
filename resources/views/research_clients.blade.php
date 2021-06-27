@@ -294,7 +294,7 @@
                             <tbody>
                             @foreach($flats_current as $client)
                                 <tr>
-                                    <th scope="row" style="text-align: center;">{{$k1}}.</th>
+                                    <td scope="row" style="text-align: center;"></td>
                                     <td>{{$client->first_name}} {{$client->last_name}}</td>
                                     <td>{{$client->tin}}</td>
                                     <td>{{$client->phone_number}}</td>
@@ -549,6 +549,7 @@
                     "<'top'<tr>>" +
                     "<'top'<'pull-left 'p>>",
                 "pageLength": 100,
+                "order": [[ 6, "asc" ]],
                 "bLengthChange": false,
                 "orderClasses": false,
                 buttons: [
@@ -652,6 +653,14 @@
 
 
             });
+
+
+
+            table22.on( 'order.dtable22 search.dtable22', function () {
+                table22.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
+                    cell.innerHTML = i+1;
+                } );
+            } ).draw();
 
 
 

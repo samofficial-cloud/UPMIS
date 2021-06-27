@@ -297,7 +297,7 @@
                                     <tbody>
                                     @foreach($flats_current as $client)
                                         <tr>
-                                            <th scope="row" style="text-align: center;">{{$k1}}.</th>
+                                            <td scope="row" style="text-align: center;"></td>
                                             <td>{{$client->first_name}} {{$client->last_name}}</td>
                                             <td>{{$client->tin}}</td>
                                             <td>{{$client->phone_number}}</td>
@@ -630,7 +630,7 @@
                                     <tbody>
                                     @foreach($active_insuranceclients as $client)
                                         <tr>
-                                            <th scope="row" style="text-align: center;">{{$a5}}.</th>
+                                            <td scope="row" style="text-align: center;"></td>
                                             <td>{{$client->full_name}}</td>
                                             <td>
                                                 @if($client->tin=='')
@@ -981,7 +981,7 @@
                                     <tbody>
                                     @foreach($active_carclients as $client)
                                         <tr>
-                                            <th scope="row" style="text-align: center;">{{$a3}}.</th>
+                                            <td scope="row" style="text-align: center;"></td>
                                             <td>{{$client->fullName}}</td>
                                             <td>
                                                 @if($client->tin=='')
@@ -1340,7 +1340,7 @@
                             <tbody>
                             @foreach($SCclients as $client)
                                 <tr>
-                                    <th scope="row" style="text-align: center;">{{$a1}}.</th>
+                                    <td scope="row" style="text-align: center;"></td>
                                     <td>{{$client->full_name}}</td>
                                     <td>@if($client->tin=='')
                                             N/A
@@ -1605,6 +1605,7 @@
                     "<'top'<tr>>" +
                     "<'top'<'pull-left 'p>>",
                 "pageLength": 100,
+                "order": [[ 6, "asc" ]],
                 "bLengthChange": false,
 
                 buttons: [
@@ -1708,6 +1709,17 @@
 
 
             });
+
+
+
+            table22.on( 'order.dtable22 search.dtable22', function () {
+                table22.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
+                    cell.innerHTML = i+1;
+                } );
+            } ).draw();
+
+
+
 
             var table23 = $('#myTable_flatsp').DataTable( {
                 dom:
@@ -1822,6 +1834,8 @@
                     "<'top'<'pull-left 'p>>",
                 "pageLength": 100,
                 "bLengthChange": false,
+
+                "order": [[ 6, "asc" ]],
                 buttons: [
                     {   extend: 'pdfHtml5',
                         filename:'Real Estate Active Clients',
@@ -1920,6 +1934,16 @@
                     },
                 ]
             } );
+
+
+
+            table0.on( 'order.dtable0 search.dtable0', function () {
+                table0.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
+                    cell.innerHTML = i+1;
+                } );
+            } ).draw();
+
+
 
             var table = $('#myTable1').DataTable( {
                 dom:
@@ -2029,6 +2053,7 @@
                     "<'top'<tr>>" +
                     "<'top'<'pull-left 'p>>",
                 "pageLength": 100,
+                "order": [[ 6, "asc" ]],
                 "bLengthChange": false,
                 buttons: [
                     {   extend: 'pdfHtml5',
@@ -2124,12 +2149,23 @@
                 ]
             } );
 
+
+            table2.on( 'order.dtable2 search.dtable2', function () {
+                table2.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
+                    cell.innerHTML = i+1;
+                } );
+            } ).draw();
+
+
+
+
             var table3 = $('#myTable3').DataTable( {
                 dom:
                     "<'top'<'pt-3 pull-left'B><'text-center pull-right'f>>"+
                     "<'top'<tr>>" +
                     "<'top'<'pull-left 'p>>",
                 "pageLength": 100,
+                "order": [[ 6, "asc" ]],
                 "bLengthChange": false,
                 buttons: [
                     {   extend: 'pdfHtml5',
@@ -2224,6 +2260,17 @@
                     },
                 ]
             } );
+
+
+
+            table3.on( 'order.dtable3 search.dtable3', function () {
+                table3.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
+                    cell.innerHTML = i+1;
+                } );
+            } ).draw();
+
+
+
 
             var table4 = $('#myTable4').DataTable( {
                 dom:

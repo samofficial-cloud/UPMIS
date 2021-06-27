@@ -284,7 +284,7 @@
                                 <tbody>
                                 @foreach($active_insuranceclients as $client)
                                     <tr>
-                                        <th scope="row" style="text-align: center;">{{$a5}}.</th>
+                                        <td scope="row" style="text-align: center;"></td>
                                         <td>{{$client->full_name}}</td>
                                         <td>
                                             @if($client->tin=='')
@@ -555,6 +555,7 @@
                     "<'top'<tr>>" +
                     "<'top'<'pull-left 'p>>",
                 "pageLength": 100,
+                "order": [[ 6, "asc" ]],
                 "bLengthChange": false,
                 "orderClasses": false,
                 buttons: [
@@ -648,6 +649,14 @@
                     },
                 ]
             } );
+
+
+            table3.on( 'order.dtable3 search.dtable3', function () {
+                table3.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
+                    cell.innerHTML = i+1;
+                } );
+            } ).draw();
+
 
 
             var globalreg;
