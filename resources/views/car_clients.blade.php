@@ -276,12 +276,12 @@
                                 <thead class="thead-dark">
                                 <tr>
                                     <th scope="col" style="color:#fff; width: 5%;"><center>S/N</center></th>
-                                    <th scope="col" style="color:#fff;"><center>Client Name</center></th>
-                                    <th scope="col" style="color:#fff;"><center>TIN</center></th>
-                                    <th scope="col" style="color:#fff;"><center>Cost Center</center></th>
-                                    <th scope="col" style="color:#fff;"><center>Department</center></th>
-                                    <th scope="col" style="color:#fff;"><center>Email</center></th>
-                                    <th scope="col" style="color:#fff;"><center>Status</center></th>
+                                    <th scope="col" style="color:#fff;">Client Name</th>
+                                    <th scope="col" style="color:#fff;" class="text-right">TIN</th>
+                                    <th scope="col" style="color:#fff;" class="text-right">Cost Center</th>
+                                    <th scope="col" style="color:#fff;">Department</th>
+                                    <th scope="col" style="color:#fff;">Email</th>
+                                    <th scope="col" style="color:#fff;">Status</th>
                                     {{--  <th scope="col" style="color:#fff;"><center>Trip Date</center></th> --}}
                                     <th scope="col" style="color:#fff;"><center>Action</center></th>
                                 </tr>
@@ -291,7 +291,7 @@
                                     <tr>
                                         <td scope="row" style="text-align: center;"></td>
                                         <td>{{$client->fullName}}</td>
-                                        <td>
+                                        <td class="text-right">
                                             @if($client->tin=='')
                                                 N/A
                                             @else
@@ -299,7 +299,7 @@
                                             @endif
 
                                         </td>
-                                        <td><center>{{$client->cost_centre}}</center></td>
+                                        <td class="text-right">{{$client->cost_centre}}</td>
                                         <td>{{$client->faculty}}</td>
                                         <td>{{$client->email}}</td>
                                         <td>

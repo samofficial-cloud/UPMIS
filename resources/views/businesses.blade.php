@@ -994,12 +994,12 @@ input[type=radio]{
                                                     <thead class="thead-dark">
                                                     <tr>
                                                         <th scope="col" style="color:#fff; width: 5%;"><center>S/N</center></th>
-                                                        <th scope="col" style="color:#fff;"><center>Room No.</center></th>
-                                                        <th scope="col" style="color:#fff;"><center>Category</center></th>
-                                                        <th scope="col" style="color:#fff;"><center>Currency</center></th>
-                                                        <th scope="col" style="color:#fff; width: 20%;"><center>Staff Rate</center></th>
-                                                        <th scope="col" style="color:#fff;width: 20%;"><center>Students Rate</center></th>
-                                                        <th scope="col" style="color:#fff;width: 20%;"><center>Status</center></th>
+                                                        <th scope="col" style="color:#fff;">Room No.</th>
+                                                        <th scope="col" style="color:#fff;">Category</th>
+                                                        <th scope="col" style="color:#fff;">Currency</th>
+                                                        <th scope="col" class="text-right" style="color:#fff; width: 20%;">Staff Rate</th>
+                                                        <th scope="col" class="text-right" style="color:#fff;width: 20%;">Students Rate</th>
+                                                        <th scope="col" style="color:#fff;width: 20%;">Status</th>
 
 
                                                         <th scope="col" style="color:#fff;"><center>Action</center></th>
@@ -1354,13 +1354,14 @@ input[type=radio]{
                                          <thead class="thead-dark">
                                          <tr>
                                              <th scope="col" style="color:#fff; width: 5%;"><center>S/N</center></th>
-                                             <th scope="col" style="color:#fff;"><center>Room No.</center></th>
-                                             <th scope="col" style="color:#fff;"><center>Category</center></th>
-                                             <th scope="col" style="color:#fff;"><center>Currency</center></th>
-                                             <th scope="col" style="color:#fff; width: 20%;"><center>Staff Rate</center></th>
-                                             <th scope="col" style="color:#fff;width: 20%;"><center>Students Rate</center></th>
-                                             <th scope="col" style="color:#fff;width: 20%;"><center>Status</center></th>
-                                             @if($privileges=='Read only')
+                                             <th scope="col" style="color:#fff;">Room No.</th>
+                                             <th scope="col" style="color:#fff;">Category</th>
+                                             <th scope="col" style="color:#fff;">Currency</th>
+                                             <th scope="col" class="text-right" style="color:#fff; width: 20%;">Staff Rate</th>
+                                             <th scope="col" class="text-right" style="color:#fff;width: 20%;">Students Rate</th>
+                                             <th scope="col" style="color:#fff;width: 20%;">Status</th>
+
+                                         @if($privileges=='Read only')
                                              @else
                                                  @admin
                                                  <th scope="col" style="color:#fff;"><center>Action</center></th>
@@ -1795,11 +1796,11 @@ input[type=radio]{
                                      <table class="hover table table-striped table-bordered" id="myTable2">
                                          <thead class="thead-dark">
                                          <tr>
-                                             <th scope="col" style="color:#fff;"><center>S/N</center></th>
-                                             <th scope="col" style="color:#fff;"><center>Class</center></th>
-                                             <th scope="col" style="color:#fff;"><center>Insurance Company</center></th>
-                                             <th scope="col" style="color:#fff;"><center>Type</center></th>
-                                             <th scope="col"  style="color:#fff;"><center>Commission</center></th>
+                                             <th scope="col" style="color:#fff; text-align: center">S/N</th>
+                                             <th scope="col" style="color:#fff;">Class</th>
+                                             <th scope="col" style="color:#fff;">Insurance Company</th>
+                                             <th scope="col" style="color:#fff;">Type</th>
+                                             <th scope="col"  style="color:#fff; text-align: right">Commission</th>
 
                                              @if($privileges=='Read only')
                                              @else
@@ -2664,11 +2665,11 @@ input[type=radio]{
                                                  <thead class="thead-dark">
                                                  <tr>
                                                      <th scope="col" style="color:#fff; width: 5%;"><center>S/N</center></th>
-                                                     <th scope="col" style="color:#fff;"><center>Vehicle Registration No.</center></th>
-                                                     <th scope="col" style="color:#fff;"><center>Vehicle Model</center></th>
-                                                     <th scope="col" style="color:#fff;"><center>Vehicle Status</center></th>
-                                                     <th scope="col" style="color:#fff;"><center>Hire Rate/KM (TZS)</center></th>
-                                                     <th scope="col" style="color:#fff;"><center>Hire Status</center></th>
+                                                     <th scope="col" style="color:#fff;">Vehicle Registration No.</th>
+                                                     <th scope="col" style="color:#fff;">Vehicle Model</th>
+                                                     <th scope="col" style="color:#fff;">Vehicle Status</th>
+                                                     <th scope="col" style="color:#fff;" class="text-right">Hire Rate/KM (TZS)</th>
+                                                     <th scope="col" style="color:#fff;">Hire Status</th>
                                                      <th scope="col" style="color:#fff;"><center>Action</center></th>
                                                  </tr>
                                                  </thead>
@@ -2917,11 +2918,11 @@ input[type=radio]{
                                                  <thead class="thead-dark">
                                                  <tr>
                                                      <th scope="col" style="color:#fff; width: 5%;"><center>S/N</center></th>
-                                                     <th scope="col" style="color:#fff;"><center>Vehicle Registration No.</center></th>
-                                                     <th scope="col" style="color:#fff;"><center>Vehicle Model</center></th>
-                                                     <th scope="col" style="color:#fff;"><center>Vehicle Status</center></th>
-                                                     <th scope="col" style="color:#fff;"><center>Hire Rate/KM (TZS)</center></th>
-                                                     <th scope="col" style="color:#fff;"><center>Hire Status</center></th>
+                                                     <th scope="col" style="color:#fff;">Vehicle Registration No.</th>
+                                                     <th scope="col" style="color:#fff;">Vehicle Model</th>
+                                                     <th scope="col" style="color:#fff;">Vehicle Status</th>
+                                                     <th scope="col" style="color:#fff;" class="text-right">Hire Rate/KM (TZS)</th>
+                                                     <th scope="col" style="color:#fff;">Hire Status</th>
                                                      <th scope="col" style="color:#fff;"><center>Action</center></th>
                                                  </tr>
                                                  </thead>
@@ -3099,8 +3100,8 @@ input[type=radio]{
 
 
                                             @if($hire_rate_inbox!='')
-                                            <table class="hover table table-striped table-bordered" style="width: 100%;" id="myTable4">
-                                                <thead class="thead-dark">
+                                            <table class="table" style="width: 100%;" id="myTable4">
+                                                <thead class="">
                                                 <tr>
                                                     <th scope="col" style="color:#fff; width: 3%;"><center>S/N</center></th>
                                                     <th scope="col" style="color:#fff;"><center>Vehicle Model</center></th>
@@ -3210,7 +3211,7 @@ input[type=radio]{
 
 
                                              @if($hire_rate_inbox!='')
-                                             <table class=" table " style="width: 100%;" >
+                                             <table class="table" style="width: 100%;" >
                                                  <thead class="">
                                                  <tr>
                                                      <th scope="col" style=" width: 3%;"><center>S/N</center></th>
@@ -3386,8 +3387,8 @@ input[type=radio]{
 
                                      <div id="hire_rate_outbox" class="tabcontent_hire">
                                         @if($hire_rate_outbox!='')
-                                         <table class="hover table table-striped table-bordered" style="width: 100%;" id="myTable4">
-                                             <thead class="thead-dark">
+                                         <table class="table" style="width: 100%;" id="myTable4">
+                                             <thead >
                                              <tr>
                                                  <th scope="col" style="color:#fff; width: 3%;"><center>S/N</center></th>
                                                  <th scope="col" style="color:#fff;"><center>Vehicle Model</center></th>
@@ -3492,8 +3493,8 @@ input[type=radio]{
                                                     <thead class="thead-dark">
                                                     <tr>
                                                         <th scope="col" style="color:#fff; width: 3%;"><center>S/N</center></th>
-                                                        <th scope="col" style="color:#fff;"><center>Vehicle Model</center></th>
-                                                        <th scope="col" style="color:#fff;"><center>Hire Rate/KM (TZS)</center></th>
+                                                        <th scope="col" style="color:#fff;">Vehicle Model</th>
+                                                        <th scope="col" style="color:#fff;" class="text-right">Hire Rate/KM (TZS)</th>
                                                         @if($privileges=='Read only')
                                                         @else
                                                             <th scope="col" style="color:#fff;"><center>Action</center></th>
@@ -3599,8 +3600,8 @@ input[type=radio]{
                                                  <thead class="thead-dark">
                                                  <tr>
                                                      <th scope="col" style="color:#fff; width: 3%;"><center>S/N</center></th>
-                                                     <th scope="col" style="color:#fff;"><center>Vehicle Model</center></th>
-                                                     <th scope="col" style="color:#fff;"><center>Hire Rate/KM (TZS)</center></th>
+                                                     <th scope="col" style="color:#fff;">Vehicle Model</th>
+                                                     <th scope="col" style="color:#fff;" class="text-right">Hire Rate/KM (TZS)</th>
                                                      @if($privileges=='Read only')
                                                      @else
                                                          <th scope="col" style="color:#fff;"><center>Action</center></th>
@@ -4566,10 +4567,10 @@ input[type=radio]{
                                                  <th scope="col" style="color:#fff;">Real Estate Number</th>
                                                  <th scope="col"  style="color:#fff;">Location</th>
                                                  <th scope="col"  style="color:#fff;">Sub Location</th>
-                                                 <th scope="col"  style="color:#fff;"><center>Size (SQM)</center></th>
+                                                 <th scope="col"  style="color:#fff; text-align: right;">Size (SQM)</th>
 
                                                  {{--          <th scope="col"  style="color:#3490dc;"><center>Rent Price Guide</center></th>--}}
-                                                 <th scope="col"  style="color:#fff;"><center>Status</center></th>
+                                                 <th scope="col"  style="color:#fff;">Status</th>
 
                                                  <th scope="col"  style="color:#fff;"><center>Action</center></th>
                                              </tr>
@@ -4606,7 +4607,7 @@ input[type=radio]{
 
                                                      {{--                </center></td>--}}
 
-                                                     <td><center>
+                                                     <td>
                                                              @if($var->occupation_status==1)
                                                                  Occupied
                                                              @else
@@ -4614,7 +4615,7 @@ input[type=radio]{
                                                              @endif
 
 
-                                                         </center></td>
+                                                         </td>
 
                                                      <td><center>
                                                              <a title="View more information" class="link_style" data-toggle="modal" data-target="#space_id{{$var->id}}" style="color: blue !important; text-decoration: underline !important;  cursor: pointer; display: inline-block" aria-pressed="true"><center><i class="fa fa-eye" style="font-size:20px;" aria-hidden="true"></i></center></a>
@@ -5296,10 +5297,10 @@ input[type=radio]{
                                              <th scope="col" style="color:#fff;">Real Estate Number</th>
                                              <th scope="col"  style="color:#fff;">Location</th>
                                              <th scope="col"  style="color:#fff;">Sub Location</th>
-                                             <th scope="col"  style="color:#fff;"><center>Size (SQM)</center></th>
+                                             <th scope="col"  style="color:#fff; text-align: right">Size (SQM)</th>
 
                                              {{--          <th scope="col"  style="color:#3490dc;"><center>Rent Price Guide</center></th>--}}
-                                             <th scope="col"  style="color:#fff;"><center>Status</center></th>
+                                             <th scope="col"  style="color:#fff;">Status</th>
 
                                              <th scope="col"  style="color:#fff;"><center>Action</center></th>
                                          </tr>

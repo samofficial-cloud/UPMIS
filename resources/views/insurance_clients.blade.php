@@ -272,13 +272,13 @@
                                 <thead class="thead-dark">
                                 <tr>
                                     <th scope="col" style="color:#fff; width: 5%;"><center>S/N</center></th>
-                                    <th scope="col" style="color:#fff;"><center>Client Name</center></th>
-                                    <th scope="col" style="color:#fff;"><center>TIN</center></th>
-                                    <th scope="col" style="color:#fff;"><center>Phone Number</center></th>
-                                    <th scope="col" style="color:#fff;"><center>Email</center></th>
-                                    <th scope="col" style="color:#fff;"><center>Class</center></th>
-                                    <th scope="col" style="color:#fff;"><center>Status</center></th>
-                                    <th scope="col"  style="color:#fff;"><center>Action</center></th>
+                                    <th scope="col" style="color:#fff;">Client Name</th>
+                                    <th scope="col" style="color:#fff;" class="text-right">TIN</th>
+                                    <th scope="col" style="color:#fff;" class="text-right">Phone Number</th>
+                                    <th scope="col" style="color:#fff;">Email</th>
+                                    <th scope="col" style="color:#fff;">Address</th>
+                                    <th scope="col" style="color:#fff;">Status</th>
+                                    <th scope="col" style="color:#fff;"><center>Action</center></th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -286,7 +286,7 @@
                                     <tr>
                                         <td scope="row" style="text-align: center;"></td>
                                         <td>{{$client->full_name}}</td>
-                                        <td>
+                                        <td class="text-right">
                                             @if($client->tin=='')
                                                 N/A
                                             @else
@@ -295,7 +295,7 @@
 
 
                                         </td>
-                                        <td>{{$client->phone_number}}</td>
+                                        <td class="text-right">{{$client->phone_number}}</td>
                                         {{-- <td>{{ucfirst(strtolower($client->principal))}}</td>
       <td>{{ucfirst(strtolower($client->insurance_type))}}</td>
       <td>{{number_format($client->sum_insured)}}</td>

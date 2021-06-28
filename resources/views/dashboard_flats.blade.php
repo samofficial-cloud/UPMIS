@@ -322,22 +322,22 @@
                             <tr>
                                 <th scope="col"><center>S/N</center></th>
                                 <th scope="col" >Debtor Name</th>
-                                <th scope="col">Invoice Number</th>
+                                <th scope="col" class="text-right">Invoice Number</th>
 {{--                                <th scope="col" >Arrival Date</th>--}}
 {{--                                <th scope="col" >Departure date</th>--}}
-                                <th scope="col">Contract Id</th>
-                                <th scope="col" style="width: 12%;">Amount</th>
+                                <th scope="col" class="text-right">Contract Id</th>
+                                <th scope="col" style="width: 12%;" class="text-right">Amount</th>
 {{--                                <th scope="col" >Invoice Date</th>--}}
-                                <th scope="col" >Time Overdue</th>
-                                <th scope="col" >Action</th>
+                                <th scope="col" class="text-right">Time Overdue</th>
+                                <th scope="col" class="text-center">Action</th>
                             </tr>
                             </thead>
                             <tbody>
                             @foreach($invoices as $var)
                                 <tr>
-                                    <th scope="row" class="counterCell">.</th>
+                                    <td  class="counterCell text-center">.</td>
                                     <td>{{$var->debtor_name}}</td>
-                                    <td><center> <a title="View invoice" style="color:#3490dc !important; display:inline-block; cursor: pointer;"  class="" data-toggle="modal" data-target="#invoice_research{{$var->invoice_number}}"  aria-pressed="true">{{$var->invoice_number_votebook}}</a>
+                                    <td class="text-right"> <a title="View invoice" style="color:#3490dc !important; display:inline-block; cursor: pointer;"  class="" data-toggle="modal" data-target="#invoice_research{{$var->invoice_number}}"  aria-pressed="true">{{$var->invoice_number_votebook}}</a>
                                             <div class="modal fade" id="invoice_research{{$var->invoice_number}}" role="dialog">
 
                                                 <div class="modal-dialog" role="document">
@@ -438,10 +438,10 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div></center></td>
+                                            </div></td>
 {{--                                    <td><center>{{date("d/m/Y",strtotime($var->arrival_date))}}</center></td>--}}
 {{--                                    <td><center>{{date("d/m/Y",strtotime($var->departure_date))}}</center></td>--}}
-                                    <td><center>  <a title="View contract" style="cursor: pointer; color:#3490dc !important; display:inline-block;"  class="" data-toggle="modal" data-target="#contract_research{{$var->invoice_number}}" style="cursor: pointer;" aria-pressed="true">{{$var->id}}</a>
+                                    <td class="text-right">  <a title="View contract" style="cursor: pointer; color:#3490dc !important; display:inline-block;"  class="" data-toggle="modal" data-target="#contract_research{{$var->invoice_number}}" style="cursor: pointer;" aria-pressed="true">{{$var->id}}</a>
                                             <div class="modal fade" id="contract_research{{$var->invoice_number}}" role="dialog">
 
                                                 <div class="modal-dialog" role="document">
@@ -511,11 +511,11 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div></center></td>
+                                            </div></td>
                                     <td style="text-align: right;">{{$var->currency_invoice}} {{number_format($var->amount_not_paid)}}</td>
 {{--                                    <td><center>{{date("d/m/Y",strtotime($var->invoice_date))}}</center></td>--}}
                                     <td style="text-align: right;">{{$diff = Carbon\Carbon::parse($var->invoice_date)->diffForHumans(null, true) }}</td>
-                                    <td>
+                                    <td class="text-center">
                                       @if(($var->invoice_debtor=='individual' && $var->email!='') || ($var->invoice_debtor=='host' && $var->host_email!=''))
                                           <a title="Send Email to this Client" data-toggle="modal" data-target="#spacemail{{$var->invoice_number}}" role="button" aria-pressed="true"><center><i class="fa fa-envelope" aria-hidden="true" style="font-size:20px; color: #3490dc; cursor: pointer;"></i></center></a>
 

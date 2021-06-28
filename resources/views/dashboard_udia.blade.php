@@ -357,11 +357,11 @@
   <thead class="thead-dark">
         <tr>
           <th scope="col" style="width: 5%;"><center>S/N</center></th>
-          <th scope="col" style="width: 25%;"><center>Client Name</center></th>
-          <th scope="col"><center>Class</center></th>
-          <th scope="col" ><center>Cover Note</center></th>
-          <th scope="col" ><center>Commission Date</center></th>
-          <th scope="col" ><center>End Date</center></th>
+          <th scope="col" style="width: 25%;">Client Name</th>
+          <th scope="col">Class</th>
+          <th scope="col" class="text-right">Cover Note</th>
+          <th scope="col" >Commission Date</th>
+          <th scope="col" >End Date</th>
           <th scope="col"><center>Action</center></th>
         </tr>
         </thead>
@@ -448,10 +448,10 @@
                   </div>
               </td>
             @endif
-             <td>{{$contract->cover_note}}</td>
-            <td><center>{{date("d/m/Y",strtotime($contract->commission_date))}}</center></td>
-            <td><center>{{date("d/m/Y",strtotime($contract->end_date))}}</center></td>
-            <td>
+             <td class="text-right">{{$contract->cover_note}}</td>
+            <td>{{date("d/m/Y",strtotime($contract->commission_date))}}</td>
+            <td>{{date("d/m/Y",strtotime($contract->end_date))}}</td>
+            <td class="text-center">
               @if($contract->email!="")
               <a title="Send Email to this Client" data-toggle="modal" data-target="#mailIns{{$contract->id}}" role="button" aria-pressed="true"><center><i class="fa fa-envelope" aria-hidden="true" style="font-size:20px; color: #3490dc; cursor: pointer;"></i></center></a>
       <div class="modal fade" id="mailIns{{$contract->id}}" role="dialog">
@@ -621,20 +621,20 @@
                             <tr>
                                 <th scope="col"><center>S/N</center></th>
                                 <th scope="col" >Debtor Name</th>
-                                <th scope="col">Invoice Number</th>
+                                <th scope="col" class="text-right">Invoice Number</th>
 {{--                                <th scope="col" >Start Date</th>--}}
 {{--                                <th scope="col" >End date</th>--}}
-                                <th scope="col" >Amount</th>
+                                <th scope="col" class="text-right">Amount</th>
 {{--                                <th scope="col" >Invoice Date</th>--}}
-                                <th scope="col" >Time Overdue</th>
-                                <th scope="col" >Action</th>
+                                <th scope="col" class="text-right">Time Overdue</th>
+                                <th scope="col" class="text-center">Action</th>
 
                             </tr>
                             </thead>
                             <tbody>
                             @foreach($insurance_invoices as $var)
                                 <tr>
-                                    <th scope="row">{{$d}}.</th>
+                                    <td class="text-center">{{$d}}.</td>
                                     <td>
                                       <a title="View Client Details" class="link_style" style="color: blue !important; cursor: pointer;"  class="" data-toggle="modal" data-target="#clienta{{$var->invoice_number}}" style="cursor: pointer;" aria-pressed="true">{{$var->debtor_name}}</a>
                                             <div class="modal fade" id="clienta{{$var->invoice_number}}" role="dialog">
@@ -678,7 +678,7 @@
                                                 </div>
                                             </div>
                                     </td>
-                                    <td><center>  <a title="View invoice" style="cursor: pointer; color:#3490dc !important; display:inline-block;"  class="" data-toggle="modal" data-target="#invoice_insurance_principals{{$var->invoice_number}}" style="cursor: pointer;" aria-pressed="true"><center>{{$var->invoice_number_votebook}}</center></a>
+                                    <td class="text-right">  <a title="View invoice" style="cursor: pointer; color:#3490dc !important; display:inline-block;"  class="" data-toggle="modal" data-target="#invoice_insurance_principals{{$var->invoice_number}}" style="cursor: pointer;" aria-pressed="true"><center>{{$var->invoice_number_votebook}}</center></a>
                                             <div class="modal fade" id="invoice_insurance_principals{{$var->invoice_number}}" role="dialog">
 
                                                 <div class="modal-dialog" role="document">
@@ -770,16 +770,16 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div></center></td>
+                                            </div></td>
 
 {{--                                    <td><center>{{date("d/m/Y",strtotime($var->invoicing_period_start_date))}}</center></td>--}}
 {{--                                    <td><center>{{date("d/m/Y",strtotime($var->invoicing_period_end_date))}}</center></td>--}}
 {{--                                    --}}{{-- <td>{{$var->period}}</td> --}}
-                                    <td>{{$var->currency_invoice}} {{number_format($var->amount_not_paid)}}</td>
+                                    <td class="text-right">{{$var->currency_invoice}} {{number_format($var->amount_not_paid)}}</td>
                                   {{--  <td>{{$var->gepg_control_no}}</td> --}}
 {{--                                    <td><center>{{date("d/m/Y",strtotime($var->invoice_date))}}</center></td>--}}
                                     <td style="text-align: right;">{{$diff = Carbon\Carbon::parse($var->invoice_date)->diffForHumans(null, true) }}</td>
-                                    <td>
+                                    <td class="text-center">
                                       @if($email!='')
                                        <a title="Send Email to this Client" data-toggle="modal" data-target="#carmail{{$var->invoice_number}}" role="button" aria-pressed="true"><center><i class="fa fa-envelope" aria-hidden="true" style="font-size:20px; color: #3490dc; cursor: pointer;"></i></center></a>
       <div class="modal fade" id="carmail{{$var->invoice_number}}" role="dialog">

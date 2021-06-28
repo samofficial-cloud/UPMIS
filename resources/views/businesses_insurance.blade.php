@@ -466,13 +466,13 @@ input[type=radio]{
                              <table class="hover table table-striped table-bordered" id="myTable2">
                                  <thead class="thead-dark">
                                  <tr>
-                                     <th scope="col" style="color:#fff;"><center>S/N</center></th>
-                                     <th scope="col" style="color:#fff;"><center>Class</center></th>
-                                     <th scope="col" style="color:#fff;"><center>Insurance Company</center></th>
-                                     <th scope="col" style="color:#fff;"><center>Type</center></th>
-                                     <th scope="col"  style="color:#fff;"><center>Commission</center></th>
+                                     <th scope="col" style="color:#fff; text-align: center">S/N</th>
+                                     <th scope="col" style="color:#fff;">Class</th>
+                                     <th scope="col" style="color:#fff;">Insurance Company</th>
+                                     <th scope="col" style="color:#fff;">Type</th>
+                                     <th scope="col"  style="color:#fff; text-align: right">Commission</th>
 
-                                     @if($privileges=='Read only')
+                                 @if($privileges=='Read only')
                                      @else
                                          <th scope="col"  style="color:#fff;"><center>Action</center></th>
                                      @endif

@@ -885,11 +885,11 @@ input[type=radio]{
                                          <thead class="thead-dark">
                                          <tr>
                                              <th scope="col" style="color:#fff; width: 5%;"><center>S/N</center></th>
-                                             <th scope="col" style="color:#fff;"><center>Vehicle Registration No.</center></th>
-                                             <th scope="col" style="color:#fff;"><center>Vehicle Model</center></th>
-                                             <th scope="col" style="color:#fff;"><center>Vehicle Status</center></th>
-                                             <th scope="col" style="color:#fff;"><center>Hire Rate/KM (TZS)</center></th>
-                                             <th scope="col" style="color:#fff;"><center>Hire Status</center></th>
+                                             <th scope="col" style="color:#fff;">Vehicle Registration No.</th>
+                                             <th scope="col" style="color:#fff;">Vehicle Model</th>
+                                             <th scope="col" style="color:#fff;">Vehicle Status</th>
+                                             <th scope="col" style="color:#fff;" class="text-right">Hire Rate/KM (TZS)</th>
+                                             <th scope="col" style="color:#fff;">Hire Status</th>
                                              <th scope="col" style="color:#fff;"><center>Action</center></th>
                                          </tr>
                                          </thead>
@@ -1138,11 +1138,11 @@ input[type=radio]{
                                          <thead class="thead-dark">
                                          <tr>
                                              <th scope="col" style="color:#fff; width: 5%;"><center>S/N</center></th>
-                                             <th scope="col" style="color:#fff;"><center>Vehicle Registration No.</center></th>
-                                             <th scope="col" style="color:#fff;"><center>Vehicle Model</center></th>
-                                             <th scope="col" style="color:#fff;"><center>Vehicle Status</center></th>
-                                             <th scope="col" style="color:#fff;"><center>Hire Rate/KM (TZS)</center></th>
-                                             <th scope="col" style="color:#fff;"><center>Hire Status</center></th>
+                                             <th scope="col" style="color:#fff;">Vehicle Registration No.</th>
+                                             <th scope="col" style="color:#fff;">Vehicle Model</th>
+                                             <th scope="col" style="color:#fff;">Vehicle Status</th>
+                                             <th scope="col" style="color:#fff;" class="text-right">Hire Rate/KM (TZS)</th>
+                                             <th scope="col" style="color:#fff;">Hire Status</th>
                                              <th scope="col" style="color:#fff;"><center>Action</center></th>
                                          </tr>
                                          </thead>
@@ -1302,7 +1302,7 @@ input[type=radio]{
                          @endif
 
                          @if((Auth::user()->role=='Transport Officer-CPTU') || (Auth::user()->role=='Director DPDI')  || (Auth::user()->role=='DVC Administrator'))
-                             <div id="hire" style="border-bottom-left-radius: 50px 20px;   border: 1px solid #ccc; padding: 1%;" class="tabcontent" >
+                             <div id="hire" style="border-bottom-left-radius: 50px 20px;   border: 1px solid #ccc; padding: 1%;" class="tabcontent">
 
                                  <div class="tab" style="">
                                      <button class="tablinks_hire " onclick="openHire(event, 'hire_rate_inbox')" id="defaultOpenHire"><strong>Inbox</strong></button>
@@ -1791,8 +1791,8 @@ margin-top: 4px;" role="button" aria-pressed="true">Add Rate</a>
 <thead class="thead-dark">
 <tr>
 <th scope="col" style="color:#fff; width: 3%;"><center>S/N</center></th>
-<th scope="col" style="color:#fff;"><center>Vehicle Model</center></th>
-<th scope="col" style="color:#fff;"><center>Hire Rate/KM (TZS)</center></th>
+<th scope="col" style="color:#fff;">Vehicle Model</th>
+<th scope="col" style="color:#fff;" class="text-right">Hire Rate/KM (TZS)</th>
 {{-- @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR Auth::user()->role=='System Administrator') --}}
 @if($privileges=='Read only')
 @else
@@ -1891,7 +1891,7 @@ margin-top: 4px;" role="button" aria-pressed="true">Add Rate</a>
 
 </div>
 @else
-<div id="hire" style="border-bottom-left-radius: 50px 20px;   border: 1px solid #ccc; padding: 1%;" class="tabcontent_hire">
+<div id="hire" style="border-bottom-left-radius: 50px 20px;   border: 1px solid #ccc; padding: 1%;" class="tabcontent">
 
 <div>
 
@@ -1966,9 +1966,9 @@ margin-top: 4px;" role="button" aria-pressed="true">Add Rate</a>
 <table class="hover table table-striped table-bordered" style="width: 100%;" id="myTable4">
 <thead class="thead-dark">
 <tr>
-<th scope="col" style="color:#fff; width: 3%;"><center>S/N</center></th>
-<th scope="col" style="color:#fff;"><center>Vehicle Model</center></th>
-<th scope="col" style="color:#fff;"><center>Hire Rate/KM (TZS)</center></th>
+    <th scope="col" style="color:#fff; width: 3%;"><center>S/N</center></th>
+    <th scope="col" style="color:#fff;">Vehicle Model</th>
+    <th scope="col" style="color:#fff;" class="text-right">Hire Rate/K (TZS)</th>
 @if($privileges=='Read only')
 @else
 <th scope="col" style="color:#fff;"><center>Action</center></th>
@@ -1980,7 +1980,7 @@ margin-top: 4px;" role="button" aria-pressed="true">Add Rate</a>
 <tr>
 <th scope="row" class="counterCell text-center">.</th>
 <td>{{$rate->vehicle_model}}</td>
-<td><center>{{number_format($rate->hire_rate)}}</center></td>
+<td class="text-right">{{number_format($rate->hire_rate)}}</td>
 {{--  @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR Auth::user()->role=='System Administrator') --}}
 @if($privileges=='Read only')
 @else

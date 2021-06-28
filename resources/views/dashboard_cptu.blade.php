@@ -303,22 +303,22 @@
                             <tr>
                                 <th scope="col"><center>S/N</center></th>
                                 <th scope="col" >Debtor Name</th>
-                                <th scope="col">Invoice Number</th>
+                                <th scope="col" class="text-right">Invoice Number</th>
 {{--                                <th scope="col" >Start Date</th>--}}
 {{--                                <th scope="col" >End date</th>--}}
                                {{--  <th scope="col" >Period</th> --}}
-                                <th scope="col">Contract Id</th>
-                                <th scope="col" >Amount</th>
+                                <th scope="col" class="text-right">Contract Id</th>
+                                <th scope="col" class="text-right">Amount</th>
                                 {{-- <th scope="col" >GePG Control No</th> --}}
 {{--                                <th scope="col" >Invoice Date</th>--}}
-                                <th scope="col" >Time Overdue</th>
-                                <th scope="col" >Action</th>
+                                <th scope="col" class="text-right">Time Overdue</th>
+                                <th scope="col" class="text-center">Action</th>
                             </tr>
                             </thead>
                             <tbody>
                             @foreach($invoices as $var)
                                 <tr>
-                                    <th scope="row" class="counterCell">.</th>
+                                    <td  class="counterCell text-center">.</td>
                                     <td>
                                       <?php $centre_name=cost_centre::select('costcentre')->where('costcentre_id',$var->cost_centre)->value('costcentre');?>
                                       <a title="View Client Details" class="link_style" style="color: blue !important; cursor: pointer;"  class="" data-toggle="modal" data-target="#clienta{{$var->invoice_number}}" style="cursor: pointer;" aria-pressed="true">{{$var->debtor_name}}</a>
@@ -364,7 +364,7 @@
                                                 </div>
                                             </div>
                                     </td>
-                                    <td><center>  <a title="View invoice" style="color:#3490dc !important; display:inline-block; cursor: pointer;"  class="" data-toggle="modal" data-target="#invoice_car{{$var->invoice_number}}"  aria-pressed="true">{{$var->invoice_number_votebook}}</a>
+                                    <td class="text-right">  <a title="View invoice" style="color:#3490dc !important; display:inline-block; cursor: pointer;"  class="" data-toggle="modal" data-target="#invoice_car{{$var->invoice_number}}"  aria-pressed="true">{{$var->invoice_number_votebook}}</a>
                                             <div class="modal fade" id="invoice_car{{$var->invoice_number}}" role="dialog">
 
                                                 <div class="modal-dialog" role="document">
@@ -472,13 +472,13 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div></center></td>
+                                            </div></td>
 
 {{--                                    <td><center>{{date("d/m/Y",strtotime($var->invoicing_period_start_date))}}</center></td>--}}
 {{--                                    <td><center>{{date("d/m/Y",strtotime($var->invoicing_period_end_date))}}</center></td>--}}
 {{--                                    --}}{{-- <td>{{$var->period}}</td> --}}
-                                    <td>
-                                      <a title="View contract" class="link_style" style="color: blue !important; cursor: pointer;"  class="" data-toggle="modal" data-target="#contracta{{$var->invoice_number}}" style="cursor: pointer;" aria-pressed="true"><center>{{$var->contract_id}}</center></a>
+                                    <td class="text-right">
+                                      <a title="View contract" class="link_style" style="color: blue !important; cursor: pointer;"  class="" data-toggle="modal" data-target="#contracta{{$var->invoice_number}}" style="cursor: pointer;" aria-pressed="true">{{$var->contract_id}}</a>
                                             <div class="modal fade" id="contracta{{$var->invoice_number}}" role="dialog">
 
                                                 <div class="modal-dialog" role="document">
@@ -531,11 +531,11 @@
                                                 </div>
                                             </div>
                                     </td>
-                                    <td>{{$var->currency_invoice}} {{number_format($var->amount_not_paid)}}</td>
+                                    <td class="text-right">{{$var->currency_invoice}} {{number_format($var->amount_not_paid)}}</td>
                                   {{--  <td>{{$var->gepg_control_no}}</td> --}}
 {{--                                    <td><center>{{date("d/m/Y",strtotime($var->invoice_date))}}</center></td>--}}
                                     <td style="text-align: right;">{{$diff = Carbon\Carbon::parse($var->invoice_date)->diffForHumans(null, true) }}</td>
-                                    <td>
+                                    <td class="text-center">
                                       @if($var->email!="")
                                        <a title="Send Email to this Client" data-toggle="modal" data-target="#carmail{{$var->invoice_number}}" role="button" aria-pressed="true"><center><i class="fa fa-envelope" aria-hidden="true" style="font-size:20px; color: #3490dc; cursor: pointer;"></i></center></a>
       <div class="modal fade" id="carmail{{$var->invoice_number}}" role="dialog">

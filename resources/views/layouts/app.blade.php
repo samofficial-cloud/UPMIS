@@ -87,6 +87,10 @@
                         @elseif($category=='Real Estate only')
                             <a class="navbar-brand" href="{{ route('home4') }}">
                             <img src="{{ asset('images/logo_udsm.jpg') }}" height="70px" width="70px" /></a>
+
+                           @elseif($category=='Research Flats only')
+                                    <a class="navbar-brand" href="{{ route('home6') }}">
+                                        <img src="{{ asset('images/logo_udsm.jpg') }}" height="70px" width="70px" /></a>
                         @endif
 
                         @if(($category=='CPTU only') && (Auth::user()->role!='Vote Holder') && (Auth::user()->role!='Accountant-Cost Centre'))
@@ -103,6 +107,10 @@
                             <a class="navbar-brand" href="{{ route('home5') }}">
                             <img src="{{ asset('images/logo_udsm.jpg') }}" height="70px" width="70px" /></a>
                         @endif
+
+
+
+
                     @else
                     <a class="navbar-brand" href="{{ url('#') }}">
                             <img src="{{ asset('images/logo_udsm.jpg') }}" height="70px" width="70px" /></a>

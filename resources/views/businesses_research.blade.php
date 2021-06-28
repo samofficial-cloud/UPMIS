@@ -992,15 +992,15 @@ input[type=radio]{
                                              <thead class="thead-dark">
                                              <tr>
                                                  <th scope="col" style="color:#fff; width: 5%;"><center>S/N</center></th>
-                                                 <th scope="col" style="color:#fff;"><center>Room No.</center></th>
-                                                 <th scope="col" style="color:#fff;"><center>Category</center></th>
-                                                 <th scope="col" style="color:#fff;"><center>Currency</center></th>
-                                                 <th scope="col" style="color:#fff; width: 20%;"><center>Staff Rate</center></th>
-                                                 <th scope="col" style="color:#fff;width: 20%;"><center>Students Rate</center></th>
-                                                 <th scope="col" style="color:#fff;width: 20%;"><center>Status</center></th>
+                                                 <th scope="col" style="color:#fff;">Room No.</th>
+                                                 <th scope="col" style="color:#fff;">Category</th>
+                                                 <th scope="col" style="color:#fff;">Currency</th>
+                                                 <th scope="col" class="text-right" style="color:#fff; width: 20%;">Staff Rate</th>
+                                                 <th scope="col" class="text-right" style="color:#fff;width: 20%;">Students Rate</th>
+                                                 <th scope="col" style="color:#fff;width: 20%;">Status</th>
 
 
-                                                     <th scope="col" style="color:#fff;"><center>Action</center></th>
+                                                 <th scope="col" style="color:#fff;"><center>Action</center></th>
 
 
                                              </tr>
@@ -1351,13 +1351,14 @@ input[type=radio]{
                                      <thead class="thead-dark">
                                      <tr>
                                          <th scope="col" style="color:#fff; width: 5%;"><center>S/N</center></th>
-                                         <th scope="col" style="color:#fff;"><center>Room No.</center></th>
-                                         <th scope="col" style="color:#fff;"><center>Category</center></th>
-                                         <th scope="col" style="color:#fff;"><center>Currency</center></th>
-                                         <th scope="col" style="color:#fff; width: 20%;"><center>Staff Rate</center></th>
-                                         <th scope="col" style="color:#fff;width: 20%;"><center>Students Rate</center></th>
-                                         <th scope="col" style="color:#fff;width: 20%;"><center>Status</center></th>
-                                         @if($privileges=='Read only')
+                                         <th scope="col" style="color:#fff;">Room No.</th>
+                                         <th scope="col" style="color:#fff;">Category</th>
+                                         <th scope="col" style="color:#fff;">Currency</th>
+                                         <th scope="col" class="text-right" style="color:#fff; width: 20%;">Staff Rate</th>
+                                         <th scope="col" class="text-right" style="color:#fff;width: 20%;">Students Rate</th>
+                                         <th scope="col" style="color:#fff;width: 20%;">Status</th>
+
+                                     @if($privileges=='Read only')
                                          @else
                                              @admin
                                              <th scope="col" style="color:#fff;"><center>Action</center></th>
