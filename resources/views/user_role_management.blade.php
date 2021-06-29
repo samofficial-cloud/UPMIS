@@ -359,9 +359,9 @@ div.dt-buttons{
                 <th scope="col" style="color:#fff;">Full Name</th>
                 <th scope="col" style="color:#fff;">User Name</th>
                 <th scope="col"  style="color:#fff;">Email</th>
-                <th scope="col"  style="color:#fff;">Phone</th>
+                <th scope="col"  style="color:#fff;" class="text-right">Phone</th>
                 <th scope="col"  style="color:#fff;">Role</th>
-                <th scope="col"  style="color:#fff;">Cost Centre</th>
+                <th scope="col"  style="color:#fff;" class="text-right">Cost Centre</th>
                 <th scope="col"  style="color:#fff;">Status</th>
                 <th scope="col"  style="color:#fff;"><center>Action</center></th>
 
@@ -377,7 +377,7 @@ div.dt-buttons{
                   <td>{{$var->name}}</td>
                   <td>{{$var->user_name}}</td>
                   <td>{{$var->email}}</td>
-                  <td>{{$var->phone_number}}</td>
+                  <td class="text-right">{{$var->phone_number}}</td>
                   <td>
                       @if($var->role=='DVC Administrator')
                           DVC Administration
@@ -386,7 +386,7 @@ div.dt-buttons{
                       @endif
 
                   </td>
-                  <td><center>{{$var->cost_centre}}</center></td>
+                  <td class="text-right">{{$var->cost_centre}}</td>
 
                   <td>  @if($var->status==0)
                        <p style="background-color: #b9b8b8; color:white; border-radius: 4px; text-align: center;">DISABLED</p>

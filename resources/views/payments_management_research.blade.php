@@ -354,12 +354,12 @@
                                         <th scope="col" style="color:#fff;"><center>S/N</center></th>
 
 
-                                        <th scope="col" style="color:#fff;"><center>Invoice number</center></th>
-                                        <th scope="col" style="color:#fff;"><center>Amount Paid</center></th>
-                                        <th scope="col"  style="color:#fff;"><center>Amount Not Paid</center></th>
-                                        <th scope="col"  style="color:#fff;"><center>Date of payment</center></th>
-                                        <th scope="col"  style="color:#fff;"><center>Receipt Number</center></th>
-                                        <th scope="col"  style="color:#fff;"><center>Status</center></th>
+                                        <th scope="col" style="color:#fff;" class="text-right">Invoice number</th>
+                                        <th scope="col" style="color:#fff;" class="text-right">Amount Paid</th>
+                                        <th scope="col"  style="color:#fff;" class="text-right">Amount Not Paid</th>
+                                        <th scope="col"  style="color:#fff;">Date of payment</th>
+                                        <th scope="col"  style="color:#fff;" class="text-right">Receipt Number</th>
+                                        <th scope="col"  style="color:#fff;">Status</th>
                                         <th scope="col"  style="color:#fff;"><center>Action</center></th>
 
                                     </tr>
@@ -370,18 +370,18 @@
                                         <tr>
 
                                             <td><center>{{$i}}</center></td>
-                                            <td><center>{{$var->invoice_number_votebook}} </center></td>
-                                            <td><center>{{number_format($var->amount_paid)}} {{$var->currency_payments}}</center></td>
-                                            <td><center>{{number_format($var->amount_not_paid)}} {{$var->currency_payments}}</center></td>
-                                            <td><center>{{date("d/m/Y",strtotime($var->date_of_payment))}}</center></td>
-                                            <td><center>{{$var->receipt_number}}</center></td>
-                                            <td><center>@if($var->status_payment=='0')
-                                                        CANCELLED
-                                                    @elseif($var->status_payment=='1')
-                                                        OK
-                                                    @else
-                                                    @endif
-                                                </center></td>
+                                            <td class="text-right">{{$var->invoice_number_votebook}} </td>
+                                            <td class="text-right">{{number_format($var->amount_paid)}} {{$var->currency_payments}}</td>
+                                            <td class="text-right">{{number_format($var->amount_not_paid)}} {{$var->currency_payments}}</td>
+                                            <td>{{date("d/m/Y",strtotime($var->date_of_payment))}}</td>
+                                            <td class="text-right">{{$var->receipt_number}}</td>
+                                            <td>@if($var->status_payment=='0')
+                                                    CANCELLED
+                                                @elseif($var->status_payment=='1')
+                                                    OK
+                                                @else
+                                                @endif
+                                            </td>
                                             <td><center>
 
 

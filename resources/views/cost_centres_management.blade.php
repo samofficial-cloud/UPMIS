@@ -255,9 +255,9 @@
                         <thead class="thead-dark">
                         <tr>
                             <th scope="col" style="color:#fff; width: 3%;"><center>S/N</center></th>
-                            <th scope="col" style="color:#fff;"><center>Cost Centre Id</center></th>
-                            <th scope="col" style="color:#fff;"><center>Cost Centre Name</center></th>
-                            <th scope="col" style="color:#fff;"><center>Division ID</center></th>
+                            <th scope="col" style="color:#fff;" >Cost Centre Id</th>
+                            <th scope="col" style="color:#fff;">Cost Centre Name</th>
+                            <th scope="col" style="color:#fff;">Division ID</th>
                             {{-- @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR (Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator')) --}}
                             @if($privileges=='Read only')
                             @else
@@ -269,7 +269,7 @@
                         @foreach($costcentres as $var)
                             <tr>
                                 <td><center>{{$k}}.</center></td>
-                                <td><center>{{$var->costcentre_id}}</center></td>
+                                <td >{{$var->costcentre_id}}</td>
                                 <td>{{$var->costcentre}}</td>
                                 <td>{{$var->division_id}}</td>
                                 {{-- @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR (Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator')) --}}

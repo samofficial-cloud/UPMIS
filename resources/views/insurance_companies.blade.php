@@ -278,7 +278,7 @@
                 <th scope="col" style="color:#fff;">Name</th>
                 <th scope="col" style="color:#fff;">Email</th>
                 <th scope="col" style="color:#fff;">Address</th>
-                <th scope="col" style="color:#fff;">TIN</th>
+                <th scope="col" style="color:#fff;" class="text-right">TIN</th>
                 <th scope="col"  style="color:#fff;"><center>Action</center></th>
 
               </tr>
@@ -293,7 +293,7 @@
                   <td>{{$var->company}}</td>
                   <td>{{$var->company_email}}</td>
                   <td>{{$var->company_address}}</td>
-                  <td>{{$var->company_tin}}</td>
+                  <td class="text-right">{{$var->company_tin}}</td>
 
                   <td><center>
 

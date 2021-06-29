@@ -353,12 +353,12 @@
                                             <th scope="col" style="color:#fff;"><center>S/N</center></th>
 
 
-                                            <th scope="col" style="color:#fff;"><center>Invoice number</center></th>
-                                            <th scope="col" style="color:#fff;"><center>Amount Paid</center></th>
-                                            <th scope="col"  style="color:#fff;"><center>Amount Not Paid</center></th>
-                                            <th scope="col"  style="color:#fff;"><center>Date of payment</center></th>
-                                            <th scope="col"  style="color:#fff;"><center>Receipt Number</center></th>
-                                            <th scope="col"  style="color:#fff;"><center>Status</center></th>
+                                            <th scope="col" style="color:#fff;" class="text-right">Invoice number</th>
+                                            <th scope="col" style="color:#fff;" class="text-right">Amount Paid</th>
+                                            <th scope="col"  style="color:#fff;" class="text-right">Amount Not Paid</th>
+                                            <th scope="col"  style="color:#fff;">Date of payment</th>
+                                            <th scope="col"  style="color:#fff;" class="text-right">Receipt Number</th>
+                                            <th scope="col"  style="color:#fff;">Status</th>
                                             <th scope="col"  style="color:#fff;"><center>Action</center></th>
 
                                         </tr>
@@ -369,18 +369,18 @@
                                             <tr>
 
                                                 <td><center>{{$i}}</center></td>
-                                                <td><center>{{$var->invoice_number_votebook}} </center></td>
-                                                <td><center>{{number_format($var->amount_paid)}} {{$var->currency_payments}}</center></td>
-                                                <td><center>{{number_format($var->amount_not_paid)}} {{$var->currency_payments}}</center></td>
-                                                <td><center>{{date("d/m/Y",strtotime($var->date_of_payment))}}</center></td>
-                                                <td><center>{{$var->receipt_number}}</center></td>
-                                                <td><center>@if($var->status_payment=='0')
+                                                <td class="text-right">{{$var->invoice_number_votebook}} </td>
+                                                <td class="text-right">{{number_format($var->amount_paid)}} {{$var->currency_payments}}</td>
+                                                <td class="text-right">{{number_format($var->amount_not_paid)}} {{$var->currency_payments}}</td>
+                                                <td>{{date("d/m/Y",strtotime($var->date_of_payment))}}</td>
+                                                <td class="text-right">{{$var->receipt_number}}</td>
+                                                <td>@if($var->status_payment=='0')
                                                             CANCELLED
                                                         @elseif($var->status_payment=='1')
                                                             OK
                                                         @else
                                                         @endif
-                                                    </center></td>
+                                                    </td>
                                                 <td><center>
 
 
@@ -724,12 +724,12 @@
                                                 <th scope="col" style="color:#fff;"><center>S/N</center></th>
 
 
-                                                <th scope="col" style="color:#fff;"><center>Invoice number</center></th>
-                                                <th scope="col" style="color:#fff;"><center>Amount Paid</center></th>
-                                                <th scope="col"  style="color:#fff;"><center>Amount Not Paid</center></th>
-                                                <th scope="col"  style="color:#fff;"><center>Date of payment</center></th>
-                                                <th scope="col"  style="color:#fff;"><center>Receipt Number</center></th>
-                                                <th scope="col"  style="color:#fff;"><center>Status</center></th>
+                                                <th scope="col" style="color:#fff;" class="text-right">Invoice number</th>
+                                                <th scope="col" style="color:#fff;" class="text-right">Amount Paid</th>
+                                                <th scope="col"  style="color:#fff;" class="text-right">Amount Not Paid</th>
+                                                <th scope="col"  style="color:#fff;">Date of payment</th>
+                                                <th scope="col"  style="color:#fff;" class="text-right">Receipt Number</th>
+                                                <th scope="col"  style="color:#fff;">Status</th>
                                                 <th scope="col"  style="color:#fff;"><center>Action</center></th>
 
                                             </tr>
@@ -740,18 +740,18 @@
                                                 <tr>
 
                                                     <td><center>{{$i}}</center></td>
-                                                    <td><center>{{$var->invoice_number_votebook}} </center></td>
-                                                    <td><center>{{number_format($var->amount_paid)}} {{$var->currency_payments}}</center></td>
-                                                    <td><center>{{number_format($var->amount_not_paid)}} {{$var->currency_payments}}</center></td>
-                                                    <td><center>{{date("d/m/Y",strtotime($var->date_of_payment))}}</center></td>
-                                                    <td><center>{{$var->receipt_number}}</center></td>
-                                                    <td><center>@if($var->status_payment=='0')
+                                                    <td class="text-right">{{$var->invoice_number_votebook}} </td>
+                                                    <td class="text-right">{{number_format($var->amount_paid)}} {{$var->currency_payments}}</td>
+                                                    <td class="text-right">{{number_format($var->amount_not_paid)}} {{$var->currency_payments}}</td>
+                                                    <td>{{date("d/m/Y",strtotime($var->date_of_payment))}}</td>
+                                                    <td class="text-right">{{$var->receipt_number}}</td>
+                                                    <td>@if($var->status_payment=='0')
                                                                 CANCELLED
                                                             @elseif($var->status_payment=='1')
                                                                 OK
                                                             @else
                                                             @endif
-                                                        </center></td>
+                                                        </td>
                                                     <td><center>
 
 
@@ -1039,12 +1039,12 @@
                                                 <th scope="col" style="color:#fff;"><center>S/N</center></th>
 
 
-                                                <th scope="col" style="color:#fff;"><center>Invoice number</center></th>
-                                                <th scope="col" style="color:#fff;"><center>Amount Paid</center></th>
-                                                <th scope="col"  style="color:#fff;"><center>Amount Not Paid</center></th>
-                                                <th scope="col"  style="color:#fff;"><center>Date of payment</center></th>
-                                                <th scope="col"  style="color:#fff;"><center>Receipt Number</center></th>
-                                                <th scope="col"  style="color:#fff;"><center>Status</center></th>
+                                                <th scope="col" style="color:#fff;" class="text-right">Invoice number</th>
+                                                <th scope="col" style="color:#fff;" class="text-right">Amount Paid</th>
+                                                <th scope="col"  style="color:#fff;" class="text-right">Amount Not Paid</th>
+                                                <th scope="col"  style="color:#fff;">Date of payment</th>
+                                                <th scope="col"  style="color:#fff;" class="text-right">Receipt Number</th>
+                                                <th scope="col"  style="color:#fff;">Status</th>
                                                 <th scope="col"  style="color:#fff;"><center>Action</center></th>
 
                                             </tr>
@@ -1055,24 +1055,24 @@
                                                 <tr>
 
                                                     <td><center>{{$i}}</center></td>
-                                                    <td><center>{{$var->invoice_number_votebook}} </center></td>
-                                                    <td><center>{{number_format($var->amount_paid)}} {{$var->currency_payments}}</center></td>
-                                                    <td><center>{{number_format($var->amount_not_paid)}} {{$var->currency_payments}}</center></td>
-                                                    <td><center>{{date("d/m/Y",strtotime($var->date_of_payment))}}</center></td>
-                                                    <td><center>{{$var->receipt_number}}</center></td>
-                                                    <td><center>@if($var->status_payment=='0')
-                                                                CANCELLED
-                                                            @elseif($var->status_payment=='1')
-                                                                OK
-                                                            @else
-                                                            @endif
-                                                        </center></td>
+                                                    <td class="text-right">{{$var->invoice_number_votebook}} </td>
+                                                    <td class="text-right">{{number_format($var->amount_paid)}} {{$var->currency_payments}}</td>
+                                                    <td class="text-right">{{number_format($var->amount_not_paid)}} {{$var->currency_payments}}</td>
+                                                    <td>{{date("d/m/Y",strtotime($var->date_of_payment))}}</td>
+                                                    <td class="text-right">{{$var->receipt_number}}</td>
+                                                    <td>@if($var->status_payment=='0')
+                                                            CANCELLED
+                                                        @elseif($var->status_payment=='1')
+                                                            OK
+                                                        @else
+                                                        @endif
+                                                    </td>
                                                     <td><center>
 
 
 
-                                                            <a title="View invoice" style="color:#3490dc !important;"  class="" data-toggle="modal" data-target="#invoice_insurance{{$var->id}}" style="cursor: pointer;" aria-pressed="true"><center><i class="fas fa-file-invoice"></i></center></a>
-                                                            <div class="modal fade" id="invoice_insurance{{$var->id}}" role="dialog">
+                                                            <a title="View invoice" style="color:#3490dc !important;"  class="" data-toggle="modal" data-target="#invoice_insurance_clients{{$var->id}}" style="cursor: pointer;" aria-pressed="true"><center><i class="fas fa-file-invoice"></i></center></a>
+                                                            <div class="modal fade" id="invoice_insurance_clients{{$var->id}}" role="dialog">
 
                                                                 <div class="modal-dialog" role="document">
                                                                     <div class="modal-content">
@@ -1395,12 +1395,12 @@
                                             <th scope="col" style="color:#fff;"><center>S/N</center></th>
 
 
-                                            <th scope="col" style="color:#fff;"><center>Invoice number</center></th>
-                                            <th scope="col" style="color:#fff;"><center>Amount Paid</center></th>
-                                            <th scope="col"  style="color:#fff;"><center>Amount Not Paid</center></th>
-                                            <th scope="col"  style="color:#fff;"><center>Date of payment</center></th>
-                                            <th scope="col"  style="color:#fff;"><center>Receipt Number</center></th>
-                                            <th scope="col"  style="color:#fff;"><center>Status</center></th>
+                                            <th scope="col" style="color:#fff;" class="text-right">Invoice number</th>
+                                            <th scope="col" style="color:#fff;" class="text-right">Amount Paid</th>
+                                            <th scope="col"  style="color:#fff;" class="text-right">Amount Not Paid</th>
+                                            <th scope="col"  style="color:#fff;">Date of payment</th>
+                                            <th scope="col"  style="color:#fff;" class="text-right">Receipt Number</th>
+                                            <th scope="col"  style="color:#fff;">Status</th>
                                             <th scope="col"  style="color:#fff;"><center>Action</center></th>
 
                                         </tr>
@@ -1411,18 +1411,18 @@
                                             <tr>
 
                                                 <td><center>{{$i}}</center></td>
-                                                <td><center>{{$var->invoice_number_votebook}} </center></td>
-                                                <td><center>{{number_format($var->amount_paid)}} {{$var->currency_payments}}</center></td>
-                                                <td><center>{{number_format($var->amount_not_paid)}} {{$var->currency_payments}}</center></td>
-                                                <td><center>{{date("d/m/Y",strtotime($var->date_of_payment))}}</center></td>
-                                                <td><center>{{$var->receipt_number}}</center></td>
-                                                <td><center>@if($var->status_payment=='0')
+                                                <td class="text-right">{{$var->invoice_number_votebook}} </td>
+                                                <td class="text-right">{{number_format($var->amount_paid)}} {{$var->currency_payments}}</td>
+                                                <td class="text-right">{{number_format($var->amount_not_paid)}} {{$var->currency_payments}}</td>
+                                                <td>{{date("d/m/Y",strtotime($var->date_of_payment))}}</td>
+                                                <td class="text-right">{{$var->receipt_number}}</td>
+                                                <td>@if($var->status_payment=='0')
                                                             CANCELLED
                                                         @elseif($var->status_payment=='1')
                                                             OK
                                                         @else
                                                         @endif
-                                                    </center></td>
+                                                    </td>
                                                 <td><center>
 
 
@@ -2381,14 +2381,14 @@
                     <th scope="col" style="color:#fff;"><center>S/N</center></th>
 
 
-                    <th scope="col" style="color:#fff;"><center>Invoice number</center></th>
-                    <th scope="col" style="color:#fff;"><center>Amount Paid</center></th>
-                    <th scope="col"  style="color:#fff;"><center>Amount Not Paid</center></th>
-                    <th scope="col"  style="color:#fff;"><center>Over payment</center></th>
-                    <th scope="col"  style="color:#fff;"><center>Date of payment</center></th>
+                    <th scope="col" style="color:#fff;" class="text-right">Invoice number</th>
+                    <th scope="col" style="color:#fff;" class="text-right">Amount Paid</th>
+                    <th scope="col"  style="color:#fff;" class="text-right">Amount Not Paid</th>
+                    <th scope="col"  style="color:#fff;" class="text-right">Over payment</th>
+                    <th scope="col"  style="color:#fff;">Date of payment</th>
 
-                    <th scope="col"  style="color:#fff;"><center>Receipt Number</center></th>
-                    <th scope="col"  style="color:#fff;"><center>Status</center></th>
+                    <th scope="col"  style="color:#fff;" class="text-right">Receipt Number</th>
+                    <th scope="col"  style="color:#fff;">Status</th>
                     <th scope="col"  style="color:#fff;"><center>Action</center></th>
 
 
@@ -2401,26 +2401,26 @@
 
                         <td><center>{{$i}}</center></td>
 
-                        <td><center>{{$var->invoice_number_votebook}} </center></td>
-                        <td><center>{{number_format($var->amount_paid)}} {{$var->currency_payments}}</center></td>
-                        <td><center>{{number_format($var->amount_not_paid)}} {{$var->currency_payments}}</center></td>
-                        <td><center>
+                        <td class="text-right">{{$var->invoice_number_votebook}} </td>
+                        <td class="text-right">{{number_format($var->amount_paid)}} {{$var->currency_payments}}</td>
+                        <td class="text-right"> {{number_format($var->amount_not_paid)}} {{$var->currency_payments}}</td>
+                        <td class="text-right">
                                 @if($var->over_payment!='')
                                 {{number_format($var->over_payment)}} {{$var->currency_payments}}
                                 @else
                                     0 {{$var->currency_payments}}
                                 @endif
 
-                            </center></td>
-                        <td><center>{{date("d/m/Y",strtotime($var->date_of_payment))}}</center></td>
-                        <td><center>{{$var->receipt_number}}</center></td>
-                        <td><center>@if($var->status_payment=='0')
+                            </td>
+                        <td>{{date("d/m/Y",strtotime($var->date_of_payment))}}</td>
+                        <td class="text-right">{{$var->receipt_number}}</td>
+                        <td>@if($var->status_payment=='0')
                                     CANCELLED
                                 @elseif($var->status_payment=='1')
                                     OK
                                 @else
                                 @endif
-                            </center></td>
+                            </td>
                         <td><center>
 
 
@@ -2946,13 +2946,14 @@
                                             <th scope="col" style="color:#fff;"><center>S/N</center></th>
 
 
-                                            <th scope="col" style="color:#fff;"><center>Invoice number</center></th>
-                                            <th scope="col" style="color:#fff;"><center>Amount Paid</center></th>
-                                            <th scope="col"  style="color:#fff;"><center>Amount Not Paid</center></th>
-                                            <th scope="col"  style="color:#fff;"><center>Over payment</center></th>
-                                            <th scope="col"  style="color:#fff;"><center>Date of payment</center></th>
-                                            <th scope="col"  style="color:#fff;"><center>Receipt Number</center></th>
-                                            <th scope="col"  style="color:#fff;"><center>Status</center></th>
+                                            <th scope="col" style="color:#fff;" class="text-right">Invoice number</th>
+                                            <th scope="col" style="color:#fff;" class="text-right">Amount Paid</th>
+                                            <th scope="col"  style="color:#fff;" class="text-right">Amount Not Paid</th>
+                                            <th scope="col"  style="color:#fff;" class="text-right">Over payment</th>
+                                            <th scope="col"  style="color:#fff;">Date of payment</th>
+
+                                            <th scope="col"  style="color:#fff;" class="text-right">Receipt Number</th>
+                                            <th scope="col"  style="color:#fff;">Status</th>
                                             <th scope="col"  style="color:#fff;"><center>Action</center></th>
 
 
@@ -2965,26 +2966,26 @@
 
                                                 <td><center>{{$i}}</center></td>
 
-                                                <td><center>{{$var->invoice_number_votebook}} </center></td>
-                                                <td><center>{{number_format($var->amount_paid)}} {{$var->currency_payments}}</center></td>
-                                                <td><center>{{number_format($var->amount_not_paid)}} {{$var->currency_payments}}</center></td>
-                                                <td><center>
-                                                        @if($var->over_payment!='')
-                                                            {{number_format($var->over_payment)}} {{$var->currency_payments}}
-                                                        @else
-                                                            0 {{$var->currency_payments}}
-                                                        @endif
+                                                <td class="text-right">{{$var->invoice_number_votebook}} </td>
+                                                <td class="text-right">{{number_format($var->amount_paid)}} {{$var->currency_payments}}</td>
+                                                <td class="text-right"> {{number_format($var->amount_not_paid)}} {{$var->currency_payments}}</td>
+                                                <td class="text-right">
+                                                    @if($var->over_payment!='')
+                                                        {{number_format($var->over_payment)}} {{$var->currency_payments}}
+                                                    @else
+                                                        0 {{$var->currency_payments}}
+                                                    @endif
 
-                                                    </center></td>
-                                                <td><center>{{date("d/m/Y",strtotime($var->date_of_payment))}}</center></td>
-                                                <td><center>{{$var->receipt_number}}</center></td>
-                                                <td><center>@if($var->status_payment=='0')
-                                                            CANCELLED
-                                                        @elseif($var->status_payment=='1')
-                                                            OK
-                                                        @else
-                                                        @endif
-                                                    </center></td>
+                                                </td>
+                                                <td>{{date("d/m/Y",strtotime($var->date_of_payment))}}</td>
+                                                <td class="text-right">{{$var->receipt_number}}</td>
+                                                <td>@if($var->status_payment=='0')
+                                                        CANCELLED
+                                                    @elseif($var->status_payment=='1')
+                                                        OK
+                                                    @else
+                                                    @endif
+                                                </td>
                                                 <td><center>
 
 
@@ -3348,12 +3349,12 @@
                             <tr>
                                 <th scope="col" style="color:#fff;"><center>S/N</center></th>
 
-                                <th scope="col" style="color:#fff;"><center>Invoice number</center></th>
-                                <th scope="col" style="color:#fff;"><center>Amount Paid</center></th>
-                                <th scope="col"  style="color:#fff;"><center>Amount Not Paid</center></th>
-                                <th scope="col"  style="color:#fff;"><center>Date of payment</center></th>
-                                <th scope="col"  style="color:#fff;"><center>Receipt Number</center></th>
-                                <th scope="col"  style="color:#fff;"><center>Status</center></th>
+                                <th scope="col" style="color:#fff;" class="text-right">Invoice number</th>
+                                <th scope="col" style="color:#fff;" class="text-right">Amount Paid</th>
+                                <th scope="col"  style="color:#fff;" class="text-right">Amount Not Paid</th>
+                                <th scope="col"  style="color:#fff;">Date of payment</th>
+                                <th scope="col"  style="color:#fff;" class="text-right">Receipt Number</th>
+                                <th scope="col"  style="color:#fff;">Status</th>
                                 <th scope="col"  style="color:#fff;"><center>Action</center></th>
 
                             </tr>
@@ -3364,18 +3365,18 @@
                                 <tr>
 
                                     <td><center>{{$i}}</center></td>
-                                    <td><center>{{$var->invoice_number_votebook}} </center></td>
-                                    <td><center>{{number_format($var->amount_paid)}} {{$var->currency_payments}}</center></td>
-                                    <td><center>{{number_format($var->amount_not_paid)}} {{$var->currency_payments}}</center></td>
-                                    <td><center>{{date("d/m/Y",strtotime($var->date_of_payment))}}</center></td>
-                                    <td><center>{{$var->receipt_number}}</center></td>
-                                    <td><center>@if($var->status_payment=='0')
+                                    <td class="text-right">{{$var->invoice_number_votebook}} </td>
+                                    <td class="text-right">{{number_format($var->amount_paid)}} {{$var->currency_payments}}</td>
+                                    <td class="text-right">{{number_format($var->amount_not_paid)}} {{$var->currency_payments}}</td>
+                                    <td>{{date("d/m/Y",strtotime($var->date_of_payment))}}</td>
+                                    <td class="text-right">{{$var->receipt_number}}</td>
+                                    <td>@if($var->status_payment=='0')
                                                 CANCELLED
                                             @elseif($var->status_payment=='1')
                                                 OK
                                             @else
                                             @endif
-                                        </center></td>
+                                        </td>
                                     <td><center>
 
 
@@ -3681,14 +3682,12 @@
                             <tr>
                                 <th scope="col" style="color:#fff;"><center>S/N</center></th>
 
-
-                                <th scope="col" style="color:#fff;"><center>Invoice number</center></th>
-                                <th scope="col" style="color:#fff;"><center>Amount Paid</center></th>
-                                <th scope="col"  style="color:#fff;"><center>Amount Not Paid</center></th>
-                                <th scope="col"  style="color:#fff;"><center>Date of payment</center></th>
-
-                                <th scope="col"  style="color:#fff;"><center>Receipt Number</center></th>
-                                <th scope="col"  style="color:#fff;"><center>Status</center></th>
+                                <th scope="col" style="color:#fff;" class="text-right">Invoice number</th>
+                                <th scope="col" style="color:#fff;" class="text-right">Amount Paid</th>
+                                <th scope="col"  style="color:#fff;" class="text-right">Amount Not Paid</th>
+                                <th scope="col"  style="color:#fff;">Date of payment</th>
+                                <th scope="col"  style="color:#fff;" class="text-right">Receipt Number</th>
+                                <th scope="col"  style="color:#fff;">Status</th>
                                 <th scope="col"  style="color:#fff;"><center>Action</center></th>
 
                             </tr>
@@ -3699,18 +3698,18 @@
                                 <tr>
 
                                     <td><center>{{$i}}</center></td>
-                                    <td><center>{{$var->invoice_number_votebook}} </center></td>
-                                    <td><center>{{number_format($var->amount_paid)}} {{$var->currency_payments}}</center></td>
-                                    <td><center>{{number_format($var->amount_not_paid)}} {{$var->currency_payments}}</center></td>
-                                    <td><center>{{date("d/m/Y",strtotime($var->date_of_payment))}}</center></td>
-                                    <td><center>{{$var->receipt_number}}</center></td>
-                                    <td><center>@if($var->status_payment=='0')
-                                                CANCELLED
-                                            @elseif($var->status_payment=='1')
-                                                OK
-                                            @else
-                                            @endif
-                                        </center></td>
+                                    <td class="text-right">{{$var->invoice_number_votebook}} </td>
+                                    <td class="text-right">{{number_format($var->amount_paid)}} {{$var->currency_payments}}</td>
+                                    <td class="text-right">{{number_format($var->amount_not_paid)}} {{$var->currency_payments}}</td>
+                                    <td>{{date("d/m/Y",strtotime($var->date_of_payment))}}</td>
+                                    <td class="text-right">{{$var->receipt_number}}</td>
+                                    <td>@if($var->status_payment=='0')
+                                            CANCELLED
+                                        @elseif($var->status_payment=='1')
+                                            OK
+                                        @else
+                                        @endif
+                                    </td>
                                     <td><center>
 
 
@@ -4404,13 +4403,13 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
             "bLengthChange": false,
             buttons: [
             {   extend: 'pdfHtml5',
-                filename:'Insurance Payments',
+                filename:'Insurance Payments for Clients',
                 download: 'open',
                 text: '<i class="fa fa-file-pdf-o"></i> PDF',
                 className: 'excelButton',
                 orientation: 'Potrait',
                 title: 'UNIVERSITY OF DAR ES SALAAM',
-                messageTop: 'DIRECTORATE OF PLANNING, DEVELOPMENT AND INVESTIMENT\n \n Insurance Payments',
+                messageTop: 'DIRECTORATE OF PLANNING, DEVELOPMENT AND INVESTIMENT\n \n Insurance Payments for Clients',
                 pageSize: 'A4',
                 //layout: 'lightHorizontalLines',
                 exportOptions: {
@@ -4490,7 +4489,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
             {   extend: 'excelHtml5',
                 text: '<i class="fa fa-file-excel-o"></i> EXCEL',
                 className: 'excelButton',
-                title: 'Insurance Payments',
+                title: 'Insurance Payments for Clients',
                 exportOptions: {
                 columns: [1, 2, 3, 4, 5]
                 },
@@ -4510,13 +4509,13 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
             "bLengthChange": false,
             buttons: [
                 {   extend: 'pdfHtml5',
-                    filename:'Insurance Payments',
+                    filename:'Insurance Payments for Principals',
                     download: 'open',
                     text: '<i class="fa fa-file-pdf-o"></i> PDF',
                     className: 'excelButton',
                     orientation: 'Potrait',
                     title: 'UNIVERSITY OF DAR ES SALAAM',
-                    messageTop: 'DIRECTORATE OF PLANNING, DEVELOPMENT AND INVESTIMENT\n \n Insurance Payments',
+                    messageTop: 'DIRECTORATE OF PLANNING, DEVELOPMENT AND INVESTIMENT\n \n Insurance Payments for Principals',
                     pageSize: 'A4',
                     //layout: 'lightHorizontalLines',
                     exportOptions: {
@@ -4596,7 +4595,7 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
                 {   extend: 'excelHtml5',
                     text: '<i class="fa fa-file-excel-o"></i> EXCEL',
                     className: 'excelButton',
-                    title: 'Insurance Payments',
+                    title: 'Insurance Payments for Principals',
                     exportOptions: {
                         columns: [1, 2, 3, 4, 5]
                     },
@@ -5724,7 +5723,7 @@ $("#insurance_filter").click(function(e){
       $.ajax({
       url: "/payment_management/filtered?",
       context: document.body,
-      data:{start:query, end:query2, _token:_token, criteria:'insurance'}
+      data:{start:query, end:query2, _token:_token, criteria:'insurance_clients'}
       })
         .done(function(fragment) {
             $("#insurance_content").html(fragment);
@@ -5737,13 +5736,13 @@ $("#insurance_filter").click(function(e){
             "bLengthChange": false,
             buttons: [
             {   extend: 'pdfHtml5',
-                filename:'Insurance Payments',
+                filename:'Insurance Payments for Clients',
                 download: 'open',
                 text: '<i class="fa fa-file-pdf-o"></i> PDF',
                 className: 'excelButton',
                 orientation: 'Potrait',
                 title: 'UNIVERSITY OF DAR ES SALAAM',
-                messageTop: 'DIRECTORATE OF PLANNING, DEVELOPMENT AND INVESTIMENT\n \n Insurance Payments',
+                messageTop: 'DIRECTORATE OF PLANNING, DEVELOPMENT AND INVESTIMENT\n \n Insurance Payments for Clients',
                 pageSize: 'A4',
                 //layout: 'lightHorizontalLines',
                 exportOptions: {
@@ -5823,7 +5822,7 @@ $("#insurance_filter").click(function(e){
             {   extend: 'excelHtml5',
                 text: '<i class="fa fa-file-excel-o"></i> EXCEL',
                 className: 'excelButton',
-                title: 'Insurance Payments',
+                title: 'Insurance Payments for Clients',
                 exportOptions: {
                 columns: [1, 2, 3, 4, 5]
                 },
@@ -5890,13 +5889,13 @@ $("#insurance_filter").click(function(e){
                             "bLengthChange": false,
                             buttons: [
                                 {   extend: 'pdfHtml5',
-                                    filename:'Insurance Payments',
+                                    filename:'Insurance Payments for Principals',
                                     download: 'open',
                                     text: '<i class="fa fa-file-pdf-o"></i> PDF',
                                     className: 'excelButton',
                                     orientation: 'Potrait',
                                     title: 'UNIVERSITY OF DAR ES SALAAM',
-                                    messageTop: 'DIRECTORATE OF PLANNING, DEVELOPMENT AND INVESTIMENT\n \n Insurance Payments',
+                                    messageTop: 'DIRECTORATE OF PLANNING, DEVELOPMENT AND INVESTIMENT\n \n Insurance Payments for Principals',
                                     pageSize: 'A4',
                                     //layout: 'lightHorizontalLines',
                                     exportOptions: {
@@ -5976,7 +5975,7 @@ $("#insurance_filter").click(function(e){
                                 {   extend: 'excelHtml5',
                                     text: '<i class="fa fa-file-excel-o"></i> EXCEL',
                                     className: 'excelButton',
-                                    title: 'Insurance Payments',
+                                    title: 'Insurance Payments for Principals',
                                     exportOptions: {
                                         columns: [1, 2, 3, 4, 5]
                                     },

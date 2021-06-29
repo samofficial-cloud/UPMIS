@@ -186,7 +186,7 @@
                 </div>
 
 
-                    <div id="insurance_invoices" class="" >
+                    <div id="insurance_invoices" class="">
 
                     <br>
                     <div class="tab" style="">
@@ -2480,15 +2480,15 @@
                                                 <table class="hover table table-striped  table-bordered" id="myTableInsuranceClients">
                                                     <thead class="thead-dark">
                                                     <tr>
-                                                        <th scope="col" style="color:#fff;">S/N</th>
+                                                        <th scope="col" style="color:#fff;" class="text-center">S/N</th>
                                                         <th scope="col"  style="color:#fff;">Client</th>
-                                                        <th scope="col" style="color:#fff;"><center>Invoice Number</center></th>
-                                                        <th scope="col"  style="color:#fff;"><center>Start Date</center></th>
-                                                        <th scope="col"  style="color:#fff;"><center>End Date</center></th>
-                                                        <th scope="col"  style="color:#fff;"><center>Amount</center></th>
-                                                        <th scope="col"  style="color:#fff;"><center>Payment Status</center></th>
-                                                        <th scope="col"  style="color:#fff;"><center>Invoice Date</center></th>
-                                                        <th scope="col"  style="color:#fff;"><center>Invoice Status</center></th>
+                                                        <th scope="col" style="color:#fff;" class="text-right">Invoice Number</th>
+                                                        <th scope="col"  style="color:#fff;">Start Date</th>
+                                                        <th scope="col"  style="color:#fff;">End Date</th>
+                                                        <th scope="col"  style="color:#fff;" class="text-right">Amount</th>
+                                                        <th scope="col"  style="color:#fff;">Payment Status</th>
+                                                        <th scope="col"  style="color:#fff;">Invoice Date</th>
+                                                        <th scope="col"  style="color:#fff;">Invoice Status</th>
                                                         <th scope="col"  style="color:#fff;"><center>Action</center></th>
                                                     </tr>
                                                     </thead>
@@ -2500,28 +2500,28 @@
                                                             <td> <center>{{$i}}</center>  </td>
 
                                                             <td>{{$var->debtor_name}}</td>
-                                                            <td><center>{{$var->invoice_number_votebook}}
-                                                                </center>
+                                                            <td class="text-right">{{$var->invoice_number_votebook}}
+
                                                             </td>
 
-                                                            <td><center>{{date("d/m/Y",strtotime($var->invoicing_period_start_date))}}</center></td>
-                                                            <td><center>{{date("d/m/Y",strtotime($var->invoicing_period_end_date))}}</center></td>
-                                                            <td><center>{{number_format($var->amount_to_be_paid)}} {{$var->currency_invoice}}</center></td>
-                                                            <td><center>{{$var->payment_status}}</center></td>
+                                                            <td>{{date("d/m/Y",strtotime($var->invoicing_period_start_date))}}</td>
+                                                            <td>{{date("d/m/Y",strtotime($var->invoicing_period_end_date))}}</td>
+                                                            <td class="text-right">{{number_format($var->amount_to_be_paid)}} {{$var->currency_invoice}}</td>
+                                                            <td>{{$var->payment_status}}</td>
                                                             {{--                                            <td>{{date("d/m/Y",strtotime($var->invoice_date))}} @if($var->email_sent_status=='NOT SENT')--}}
 
                                                             {{--                                                    <span style="float: right !important; " class="badge badge-danger">New</span>--}}
                                                             {{--                                                @else--}}
                                                             {{--                                                @endif </td>--}}
 
-                                                            <td><center>{{date("d/m/Y",strtotime($var->invoice_date))}}</center>  </td>
-<td><center>@if($var->invoice_status=='0')
-                                                                CANCELLED
+                                                            <td>{{date("d/m/Y",strtotime($var->invoice_date))}}  </td>
+                                                            <td>@if($var->invoice_status=='0')
+                                                                    CANCELLED
                                                                 @elseif($var->invoice_status=='1')
-                                                                        OK
+                                                                    OK
                                                                 @else
-                                                                        @endif
-                                                                </center></td>
+                                                                @endif
+                                                            </td>
 
                                                             <td><center>
 
@@ -3609,15 +3609,15 @@
                                                 <table class="hover table table-striped  table-bordered" id="myTableInsuranceClients">
                                                     <thead class="thead-dark">
                                                     <tr>
-                                                        <th scope="col" style="color:#fff;">S/N</th>
+                                                        <th scope="col" style="color:#fff;" class="text-center">S/N</th>
                                                         <th scope="col"  style="color:#fff;">Client</th>
-                                                        <th scope="col" style="color:#fff;"><center>Invoice Number</center></th>
-                                                        <th scope="col"  style="color:#fff;"><center>Start Date</center></th>
-                                                        <th scope="col"  style="color:#fff;"><center>End Date</center></th>
-                                                        <th scope="col"  style="color:#fff;"><center>Amount</center></th>
-                                                        <th scope="col"  style="color:#fff;"><center>Payment Status</center></th>
-                                                        <th scope="col"  style="color:#fff;"><center>Invoice Date</center></th>
-                                                        <th scope="col"  style="color:#fff;"><center>Invoice Status</center></th>
+                                                        <th scope="col" style="color:#fff;" class="text-right">Invoice Number</th>
+                                                        <th scope="col"  style="color:#fff;">Start Date</th>
+                                                        <th scope="col"  style="color:#fff;">End Date</th>
+                                                        <th scope="col"  style="color:#fff;" class="text-right">Amount</th>
+                                                        <th scope="col"  style="color:#fff;">Payment Status</th>
+                                                        <th scope="col"  style="color:#fff;">Invoice Date</th>
+                                                        <th scope="col"  style="color:#fff;">Invoice Status</th>
                                                         <th scope="col"  style="color:#fff;"><center>Action</center></th>
                                                     </tr>
                                                     </thead>
@@ -3629,28 +3629,28 @@
                                                             <td> <center>{{$i}}</center>  </td>
 
                                                             <td>{{$var->debtor_name}}</td>
-                                                            <td><center>{{$var->invoice_number_votebook}}
-                                                                </center>
+                                                            <td class="text-right">{{$var->invoice_number_votebook}}
+
                                                             </td>
 
-                                                            <td><center>{{date("d/m/Y",strtotime($var->invoicing_period_start_date))}}</center></td>
-                                                            <td><center>{{date("d/m/Y",strtotime($var->invoicing_period_end_date))}}</center></td>
-                                                            <td><center>{{number_format($var->amount_to_be_paid)}} {{$var->currency_invoice}}</center></td>
-                                                            <td><center>{{$var->payment_status}}</center></td>
+                                                            <td>{{date("d/m/Y",strtotime($var->invoicing_period_start_date))}}</td>
+                                                            <td>{{date("d/m/Y",strtotime($var->invoicing_period_end_date))}}</td>
+                                                            <td class="text-right">{{number_format($var->amount_to_be_paid)}} {{$var->currency_invoice}}</td>
+                                                            <td>{{$var->payment_status}}</td>
                                                             {{--                                            <td>{{date("d/m/Y",strtotime($var->invoice_date))}} @if($var->email_sent_status=='NOT SENT')--}}
 
                                                             {{--                                                    <span style="float: right !important; " class="badge badge-danger">New</span>--}}
                                                             {{--                                                @else--}}
                                                             {{--                                                @endif </td>--}}
 
-                                                            <td><center>{{date("d/m/Y",strtotime($var->invoice_date))}}</center>  </td>
-<td><center>@if($var->invoice_status=='0')
-                                                                CANCELLED
+                                                            <td>{{date("d/m/Y",strtotime($var->invoice_date))}}  </td>
+                                                            <td>@if($var->invoice_status=='0')
+                                                                    CANCELLED
                                                                 @elseif($var->invoice_status=='1')
-                                                                        OK
+                                                                    OK
                                                                 @else
-                                                                        @endif
-                                                                </center></td>
+                                                                @endif
+                                                            </td>
 
                                                             <td><center>
 
@@ -6182,15 +6182,15 @@
                                                 <table class="hover table table-striped  table-bordered" id="myTableInsuranceClients">
                                                     <thead class="thead-dark">
                                                     <tr>
-                                                        <th scope="col" style="color:#fff;">S/N</th>
+                                                        <th scope="col" style="color:#fff;" class="text-center">S/N</th>
                                                         <th scope="col"  style="color:#fff;">Client</th>
-                                                        <th scope="col" style="color:#fff;"><center>Invoice Number</center></th>
-                                                        <th scope="col"  style="color:#fff;"><center>Start Date</center></th>
-                                                        <th scope="col"  style="color:#fff;"><center>End Date</center></th>
-                                                        <th scope="col"  style="color:#fff;"><center>Amount</center></th>
-                                                        <th scope="col"  style="color:#fff;"><center>Payment Status</center></th>
-                                                        <th scope="col"  style="color:#fff;"><center>Invoice Date</center></th>
-                                                        <th scope="col"  style="color:#fff;"><center>Invoice Status</center></th>
+                                                        <th scope="col" style="color:#fff;" class="text-right">Invoice Number</th>
+                                                        <th scope="col"  style="color:#fff;">Start Date</th>
+                                                        <th scope="col"  style="color:#fff;">End Date</th>
+                                                        <th scope="col"  style="color:#fff;" class="text-right">Amount</th>
+                                                        <th scope="col"  style="color:#fff;">Payment Status</th>
+                                                        <th scope="col"  style="color:#fff;">Invoice Date</th>
+                                                        <th scope="col"  style="color:#fff;">Invoice Status</th>
                                                         <th scope="col"  style="color:#fff;"><center>Action</center></th>
                                                     </tr>
                                                     </thead>
@@ -6202,28 +6202,28 @@
                                                             <td> <center>{{$i}}</center>  </td>
 
                                                             <td>{{$var->debtor_name}}</td>
-                                                            <td><center>{{$var->invoice_number_votebook}}
-                                                                </center>
+                                                            <td class="text-right">{{$var->invoice_number_votebook}}
+
                                                             </td>
 
-                                                            <td><center>{{date("d/m/Y",strtotime($var->invoicing_period_start_date))}}</center></td>
-                                                            <td><center>{{date("d/m/Y",strtotime($var->invoicing_period_end_date))}}</center></td>
-                                                            <td><center>{{number_format($var->amount_to_be_paid)}} {{$var->currency_invoice}}</center></td>
-                                                            <td><center>{{$var->payment_status}}</center></td>
+                                                            <td>{{date("d/m/Y",strtotime($var->invoicing_period_start_date))}}</td>
+                                                            <td>{{date("d/m/Y",strtotime($var->invoicing_period_end_date))}}</td>
+                                                            <td class="text-right">{{number_format($var->amount_to_be_paid)}} {{$var->currency_invoice}}</td>
+                                                            <td>{{$var->payment_status}}</td>
                                                             {{--                                            <td>{{date("d/m/Y",strtotime($var->invoice_date))}} @if($var->email_sent_status=='NOT SENT')--}}
 
                                                             {{--                                                    <span style="float: right !important; " class="badge badge-danger">New</span>--}}
                                                             {{--                                                @else--}}
                                                             {{--                                                @endif </td>--}}
 
-                                                            <td><center>{{date("d/m/Y",strtotime($var->invoice_date))}}</center>  </td>
-<td><center>@if($var->invoice_status=='0')
-                                                                CANCELLED
+                                                            <td>{{date("d/m/Y",strtotime($var->invoice_date))}}  </td>
+                                                            <td>@if($var->invoice_status=='0')
+                                                                    CANCELLED
                                                                 @elseif($var->invoice_status=='1')
-                                                                        OK
+                                                                    OK
                                                                 @else
-                                                                        @endif
-                                                                </center></td>
+                                                                @endif
+                                                            </td>
 
                                                             <td><center>
 
@@ -7371,15 +7371,15 @@
                                                 <table class="hover table table-striped  table-bordered" id="myTableInsuranceClients">
                                                     <thead class="thead-dark">
                                                     <tr>
-                                                        <th scope="col" style="color:#fff;">S/N</th>
+                                                        <th scope="col" style="color:#fff;" class="text-center">S/N</th>
                                                         <th scope="col"  style="color:#fff;">Client</th>
-                                                        <th scope="col" style="color:#fff;"><center>Invoice Number</center></th>
-                                                        <th scope="col"  style="color:#fff;"><center>Start Date</center></th>
-                                                        <th scope="col"  style="color:#fff;"><center>End Date</center></th>
-                                                        <th scope="col"  style="color:#fff;"><center>Amount</center></th>
-                                                        <th scope="col"  style="color:#fff;"><center>Payment Status</center></th>
-                                                        <th scope="col"  style="color:#fff;"><center>Invoice Date</center></th>
-                                                        <th scope="col"  style="color:#fff;"><center>Invoice Status</center></th>
+                                                        <th scope="col" style="color:#fff;" class="text-right">Invoice Number</th>
+                                                        <th scope="col"  style="color:#fff;">Start Date</th>
+                                                        <th scope="col"  style="color:#fff;">End Date</th>
+                                                        <th scope="col"  style="color:#fff;" class="text-right">Amount</th>
+                                                        <th scope="col"  style="color:#fff;">Payment Status</th>
+                                                        <th scope="col"  style="color:#fff;">Invoice Date</th>
+                                                        <th scope="col"  style="color:#fff;">Invoice Status</th>
                                                         <th scope="col"  style="color:#fff;"><center>Action</center></th>
                                                     </tr>
                                                     </thead>
@@ -7391,28 +7391,28 @@
                                                             <td> <center>{{$i}}</center>  </td>
 
                                                             <td>{{$var->debtor_name}}</td>
-                                                            <td><center>{{$var->invoice_number_votebook}}
-                                                                </center>
+                                                            <td class="text-right">{{$var->invoice_number_votebook}}
+
                                                             </td>
 
-                                                            <td><center>{{date("d/m/Y",strtotime($var->invoicing_period_start_date))}}</center></td>
-                                                            <td><center>{{date("d/m/Y",strtotime($var->invoicing_period_end_date))}}</center></td>
-                                                            <td><center>{{number_format($var->amount_to_be_paid)}} {{$var->currency_invoice}}</center></td>
-                                                            <td><center>{{$var->payment_status}}</center></td>
+                                                            <td>{{date("d/m/Y",strtotime($var->invoicing_period_start_date))}}</td>
+                                                            <td>{{date("d/m/Y",strtotime($var->invoicing_period_end_date))}}</td>
+                                                            <td class="text-right">{{number_format($var->amount_to_be_paid)}} {{$var->currency_invoice}}</td>
+                                                            <td>{{$var->payment_status}}</td>
                                                             {{--                                            <td>{{date("d/m/Y",strtotime($var->invoice_date))}} @if($var->email_sent_status=='NOT SENT')--}}
 
                                                             {{--                                                    <span style="float: right !important; " class="badge badge-danger">New</span>--}}
                                                             {{--                                                @else--}}
                                                             {{--                                                @endif </td>--}}
 
-                                                            <td><center>{{date("d/m/Y",strtotime($var->invoice_date))}}</center>  </td>
-<td><center>@if($var->invoice_status=='0')
-                                                                CANCELLED
+                                                            <td>{{date("d/m/Y",strtotime($var->invoice_date))}}  </td>
+                                                            <td>@if($var->invoice_status=='0')
+                                                                    CANCELLED
                                                                 @elseif($var->invoice_status=='1')
-                                                                        OK
+                                                                    OK
                                                                 @else
-                                                                        @endif
-                                                                </center></td>
+                                                                @endif
+                                                            </td>
 
                                                             <td><center>
 
@@ -9903,15 +9903,15 @@
                                                 <table class="hover table table-striped  table-bordered" id="myTableInsurance">
                                                     <thead class="thead-dark">
                                                     <tr>
-                                                        <th scope="col" style="color:#fff;">S/N</th>
+                                                        <th scope="col" style="color:#fff;" class="text-center">S/N</th>
                                                         <th scope="col"  style="color:#fff;">Client</th>
-                                                        <th scope="col" style="color:#fff;"><center>Invoice Number</center></th>
-                                                        <th scope="col"  style="color:#fff;"><center>Start Date</center></th>
-                                                        <th scope="col"  style="color:#fff;"><center>End Date</center></th>
-                                                        <th scope="col"  style="color:#fff;"><center>Amount</center></th>
-                                                        <th scope="col"  style="color:#fff;"><center>Payment Status</center></th>
-                                                        <th scope="col"  style="color:#fff;"><center>Invoice Date</center></th>
-                                                        <th scope="col"  style="color:#fff;"><center>Invoice Status</center></th>
+                                                        <th scope="col" style="color:#fff;" class="text-right">Invoice Number</th>
+                                                        <th scope="col"  style="color:#fff;">Start Date</th>
+                                                        <th scope="col"  style="color:#fff;">End Date</th>
+                                                        <th scope="col"  style="color:#fff;" class="text-right">Amount</th>
+                                                        <th scope="col"  style="color:#fff;">Payment Status</th>
+                                                        <th scope="col"  style="color:#fff;">Invoice Date</th>
+                                                        <th scope="col"  style="color:#fff;">Invoice Status</th>
                                                         <th scope="col"  style="color:#fff;"><center>Action</center></th>
                                                     </tr>
                                                     </thead>
@@ -9923,28 +9923,28 @@
                                                             <td> <center>{{$i}}</center>  </td>
 
                                                             <td>{{$var->debtor_name}}</td>
-                                                            <td><center>{{$var->invoice_number_votebook}}
-                                                                </center>
+                                                            <td class="text-right">{{$var->invoice_number_votebook}}
+
                                                             </td>
 
-                                                            <td><center>{{date("d/m/Y",strtotime($var->invoicing_period_start_date))}}</center></td>
-                                                            <td><center>{{date("d/m/Y",strtotime($var->invoicing_period_end_date))}}</center></td>
-                                                            <td><center>{{number_format($var->amount_to_be_paid)}} {{$var->currency_invoice}}</center></td>
-                                                            <td><center>{{$var->payment_status}}</center></td>
+                                                            <td>{{date("d/m/Y",strtotime($var->invoicing_period_start_date))}}</td>
+                                                            <td>{{date("d/m/Y",strtotime($var->invoicing_period_end_date))}}</td>
+                                                            <td class="text-right">{{number_format($var->amount_to_be_paid)}} {{$var->currency_invoice}}</td>
+                                                            <td>{{$var->payment_status}}</td>
                                                             {{--                                            <td>{{date("d/m/Y",strtotime($var->invoice_date))}} @if($var->email_sent_status=='NOT SENT')--}}
 
                                                             {{--                                                    <span style="float: right !important; " class="badge badge-danger">New</span>--}}
                                                             {{--                                                @else--}}
                                                             {{--                                                @endif </td>--}}
 
-                                                            <td><center>{{date("d/m/Y",strtotime($var->invoice_date))}}</center>  </td>
-<td><center>@if($var->invoice_status=='0')
-                                                                CANCELLED
+                                                            <td>{{date("d/m/Y",strtotime($var->invoice_date))}}  </td>
+                                                            <td>@if($var->invoice_status=='0')
+                                                                    CANCELLED
                                                                 @elseif($var->invoice_status=='1')
-                                                                        OK
+                                                                    OK
                                                                 @else
-                                                                        @endif
-                                                                </center></td>
+                                                                @endif
+                                                            </td>
 
                                                             <td><center>
 
@@ -10382,15 +10382,15 @@
                                                 <table class="hover table table-striped  table-bordered" id="myTableInsurance">
                                                     <thead class="thead-dark">
                                                     <tr>
-                                                        <th scope="col" style="color:#fff;">S/N</th>
+                                                        <th scope="col" style="color:#fff;" class="text-center">S/N</th>
                                                         <th scope="col"  style="color:#fff;">Client</th>
-                                                        <th scope="col" style="color:#fff;"><center>Invoice Number</center></th>
-                                                        <th scope="col"  style="color:#fff;"><center>Start Date</center></th>
-                                                        <th scope="col"  style="color:#fff;"><center>End Date</center></th>
-                                                        <th scope="col"  style="color:#fff;"><center>Amount</center></th>
-                                                        <th scope="col"  style="color:#fff;"><center>Payment Status</center></th>
-                                                        <th scope="col"  style="color:#fff;"><center>Invoice Date</center></th>
-                                                        <th scope="col"  style="color:#fff;"><center>Invoice Status</center></th>
+                                                        <th scope="col" style="color:#fff;" class="text-right">Invoice Number</th>
+                                                        <th scope="col"  style="color:#fff;">Start Date</th>
+                                                        <th scope="col"  style="color:#fff;">End Date</th>
+                                                        <th scope="col"  style="color:#fff;" class="text-right">Amount</th>
+                                                        <th scope="col"  style="color:#fff;">Payment Status</th>
+                                                        <th scope="col"  style="color:#fff;">Invoice Date</th>
+                                                        <th scope="col"  style="color:#fff;">Invoice Status</th>
                                                         <th scope="col"  style="color:#fff;"><center>Action</center></th>
                                                     </tr>
                                                     </thead>
@@ -10402,28 +10402,28 @@
                                                             <td> <center>{{$i}}</center>  </td>
 
                                                             <td>{{$var->debtor_name}}</td>
-                                                            <td><center>{{$var->invoice_number_votebook}}
-                                                                </center>
+                                                            <td class="text-right">{{$var->invoice_number_votebook}}
+
                                                             </td>
 
-                                                            <td><center>{{date("d/m/Y",strtotime($var->invoicing_period_start_date))}}</center></td>
-                                                            <td><center>{{date("d/m/Y",strtotime($var->invoicing_period_end_date))}}</center></td>
-                                                            <td><center>{{number_format($var->amount_to_be_paid)}} {{$var->currency_invoice}}</center></td>
-                                                            <td><center>{{$var->payment_status}}</center></td>
+                                                            <td>{{date("d/m/Y",strtotime($var->invoicing_period_start_date))}}</td>
+                                                            <td>{{date("d/m/Y",strtotime($var->invoicing_period_end_date))}}</td>
+                                                            <td class="text-right">{{number_format($var->amount_to_be_paid)}} {{$var->currency_invoice}}</td>
+                                                            <td>{{$var->payment_status}}</td>
                                                             {{--                                            <td>{{date("d/m/Y",strtotime($var->invoice_date))}} @if($var->email_sent_status=='NOT SENT')--}}
 
                                                             {{--                                                    <span style="float: right !important; " class="badge badge-danger">New</span>--}}
                                                             {{--                                                @else--}}
                                                             {{--                                                @endif </td>--}}
 
-                                                            <td><center>{{date("d/m/Y",strtotime($var->invoice_date))}}</center>  </td>
-<td><center>@if($var->invoice_status=='0')
-                                                                CANCELLED
+                                                            <td>{{date("d/m/Y",strtotime($var->invoice_date))}}  </td>
+                                                            <td>@if($var->invoice_status=='0')
+                                                                    CANCELLED
                                                                 @elseif($var->invoice_status=='1')
-                                                                        OK
+                                                                    OK
                                                                 @else
-                                                                        @endif
-                                                                </center></td>
+                                                                @endif
+                                                            </td>
 
                                                             <td><center>
 
@@ -11684,15 +11684,15 @@
                                                 <table class="hover table table-striped  table-bordered" id="myTableInsurance">
                                                     <thead class="thead-dark">
                                                     <tr>
-                                                        <th scope="col" style="color:#fff;">S/N</th>
+                                                        <th scope="col" style="color:#fff;" class="text-center">S/N</th>
                                                         <th scope="col"  style="color:#fff;">Client</th>
-                                                        <th scope="col" style="color:#fff;"><center>Invoice Number</center></th>
-                                                        <th scope="col"  style="color:#fff;"><center>Start Date</center></th>
-                                                        <th scope="col"  style="color:#fff;"><center>End Date</center></th>
-                                                        <th scope="col"  style="color:#fff;"><center>Amount</center></th>
-                                                        <th scope="col"  style="color:#fff;"><center>Payment Status</center></th>
-                                                        <th scope="col"  style="color:#fff;"><center>Invoice Date</center></th>
-                                                        <th scope="col"  style="color:#fff;"><center>Invoice Status</center></th>
+                                                        <th scope="col" style="color:#fff;" class="text-right">Invoice Number</th>
+                                                        <th scope="col"  style="color:#fff;">Start Date</th>
+                                                        <th scope="col"  style="color:#fff;">End Date</th>
+                                                        <th scope="col"  style="color:#fff;" class="text-right">Amount</th>
+                                                        <th scope="col"  style="color:#fff;">Payment Status</th>
+                                                        <th scope="col"  style="color:#fff;">Invoice Date</th>
+                                                        <th scope="col"  style="color:#fff;">Invoice Status</th>
                                                         <th scope="col"  style="color:#fff;"><center>Action</center></th>
                                                     </tr>
                                                     </thead>
@@ -11704,28 +11704,28 @@
                                                             <td> <center>{{$i}}</center>  </td>
 
                                                             <td>{{$var->debtor_name}}</td>
-                                                            <td><center>{{$var->invoice_number_votebook}}
-                                                                </center>
+                                                            <td class="text-right">{{$var->invoice_number_votebook}}
+
                                                             </td>
 
-                                                            <td><center>{{date("d/m/Y",strtotime($var->invoicing_period_start_date))}}</center></td>
-                                                            <td><center>{{date("d/m/Y",strtotime($var->invoicing_period_end_date))}}</center></td>
-                                                            <td><center>{{number_format($var->amount_to_be_paid)}} {{$var->currency_invoice}}</center></td>
-                                                            <td><center>{{$var->payment_status}}</center></td>
+                                                            <td>{{date("d/m/Y",strtotime($var->invoicing_period_start_date))}}</td>
+                                                            <td>{{date("d/m/Y",strtotime($var->invoicing_period_end_date))}}</td>
+                                                            <td class="text-right">{{number_format($var->amount_to_be_paid)}} {{$var->currency_invoice}}</td>
+                                                            <td>{{$var->payment_status}}</td>
                                                             {{--                                            <td>{{date("d/m/Y",strtotime($var->invoice_date))}} @if($var->email_sent_status=='NOT SENT')--}}
 
                                                             {{--                                                    <span style="float: right !important; " class="badge badge-danger">New</span>--}}
                                                             {{--                                                @else--}}
                                                             {{--                                                @endif </td>--}}
 
-                                                            <td><center>{{date("d/m/Y",strtotime($var->invoice_date))}}</center>  </td>
-<td><center>@if($var->invoice_status=='0')
-                                                                CANCELLED
+                                                            <td>{{date("d/m/Y",strtotime($var->invoice_date))}}  </td>
+                                                            <td>@if($var->invoice_status=='0')
+                                                                    CANCELLED
                                                                 @elseif($var->invoice_status=='1')
-                                                                        OK
+                                                                    OK
                                                                 @else
-                                                                        @endif
-                                                                </center></td>
+                                                                @endif
+                                                            </td>
 
                                                             <td><center>
 
@@ -12226,15 +12226,15 @@
                                                 <table class="hover table table-striped  table-bordered" id="myTableInsurance">
                                                     <thead class="thead-dark">
                                                     <tr>
-                                                        <th scope="col" style="color:#fff;">S/N</th>
+                                                        <th scope="col" style="color:#fff;" class="text-center">S/N</th>
                                                         <th scope="col"  style="color:#fff;">Client</th>
-                                                        <th scope="col" style="color:#fff;"><center>Invoice Number</center></th>
-                                                        <th scope="col"  style="color:#fff;"><center>Start Date</center></th>
-                                                        <th scope="col"  style="color:#fff;"><center>End Date</center></th>
-                                                        <th scope="col"  style="color:#fff;"><center>Amount</center></th>
-                                                        <th scope="col"  style="color:#fff;"><center>Payment Status</center></th>
-                                                        <th scope="col"  style="color:#fff;"><center>Invoice Date</center></th>
-                                                        <th scope="col"  style="color:#fff;"><center>Invoice Status</center></th>
+                                                        <th scope="col" style="color:#fff;" class="text-right">Invoice Number</th>
+                                                        <th scope="col"  style="color:#fff;">Start Date</th>
+                                                        <th scope="col"  style="color:#fff;">End Date</th>
+                                                        <th scope="col"  style="color:#fff;" class="text-right">Amount</th>
+                                                        <th scope="col"  style="color:#fff;">Payment Status</th>
+                                                        <th scope="col"  style="color:#fff;">Invoice Date</th>
+                                                        <th scope="col"  style="color:#fff;">Invoice Status</th>
                                                         <th scope="col"  style="color:#fff;"><center>Action</center></th>
                                                     </tr>
                                                     </thead>
@@ -12246,28 +12246,28 @@
                                                             <td> <center>{{$i}}</center>  </td>
 
                                                             <td>{{$var->debtor_name}}</td>
-                                                            <td><center>{{$var->invoice_number_votebook}}
-                                                                </center>
+                                                            <td class="text-right">{{$var->invoice_number_votebook}}
+
                                                             </td>
 
-                                                            <td><center>{{date("d/m/Y",strtotime($var->invoicing_period_start_date))}}</center></td>
-                                                            <td><center>{{date("d/m/Y",strtotime($var->invoicing_period_end_date))}}</center></td>
-                                                            <td><center>{{number_format($var->amount_to_be_paid)}} {{$var->currency_invoice}}</center></td>
-                                                            <td><center>{{$var->payment_status}}</center></td>
+                                                            <td>{{date("d/m/Y",strtotime($var->invoicing_period_start_date))}}</td>
+                                                            <td>{{date("d/m/Y",strtotime($var->invoicing_period_end_date))}}</td>
+                                                            <td class="text-right">{{number_format($var->amount_to_be_paid)}} {{$var->currency_invoice}}</td>
+                                                            <td>{{$var->payment_status}}</td>
                                                             {{--                                            <td>{{date("d/m/Y",strtotime($var->invoice_date))}} @if($var->email_sent_status=='NOT SENT')--}}
 
                                                             {{--                                                    <span style="float: right !important; " class="badge badge-danger">New</span>--}}
                                                             {{--                                                @else--}}
                                                             {{--                                                @endif </td>--}}
 
-                                                            <td><center>{{date("d/m/Y",strtotime($var->invoice_date))}}</center>  </td>
-<td><center>@if($var->invoice_status=='0')
-                                                                CANCELLED
+                                                            <td>{{date("d/m/Y",strtotime($var->invoice_date))}}  </td>
+                                                            <td>@if($var->invoice_status=='0')
+                                                                    CANCELLED
                                                                 @elseif($var->invoice_status=='1')
-                                                                        OK
+                                                                    OK
                                                                 @else
-                                                                        @endif
-                                                                </center></td>
+                                                                @endif
+                                                            </td>
 
                                                             <td><center>
 

@@ -38,6 +38,18 @@
 							->wherebetween('date_of_payment',[ $_GET['start'] ,$_GET['end']])
 							->get();
 	}
+
+
+    elseif($_GET['criteria']=='insurance_clients'){
+        $insurance_clients_payments=DB::table('insurance_clients_payments')
+            ->join('insurance_invoices_clients','insurance_clients_payments.invoice_number','=','insurance_invoices_clients.invoice_number')
+            ->where('insurance_clients_payments.invoice_number_votebook','!=','')
+            ->wherebetween('date_of_payment',[ $_GET['start'] ,$_GET['end']])
+            ->get();
+    }
+
+
+
 	elseif($_GET['criteria']=='water'){
 		$water_bill_payments=DB::table('water_bill_payments')
 							->join('water_bill_invoices','water_bill_payments.invoice_number','=','water_bill_invoices.invoice_number')

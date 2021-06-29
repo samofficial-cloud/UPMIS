@@ -367,12 +367,12 @@
                                             <th scope="col" style="color:#fff;"><center>S/N</center></th>
 
 
-                                            <th scope="col" style="color:#fff;"><center>Invoice number</center></th>
-                                            <th scope="col" style="color:#fff;"><center>Amount Paid</center></th>
-                                            <th scope="col"  style="color:#fff;"><center>Amount Not Paid</center></th>
-                                            <th scope="col"  style="color:#fff;"><center>Date of payment</center></th>
-                                            <th scope="col"  style="color:#fff;"><center>Receipt Number</center></th>
-                                            <th scope="col"  style="color:#fff;"><center>Status</center></th>
+                                            <th scope="col" style="color:#fff;" class="text-right">Invoice number</th>
+                                            <th scope="col" style="color:#fff;" class="text-right">Amount Paid</th>
+                                            <th scope="col"  style="color:#fff;" class="text-right">Amount Not Paid</th>
+                                            <th scope="col"  style="color:#fff;">Date of payment</th>
+                                            <th scope="col"  style="color:#fff;" class="text-right">Receipt Number</th>
+                                            <th scope="col"  style="color:#fff;">Status</th>
                                             <th scope="col"  style="color:#fff;"><center>Action</center></th>
 
                                         </tr>
@@ -383,18 +383,18 @@
                                             <tr>
 
                                                 <td><center>{{$i}}</center></td>
-                                                <td><center>{{$var->invoice_number_votebook}} </center></td>
-                                                <td><center>{{number_format($var->amount_paid)}} {{$var->currency_payments}}</center></td>
-                                                <td><center>{{number_format($var->amount_not_paid)}} {{$var->currency_payments}}</center></td>
-                                                <td><center>{{date("d/m/Y",strtotime($var->date_of_payment))}}</center></td>
-                                                <td><center>{{$var->receipt_number}}</center></td>
-                                                <td><center>@if($var->status_payment=='0')
-                                                            CANCELLED
-                                                        @elseif($var->status_payment=='1')
-                                                            OK
-                                                        @else
-                                                        @endif
-                                                    </center></td>
+                                                <td class="text-right">{{$var->invoice_number_votebook}} </td>
+                                                <td class="text-right">{{number_format($var->amount_paid)}} {{$var->currency_payments}}</td>
+                                                <td class="text-right">{{number_format($var->amount_not_paid)}} {{$var->currency_payments}}</td>
+                                                <td>{{date("d/m/Y",strtotime($var->date_of_payment))}}</td>
+                                                <td class="text-right">{{$var->receipt_number}}</td>
+                                                <td>@if($var->status_payment=='0')
+                                                        CANCELLED
+                                                    @elseif($var->status_payment=='1')
+                                                        OK
+                                                    @else
+                                                    @endif
+                                                </td>
                                                 <td><center>
 
 
@@ -654,8 +654,8 @@
                                                     From
                                                 </div>
                                                 <div >
-                                                    <input  id="start_date3" name="start_date" class="flatpickr_date form-control" max="<?php echo(date('Y-m-d'))?>">
-                                                    <span id="start_msg3"></span>
+                                                    <input  id="start_date3b" name="start_date" class="flatpickr_date form-control" max="<?php echo(date('Y-m-d'))?>">
+                                                    <span id="start_msg3b"></span>
                                                 </div>
 
                                                 <div style="padding: 0px 7px;">
@@ -663,31 +663,31 @@
                                                 </div>
 
                                                 <div >
-                                                    <input  id="end_date3" name="end_date" class="flatpickr_date form-control"  max="<?php echo(date('Y-m-d'))?>">
-                                                    <span id="end_msg3"></span>
+                                                    <input  id="end_date3b" name="end_date" class="flatpickr_date form-control"  max="<?php echo(date('Y-m-d'))?>">
+                                                    <span id="end_msg3b"></span>
                                                 </div>
                                             </div>
 
                                             <div class="form-group"  style="margin-right: -13px;">
-                                                <input type="submit" name="filter" value="Filter" id="insurance_filter" class="btn btn-primary">
+                                                <input type="submit" name="filter" value="Filter" id="insurance_filterb" class="btn btn-primary">
                                             </div>
                                         </form>
                                     </div>
                                 </div>
 
-                                <div id="insurance_content">
-                                    <table class="hover table table-striped  table-bordered" id="myTable3">
+                                <div id="insurance_contentb">
+                                    <table class="hover table table-striped  table-bordered" id="myTable3b">
                                         <thead class="thead-dark">
                                         <tr>
                                             <th scope="col" style="color:#fff;"><center>S/N</center></th>
 
 
-                                            <th scope="col" style="color:#fff;"><center>Invoice number</center></th>
-                                            <th scope="col" style="color:#fff;"><center>Amount Paid</center></th>
-                                            <th scope="col"  style="color:#fff;"><center>Amount Not Paid</center></th>
-                                            <th scope="col"  style="color:#fff;"><center>Date of payment</center></th>
-                                            <th scope="col"  style="color:#fff;"><center>Receipt Number</center></th>
-                                            <th scope="col"  style="color:#fff;"><center>Status</center></th>
+                                            <th scope="col" style="color:#fff;" class="text-right">Invoice number</th>
+                                            <th scope="col" style="color:#fff;" class="text-right">Amount Paid</th>
+                                            <th scope="col"  style="color:#fff;" class="text-right">Amount Not Paid</th>
+                                            <th scope="col"  style="color:#fff;">Date of payment</th>
+                                            <th scope="col"  style="color:#fff;" class="text-right">Receipt Number</th>
+                                            <th scope="col"  style="color:#fff;">Status</th>
                                             <th scope="col"  style="color:#fff;"><center>Action</center></th>
 
                                         </tr>
@@ -698,24 +698,24 @@
                                             <tr>
 
                                                 <td><center>{{$i}}</center></td>
-                                                <td><center>{{$var->invoice_number_votebook}} </center></td>
-                                                <td><center>{{number_format($var->amount_paid)}} {{$var->currency_payments}}</center></td>
-                                                <td><center>{{number_format($var->amount_not_paid)}} {{$var->currency_payments}}</center></td>
-                                                <td><center>{{date("d/m/Y",strtotime($var->date_of_payment))}}</center></td>
-                                                <td><center>{{$var->receipt_number}}</center></td>
-                                                <td><center>@if($var->status_payment=='0')
-                                                            CANCELLED
-                                                        @elseif($var->status_payment=='1')
-                                                            OK
-                                                        @else
-                                                        @endif
-                                                    </center></td>
+                                                <td class="text-right">{{$var->invoice_number_votebook}} </td>
+                                                <td class="text-right">{{number_format($var->amount_paid)}} {{$var->currency_payments}}</td>
+                                                <td class="text-right">{{number_format($var->amount_not_paid)}} {{$var->currency_payments}}</td>
+                                                <td>{{date("d/m/Y",strtotime($var->date_of_payment))}}</td>
+                                                <td class="text-right">{{$var->receipt_number}}</td>
+                                                <td>@if($var->status_payment=='0')
+                                                        CANCELLED
+                                                    @elseif($var->status_payment=='1')
+                                                        OK
+                                                    @else
+                                                    @endif
+                                                </td>
                                                 <td><center>
 
 
 
-                                                        <a title="View invoice" style="color:#3490dc !important;"  class="" data-toggle="modal" data-target="#invoice_insurance{{$var->id}}" style="cursor: pointer;" aria-pressed="true"><center><i class="fas fa-file-invoice"></i></center></a>
-                                                        <div class="modal fade" id="invoice_insurance{{$var->id}}" role="dialog">
+                                                        <a title="View invoice" style="color:#3490dc !important;"  class="" data-toggle="modal" data-target="#invoice_insurance_clients{{$var->id}}" style="cursor: pointer;" aria-pressed="true"><center><i class="fas fa-file-invoice"></i></center></a>
+                                                        <div class="modal fade" id="invoice_insurance_clients{{$var->id}}" role="dialog">
 
                                                             <div class="modal-dialog" role="document">
                                                                 <div class="modal-content">
@@ -1380,13 +1380,13 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
             "bLengthChange": false,
             buttons: [
             {   extend: 'pdfHtml5',
-                filename:'Insurance Payments',
+                filename:'Insurance Payments for Clients',
                 download: 'open',
                 text: '<i class="fa fa-file-pdf-o"></i> PDF',
                 className: 'excelButton',
                 orientation: 'Potrait',
                 title: 'UNIVERSITY OF DAR ES SALAAM',
-                messageTop: 'DIRECTORATE OF PLANNING, DEVELOPMENT AND INVESTIMENT\n \n Insurance Payments',
+                messageTop: 'DIRECTORATE OF PLANNING, DEVELOPMENT AND INVESTIMENT\n \n Insurance Payments for Clients',
                 pageSize: 'A4',
                 //layout: 'lightHorizontalLines',
                 exportOptions: {
@@ -1466,13 +1466,127 @@ var base64 = 'iVBORw0KGgoAAAANSUhEUgAAAOoAAADpCAYAAAAqAKvgAAAABGdBTUEAALGPC/xhBQ
             {   extend: 'excelHtml5',
                 text: '<i class="fa fa-file-excel-o"></i> EXCEL',
                 className: 'excelButton',
-                title: 'Insurance Payments',
+                title: 'Insurance Payments for Clients',
                 exportOptions: {
                 columns: [1, 2, 3, 4, 5]
                 },
             },
         ]
         } );
+
+
+
+
+
+        var table = $('#myTable3b').DataTable( {
+            dom:
+                "<'top'<'pt-3 pull-left'B><'text-center pull-right'f>>"+
+                "<'top'<tr>>" +
+                "<'top'<'pull-left 'p>>",
+            "pageLength": 100,
+            "bLengthChange": false,
+            buttons: [
+                {   extend: 'pdfHtml5',
+                    filename:'Insurance Payments for Principals',
+                    download: 'open',
+                    text: '<i class="fa fa-file-pdf-o"></i> PDF',
+                    className: 'excelButton',
+                    orientation: 'Potrait',
+                    title: 'UNIVERSITY OF DAR ES SALAAM',
+                    messageTop: 'DIRECTORATE OF PLANNING, DEVELOPMENT AND INVESTIMENT\n \n Insurance Payments for Principals',
+                    pageSize: 'A4',
+                    //layout: 'lightHorizontalLines',
+                    exportOptions: {
+                        columns: [ 0, 1, 2, 3, 4, 5]
+                    },
+
+
+
+                    customize: function ( doc ) {
+
+                        doc.defaultStyle.font = 'Times';
+
+                        doc['footer'] = (function (page, pages) {
+                            return {
+                                alignment: 'center',
+                                text: [{ text: page.toString() }]
+
+                            }
+                        });
+
+                        doc.content[2].table.widths=[22, 80, 100, 80, 100, 80];
+                        var rowCount = doc.content[2].table.body.length;
+                        for (i = 1; i < rowCount; i++) {
+                            doc.content[2].table.body[i][0]=i+'.';
+                            doc.content[2].table.body[i][1].alignment = 'left';
+                            doc.content[2].table.body[i][2].alignment = 'left';
+                            doc.content[2].table.body[i][3].alignment = 'left';
+                            doc.content[2].table.body[i][5].alignment = 'left';
+
+                        };
+
+                        doc.defaultStyle.alignment = 'center';
+
+                        doc.content[2].table.body[0].forEach(function (h) {
+                            h.fillColor = 'white';
+                            alignment: 'center';
+                        });
+
+                        doc.styles.title = {
+                            bold: 'true',
+                            fontSize: '12',
+                            alignment: 'center'
+                        };
+
+                        doc.styles.tableHeader.color = 'black';
+                        doc.styles.tableHeader.bold = 'false';
+                        doc.styles.tableBodyOdd.fillColor='';
+                        doc.styles.tableHeader.fontSize = 10;
+                        doc.content[2].layout ={
+                            hLineWidth: function (i, node) {
+                                return (i === 0 || i === node.table.body.length) ? 0.5 : 0.5;
+                            },
+                            vLineWidth: function (i, node) {
+                                return (i === 0 || i === node.table.widths.length) ? 0.5 : 0.5;
+                            },
+                            hLineColor: function (i, node) {
+                                return (i === 0 || i === node.table.body.length) ? 'black' : 'black';
+                            },
+                            vLineColor: function (i, node) {
+                                return (i === 0 || i === node.table.widths.length) ? 'black' : 'black';
+                            },
+                            fillColor: function (rowIndex, node, columnIndex) {
+                                return (rowIndex % 2 === 0) ? '#ffffff' : '#ffffff';
+                            }
+                        };
+
+
+                        doc.content.splice( 1, 0, {
+                            margin: [ 0, 0, 0, 12 ],
+                            alignment: 'center',
+                            image: 'data:image/png;base64,'+base64,
+                            fit: [40, 40]
+                        } );
+                    }
+                },
+
+                {   extend: 'excelHtml5',
+                    text: '<i class="fa fa-file-excel-o"></i> EXCEL',
+                    className: 'excelButton',
+                    title: 'Insurance Payments for Principals',
+                    exportOptions: {
+                        columns: [1, 2, 3, 4, 5]
+                    },
+                },
+            ]
+        } );
+
+
+
+
+
+
+
 
         var table = $('#myTable4').DataTable( {
              dom:
@@ -2591,7 +2705,7 @@ $("#insurance_filter").click(function(e){
       $.ajax({
       url: "/payment_management/filtered?",
       context: document.body,
-      data:{start:query, end:query2, _token:_token, criteria:'insurance'}
+      data:{start:query, end:query2, _token:_token, criteria:'insurance_clients'}
       })
         .done(function(fragment) {
             $("#insurance_content").html(fragment);
@@ -2604,13 +2718,13 @@ $("#insurance_filter").click(function(e){
             "bLengthChange": false,
             buttons: [
             {   extend: 'pdfHtml5',
-                filename:'Insurance Payments',
+                filename:'Insurance Payments for Clients',
                 download: 'open',
                 text: '<i class="fa fa-file-pdf-o"></i> PDF',
                 className: 'excelButton',
                 orientation: 'Potrait',
                 title: 'UNIVERSITY OF DAR ES SALAAM',
-                messageTop: 'DIRECTORATE OF PLANNING, DEVELOPMENT AND INVESTIMENT\n \n Insurance Payments',
+                messageTop: 'DIRECTORATE OF PLANNING, DEVELOPMENT AND INVESTIMENT\n \n Insurance Payments for Clients',
                 pageSize: 'A4',
                 //layout: 'lightHorizontalLines',
                 exportOptions: {
@@ -2690,7 +2804,7 @@ $("#insurance_filter").click(function(e){
             {   extend: 'excelHtml5',
                 text: '<i class="fa fa-file-excel-o"></i> EXCEL',
                 className: 'excelButton',
-                title: 'Insurance Payments',
+                title: 'Insurance Payments for Clients',
                 exportOptions: {
                 columns: [1, 2, 3, 4, 5]
                 },
@@ -2700,6 +2814,162 @@ $("#insurance_filter").click(function(e){
         });
     }
 });
+
+
+
+        $("#insurance_filterb").click(function(e){
+            e.preventDefault();
+
+            var query = $('#start_date3b').val();
+            var query2 =$('#end_date3b').val();
+            var _token = $('input[name="_token"]').val();
+
+            if(query==''){
+                $('#start_msg3b').show();
+                var message=document.getElementById('start_msg3b');
+                message.style.color='red';
+                message.innerHTML="Required";
+                $('#start_date3b').attr('style','border:1px solid #f00');
+            }
+            else{
+                $('#start_msg3b').hide();
+                $('#start_date3b').attr('style','border:1px solid #ccc');
+            }
+
+            if(query2==''){
+                $('#end_msg3b').show();
+                var message=document.getElementById('end_msg3b');
+                message.style.color='red';
+                message.innerHTML="Required";
+                $('#end_date3b').attr('style','border:1px solid #f00');
+            }
+            else{
+                $('#end_msg3b').hide();
+                $('#end_date3b').attr('style','border:1px solid #ccc');
+            }
+
+            if(query!='' && query2!=''){
+                if(query>query2){
+                    var query3 = query;
+                    query = query2;
+                    query2 = query3;
+                }
+
+                $.ajax({
+                    url: "/payment_management/filtered?",
+                    context: document.body,
+                    data:{start:query, end:query2, _token:_token, criteria:'insurance'}
+                })
+                    .done(function(fragment) {
+                        $("#insurance_contentb").html(fragment);
+                        var table = $('#myTable3b').DataTable( {
+                            dom:
+                                "<'top'<'pt-3 pull-left'B><'text-center pull-right'f>>"+
+                                "<'top'<tr>>" +
+                                "<'top'<'pull-left 'p>>",
+                            "pageLength": 100,
+                            "bLengthChange": false,
+                            buttons: [
+                                {   extend: 'pdfHtml5',
+                                    filename:'Insurance Payments for Principals',
+                                    download: 'open',
+                                    text: '<i class="fa fa-file-pdf-o"></i> PDF',
+                                    className: 'excelButton',
+                                    orientation: 'Potrait',
+                                    title: 'UNIVERSITY OF DAR ES SALAAM',
+                                    messageTop: 'DIRECTORATE OF PLANNING, DEVELOPMENT AND INVESTIMENT\n \n Insurance Payments for Principals',
+                                    pageSize: 'A4',
+                                    //layout: 'lightHorizontalLines',
+                                    exportOptions: {
+                                        columns: [ 0, 1, 2, 3, 4, 5]
+                                    },
+
+
+
+                                    customize: function ( doc ) {
+
+                                        doc.defaultStyle.font = 'Times';
+
+                                        doc['footer'] = (function (page, pages) {
+                                            return {
+                                                alignment: 'center',
+                                                text: [{ text: page.toString() }]
+
+                                            }
+                                        });
+
+                                        doc.content[2].table.widths=[22, 80, 100, 80, 100, 80];
+                                        var rowCount = doc.content[2].table.body.length;
+                                        for (i = 1; i < rowCount; i++) {
+                                            doc.content[2].table.body[i][0]=i+'.';
+                                            doc.content[2].table.body[i][1].alignment = 'left';
+                                            doc.content[2].table.body[i][2].alignment = 'left';
+                                            doc.content[2].table.body[i][3].alignment = 'left';
+                                            doc.content[2].table.body[i][5].alignment = 'left';
+
+                                        };
+
+                                        doc.defaultStyle.alignment = 'center';
+
+                                        doc.content[2].table.body[0].forEach(function (h) {
+                                            h.fillColor = 'white';
+                                            alignment: 'center';
+                                        });
+
+                                        doc.styles.title = {
+                                            bold: 'true',
+                                            fontSize: '12',
+                                            alignment: 'center'
+                                        };
+
+                                        doc.styles.tableHeader.color = 'black';
+                                        doc.styles.tableHeader.bold = 'false';
+                                        doc.styles.tableBodyOdd.fillColor='';
+                                        doc.styles.tableHeader.fontSize = 10;
+                                        doc.content[2].layout ={
+                                            hLineWidth: function (i, node) {
+                                                return (i === 0 || i === node.table.body.length) ? 0.5 : 0.5;
+                                            },
+                                            vLineWidth: function (i, node) {
+                                                return (i === 0 || i === node.table.widths.length) ? 0.5 : 0.5;
+                                            },
+                                            hLineColor: function (i, node) {
+                                                return (i === 0 || i === node.table.body.length) ? 'black' : 'black';
+                                            },
+                                            vLineColor: function (i, node) {
+                                                return (i === 0 || i === node.table.widths.length) ? 'black' : 'black';
+                                            },
+                                            fillColor: function (rowIndex, node, columnIndex) {
+                                                return (rowIndex % 2 === 0) ? '#ffffff' : '#ffffff';
+                                            }
+                                        };
+
+
+                                        doc.content.splice( 1, 0, {
+                                            margin: [ 0, 0, 0, 12 ],
+                                            alignment: 'center',
+                                            image: 'data:image/png;base64,'+base64,
+                                            fit: [40, 40]
+                                        } );
+                                    }
+                                },
+
+                                {   extend: 'excelHtml5',
+                                    text: '<i class="fa fa-file-excel-o"></i> EXCEL',
+                                    className: 'excelButton',
+                                    title: 'Insurance Payments for Principals',
+                                    exportOptions: {
+                                        columns: [1, 2, 3, 4, 5]
+                                    },
+                                },
+                            ]
+                        } );
+                    });
+            }
+        });
+
+
+
 
 $("#water_filter").click(function(e){
     e.preventDefault();
