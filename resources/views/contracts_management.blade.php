@@ -733,11 +733,13 @@ div.dt-buttons{
                                 </tr>
                                 </thead>
                                 <tbody>
-
+<?php
+$i=1;
+?>
                                 @foreach($insurance_contracts as $var)
                                     <tr>
 
-                                        <td class="counterCell text-center"></td>
+                                        <td class=" text-center">{{$i}}</td>
                                         <td>{{$var->full_name}}</td>
                                         <td class="text-right">{{$var->id}}</td>
                                         <td>{{$var->insurance_class}}</td>
@@ -818,6 +820,15 @@ div.dt-buttons{
                                             </center>
                                         </td>
                                     </tr>
+
+
+
+
+                                    <?php
+
+                                    $i=$i+1;
+
+                                    ?>
                                 @endforeach
 
 
@@ -1907,7 +1918,16 @@ div.dt-buttons{
                                                     <td><center>{{date("d/m/Y",strtotime($outbox->start_date))}}</center></td>
                                                     <td><center>{{date("d/m/Y",strtotime($outbox->end_date))}}</center></td>
                                                     <td><center>{{$outbox->destination}}</center></td>
-                                                    <td><center>{{$outbox->form_status}} Stage</center></td>
+                                                    <td><center>
+
+
+                                                            @if($outbox->form_status=='DVC Administrator')
+                                                                DVC Administration
+                                                            @else
+
+                                                            {{$outbox->form_status}}
+                                                              @endif
+                                                                Stage</center></td>
                                                 </tr>
                                             @endforeach
                                             </tbody>
@@ -4697,7 +4717,7 @@ div.dt-buttons{
                                 <td><center>{{date('d/m/Y',strtotime($var->start_date))}}</center></td>
                                 <td><center>{{date('d/m/Y',strtotime($var->end_date))}}</center></td>
 
-                                @if($var->edit_status=='1')
+                                @if($var->edit_status=='1' OR $var->terminated_stage=='1')
                                     <td><center>
                                     <div ><span style="cursor: pointer;  background-color: orange; color:white !important;  padding:3px;   text-align: center;"><a title="View Reason" style="color:white !important; display:inline-block;"  class="" data-toggle="modal"  data-target="#reason{{$var->contract_id}}" style="cursor: pointer;" aria-pressed="true">View</a></span> </div>
 
@@ -4706,8 +4726,12 @@ div.dt-buttons{
                                         <div class="modal-dialog" role="document">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <b><h5 class="modal-title">Changes made to the contract</h5></b>
+                                                    @if($var->edit_status=='1')
+                                                    <b><h5 class="modal-title"><strong style="color:black !important;">CASE: </strong> Editing of Information for an Existing Contract</h5></b>
+                                                    @else
+                                                    <b><h5 class="modal-title"><strong style="color:black !important;">CASE: </strong> Termination of an Existing Contract</h5></b>
 
+                                                        @endif
                                                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                                                 </div>
 
@@ -4718,13 +4742,30 @@ div.dt-buttons{
 
                                                         <div class="form-row">
 
-
+                                                            @if($var->edit_status=='1')
                                                                 <div class="form-group col-12">
                                                                     <div class="form-wrapper">
-                                                                        <label for="remarks" style="color: red;"></label>
+                                                                        <label for="remarks" style="color: red;">Changes made to the contract</label>
                                                                         <textarea type="text"  name="reason" class="form-control" readonly="">{{$var->reason_for_forwarding}}</textarea>
                                                                     </div>
                                                                 </div>
+                                                            @else
+
+                                                                <div class="form-group col-12">
+                                                                    <div class="form-wrapper">
+                                                                        <label for="remarks" style="color: red;">Reason for Termination</label>
+                                                                        <textarea type="text"  name="reason" class="form-control" readonly="">{{$var->reason_for_termination}}</textarea>
+                                                                    </div>
+                                                                </div>
+
+
+                                                                @endif
+
+
+
+
+
+
                                                                 <br>
                                                                 <br>
 
@@ -4939,12 +4980,227 @@ System
 
 
 
-@if($var->has_clients=='1')
-<a title="Review" href="/edit_space_contract_parent_client/{{$var->contract_id}}"> <i class="fas fa-reply"></i></a>
-@else
-<a title="Review" href="/edit_space_contract/{{$var->contract_id}}"> <i class="fas fa-reply"></i></a>
-@endif
 
+
+
+    @if($var->terminated_stage=='1')
+
+
+        <?php
+
+        $invoice=DB::table('invoices')->where('contract_id',$var->contract_id)->where('stage','5')->orderBy('invoice_number','desc')->get();
+
+        ?>
+
+
+
+        @foreach($invoice as $var2)
+            <a title="Edit invoice" data-toggle="modal" style="color: green; cursor: pointer;"  data-target="#review_invoice{{$var2->invoice_number}}"  role="button" aria-pressed="true" name="editC"><i class="fa fa-edit" style="font-size:20px;"></i></a>
+            <div class="modal fade" id="review_invoice{{$var2->invoice_number}}" role="dialog">
+
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <b><h5 class="modal-title">INVOICE</h5></b>
+
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+
+                        <div class="modal-body">
+                            <form method="post" action="{{ route('update_terminated_invoice',$var2->invoice_number)}}"  id="form1" >
+                                {{csrf_field()}}
+
+
+
+
+
+
+                                <div class="form-row">
+
+
+
+
+
+
+                                    <div  class="form-group col-md-6 mt-1">
+                                        <div class="form-wrapper">
+                                            <label for=""  >Client Full Name <span style="color: red;">*</span></label>
+                                            <input type="text" class="form-control"  name="debtor_name" readonly value="{{$var2->debtor_name}}" Required autocomplete="off">
+                                        </div>
+                                    </div>
+
+
+
+                                    <div  class="form-group col-md-6 mt-1">
+                                        <div class="form-wrapper">
+                                            <label for=""  >Client Account Code</label>
+                                            <input type="text" class="form-control"  readonly name="debtor_account_code" value="{{$var2->debtor_account_code}}"  autocomplete="off">
+                                        </div>
+                                    </div>
+
+
+
+
+
+                                    <div  class="form-group col-md-6 mt-1">
+                                        <div class="form-wrapper">
+                                            <label for=""  >Client TIN</label>
+                                            <input type="text" class="form-control"  readonly name="tin" value="{{$var2->tin}}"  autocomplete="off">
+                                        </div>
+                                    </div>
+
+
+
+                                    <div  class="form-group col-md-6 mt-1">
+                                        <div class="form-wrapper">
+                                            <label for=""  >Client Address <span style="color: red;">*</span></label>
+                                            <input type="text" class="form-control"  name="debtor_address" value="{{$var2->debtor_address}}" readonly  autocomplete="off">
+                                        </div>
+                                    </div>
+
+
+
+
+                                    <div  class="form-group col-md-6 mt-1">
+                                        <div class="form-wrapper">
+                                            <label for=""  >Invoice Start Date <span style="color: red;">*</span></label>
+                                            <input  class="flatpickr_date form-control"  name="invoicing_period_start_date" value="{{$var2->invoicing_period_start_date}}" Required autocomplete="off">
+                                        </div>
+                                    </div>
+
+
+
+                                    <div  class="form-group col-md-6 mt-1">
+                                        <div class="form-wrapper">
+                                            <label for=""  >Invoice End Date <span style="color: red;">*</span></label>
+                                            <input  class="flatpickr_date form-control"  id="" name="invoicing_period_end_date" value="{{$var2->invoicing_period_end_date}}" Required autocomplete="off">
+                                        </div>
+                                    </div>
+
+
+                                    <div  class="form-group col-md-12 mt-1">
+                                        <div class="form-wrapper">
+                                            <label for="">Period <span style="color: red;">*</span></label>
+                                            <input type="text" class="form-control"  id="" name="period" value="{{$var2->period}}"  required  autocomplete="off">
+                                        </div>
+                                    </div>
+
+
+                                    <div   class="form-group col-md-12 mt-1">
+                                        <div class="form-wrapper">
+                                            <label for=""  >Project ID <span style="color: red;">*</span></label>
+                                            <input type="text" class="form-control"  id="" name="project_id" value="{{$var2->project_id}}" Required autocomplete="off">
+                                        </div>
+                                    </div>
+
+
+
+
+                                    <div   class="form-group col-md-6 mt-1">
+                                        <div class="form-wrapper">
+                                            <label for="">Amount <span style="color: red;">*</span></label>
+                                            <input type="number" min="20" class="form-control"  id="" name="amount_to_be_paid" value="{{$var2->amount_to_be_paid}}" Required  autocomplete="off">
+                                        </div>
+                                    </div>
+
+
+
+                                    <div  class="form-group col-md-6 mt-1">
+                                        <label>Currency <span style="color: red;">*</span></label>
+                                        <div  class="form-wrapper">
+                                            <input type="text"  class="form-control"  id="" name="currency" value="{{$var2->currency_invoice}}" Required  autocomplete="off">
+                                        </div>
+                                    </div>
+
+
+
+                                    <div  class="form-group col-md-12 mt-1">
+                                        <div class="form-wrapper">
+                                            <label for=""  >Status <span style="color: red;">*</span></label>
+                                            <input type="text" class="form-control"  id="" name="status" value="{{$var2->status}}" required  autocomplete="off">
+                                        </div>
+                                    </div>
+
+
+                                    <div  class="form-group col-md-12 mt-1">
+                                        <div class="form-wrapper">
+                                            <label for=""  >Description <span style="color: red;">*</span></label>
+                                            <input type="text" class="form-control"  id="" name="description" value="{{$var2->description}}" required  autocomplete="off">
+                                        </div>
+                                    </div>
+
+
+
+
+                                </div>
+
+
+
+                                <input type="text" name="contract_id" value="{{$var->contract_id}}" hidden="">
+
+
+
+
+                                <br>
+                                <div align="right">
+                                    <button  class="btn btn-primary" type="submit"  >Update</button>
+
+                                    <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                </div>
+                            </form>
+
+
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        @endforeach
+
+
+
+            <a data-toggle="modal" style="cursor: pointer" title="Revoke contract termination" data-target="#revoke{{$var->contract_id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px; color:red;"></i></a>
+
+            <div class="modal fade" id="revoke{{$var->contract_id}}" role="dialog">
+
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <b><h5 class="modal-title">Are you sure you want to revoke the termination of this contract?</h5></b>
+
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+
+                        <div class="modal-body">
+                            <form method="get" action="{{ route('revoke_terminate_space_contract',$var->contract_id)}}" >
+                                {{csrf_field()}}
+
+
+
+                                <div align="right">
+                                    <button class="btn btn-primary" type="submit" id="newdata">Yes</button>
+                                    <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">No</button>
+                                </div>
+
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+
+
+
+
+            @elseif($var->has_clients=='1' AND $var->terminated_stage!='1')
+                <a title="Review" href="/edit_space_contract_parent_client_approval/{{$var->contract_id}}"> <i class="fas fa-reply"></i></a>
+
+            @elseif($var->has_clients=='0' AND $var->terminated_stage!='1')
+                <a title="Review" href="/edit_space_contract_approval/{{$var->contract_id}}"> <i class="fas fa-reply"></i></a>
+            @endif
 
 
 
@@ -4995,6 +5251,7 @@ $i=1;
 <th scope="col"  ><center>Amount(Vacation season)</center></th>
 <th scope="col"  ><center>Start Date</center></th>
 <th scope="col"  ><center>End Date</center></th>
+<th scope="col"  ><center>Status</center></th>
 <th scope="col"  ><center>Stage</center></th>
 
 </tr>
@@ -5040,6 +5297,84 @@ $i=1;
 
 <td><center>{{date('d/m/Y',strtotime($var->start_date))}}</center></td>
 <td><center>{{date('d/m/Y',strtotime($var->end_date))}}</center></td>
+
+
+
+
+
+    @if(Auth::user()->role=='Director DPDI')
+
+
+        @if($var->contract_stage=='2' AND $var->rejected_by=='DVC')
+            <td><center>
+
+
+
+
+                    <a title="View Reason for the Declination" style="cursor: pointer; color:#3490dc;"  class="" data-toggle="modal" data-target="#decline_reason_space{{$var->contract_id}}" aria-pressed="true"><div ><span style="background-color: red; color:white;  padding:3px;   text-align: center;">DECLINED</span> </div></a>
+
+                    <div class="modal fade" id="decline_reason_space{{$var->contract_id}}" role="dialog">
+
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <b><h5 class="modal-title">Reason(s) for Declination by DVC Administration</h5></b>
+
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                </div>
+
+                                <div class="modal-body">
+                                    <form method="post" action=""   >
+                                        {{csrf_field()}}
+
+
+                                        <div class="form-row">
+
+
+                                            <div class="form-group col-12">
+                                                <div class="form-wrapper">
+                                                    <label for="remarks" style="color: red;"></label>
+                                                    <textarea type="text"  name="reason" class="form-control" readonly="">{{$var->approval_remarks}}</textarea>
+                                                </div>
+                                            </div>
+                                            <br>
+                                            <br>
+
+
+
+                                        </div>
+
+
+                                        <div align="right">
+
+                                            <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button>
+                                        </div>
+                                    </form>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </center></td>
+        @else
+
+            <td><center>PENDING</center></td>
+        @endif
+    @elseif(Auth::user()->role=='DVC Administrator')
+        <td><center>PENDING</center></td>
+
+    @elseif(Auth::user()->role=='DPDI Planner' AND $var->contract_stage=='1')
+        <td><center>PENDING</center></td>
+
+    @elseif(Auth::user()->role=='DPDI Planner' AND $var->contract_stage=='1b')
+        <td><center>PENDING</center></td>
+    @else
+    @endif
+
+
+
 
 @if(Auth::user()->role=='Director DPDI')
 
@@ -5259,7 +5594,7 @@ ACTIVE
 
 
 
-                @endif
+
 
 
 <a data-toggle="modal" title="Click to terminate this contract" data-target="#terminate{{$var->contract_id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px; color:red;"></i></a>
@@ -5312,7 +5647,7 @@ ACTIVE
                 <div class="form-group col-md-6 pt-2" id="debtor_account_codeDiv" >
                     <div class="form-wrapper">
                         <label for=""  >Client Account Code</label>
-                        <input type="text" class="form-control" id="debtor_account_code" name="debtor_account_code" value="{{$var->client_id}}"  readonly autocomplete="off">
+                        <input type="text" class="form-control" id="debtor_account_code" name="debtor_account_code" value="{{$var->official_client_id}}"  readonly autocomplete="off">
                     </div>
                 </div>
                 <br>
@@ -5345,7 +5680,7 @@ ACTIVE
                 <div class="form-group col-md-6 pt-2" id="invoicing_period_start_dateDiv" >
                     <div class="form-wrapper">
                         <label for=""  >Invoice Start Date <span style="color: red;">*</span></label>
-                        <input type="date" class="form-control" id="invoicing_period_start_date{{$var->contract_id}}" name="invoicing_period_start_date" value=""  autocomplete="off">
+                        <input  class="form-control flatpickr_date" id="invoicing_period_start_date{{$var->contract_id}}" name="invoicing_period_start_date" value=""  autocomplete="off">
                     </div>
                 </div>
                 <br>
@@ -5354,7 +5689,7 @@ ACTIVE
                 <div class="form-group col-md-6 pt-2" id="invoicing_period_end_dateDiv" >
                     <div class="form-wrapper">
                         <label for=""  >Invoice End Date <span style="color: red;">*</span></label>
-                        <input type="date" class="form-control" id="invoicing_period_end_date{{$var->contract_id}}" name="invoicing_period_end_date" value=""  autocomplete="off">
+                        <input  class="form-control flatpickr_date" id="invoicing_period_end_date{{$var->contract_id}}" name="invoicing_period_end_date" value=""  autocomplete="off">
                     </div>
                 </div>
                 <br>
@@ -5446,6 +5781,7 @@ ACTIVE
 
 
 </div>
+                @endif
 
 @endif
 
@@ -5745,7 +6081,7 @@ ACTIVE
                     @else
                         <a title="Click to edit this contract" href="/edit_space_contract/{{$var->contract_id}}"> <i class="fa fa-edit" style="font-size:20px; color: green;"></i></a>
                     @endif
-@endif
+
 
 
 <a data-toggle="modal" title="Click to terminate this contract" data-target="#terminate{{$var->contract_id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px; color:red;"></i></a>
@@ -5798,7 +6134,7 @@ ACTIVE
               <div class="form-group col-md-6 pt-2" id="debtor_account_codeDiv" >
                   <div class="form-wrapper">
                       <label for=""  >Client Account Code</label>
-                      <input type="text" class="form-control" id="debtor_account_code" name="debtor_account_code" value="{{$var->client_id}}"  readonly autocomplete="off">
+                      <input type="text" class="form-control" id="debtor_account_code" name="debtor_account_code" value="{{$var->official_client_id}}"  readonly autocomplete="off">
                   </div>
               </div>
               <br>
@@ -5831,7 +6167,7 @@ ACTIVE
               <div class="form-group col-md-6 pt-2" id="invoicing_period_start_dateDiv" >
                   <div class="form-wrapper">
                       <label for=""  >Invoice Start Date <span style="color: red;">*</span></label>
-                      <input type="date" class="form-control" id="invoicing_period_start_date{{$var->contract_id}}" name="invoicing_period_start_date" value=""  autocomplete="off">
+                      <input  class="form-control flatpickr_date" id="invoicing_period_start_date{{$var->contract_id}}" name="invoicing_period_start_date" value=""  autocomplete="off">
                   </div>
               </div>
               <br>
@@ -5840,7 +6176,7 @@ ACTIVE
               <div class="form-group col-md-6 pt-2" id="invoicing_period_end_dateDiv" >
                   <div class="form-wrapper">
                       <label for=""  >Invoice End Date <span style="color: red;">*</span></label>
-                      <input type="date" class="form-control" id="invoicing_period_end_date{{$var->contract_id}}" name="invoicing_period_end_date" value=""  autocomplete="off">
+                      <input  class="form-control flatpickr_date" id="invoicing_period_end_date{{$var->contract_id}}" name="invoicing_period_end_date" value=""  autocomplete="off">
                   </div>
               </div>
               <br>
@@ -5932,7 +6268,7 @@ ACTIVE
 
 
 </div>
-
+                @endif
 @endif
 
 @else

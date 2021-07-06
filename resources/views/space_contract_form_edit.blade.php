@@ -904,7 +904,12 @@
 
 
 
-                                                    @if($var->academic_dependence=='No')
+                                                    <input type="hidden" class="form-control" id="" name="edit_case" value="True"  autocomplete="off">
+
+
+
+
+                                                @if($var->academic_dependence=='No')
                                                     <div class="form-wrapper col-12" id="escalation_rateDiv" >
                                                         <label for="escalation_rate">Escalation Rate <span style="color: red;"> *</span></label>
                                                         <span id="escalation_rate_msg"></span>

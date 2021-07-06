@@ -426,7 +426,7 @@
                                                                                         <table style="width: 100%">
 
                                                                                             <tr>
-                                                                                                <td>Contract ID:</td>
+                                                                                                <td>Contract Number:</td>
                                                                                                 <td>{{$var->id}}</td>
                                                                                             </tr>
 
@@ -923,7 +923,7 @@
                                                                                         <table style="width: 100%">
 
                                                                                             <tr>
-                                                                                                <td>Contract ID:</td>
+                                                                                                <td>Contract Number:</td>
                                                                                                 <td>{{$var->id}}</td>
                                                                                             </tr>
 
@@ -1419,7 +1419,7 @@
                                                                                         <table style="width: 100%">
 
                                                                                             <tr>
-                                                                                                <td>Contract ID:</td>
+                                                                                                <td>Contract Number:</td>
                                                                                                 <td>{{$var->id}}</td>
                                                                                             </tr>
 
@@ -1849,7 +1849,7 @@
 
                                                                     <div class="form-group col-md-12">
                                                                         <div class="form-wrapper">
-                                                                            <label for="">Contract ID <span style="color: red;">*</span></label>
+                                                                            <label for="">Contract Number <span style="color: red;">*</span></label>
                                                                             <input type="number" min="1" class="form-control" id="contract_id_research" name="contract_id" value=""  required autocomplete="off">
                                                                             <p style="display: none;" class="mt-2 p-1" id="research_contract_availability"></p>
                                                                         </div>
@@ -2217,7 +2217,7 @@
                                                                                     <table style="width: 100%">
 
                                                                                         <tr>
-                                                                                            <td>Contract ID:</td>
+                                                                                            <td>Contract Number:</td>
                                                                                             <td>{{$var->id}}</td>
                                                                                         </tr>
 
@@ -2384,7 +2384,7 @@
 
                                                                     <div class="form-group col-md-12">
                                                                         <div class="form-wrapper">
-                                                                            <label for="">Contract ID <span style="color: red;">*</span></label>
+                                                                            <label for="">Contract Number <span style="color: red;">*</span></label>
                                                                             <input type="number" min="1" class="form-control" id="contract_id_research" name="contract_id" value=""  required autocomplete="off">
                                                                             <p style="display: none;" class="mt-2 p-1" id="research_contract_availability"></p>
                                                                         </div>
@@ -2751,7 +2751,7 @@
                                                                                     <table style="width: 100%">
 
                                                                                         <tr>
-                                                                                            <td>Contract ID:</td>
+                                                                                            <td>Contract Number:</td>
                                                                                             <td>{{$var->id}}</td>
                                                                                         </tr>
 
@@ -2955,7 +2955,7 @@
                                                                                     <table style="width: 100%">
 
                                                                                         <tr>
-                                                                                            <td>Contract ID:</td>
+                                                                                            <td>Contract Number:</td>
                                                                                             <td>{{$var->id}}</td>
                                                                                         </tr>
 
@@ -3451,7 +3451,7 @@
                                                                                         <table style="width: 100%">
 
                                                                                             <tr>
-                                                                                                <td>Contract ID:</td>
+                                                                                                <td>Contract Number:</td>
                                                                                                 <td>{{$var->id}}</td>
                                                                                             </tr>
 
@@ -3880,7 +3880,7 @@
 
                                                                     <div class="form-group col-md-12">
                                                                         <div class="form-wrapper">
-                                                                            <label for="">Contract ID <span style="color: red;">*</span></label>
+                                                                            <label for="">Contract Number <span style="color: red;">*</span></label>
                                                                             <input type="number" min="1" class="form-control" id="contract_id_research" name="contract_id" value=""  required autocomplete="off">
                                                                             <p style="display: none;" class="mt-2 p-1" id="research_contract_availability"></p>
                                                                         </div>
@@ -4247,7 +4247,7 @@
                                                                                     <table style="width: 100%">
 
                                                                                         <tr>
-                                                                                            <td>Contract ID:</td>
+                                                                                            <td>Contract Number:</td>
                                                                                             <td>{{$var->id}}</td>
                                                                                         </tr>
 
@@ -4413,7 +4413,7 @@
 
                                                                     <div class="form-group col-md-12">
                                                                         <div class="form-wrapper">
-                                                                            <label for="">Contract ID <span style="color: red;">*</span></label>
+                                                                            <label for="">Contract Number <span style="color: red;">*</span></label>
                                                                             <input type="number" min="1" class="form-control" id="contract_id_research" name="contract_id" value=""  required autocomplete="off">
                                                                             <p style="display: none;" class="mt-2 p-1" id="research_contract_availability"></p>
                                                                         </div>
@@ -4843,7 +4843,7 @@
                                                                                     <table style="width: 100%">
 
                                                                                         <tr>
-                                                                                            <td>Contract ID:</td>
+                                                                                            <td>Contract Number:</td>
                                                                                             <td>{{$var->id}}</td>
                                                                                         </tr>
 

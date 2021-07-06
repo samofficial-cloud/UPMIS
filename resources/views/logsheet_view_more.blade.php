@@ -171,7 +171,7 @@
               @if($privileges=='Read only')
               @else
               <td><center>
-                 <a title="Edit this Cost Centre Details" data-toggle="modal" data-target="#edit{{$log->id}}" role="button" aria-pressed="true"><i class="fa fa-edit" style="font-size:20px; color: green; cursor: pointer;"></i></a>
+                 <a title="Edit this Entry" data-toggle="modal" data-target="#edit{{$log->id}}" role="button" aria-pressed="true"><i class="fa fa-edit" style="font-size:20px; color: green; cursor: pointer;"></i></a>
                       <div class="modal fade" id="edit{{$log->id}}" role="dialog">
                         <div class="modal-dialog modal-dialog-scrollable" role="document">
                           <div class="modal-content">
@@ -274,8 +274,8 @@
                 <p style="font-size: 20px;">Are you sure you want to delete this entry?</p>
                 <br>
             <div align="right">
-              <a class="btn btn-info" href="{{route('deletelogsheet',$log->id)}}">Proceed</a>
-              <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+              <a class="btn btn-info" href="{{route('deletelogsheet',$log->id)}}">Yes</a>
+              <button type="button" class="btn btn-danger" data-dismiss="modal">No</button>
             </div>
 
               </div>
@@ -301,7 +301,7 @@
             </tr>
       </tfoot>
       </table>
-      
+
       </div>
     </div>
   </div>
@@ -333,7 +333,7 @@ function settitle(){
 
             "footerCallback": function ( row, data, start, end, display ) {
             var api = this.api(), data;
- 
+
             // Remove the formatting to get integer data for summation
             var intVal = function ( i ) {
                 return typeof i === 'string' ?
@@ -341,7 +341,7 @@ function settitle(){
                     typeof i === 'number' ?
                         i : 0;
             };
- 
+
             // Total over all pages
             standing_hrs = api
                 .column( 7 )
@@ -350,7 +350,7 @@ function settitle(){
                     return intVal(a) + intVal(b);
                 }, 0 );
 
-           
+
 
 
             standing_km = api
@@ -360,16 +360,16 @@ function settitle(){
                     return intVal(a) + intVal(b);
                 }, 0 );
 
- 
+
             // Total over this page
- 
+
             // Update footer
             $( api.column( 7 ).footer() ).html(
-              $.fn.dataTable.render.number(',').display(standing_hrs)      
+              $.fn.dataTable.render.number(',').display(standing_hrs)
             );
 
             $( api.column( 8 ).footer() ).html(
-              $.fn.dataTable.render.number(',').display(standing_km)   
+              $.fn.dataTable.render.number(',').display(standing_km)
             );
         },
 
@@ -395,7 +395,7 @@ function settitle(){
                                         return {
                                             alignment: 'center',
                                             text: [{ text: page.toString() }]
-                                            
+
                                         }
                       });
 
@@ -429,7 +429,7 @@ function settitle(){
             doc.styles.tableHeader.color = 'black';
             doc.styles.tableHeader.bold = 'false';
             doc.styles.tableBodyOdd.fillColor='';
-            doc.styles.tableHeader.fontSize = 10;  
+            doc.styles.tableHeader.fontSize = 10;
             doc.content[2].layout ={
               hLineWidth: function (i, node) {
               return (i === 0 || i === node.table.body.length) ? 0.5 : 0.5;
@@ -447,7 +447,7 @@ function settitle(){
               return (rowIndex % 2 === 0) ? '#ffffff' : '#ffffff';
             }
             };
-                      
+
 
                         doc.content.splice( 1, 0, {
                             margin: [ 0, 0, 0, 12 ],

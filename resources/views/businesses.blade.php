@@ -223,6 +223,7 @@ input[type=radio]{
 
 
 
+
                              @if($category=='Research Flats only' OR $category=='All')
                                  <button class="tablinks active research_identity" onclick='javascript:window.location.href="/businesses/research"'><strong>Research Flats</strong></button>
                              @else
@@ -304,12 +305,41 @@ input[type=radio]{
 
                                                                          <div class="modal-body">
 
+                                                                             @if($room->terminated_stage=='1')
 
+                                                                                 <p style="color: red"><strong style="color:black !important;">CASE: </strong> Deletion of an Existing Room</p>
+                                                                             @else
+
+                                                                                 @if($room->edit_status=='1')
+                                                                                     <p style="color: red"><strong style="color:black !important;">CASE: </strong> Editing of Information for an Existing Room</p>
+                                                                                 @else
+                                                                                     <p style="color: red"><strong style="color:black !important;">CASE: </strong> Addition of a New Room</p>
+                                                                                 @endif
+
+                                                                             @endif
 
                                                                              @if(Auth::user()->role=='Director DPDI')
 
                                                                                  <form method="post" action="{{ route('flats_approval_response')}}">
                                                                                      {{csrf_field()}}
+
+
+
+
+                                                                                     @if($room->rejected_by=='DVC')
+                                                                                         <div class="form-group">
+                                                                                             <div class="form-wrapper">
+                                                                                                 <label for="remarks" style="color: red;">Reason(s) for Declination by DVC Administration:</label>
+                                                                                                 <textarea type="text"  class="form-control" readonly="">{{$room->approval_remarks}}</textarea>
+                                                                                             </div>
+                                                                                         </div>
+                                                                                         <br>
+                                                                                     @endif
+
+
+
+
+
                                                                                      <div class="form-group">
                                                                                          <div class="form-wrapper">
                                                                                              <label for="room_no{{$room->id}}">Room No.</label>
@@ -394,7 +424,7 @@ input[type=radio]{
                                                                                      <br>
 
                                                                                      <div align="right">
-                                                                                         <button class="btn btn-primary" type="submit">Save</button>
+                                                                                         <button class="btn btn-primary" type="submit">Proceed</button>
                                                                                          <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
                                                                                      </div>
                                                                                  </form>
@@ -485,7 +515,7 @@ input[type=radio]{
                                                                                      <br>
 
                                                                                      <div align="right">
-                                                                                         <button class="btn btn-primary" type="submit">Save</button>
+                                                                                         <button class="btn btn-primary" type="submit">Proceed</button>
                                                                                          <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
                                                                                      </div>
                                                                                  </form>
@@ -677,7 +707,7 @@ input[type=radio]{
                                                                                      <br>
                                                                                      <input type="text" name="room_id" value="{{$room->id}}" hidden="">
                                                                                      <input type="text" name="rejected_by" value="{{$room->rejected_by}}" hidden="">
-
+                                                                                     <input type="text" name="edit_case" value="False" hidden="">
 
 
                                                                                      <div class="form-group">
@@ -702,7 +732,7 @@ input[type=radio]{
                                                                                      <br>
 
                                                                                      <div align="right">
-                                                                                         <button class="btn btn-primary" type="submit">Save</button>
+                                                                                         <button class="btn btn-primary" type="submit">Forward</button>
                                                                                          <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
                                                                                      </div>
                                                                                  </form>
@@ -711,7 +741,15 @@ input[type=radio]{
                                                                      </div>
                                                                  </div>
 
+                                                                 @if($room->terminated_stage=='1')
+                                                                     <a title="Revoke the deletion of this room" data-toggle="modal" data-target="#revoke_Deleteroom{{$room->id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px; color:red; cursor: pointer;"></i></a>
+                                                                 @else
+                                                                 @if($room->edit_status=='1')
+                                                                     @else
                                                                  <a title="Delete this room" data-toggle="modal" data-target="#Deleteroom{{$room->id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px; color:red; cursor: pointer;"></i></a>
+                                                                        @endif
+
+                                                                 @endif
 
                                                                  <div class="modal fade" id="Deleteroom{{$room->id}}" role="dialog">
                                                                      <div class="modal-dialog" role="document">
@@ -725,7 +763,7 @@ input[type=radio]{
                                                                                  <p style="font-size: 20px;">Are you sure you want to delete this request?</p>
                                                                                  <br>
                                                                                  <div align="right">
-                                                                                     <a class="btn btn-info" href="{{route('deleteflat_permanently',$room->id)}}">Proceed</a>
+                                                                                     <a class="btn btn-info" href="{{route('deleteflat_permanently',$room->id)}}">Yes</a>
                                                                                      <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
                                                                                  </div>
 
@@ -733,6 +771,34 @@ input[type=radio]{
                                                                          </div>
                                                                      </div>
                                                                  </div>
+
+
+
+
+                                                                 <div class="modal fade" id="revoke_Deleteroom{{$room->id}}" role="dialog">
+                                                                     <div class="modal-dialog" role="document">
+                                                                         <div class="modal-content">
+                                                                             <div class="modal-header">
+                                                                                 <b><h5 class="modal-title" style="color: red;"><b>WARNING</b></h5></b>
+                                                                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                             </div>
+
+                                                                             <div class="modal-body">
+                                                                                 <p style="font-size: 20px;">Are you sure you want to revoke the deletion of this room?</p>
+                                                                                 <br>
+                                                                                 <div align="right">
+                                                                                     <a class="btn btn-info" href="{{route('revoke_deleteflat',$room->id)}}">Yes</a>
+                                                                                     <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                                                                                 </div>
+
+                                                                             </div>
+                                                                         </div>
+                                                                     </div>
+                                                                 </div>
+
+
+
+
 
                                                              </center>
                                                          </td>
@@ -763,6 +829,7 @@ input[type=radio]{
                                              <th scope="col" style=" width: 20%;"><center>Staff Rate</center></th>
                                              <th scope="col" style="width: 20%;"><center>Students Rate</center></th>
                                              <th scope="col" style="width: 20%;"><center>Status</center></th>
+                                             <th scope="col" style="width: 20%;"><center>Approval Status</center></th>
                                              <th scope="col" style="width: 20%;"><center>Stage</center></th>
                                              @if($privileges=='Read only')
                                              @else
@@ -782,6 +849,78 @@ input[type=radio]{
                                                  <td style="text-align: center;">{{number_format($room->charge_workers)}}</td>
                                                  <td style="text-align: center;">{{number_format($room->charge_students)}}</td>
                                                  <td style="text-align: center;">{{$room->occupational_status}}</td>
+
+
+                                                 @if(Auth::user()->role=='Director DPDI')
+
+
+                                                     @if($room->stage=='2' AND $room->rejected_by=='DVC')
+                                                         <td><center>
+
+
+
+
+                                                                 <a title="View Reason for the Declination" style="cursor: pointer; color:#3490dc;"  class="" data-toggle="modal" data-target="#decline_reason{{$room->id}}" aria-pressed="true"><div ><span style="background-color: red; color:white;  padding:3px;   text-align: center;">DECLINED</span> </div></a>
+
+                                                                 <div class="modal fade" id="decline_reason{{$room->id}}" role="dialog">
+
+                                                                     <div class="modal-dialog" role="document">
+                                                                         <div class="modal-content">
+                                                                             <div class="modal-header">
+                                                                                 <b><h5 class="modal-title">Reason(s) for Declination by DVC Administration</h5></b>
+
+                                                                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                             </div>
+
+                                                                             <div class="modal-body">
+                                                                                 <form method="post" action=""   >
+                                                                                     {{csrf_field()}}
+
+
+                                                                                     <div class="form-row">
+
+
+                                                                                         <div class="form-group col-12">
+                                                                                             <div class="form-wrapper">
+                                                                                                 <label for="remarks" style="color: red;"></label>
+                                                                                                 <textarea type="text"  name="reason" class="form-control" readonly="">{{$room->approval_remarks}}</textarea>
+                                                                                             </div>
+                                                                                         </div>
+                                                                                         <br>
+                                                                                         <br>
+
+
+
+                                                                                     </div>
+
+
+                                                                                     <div align="right">
+
+                                                                                         <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button>
+                                                                                     </div>
+                                                                                 </form>
+
+                                                                             </div>
+                                                                         </div>
+                                                                     </div>
+                                                                 </div>
+
+
+                                                             </center></td>
+                                                     @else
+
+                                                         <td><center>PENDING</center></td>
+                                                     @endif
+                                                 @elseif(Auth::user()->role=='DVC Administrator')
+                                                     <td><center>PENDING</center></td>
+
+                                                 @elseif(Auth::user()->role=='Research Flats Officer' AND $room->stage=='1')
+                                                     <td><center>PENDING</center></td>
+
+                                                 @elseif(Auth::user()->role=='Research Flats Officer' AND $room->stage=='1b')
+                                                     <td><center>PENDING</center></td>
+                                                 @else
+                                                 @endif
 
 
                                                  @if(Auth::user()->role=='Director DPDI')
@@ -903,7 +1042,7 @@ input[type=radio]{
 
 
                                                                 <div align="right">
-                                                                    <button class="btn btn-primary" type="submit">Save</button>
+                                                                    <button class="btn btn-primary" type="submit">Forward</button>
                                                                     <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
                                                                 </div>
 
@@ -1090,7 +1229,7 @@ input[type=radio]{
                                                                                             </div>
                                                                                             <br>
                                                                                             <input type="text" name="room_id" value="{{$room->id}}" hidden="">
-
+                                                                                            <input type="text" name="edit_case" value="True" hidden="">
 
 
                                                                                             <div class="form-group">
@@ -1115,7 +1254,7 @@ input[type=radio]{
                                                                                             <br>
 
                                                                                             <div align="right">
-                                                                                                <button class="btn btn-primary" type="submit">Save</button>
+                                                                                                <button class="btn btn-primary" type="submit">Forward</button>
                                                                                                 <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
                                                                                             </div>
                                                                                         </form>
@@ -1124,7 +1263,7 @@ input[type=radio]{
                                                                             </div>
                                                                         </div>
                                                                     @endif
-                                                                    @admin
+                                                                    @if(Auth::user()->role=='Research Flats Officer')
                                                                     <a title="Delete this room" data-toggle="modal" data-target="#Deleteroom{{$room->id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px; color:red; cursor: pointer;"></i></a>
 
                                                                     <div class="modal fade" id="Deleteroom{{$room->id}}" role="dialog">
@@ -1139,7 +1278,7 @@ input[type=radio]{
                                                                                     <p style="font-size: 20px;">Are you sure you want to delete {{$room->room_no}}?</p>
                                                                                     <br>
                                                                                     <div align="right">
-                                                                                        <a class="btn btn-info" href="{{route('deleteflat',$room->id)}}">Proceed</a>
+                                                                                        <a class="btn btn-info" href="{{route('deleteflat',$room->id)}}">Yes</a>
                                                                                         <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
                                                                                     </div>
 
@@ -1147,7 +1286,7 @@ input[type=radio]{
                                                                             </div>
                                                                         </div>
                                                                     </div>
-                                                                    @endadmin
+                                                                    @endif
                                                                 </center>
                                                             </td>
 
@@ -1264,7 +1403,7 @@ input[type=radio]{
 
 
                                                              <div align="right">
-                                                                 <button class="btn btn-primary" type="submit">Save</button>
+                                                                 <button class="btn btn-primary" type="submit">Forward</button>
                                                                  <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
                                                              </div>
 
@@ -1381,7 +1520,7 @@ input[type=radio]{
                                                  <td style="text-align: left;">{{$room->occupational_status}}</td>
                                                  @if($privileges=='Read only')
                                                  @else
-                                                     @admin
+                                                     @if(Auth::user()->role=='Research Flats Officer')
                                                      <td>
                                                          <center>
 
@@ -1486,6 +1625,7 @@ input[type=radio]{
 {{--                                                                 </div>--}}
 {{--                                                             </div>--}}
 
+
                                                              <a title="Delete this room" data-toggle="modal" data-target="#Deleteroom{{$room->id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px; color:red; cursor: pointer;"></i></a>
 
                                                              <div class="modal fade" id="Deleteroom{{$room->id}}" role="dialog">
@@ -1500,7 +1640,7 @@ input[type=radio]{
                                                                              <p style="font-size: 20px;">Are you sure you want to delete {{$room->room_no}}?</p>
                                                                              <br>
                                                                              <div align="right">
-                                                                                 <a class="btn btn-info" href="{{route('deleteflat',$room->id)}}">Proceed</a>
+                                                                                 <a class="btn btn-info" href="{{route('deleteflat',$room->id)}}">Yes</a>
                                                                                  <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
                                                                              </div>
 
@@ -1511,7 +1651,7 @@ input[type=radio]{
 
                                                          </center>
                                                      </td>
-                                                     @endadmin
+                                                     @endif
                                                  @endif
                                              </tr>
                                              <?php $i = $i + 1; ?>
@@ -1529,7 +1669,35 @@ input[type=radio]{
 
 
 
+                            <script>
 
+
+                                function openRoom(evt, evtName) {
+                                    // Declare all variables
+                                    var i, tabcontent, tablinks;
+
+                                    // Get all elements with class="tabcontent" and hide them
+                                    tabcontent = document.getElementsByClassName("tabcontent_room");
+                                    for (i = 0; i < tabcontent.length; i++) {
+                                        tabcontent[i].style.display = "none";
+                                    }
+
+                                    // Get all elements with class="tablinks" and remove the class "active"
+                                    tablinks = document.getElementsByClassName("tablinks_room");
+                                    for (i = 0; i < tablinks.length; i++) {
+                                        tablinks[i].className = tablinks[i].className.replace(" active", "");
+                                    }
+
+                                    // Show the current tab, and add an "active" class to the button that opened the tab
+                                    document.getElementById(evtName).style.display = "block";
+                                    evt.currentTarget.className += " active";
+                                }
+                                document.getElementById("defaultOpenRoom").click();
+
+
+
+
+                            </script>
 
 
 
@@ -1916,7 +2084,7 @@ input[type=radio]{
 
 
                                                                                  <div align="right">
-                                                                                     <button class="btn btn-primary" type="submit">Save</button>
+                                                                                     <button class="btn btn-primary" type="submit">Update</button>
                                                                                      <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
                                                                                  </div>
                                                                              </form>
@@ -1936,7 +2104,7 @@ input[type=radio]{
                                                                  <div class="modal-dialog" role="document">
                                                                      <div class="modal-content">
                                                                          <div class="modal-header">
-                                                                             <b><h5 class="modal-title">Are you sure you want to deactivate {{$var->insurance_company}}'s {{$var->insurance_type}} insurance?</h5></b>
+                                                                             <b><h5 class="modal-title">Are you sure you want to delete {{$var->insurance_company}}'s {{$var->insurance_type}} insurance?</h5></b>
 
                                                                              <button type="button" class="close" data-dismiss="modal">&times;</button>
                                                                          </div>
@@ -2046,256 +2214,285 @@ input[type=radio]{
                                          </div>
 
                                      @if((Auth::user()->role=='Director DPDI')  || (Auth::user()->role=='DVC Administrator'))
-                                             <div id="car_inbox" style="border-bottom-left-radius: 50px 20px;   border: 1px solid #ccc; padding: 1%;" class="tabcontent_fleet">
-                                                 <br>
-                                                 @if($car_inbox!='')
-                                                     <?php $c =1; ?>
-                                                     <table>
-                                                         <thead>
+                                         <div id="car_inbox" style="border-bottom-left-radius: 50px 20px;   border: 1px solid #ccc; padding: 1%;" class="tabcontent_fleet">
+                                             <br>
+                                             @if($car_inbox!='')
+                                                 <?php $c =1; ?>
+                                                 <table>
+                                                     <thead>
+                                                     <tr>
+                                                         <th style="width: 14%"><center>SN.</center></th>
+                                                         <th style="width: 14%"><center>Vehicle Registration No.</center></th>
+                                                         <th style="width: 14%"><center>Vehicle Model</center></th>
+                                                         <th style="width: 14%"><center>Vehicle Status</center></th>
+                                                         <th style="width: 14%"><center>Hire Rate</center></th>
+                                                         <th style="width: 14%"><center>Action</center></th>
+                                                     </tr>
+                                                     </thead>
+                                                     <tbody>
+                                                     @foreach($car_inbox as $car)
                                                          <tr>
-                                                             <th style="width: 14%"><center>SN.</center></th>
-                                                             <th style="width: 14%"><center>Vehicle Registration No.</center></th>
-                                                             <th style="width: 14%"><center>Vehicle Model</center></th>
-                                                             <th style="width: 14%"><center>Vehicle Status</center></th>
-                                                             <th style="width: 14%"><center>Hire Rate</center></th>
-                                                             <th style="width: 14%"><center>Action</center></th>
-                                                         </tr>
-                                                         </thead>
-                                                         <tbody>
-                                                         @foreach($car_inbox as $car)
-                                                             <tr>
-                                                                 <td><center>{{$c}}.</center></td>
-                                                                 <td><center>{{$car->vehicle_reg_no}}</center></td>
-                                                                 <td><center>{{$car->vehicle_model}}</center></td>
-                                                                 <td><center>{{$car->vehicle_status}}</center></td>
-                                                                 <td><center>{{number_format($car->hire_rate)}}</center></td>
+                                                             <td><center>{{$c}}.</center></td>
+                                                             <td><center>{{$car->vehicle_reg_no}}</center></td>
+                                                             <td><center>{{$car->vehicle_model}}</center></td>
+                                                             <td><center>{{$car->vehicle_status}}</center></td>
+                                                             <td><center>{{number_format($car->hire_rate)}}</center></td>
 
 
 
-                                                                 <td>
-                                                                     <center>
+                                                             <td>
+                                                                 <center>
 
-                                                                         <a title="Review" data-toggle="modal" data-target="#review_car{{$car->id}}" role="button" aria-pressed="true"><i style="color: #3490dc; cursor: pointer;" class="fas fa-reply"></i></a>
-                                                                         <div class="modal fade" id="review_car{{$car->id}}" role="dialog">
-                                                                             <div class="modal-dialog" role="document">
-                                                                                 <div class="modal-content">
-                                                                                     <div class="modal-header">
-                                                                                         <b><h5 class="modal-title">CONFIRMATION</h5></b>
-                                                                                         <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                                                     </div>
+                                                                     <a title="Review" data-toggle="modal" data-target="#review_car{{$car->id}}" role="button" aria-pressed="true"><i style="color: #3490dc; cursor: pointer;" class="fas fa-reply"></i></a>
+                                                                     <div class="modal fade" id="review_car{{$car->id}}" role="dialog">
+                                                                         <div class="modal-dialog" role="document">
+                                                                             <div class="modal-content">
+                                                                                 <div class="modal-header">
+                                                                                     <b><h5 class="modal-title">CONFIRMATION</h5></b>
 
-                                                                                     <div class="modal-body">
+                                                                                     <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                                 </div>
+
+                                                                                 <div class="modal-body">
+
+
+                                                                                     @if($car->terminated_stage=='1')
+
+                                                                                         <p style="color: red"><strong style="color:black !important;">CASE: </strong> Deletion of an Existing Vehicle</p>
+                                                                                     @else
+
+                                                                                     @if($car->edit_status=='1')
+                                                                                         <p style="color: red"><strong style="color:black !important;">CASE: </strong> Editing of Information for an Existing Vehicle</p>
+                                                                                     @else
+                                                                                         <p style="color: red"><strong style="color:black !important;">CASE: </strong> Addition of a New Vehicle</p>
+                                                                                     @endif
+
+                                                                                     @endif
 
 
 
-                                                                                         @if(Auth::user()->role=='Director DPDI')
+                                                                                     @if(Auth::user()->role=='Director DPDI')
 
-                                                                                             <form method="post" action="{{ route('car_approval_response')}}">
-                                                                                                 {{csrf_field()}}
+                                                                                         <form method="post" action="{{ route('car_approval_response')}}">
+                                                                                             {{csrf_field()}}
+
+
+                                                                                             @if($car->rejected_by=='DVC')
                                                                                                  <div class="form-group">
                                                                                                      <div class="form-wrapper">
-                                                                                                         <label for="reg_no">Vehicle Registration No<span style="color: red;">*</span></label>
-                                                                                                         <input type="text" id="reg_no{{$car->id}}" readonly name="vehicle_reg_no" class="form-control" value="{{$car->vehicle_reg_no}}" required="" >
+                                                                                                         <label for="remarks" style="color: red;">Reason(s) for Declination by DVC Administration:</label>
+                                                                                                         <textarea type="text"  class="form-control" readonly="">{{$car->approval_remarks}}</textarea>
                                                                                                      </div>
                                                                                                  </div>
                                                                                                  <br>
+                                                                                             @endif
 
-                                                                                                 <div class="form-group">
-                                                                                                     <div class="form-wrapper">
-                                                                                                         <label for="model">Vehicle Model<span style="color: red;">*</span></label>
 
-                                                                                                         <input type="text" id="model{{$car->id}}" readonly name="model" class="form-control" value="{{$car->vehicle_model}}" required="" >
-                                                                                                     </div>
+                                                                                             <div class="form-group">
+                                                                                                 <div class="form-wrapper">
+                                                                                                     <label for="reg_no">Vehicle Registration No<span style="color: red;">*</span></label>
+                                                                                                     <input type="text" id="reg_no{{$car->id}}" readonly name="vehicle_reg_no" class="form-control" value="{{$car->vehicle_reg_no}}" required="" >
                                                                                                  </div>
-                                                                                                 <br>
-                                                                                                 <div class="form-group">
-                                                                                                     <div class="form-wrapper">
-                                                                                                         <label for="vehicle_status">Vehicle Status<span style="color: red;">*</span></label>
-                                                                                                         <input type="text" id="vehicle_status{{$car->id}}" readonly  name="vehicle_status" class="form-control" value="{{$car->vehicle_status}}" required="" >
-                                                                                                     </div>
+                                                                                             </div>
+                                                                                             <br>
+
+                                                                                             <div class="form-group">
+                                                                                                 <div class="form-wrapper">
+                                                                                                     <label for="model">Vehicle Model<span style="color: red;">*</span></label>
+
+                                                                                                     <input type="text" id="model{{$car->id}}" readonly name="model" class="form-control" value="{{$car->vehicle_model}}" required="" >
                                                                                                  </div>
-                                                                                                 <br>
-                                                                                                 <div class="form-group">
-                                                                                                     <div class="form-wrapper">
-                                                                                                         <label for="hire_rate">Hire Rate/KM<span style="color: red;">*</span></label>
-                                                                                                         <input type="text" id="hire_rate{{$car->id}}" readonly name="hire_rate" class="form-control" value="{{$car->hire_rate}}" required="" onkeypress="if((this.value.length<10)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
-                                                                                                     </div>
+                                                                                             </div>
+                                                                                             <br>
+                                                                                             <div class="form-group">
+                                                                                                 <div class="form-wrapper">
+                                                                                                     <label for="vehicle_status">Vehicle Status<span style="color: red;">*</span></label>
+                                                                                                     <input type="text" id="vehicle_status{{$car->id}}" readonly  name="vehicle_status" class="form-control" value="{{$car->vehicle_status}}" required="" >
                                                                                                  </div>
-                                                                                                 <br>
-
-                                                                                                 <div class="form-group">
-                                                                                                     <div class="form-wrapper" >
-                                                                                                         <label for="hire_status">Hire Status<span style="color: red;">*</span></label>
-
-                                                                                                         <input type="text"  readonly name="hire_status" class="form-control" value="{{$car->hire_status}}" required="" >
-
-                                                                                                     </div>
+                                                                                             </div>
+                                                                                             <br>
+                                                                                             <div class="form-group">
+                                                                                                 <div class="form-wrapper">
+                                                                                                     <label for="hire_rate">Hire Rate/KM<span style="color: red;">*</span></label>
+                                                                                                     <input type="text" id="hire_rate{{$car->id}}" readonly name="hire_rate" class="form-control" value="{{$car->hire_rate}}" required="" onkeypress="if((this.value.length<10)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
                                                                                                  </div>
+                                                                                             </div>
+                                                                                             <br>
 
-                                                                                                 <br>
+                                                                                             <div class="form-group">
+                                                                                                 <div class="form-wrapper" >
+                                                                                                     <label for="hire_status">Hire Status<span style="color: red;">*</span></label>
+
+                                                                                                     <input type="text"  readonly name="hire_status" class="form-control" value="{{$car->hire_status}}" required="" >
+
+                                                                                                 </div>
+                                                                                             </div>
+
+                                                                                             <br>
 
 
-                                                                                                 <input type="text" name="id" value="{{$car->id}}" hidden="">
+                                                                                             <input type="text" name="id" value="{{$car->id}}" hidden="">
+
+
+                                                                                             <div class="row">
+                                                                                                 <div class="form-wrapper col-12">
+                                                                                                     <label for="approval_status">Do you approve this Vehicle?</label>
+                                                                                                 </div>
+                                                                                             </div>
+
+                                                                                             <div class="form-group">
+
+
 
 
                                                                                                  <div class="row">
-                                                                                                     <div class="form-wrapper col-12">
-                                                                                                         <label for="approval_status">Do you approve this Car?</label>
+                                                                                                     <div class="form-wrapper col-6">
+                                                                                                         <input class="form-check-input" type="radio" name="approval_status" id="Approve{{$car->id}}" value="Accepted" checked="">
+                                                                                                         <label for="Approve{{$car->id}}" class="form-check-label">Approve</label>
                                                                                                      </div>
-                                                                                                 </div>
 
-                                                                                                 <div class="form-group">
-
-
-
-
-                                                                                                     <div class="row">
-                                                                                                         <div class="form-wrapper col-6">
-                                                                                                             <input class="form-check-input" type="radio" name="approval_status" id="Approve{{$car->id}}" value="Accepted" checked="">
-                                                                                                             <label for="Approve{{$car->id}}" class="form-check-label">Approve</label>
-                                                                                                         </div>
-
-                                                                                                         <div class="form-wrapper col-6">
-                                                                                                             <input class="form-check-input" type="radio" name="approval_status" id="Reject{{$car->id}}" value="Rejected">
-                                                                                                             <label for="Reject{{$car->id}}" class="form-check-label">Decline</label>
-                                                                                                         </div>
-
+                                                                                                     <div class="form-wrapper col-6">
+                                                                                                         <input class="form-check-input" type="radio" name="approval_status" id="Reject{{$car->id}}" value="Rejected">
+                                                                                                         <label for="Reject{{$car->id}}" class="form-check-label">Decline</label>
                                                                                                      </div>
+
                                                                                                  </div>
+                                                                                             </div>
 
-                                                                                                 <div class="form-group" id="remarksDiv{{$car->id}}" style="display: none;">
-                                                                                                     <div class="form-wrapper">
-                                                                                                         <label for="remarks">Reason<span style="color: red;">*</span></label>
-                                                                                                         <span id="remarksmsg{{$car->id}}"></span>
-                                                                                                         <textarea  type="text" id="remarks{{$car->id}}" name="approval_remarks" class="form-control"></textarea>
-                                                                                                     </div>
+                                                                                             <div class="form-group" id="remarksDiv{{$car->id}}" style="display: none;">
+                                                                                                 <div class="form-wrapper">
+                                                                                                     <label for="remarks">Reason<span style="color: red;">*</span></label>
+                                                                                                     <span id="remarksmsg{{$car->id}}"></span>
+                                                                                                     <textarea  type="text" id="remarks{{$car->id}}" name="approval_remarks" class="form-control"></textarea>
                                                                                                  </div>
+                                                                                             </div>
 
 
-                                                                                                 <br>
+                                                                                             <br>
 
-                                                                                                 <div align="right">
-                                                                                                     <button class="btn btn-primary" type="submit">Save</button>
-                                                                                                     <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                                                                             <div align="right">
+                                                                                                 <button class="btn btn-primary" type="submit">Proceed</button>
+                                                                                                 <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                                                                             </div>
+                                                                                         </form>
+                                                                                     @elseif(Auth::user()->role=='DVC Administrator')
+                                                                                         <form method="post" action="{{ route('car_second_approval_response')}}">
+                                                                                             {{csrf_field()}}
+                                                                                             <div class="form-group">
+                                                                                                 <div class="form-wrapper">
+                                                                                                     <label for="reg_no">Vehicle Registration No<span style="color: red;">*</span></label>
+                                                                                                     <input type="text" id="reg_no{{$car->id}}" readonly name="vehicle_reg_no" class="form-control" value="{{$car->vehicle_reg_no}}" required="" >
                                                                                                  </div>
-                                                                                             </form>
-                                                                                         @elseif(Auth::user()->role=='DVC Administrator')
-                                                                                             <form method="post" action="{{ route('car_second_approval_response')}}">
-                                                                                                 {{csrf_field()}}
-                                                                                                 <div class="form-group">
-                                                                                                     <div class="form-wrapper">
-                                                                                                         <label for="reg_no">Vehicle Registration No<span style="color: red;">*</span></label>
-                                                                                                         <input type="text" id="reg_no{{$car->id}}" readonly name="vehicle_reg_no" class="form-control" value="{{$car->vehicle_reg_no}}" required="" >
-                                                                                                     </div>
+                                                                                             </div>
+                                                                                             <br>
+
+                                                                                             <div class="form-group">
+                                                                                                 <div class="form-wrapper">
+                                                                                                     <label for="model">Vehicle Model<span style="color: red;">*</span></label>
+
+                                                                                                     <input type="text" id="model{{$car->id}}" readonly name="model" class="form-control" value="{{$car->vehicle_model}}" required="" >
                                                                                                  </div>
-                                                                                                 <br>
-
-                                                                                                 <div class="form-group">
-                                                                                                     <div class="form-wrapper">
-                                                                                                         <label for="model">Vehicle Model<span style="color: red;">*</span></label>
-
-                                                                                                         <input type="text" id="model{{$car->id}}" readonly name="model" class="form-control" value="{{$car->vehicle_model}}" required="" >
-                                                                                                     </div>
+                                                                                             </div>
+                                                                                             <br>
+                                                                                             <div class="form-group">
+                                                                                                 <div class="form-wrapper">
+                                                                                                     <label for="vehicle_status">Vehicle Status<span style="color: red;">*</span></label>
+                                                                                                     <input type="text" id="vehicle_status{{$car->id}}" readonly  name="vehicle_status" class="form-control" value="{{$car->vehicle_status}}" required="" >
                                                                                                  </div>
-                                                                                                 <br>
-                                                                                                 <div class="form-group">
-                                                                                                     <div class="form-wrapper">
-                                                                                                         <label for="vehicle_status">Vehicle Status<span style="color: red;">*</span></label>
-                                                                                                         <input type="text" id="vehicle_status{{$car->id}}" readonly  name="vehicle_status" class="form-control" value="{{$car->vehicle_status}}" required="" >
-                                                                                                     </div>
+                                                                                             </div>
+                                                                                             <br>
+                                                                                             <div class="form-group">
+                                                                                                 <div class="form-wrapper">
+                                                                                                     <label for="hire_rate">Hire Rate/KM<span style="color: red;">*</span></label>
+                                                                                                     <input type="text" id="hire_rate{{$car->id}}" readonly name="hire_rate" class="form-control" value="{{$car->hire_rate}}" required="" onkeypress="if((this.value.length<10)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
                                                                                                  </div>
-                                                                                                 <br>
-                                                                                                 <div class="form-group">
-                                                                                                     <div class="form-wrapper">
-                                                                                                         <label for="hire_rate">Hire Rate/KM<span style="color: red;">*</span></label>
-                                                                                                         <input type="text" id="hire_rate{{$car->id}}" readonly name="hire_rate" class="form-control" value="{{$car->hire_rate}}" required="" onkeypress="if((this.value.length<10)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
-                                                                                                     </div>
+                                                                                             </div>
+                                                                                             <br>
+
+                                                                                             <div class="form-group">
+                                                                                                 <div class="form-wrapper" >
+                                                                                                     <label for="hire_status">Hire Status<span style="color: red;">*</span></label>
+
+                                                                                                     <input type="text"  readonly name="hire_status" class="form-control" value="{{$car->hire_status}}" required="" >
+
                                                                                                  </div>
-                                                                                                 <br>
+                                                                                             </div>
 
-                                                                                                 <div class="form-group">
-                                                                                                     <div class="form-wrapper" >
-                                                                                                         <label for="hire_status">Hire Status<span style="color: red;">*</span></label>
+                                                                                             <br>
 
-                                                                                                         <input type="text"  readonly name="hire_status" class="form-control" value="{{$car->hire_status}}" required="" >
 
-                                                                                                     </div>
+                                                                                             <input type="text" name="id" value="{{$car->id}}" hidden="">
+
+
+                                                                                             <div class="row">
+                                                                                                 <div class="form-wrapper col-12">
+                                                                                                     <label for="approval_status">Do you approve this Vehicle?</label>
                                                                                                  </div>
+                                                                                             </div>
 
-                                                                                                 <br>
+                                                                                             <div class="form-group">
 
 
-                                                                                                 <input type="text" name="id" value="{{$car->id}}" hidden="">
 
 
                                                                                                  <div class="row">
-                                                                                                     <div class="form-wrapper col-12">
-                                                                                                         <label for="approval_status">Do you approve this Car?</label>
+                                                                                                     <div class="form-wrapper col-6">
+                                                                                                         <input class="form-check-input" type="radio" name="approval_status" id="Approve{{$car->id}}" value="Accepted" checked="">
+                                                                                                         <label for="Approve{{$car->id}}" class="form-check-label">Approve</label>
                                                                                                      </div>
-                                                                                                 </div>
 
-                                                                                                 <div class="form-group">
-
-
-
-
-                                                                                                     <div class="row">
-                                                                                                         <div class="form-wrapper col-6">
-                                                                                                             <input class="form-check-input" type="radio" name="approval_status" id="Approve{{$car->id}}" value="Accepted" checked="">
-                                                                                                             <label for="Approve{{$car->id}}" class="form-check-label">Approve</label>
-                                                                                                         </div>
-
-                                                                                                         <div class="form-wrapper col-6">
-                                                                                                             <input class="form-check-input" type="radio" name="approval_status" id="Reject{{$car->id}}" value="Rejected">
-                                                                                                             <label for="Reject{{$car->id}}" class="form-check-label">Decline</label>
-                                                                                                         </div>
-
+                                                                                                     <div class="form-wrapper col-6">
+                                                                                                         <input class="form-check-input" type="radio" name="approval_status" id="Reject{{$car->id}}" value="Rejected">
+                                                                                                         <label for="Reject{{$car->id}}" class="form-check-label">Decline</label>
                                                                                                      </div>
+
                                                                                                  </div>
+                                                                                             </div>
 
-                                                                                                 <div class="form-group" id="remarksDiv{{$car->id}}" style="display: none;">
-                                                                                                     <div class="form-wrapper">
-                                                                                                         <label for="remarks">Reason<span style="color: red;">*</span></label>
-                                                                                                         <span id="remarksmsg{{$car->id}}"></span>
-                                                                                                         <textarea  type="text" id="remarks{{$car->id}}" name="approval_remarks" class="form-control"></textarea>
-                                                                                                     </div>
+                                                                                             <div class="form-group" id="remarksDiv{{$car->id}}" style="display: none;">
+                                                                                                 <div class="form-wrapper">
+                                                                                                     <label for="remarks">Reason<span style="color: red;">*</span></label>
+                                                                                                     <span id="remarksmsg{{$car->id}}"></span>
+                                                                                                     <textarea  type="text" id="remarks{{$car->id}}" name="approval_remarks" class="form-control"></textarea>
                                                                                                  </div>
+                                                                                             </div>
 
 
-                                                                                                 <br>
+                                                                                             <br>
 
-                                                                                                 <div align="right">
-                                                                                                     <button class="btn btn-primary" type="submit">Save</button>
-                                                                                                     <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
-                                                                                                 </div>
-                                                                                             </form>
-                                                                                         @endif
+                                                                                             <div align="right">
+                                                                                                 <button class="btn btn-primary" type="submit">Proceed</button>
+                                                                                                 <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                                                                             </div>
+                                                                                         </form>
+                                                                                     @endif
 
 
-                                                                                     </div>
+
                                                                                  </div>
                                                                              </div>
                                                                          </div>
+                                                                     </div>
 
 
 
-                                                                     </center>
-                                                                 </td>
+                                                                 </center>
+                                                             </td>
 
 
 
 
 
 
-                                                             </tr>
-                                                             <?php $c = $c + 1; ?>
-                                                         @endforeach
-                                                         </tbody>
-                                                     </table>
-                                                 @else
-                                                     <p class="mt-4" style="text-align:center;">No records found</p>
-                                                 @endif
-                                             </div>
+                                                         </tr>
+                                                         <?php $c = $c + 1; ?>
+                                                     @endforeach
+                                                     </tbody>
+                                                 </table>
+                                             @else
+                                                 <p class="mt-4" style="text-align:center;">No records found</p>
+                                             @endif
+                                         </div>
                                      @else
 
                                          <div id="car_inbox" style="border-bottom-left-radius: 50px 20px;   border: 1px solid #ccc; padding: 1%;" class="tabcontent_fleet">
@@ -2468,9 +2665,9 @@ input[type=radio]{
 
                                                                                      <input type="text" name="id" value="{{$car->id}}" hidden="">
                                                                                      <input type="text" name="rejected_by" value="{{$car->rejected_by}}" hidden="">
-
+                                                                                     <input type="text" name="edit_case" value="False" hidden="">
                                                                                      <div align="right">
-                                                                                         <button class="btn btn-primary" type="submit">Submit</button>
+                                                                                         <button class="btn btn-primary" type="submit">Forward</button>
                                                                                          <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
                                                                                      </div>
                                                                                  </form>
@@ -2479,9 +2676,17 @@ input[type=radio]{
                                                                      </div>
                                                                  </div>
 
+                                                                 @if($car->terminated_stage=='1')
+                                                                     <a title="Revoke the deletion of this Vehicle" data-toggle="modal" data-target="#revoke_Deactivate{{$car->id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px; color:red; cursor: pointer;"></i></a>
+                                                                 @else
+                                                                     @if($car->edit_status=='1')
+                                                                     @else
 
+                                                                         <a title="Delete this Vehicle" data-toggle="modal" data-target="#Deactivate{{$car->id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px; color:red; cursor: pointer;"></i></a>
+                                                                     @endif
 
-                                                                 <a title="Delete this Car" data-toggle="modal" data-target="#Deactivate{{$car->id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px; color:red; cursor: pointer;"></i></a>
+                                                                 @endif
+
                                                                  <div class="modal fade" id="Deactivate{{$car->id}}" role="dialog">
 
                                                                      <div class="modal-dialog" role="document">
@@ -2503,6 +2708,35 @@ input[type=radio]{
                                                                          </div>
                                                                      </div>
                                                                  </div>
+
+
+
+
+                                                                 <div class="modal fade" id="revoke_Deactivate{{$car->id}}" role="dialog">
+
+                                                                     <div class="modal-dialog" role="document">
+                                                                         <div class="modal-content">
+                                                                             <div class="modal-header">
+                                                                                 <b><h5 class="modal-title" style="color: red;"><b>WARNING</b></h5></b>
+                                                                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                             </div>
+
+                                                                             <div class="modal-body">
+                                                                                 <p style="font-size: 20px;">Are you sure you want to revoke the deletion of this vehicle?</p>
+                                                                                 <br>
+                                                                                 <div align="right">
+                                                                                     <a class="btn btn-info" href="{{route('revoke_deletecar',$car->id)}}">Yes</a>
+                                                                                     <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                                                                                 </div>
+
+                                                                             </div>
+                                                                         </div>
+                                                                     </div>
+                                                                 </div>
+
+
+
+
                                                              </td>
                                                          </tr>
                                                          <?php $c = $c + 1; ?>
@@ -2516,55 +2750,135 @@ input[type=radio]{
 
                                          @endif
 
-                                             <div id="car_outbox" style="border-bottom-left-radius: 50px 20px;   border: 1px solid #ccc; padding: 1%;" class="tabcontent_fleet">
-                                                 <br>
-                                                 @if($car_outbox!='')
-                                                     <?php $c =1; ?>
-                                                     <table>
-                                                         <thead>
-                                                         <tr>
-                                                             <th style="width: 14%"><center>SN.</center></th>
-                                                             <th style="width: 14%"><center>Vehicle Registration No.</center></th>
-                                                             <th style="width: 14%"><center>Vehicle Model</center></th>
-                                                             <th style="width: 14%"><center>Vehicle Status</center></th>
-                                                             <th style="width: 14%"><center>Hire Rate</center></th>
-                                                             <th style="width: 14%"><center>Stage</center></th>
-                                                         </tr>
-                                                         </thead>
-                                                         <tbody>
-                                                         @foreach($car_outbox as $car)
-                                                             <tr>
-                                                                 <td><center>{{$c}}.</center></td>
-                                                                 <td><center>{{$car->vehicle_reg_no}}</center></td>
-                                                                 <td><center>{{$car->vehicle_model}}</center></td>
-                                                                 <td><center>{{$car->vehicle_status}}</center></td>
-                                                                 <td><center>{{number_format($car->hire_rate)}}</center></td>
-                                                                 @if(Auth::user()->role=='Director DPDI')
+                                     <div id="car_outbox" style="border-bottom-left-radius: 50px 20px;   border: 1px solid #ccc; padding: 1%;" class="tabcontent_fleet">
+                                         <br>
+                                         @if($car_outbox!='')
+                                             <?php $c =1; ?>
+                                             <table>
+                                                 <thead>
+                                                 <tr>
+                                                     <th style="width: 14%"><center>SN.</center></th>
+                                                     <th style="width: 14%"><center>Vehicle Registration No.</center></th>
+                                                     <th style="width: 14%"><center>Vehicle Model</center></th>
+                                                     <th style="width: 14%"><center>Vehicle Status</center></th>
+                                                     <th style="width: 14%"><center>Hire Rate</center></th>
+                                                     <th style="width: 14%"><center>Status</center></th>
 
-                                                                     @if($car->stage=='1b')
-                                                                         <td><center>DVC Administration</center></td>
-                                                                     @else
-                                                                         <td><center>Transport Officer-CPTU</center></td>
-                                                                     @endif
-                                                                 @elseif(Auth::user()->role=='DVC Administrator')
-                                                                     <td><center>Transport Officer-CPTU</center></td>
+                                                     <th style="width: 14%"><center>Stage</center></th>
+                                                 </tr>
+                                                 </thead>
+                                                 <tbody>
+                                                 @foreach($car_outbox as $car)
+                                                     <tr>
+                                                         <td><center>{{$c}}.</center></td>
+                                                         <td><center>{{$car->vehicle_reg_no}}</center></td>
+                                                         <td><center>{{$car->vehicle_model}}</center></td>
+                                                         <td><center>{{$car->vehicle_status}}</center></td>
+                                                         <td><center>{{number_format($car->hire_rate)}}</center></td>
 
-                                                                 @elseif(Auth::user()->role=='Transport Officer-CPTU' AND $car->stage=='1')
-                                                                     <td><center>Director DPDI</center></td>
 
-                                                                 @elseif(Auth::user()->role=='Transport Officer-CPTU' AND $car->stage=='1b')
-                                                                     <td><center>DVC Administration</center></td>
-                                                                 @else
-                                                                 @endif
-                                                             </tr>
-                                                             <?php $c = $c + 1; ?>
-                                                         @endforeach
-                                                         </tbody>
-                                                     </table>
-                                                 @else
-                                                     <p class="mt-4" style="text-align:center;">No records found</p>
-                                                 @endif
-                                             </div>
+
+                                                         @if(Auth::user()->role=='Director DPDI')
+
+
+                                                             @if($car->stage=='2' AND $car->rejected_by=='DVC')
+                                                                 <td><center>
+
+
+
+
+                                                                         <a title="View Reason for the Declination" style="cursor: pointer; color:#3490dc;"  class="" data-toggle="modal" data-target="#decline_reason{{$car->id}}" aria-pressed="true"><div ><span style="background-color: red; color:white;  padding:3px;   text-align: center;">DECLINED</span> </div></a>
+
+                                                                         <div class="modal fade" id="decline_reason{{$car->id}}" role="dialog">
+
+                                                                             <div class="modal-dialog" role="document">
+                                                                                 <div class="modal-content">
+                                                                                     <div class="modal-header">
+                                                                                         <b><h5 class="modal-title">Reason(s) for Declination by DVC Administration</h5></b>
+
+                                                                                         <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                                     </div>
+
+                                                                                     <div class="modal-body">
+                                                                                         <form method="post" action=""   >
+                                                                                             {{csrf_field()}}
+
+
+                                                                                             <div class="form-row">
+
+
+                                                                                                 <div class="form-group col-12">
+                                                                                                     <div class="form-wrapper">
+                                                                                                         <label for="remarks" style="color: red;"></label>
+                                                                                                         <textarea type="text"  name="reason" class="form-control" readonly="">{{$car->approval_remarks}}</textarea>
+                                                                                                     </div>
+                                                                                                 </div>
+                                                                                                 <br>
+                                                                                                 <br>
+
+
+
+                                                                                             </div>
+
+
+                                                                                             <div align="right">
+
+                                                                                                 <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button>
+                                                                                             </div>
+                                                                                         </form>
+
+                                                                                     </div>
+                                                                                 </div>
+                                                                             </div>
+                                                                         </div>
+
+
+                                                                     </center></td>
+                                                             @else
+
+                                                                 <td><center>PENDING</center></td>
+                                                             @endif
+                                                         @elseif(Auth::user()->role=='DVC Administrator')
+                                                             <td><center>PENDING</center></td>
+
+                                                         @elseif(Auth::user()->role=='Transport Officer-CPTU' AND $car->stage=='1')
+                                                             <td><center>PENDING</center></td>
+
+                                                         @elseif(Auth::user()->role=='Transport Officer-CPTU' AND $car->stage=='1b')
+                                                             <td><center>PENDING</center></td>
+                                                         @else
+                                                         @endif
+
+
+
+                                                         @if(Auth::user()->role=='Director DPDI')
+
+                                                             @if($car->stage=='1b')
+                                                                 <td><center>DVC Administration</center></td>
+                                                             @else
+                                                                 <td><center>Transport Officer-CPTU</center></td>
+                                                             @endif
+                                                         @elseif(Auth::user()->role=='DVC Administrator')
+                                                             <td><center>Transport Officer-CPTU</center></td>
+
+                                                         @elseif(Auth::user()->role=='Transport Officer-CPTU' AND $car->stage=='1')
+                                                             <td><center>Director DPDI</center></td>
+
+                                                         @elseif(Auth::user()->role=='Transport Officer-CPTU' AND $car->stage=='1b')
+                                                             <td><center>DVC Administration</center></td>
+                                                         @else
+                                                         @endif
+
+
+                                                     </tr>
+                                                     <?php $c = $c + 1; ?>
+                                                 @endforeach
+                                                 </tbody>
+                                             </table>
+                                         @else
+                                             <p class="mt-4" style="text-align:center;">No records found</p>
+                                         @endif
+                                     </div>
 
 
 
@@ -2772,10 +3086,11 @@ input[type=radio]{
 
 
                                                                                          <input type="text" name="id" value="{{$cars->id}}" hidden="">
+                                                                                         <input type="text" name="edit_case" value="True" hidden="">
                                                                                          <input type="text" name="rejected_by" value="{{$cars->rejected_by}}" hidden="">
 
                                                                                          <div align="right">
-                                                                                             <button class="btn btn-primary" type="submit">Submit</button>
+                                                                                             <button class="btn btn-primary" type="submit">Forward</button>
                                                                                              <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
                                                                                          </div>
                                                                                      </form>
@@ -2785,8 +3100,8 @@ input[type=radio]{
                                                                      </div>
                                                                  @endif
 
-                                                                     @admin
-                                                                     <a title="Delete this Car" data-toggle="modal" data-target="#Deactivate{{$cars->id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px; color:red; cursor: pointer;"></i></a>
+                                                                    @if(Auth::user()->role=='Transport Officer-CPTU')
+                                                                     <a title="Delete this Vehicle" data-toggle="modal" data-target="#Deactivate{{$cars->id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px; color:red; cursor: pointer;"></i></a>
                                                                      <div class="modal fade" id="Deactivate{{$cars->id}}" role="dialog">
 
                                                                          <div class="modal-dialog" role="document">
@@ -2797,18 +3112,19 @@ input[type=radio]{
                                                                                  </div>
 
                                                                                  <div class="modal-body">
-                                                                                     <p style="font-size: 20px;">Are you sure you want to delete this car?</p>
+                                                                                     <p style="font-size: 20px;">Are you sure you want to delete this Vehicle?</p>
                                                                                      <br>
                                                                                      <div align="right">
-                                                                                         <a class="btn btn-info" href="{{route('deletecar',$cars->id)}}">Proceed</a>
-                                                                                         <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                                                                                         <a class="btn btn-info" href="{{route('deletecar',$cars->id)}}">Yes</a>
+                                                                                         <button type="button" class="btn btn-danger" data-dismiss="modal">No</button>
                                                                                      </div>
 
                                                                                  </div>
                                                                              </div>
                                                                          </div>
                                                                      </div>
-                                                                     @endadmin
+                                                                        @endif
+
 
                                                              </center>
                                                          </td>
@@ -2940,7 +3256,7 @@ input[type=radio]{
                                                                  {{--  @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR (Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator')) --}}
                                                                  @if($privileges=='Read only')
                                                                  @else
-                                                                     @admin
+
                                                                      <a title="Edit Car Details" data-toggle="modal" data-target="#edit{{$cars->id}}" role="button" aria-pressed="true" id="{{$cars->id}}"><i class="fa fa-edit" style="font-size:20px; color: green; cursor: pointer;"></i></a>
                                                                      <div class="modal fade" id="edit{{$cars->id}}" role="dialog">
 
@@ -3024,9 +3340,10 @@ input[type=radio]{
 
 
                                                                                          <input type="text" name="id" value="{{$cars->id}}" hidden="">
+                                                                                         <input type="text" name="edit_case" value="True" hidden="">
 
                                                                                          <div align="right">
-                                                                                             <button class="btn btn-primary" type="submit">Submit</button>
+                                                                                             <button class="btn btn-primary" type="submit">Forward</button>
                                                                                              <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
                                                                                          </div>
                                                                                      </form>
@@ -3036,8 +3353,8 @@ input[type=radio]{
                                                                      </div>
 
 
-
-                                                                     <a title="Delete this Car" data-toggle="modal" data-target="#Deactivate{{$cars->id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px; color:red; cursor: pointer;"></i></a>
+                                                                     @if(Auth::user()->role=='Transport Officer-CPTU')
+                                                                     <a title="Delete this Vehicle" data-toggle="modal" data-target="#Deactivate{{$cars->id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px; color:red; cursor: pointer;"></i></a>
                                                                      <div class="modal fade" id="Deactivate{{$cars->id}}" role="dialog">
 
                                                                          <div class="modal-dialog" role="document">
@@ -3048,18 +3365,19 @@ input[type=radio]{
                                                                                  </div>
 
                                                                                  <div class="modal-body">
-                                                                                     <p style="font-size: 20px;">Are you sure you want to delete this car?</p>
+                                                                                     <p style="font-size: 20px;">Are you sure you want to delete this Vehicle?</p>
                                                                                      <br>
                                                                                      <div align="right">
-                                                                                         <a class="btn btn-info" href="{{route('deletecar',$cars->id)}}">Proceed</a>
-                                                                                         <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                                                                                         <a class="btn btn-info" href="{{route('deletecar',$cars->id)}}">Yes</a>
+                                                                                         <button type="button" class="btn btn-danger" data-dismiss="modal">No</button>
                                                                                      </div>
 
                                                                                  </div>
                                                                              </div>
                                                                          </div>
                                                                      </div>
-                                                                     @endadmin
+                                                                         @endif
+
                                                                  @endif
                                                              </center>
                                                          </td>
@@ -3095,112 +3413,230 @@ input[type=radio]{
 
                                      @if((Auth::user()->role=='Director DPDI')  || (Auth::user()->role=='DVC Administrator'))
 
-                                        <div id="hire_rate_inbox" class="tabcontent_hire">
+                                         <div id="hire_rate_inbox" class="tabcontent_hire">
 
 
 
-                                            @if($hire_rate_inbox!='')
-                                            <table class="table" style="width: 100%;" id="myTable4">
-                                                <thead class="">
-                                                <tr>
-                                                    <th scope="col" style="color:#fff; width: 3%;"><center>S/N</center></th>
-                                                    <th scope="col" style="color:#fff;"><center>Vehicle Model</center></th>
-                                                    <th scope="col" style="color:#fff;"><center>Hire Rate/KM (TZS)</center></th>
-                                                    {{-- @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR Auth::user()->role=='System Administrator') --}}
-                                                    <th scope="col"><center>Description</center></th>
-                                                    <th scope="col" style="color:#fff;"><center>Action</center></th>
+                                             @if($hire_rate_inbox!='')
+                                                 <table class=" table " style="width: 100%;" >
+                                                     <thead >
+                                                     <tr>
+                                                         <th scope="col" style=" width: 3%;"><center>S/N</center></th>
+                                                         <th scope="col" style=""><center>Vehicle Model</center></th>
+                                                         <th scope="col" style=""><center>Hire Rate/KM (TZS)</center></th>
+                                                         {{-- @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR Auth::user()->role=='System Administrator') --}}
 
-                                                </tr>
-                                                </thead>
-                                                <tbody>
-                                                @foreach($hire_rate_inbox as $rate)
-                                                    <tr>
-                                                        <th scope="row" class="counterCell text-center">.</th>
-                                                        <td>{{$rate->vehicle_model}}</td>
-                                                        <td><center>{{number_format($rate->hire_rate)}}</center></td>
-                                                        {{--  @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR Auth::user()->role=='System Administrator') --}}
-                                                        @if($privileges=='Read only')
-                                                        @else
-                                                            <td><center>
-                                                                    <a title="Edit this Hire Rate" data-toggle="modal" data-target="#hire{{$rate->id}}" role="button" aria-pressed="true" id="{{$rate->id}}"><i class="fa fa-edit" style="font-size:20px; color: green;cursor: pointer;"></i></a>
-                                                                    <div class="modal fade" id="hire{{$rate->id}}" role="dialog">
+                                                         <th scope="col" style=""><center>Action</center></th>
 
-                                                                        <div class="modal-dialog modal-dialog-scrollable" role="document">
-                                                                            <div class="modal-content">
-                                                                                <div class="modal-header">
-                                                                                    <b><h5 class="modal-title">Fill the form below to edit hire rate details</h5></b>
-
-                                                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                                                </div>
-
-                                                                                <div class="modal-body">
-                                                                                    <form method="post" action="{{ route('edithirerate') }}">
-                                                                                        {{csrf_field()}}
-                                                                                        <div class="form-group">
-                                                                                            <div class="form-wrapper">
-                                                                                                <label for="hire_vehicle_model{{$rate->id}}">Vehicle Model<span style="color: red;">*</span></label>
-                                                                                                <input type="text" id="hire_vehicle_model{{$rate->id}}" name="hire_vehicle_model" class="form-control" required="" autocomplete="off" value="{{$rate->vehicle_model}}">
-                                                                                            </div>
-                                                                                        </div>
-                                                                                        <br>
-
-                                                                                        <div class="form-group">
-                                                                                            <div class="form-wrapper">
-                                                                                                <label for="hire_hire_rate{{$rate->id}}">Hire Rate/KM<span style="color: red;">*</span><span id="ratemessage{{$rate->id}}"></span></label>
-
-                                                                                                <input type="text" id="hire_hire_rate{{$rate->id}}" name="hire_hire_rate" class="form-control" required="" value="{{$rate->hire_rate}}" onkeypress="if((this.value.length<10)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
-                                                                                            </div>
-                                                                                        </div>
-                                                                                        <br>
-                                                                                        <input type="text" name="id" value="{{$rate->id}}" hidden="">
-                                                                                        <input type="text" name="rejected_by" value="{{$rate->rejected_by}}" hidden="">
-                                                                                        <div align="right">
-                                                                                            <button class="btn btn-primary" type="submit" name="rate_editSubmit" id="{{$rate->id}}">Submit</button>
-                                                                                            <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
-                                                                                        </div>
-
-                                                                                    </form>
-
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <a title="Delete this Hire Rate" data-toggle="modal" data-target="#Deactivatehire{{$rate->id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px; color:red; cursor: pointer;"></i></a>
-                                                                    <div class="modal fade" id="Deactivatehire{{$rate->id}}" role="dialog">
-                                                                        <div class="modal-dialog" role="document">
-                                                                            <div class="modal-content">
-                                                                                <div class="modal-header">
-                                                                                    <b><h5 class="modal-title" style="color: red;"><b>WARNING</b></h5></b>
-                                                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                                                </div>
-
-                                                                                <div class="modal-body">
-                                                                                    <p style="font-size: 20px;">Are you sure you want to delete this hire rate?</p>
-                                                                                    <br>
-                                                                                    <div align="right">
-                                                                                        <a class="btn btn-info" href="{{route('deletehirerate',$rate->id)}}">Proceed</a>
-                                                                                        <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
-                                                                                    </div>
-
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div></center>
-                                                            </td>
-                                                        @endif
-                                                    </tr>
-                                                @endforeach
-                                                </tbody>
-                                            </table>
+                                                     </tr>
+                                                     </thead>
+                                                     <tbody>
+                                                     @foreach($hire_rate_inbox as $rate)
+                                                         <tr>
+                                                             <th scope="row" class="counterCell text-center">.</th>
+                                                             <td class="text-center">{{$rate->vehicle_model}}</td>
+                                                             <td class="text-center"><center>{{number_format($rate->hire_rate)}}</center></td>
 
 
-                                            @else
-                                                <p class="mt-4" style="text-align:center;">No records found</p>
-                                            @endif
+                                                             <td><center>
+                                                                     <a title="Review" data-toggle="modal" data-target="#hire{{$rate->id}}" role="button" aria-pressed="true" id="{{$rate->id}}"><i style="color: #3490dc;" class="fas fa-reply"></i></a>
+                                                                     <div class="modal fade" id="hire{{$rate->id}}" role="dialog">
+
+                                                                         <div class="modal-dialog modal-dialog-scrollable" role="document">
+                                                                             <div class="modal-content">
+                                                                                 <div class="modal-header">
+                                                                                     <b><h5 class="modal-title">Approval for Car Hire Rate</h5></b>
+
+                                                                                     <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                                 </div>
+
+                                                                                 <div class="modal-body">
 
 
-                                        </div>
+                                                                                     @if($rate->terminated_stage=='1')
+
+                                                                                         <p style="color: red"><strong style="color:black !important;">CASE: </strong> Deletion of an Existing Car Hire Rate</p>
+                                                                                     @else
+
+                                                                                         @if($rate->edit_status=='1')
+                                                                                             <p style="color: red"><strong style="color:black !important;">CASE: </strong> Editing of Information for an Existing Car Hire Rate</p>
+                                                                                         @else
+                                                                                             <p style="color: red"><strong style="color:black !important;">CASE: </strong> Addition of a New Car Hire Rate</p>
+                                                                                         @endif
+
+                                                                                     @endif
+
+
+
+
+
+
+
+                                                                                     @if(Auth::user()->role=='Director DPDI')
+
+                                                                                         <form method="post" action="{{ route('hire_rate_approval_response') }}">
+                                                                                             {{csrf_field()}}
+
+
+
+                                                                                             @if($rate->rejected_by=='DVC')
+                                                                                                 <div class="form-group">
+                                                                                                     <div class="form-wrapper">
+                                                                                                         <label for="remarks" style="color: red;">Reason(s) for Declination by DVC Administration:</label>
+                                                                                                         <textarea type="text"  class="form-control" readonly="">{{$rate->approval_remarks}}</textarea>
+                                                                                                     </div>
+                                                                                                 </div>
+                                                                                                 <br>
+                                                                                             @endif
+
+
+
+                                                                                             <div class="form-group">
+                                                                                                 <div class="form-wrapper">
+                                                                                                     <label for="hire_vehicle_model{{$rate->id}}">Vehicle Model</label>
+                                                                                                     <input type="text" id="hire_vehicle_model{{$rate->id}}" readonly name="hire_vehicle_model" class="form-control" required="" autocomplete="off" value="{{$rate->vehicle_model}}">
+                                                                                                 </div>
+                                                                                             </div>
+                                                                                             <br>
+
+                                                                                             <div class="form-group">
+                                                                                                 <div class="form-wrapper">
+                                                                                                     <label for="hire_hire_rate{{$rate->id}}">Hire Rate/KM<span id="ratemessage{{$rate->id}}"></span></label>
+
+                                                                                                     <input type="text" id="hire_hire_rate{{$rate->id}}" readonly name="hire_hire_rate" class="form-control" required="" value="{{$rate->hire_rate}}" onkeypress="if((this.value.length<10)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
+                                                                                                 </div>
+                                                                                             </div>
+                                                                                             <br>
+                                                                                             <input type="text" name="id" value="{{$rate->id}}" hidden="">
+
+
+                                                                                             <div class="row">
+                                                                                                 <div class="form-wrapper col-12">
+                                                                                                     <label for="approval_status">Do you approve this Hire Rate?</label>
+                                                                                                 </div>
+                                                                                             </div>
+
+                                                                                             <div class="form-group">
+
+
+
+
+                                                                                                 <div class="row">
+                                                                                                     <div class="form-wrapper col-6">
+                                                                                                         <input class="form-check-input" type="radio" name="approval_status" id="Approve{{$rate->id}}" value="Accepted" checked="">
+                                                                                                         <label for="Approve{{$rate->id}}" class="form-check-label">Approve</label>
+                                                                                                     </div>
+
+                                                                                                     <div class="form-wrapper col-6">
+                                                                                                         <input class="form-check-input" type="radio" name="approval_status" id="Reject{{$rate->id}}" value="Rejected">
+                                                                                                         <label for="Reject{{$rate->id}}" class="form-check-label">Decline</label>
+                                                                                                     </div>
+
+                                                                                                 </div>
+                                                                                             </div>
+
+                                                                                             <div class="form-group" id="remarksDiv{{$rate->id}}" style="display: none;">
+                                                                                                 <div class="form-wrapper">
+                                                                                                     <label for="remarks">Reason<span style="color: red;">*</span></label>
+                                                                                                     <span id="remarksmsg{{$rate->id}}"></span>
+                                                                                                     <textarea  type="text" id="remarks{{$rate->id}}" name="approval_remarks" class="form-control"></textarea>
+                                                                                                 </div>
+                                                                                             </div>
+
+
+
+                                                                                             <div align="right">
+                                                                                                 <button class="btn btn-primary" type="submit" name="rate_editSubmit" id="{{$rate->id}}">Proceed</button>
+                                                                                                 <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                                                                             </div>
+
+                                                                                         </form>
+                                                                                     @elseif(Auth::user()->role=='DVC Administrator')
+
+                                                                                         <form method="post" action="{{ route('hire_rate_second_approval_response') }}">
+                                                                                             {{csrf_field()}}
+                                                                                             <div class="form-group">
+                                                                                                 <div class="form-wrapper">
+                                                                                                     <label for="hire_vehicle_model{{$rate->id}}">Vehicle Model</label>
+                                                                                                     <input type="text" id="hire_vehicle_model{{$rate->id}}" readonly name="hire_vehicle_model" class="form-control" required="" autocomplete="off" value="{{$rate->vehicle_model}}">
+                                                                                                 </div>
+                                                                                             </div>
+                                                                                             <br>
+
+                                                                                             <div class="form-group">
+                                                                                                 <div class="form-wrapper">
+                                                                                                     <label for="hire_hire_rate{{$rate->id}}">Hire Rate/KM<span id="ratemessage{{$rate->id}}"></span></label>
+
+                                                                                                     <input type="text" id="hire_hire_rate{{$rate->id}}" readonly name="hire_hire_rate" class="form-control" required="" value="{{$rate->hire_rate}}" onkeypress="if((this.value.length<10)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
+                                                                                                 </div>
+                                                                                             </div>
+                                                                                             <br>
+                                                                                             <input type="text" name="id" value="{{$rate->id}}" hidden="">
+
+
+
+                                                                                             <div class="row">
+                                                                                                 <div class="form-wrapper col-12">
+                                                                                                     <label for="approval_status">Do you approve this Hire Rate?</label>
+                                                                                                 </div>
+                                                                                             </div>
+
+                                                                                             <div class="form-group">
+
+
+
+
+                                                                                                 <div class="row">
+                                                                                                     <div class="form-wrapper col-6">
+                                                                                                         <input class="form-check-input" type="radio" name="approval_status" id="Approve{{$rate->id}}" value="Accepted" checked="">
+                                                                                                         <label for="Approve{{$rate->id}}" class="form-check-label">Approve</label>
+                                                                                                     </div>
+
+                                                                                                     <div class="form-wrapper col-6">
+                                                                                                         <input class="form-check-input" type="radio" name="approval_status" id="Reject{{$rate->id}}" value="Rejected">
+                                                                                                         <label for="Reject{{$rate->id}}" class="form-check-label">Decline</label>
+                                                                                                     </div>
+
+                                                                                                 </div>
+                                                                                             </div>
+
+                                                                                             <div class="form-group" id="remarksDiv{{$rate->id}}" style="display: none;">
+                                                                                                 <div class="form-wrapper">
+                                                                                                     <label for="remarks">Reason<span style="color: red;">*</span></label>
+                                                                                                     <span id="remarksmsg{{$rate->id}}"></span>
+                                                                                                     <textarea  type="text" id="remarks{{$rate->id}}" name="approval_remarks" class="form-control"></textarea>
+                                                                                                 </div>
+                                                                                             </div>
+
+
+                                                                                             <div align="right">
+                                                                                                 <button class="btn btn-primary" type="submit" name="rate_editSubmit" id="{{$rate->id}}">Proceed</button>
+                                                                                                 <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                                                                             </div>
+
+                                                                                         </form>
+                                                                                     @endif
+
+                                                                                 </div>
+                                                                             </div>
+                                                                         </div>
+                                                                     </div>
+
+                                                                 </center>
+                                                             </td>
+
+                                                         </tr>
+                                                     @endforeach
+                                                     </tbody>
+                                                 </table>
+
+
+                                             @else
+                                                 <p class="mt-4" style="text-align:center;">No records found</p>
+                                             @endif
+
+
+                                         </div>
 
 
 
@@ -3211,164 +3647,209 @@ input[type=radio]{
 
 
                                              @if($hire_rate_inbox!='')
-                                             <table class="table" style="width: 100%;" >
-                                                 <thead class="">
-                                                 <tr>
-                                                     <th scope="col" style=" width: 3%;"><center>S/N</center></th>
-                                                     <th scope="col" style=""><center>Vehicle Model</center></th>
-                                                     <th scope="col" style=""><center>Hire Rate/KM (TZS)</center></th>
-                                                     {{-- @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR Auth::user()->role=='System Administrator') --}}
-                                                     <th scope="col"  ><center>Status</center></th>
-                                                     <th scope="col"  ><center>Description</center></th>
-                                                     <th scope="col"  ><center>From</center></th>
-                                                     <th scope="col" style=""><center>Action</center></th>
-
-                                                 </tr>
-                                                 </thead>
-                                                 <tbody>
-                                                 @foreach($hire_rate_inbox as $rate)
+                                                 <table class="table" style="width: 100%;" >
+                                                     <thead class="">
                                                      <tr>
-                                                         <th scope="row" class="counterCell text-center">.</th>
-                                                         <td class="text-center">{{$rate->vehicle_model}}</td>
-                                                         <td class="text-center"><center>{{number_format($rate->hire_rate)}}</center></td>
-                                                         <td><center>
+                                                         <th scope="col" style=" width: 3%;"><center>S/N</center></th>
+                                                         <th scope="col" style=""><center>Vehicle Model</center></th>
+                                                         <th scope="col" style=""><center>Hire Rate/KM (TZS)</center></th>
+                                                         {{-- @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR Auth::user()->role=='System Administrator') --}}
+                                                         <th scope="col"  ><center>Status</center></th>
+                                                         <th scope="col"  ><center>Description</center></th>
+                                                         <th scope="col"  ><center>From</center></th>
+                                                         <th scope="col" style=""><center>Action</center></th>
 
-                                                                 <div ><span style="background-color: red; color:white;  padding:3px;   text-align: center;">DECLINED</span> </div>
+                                                     </tr>
+                                                     </thead>
+                                                     <tbody>
+                                                     @foreach($hire_rate_inbox as $rate)
+                                                         <tr>
+                                                             <th scope="row" class="counterCell text-center">.</th>
+                                                             <td class="text-center">{{$rate->vehicle_model}}</td>
+                                                             <td class="text-center"><center>{{number_format($rate->hire_rate)}}</center></td>
+                                                             <td><center>
 
-                                                             </center></td>
+                                                                     <div ><span style="background-color: red; color:white;  padding:3px;   text-align: center;">DECLINED</span> </div>
+
+                                                                 </center></td>
 
 
-                                                         <td><center>
+                                                             <td><center>
 
 
-                                                                 <a title="View Reason" style="cursor: pointer; color:#3490dc;"  class="" data-toggle="modal" data-target="#reason{{$rate->id}}" aria-pressed="true">View Reason</a>
+                                                                     <a title="View Reason" style="cursor: pointer; color:#3490dc;"  class="" data-toggle="modal" data-target="#reason{{$rate->id}}" aria-pressed="true">View Reason</a>
 
-                                                                 <div class="modal fade" id="reason{{$rate->id}}" role="dialog">
+                                                                     <div class="modal fade" id="reason{{$rate->id}}" role="dialog">
 
-                                                                     <div class="modal-dialog" role="document">
-                                                                         <div class="modal-content">
-                                                                             <div class="modal-header">
-                                                                                 <b><h5 class="modal-title">Reason</h5></b>
+                                                                         <div class="modal-dialog" role="document">
+                                                                             <div class="modal-content">
+                                                                                 <div class="modal-header">
+                                                                                     <b><h5 class="modal-title">Reason</h5></b>
 
-                                                                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                                     <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                                 </div>
+
+                                                                                 <div class="modal-body">
+                                                                                     <form method="post" action=""   >
+                                                                                         {{csrf_field()}}
+
+
+                                                                                         <div class="form-row">
+
+
+                                                                                             <div class="form-group col-12">
+                                                                                                 <div class="form-wrapper">
+                                                                                                     <label for="remarks" style="color: red;"></label>
+                                                                                                     <textarea type="text"  name="reason" class="form-control" readonly="">{{$rate->approval_remarks}}</textarea>
+                                                                                                 </div>
+                                                                                             </div>
+                                                                                             <br>
+                                                                                             <br>
+
+
+
+                                                                                         </div>
+
+
+                                                                                         <div align="right">
+
+                                                                                             <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button>
+                                                                                         </div>
+                                                                                     </form>
+
+                                                                                 </div>
                                                                              </div>
-
-                                                                             <div class="modal-body">
-                                                                                 <form method="post" action=""   >
-                                                                                     {{csrf_field()}}
+                                                                         </div>
+                                                                     </div>
 
 
-                                                                                     <div class="form-row">
+                                                                 </center></td>
+                                                             <td><center>
+                                                                     @if($rate->rejected_by=='DVC')
+                                                                         DVC Administration
+                                                                     @elseif($rate->rejected_by=='DIRECTOR')
+                                                                         Director DPDI
 
+                                                                     @endif
+                                                                 </center></td>
 
-                                                                                         <div class="form-group col-12">
+                                                             <td><center>
+                                                                     <a title="Edit this Hire Rate" data-toggle="modal" data-target="#hire{{$rate->id}}" role="button" aria-pressed="true" id="{{$rate->id}}"><i class="fa fa-edit" style="font-size:20px; color: green; cursor: pointer;"></i></a>
+                                                                     <div class="modal fade" id="hire{{$rate->id}}" role="dialog">
+
+                                                                         <div class="modal-dialog modal-dialog-scrollable" role="document">
+                                                                             <div class="modal-content">
+                                                                                 <div class="modal-header">
+                                                                                     <b><h5 class="modal-title">Fill the form below to edit hire rate details</h5></b>
+
+                                                                                     <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                                 </div>
+
+                                                                                 <div class="modal-body">
+                                                                                     <form method="post" action="{{ route('edithirerate') }}">
+                                                                                         {{csrf_field()}}
+                                                                                         <div class="form-group">
                                                                                              <div class="form-wrapper">
-                                                                                                 <label for="remarks" style="color: red;"></label>
-                                                                                                 <textarea type="text"  name="reason" class="form-control" readonly="">{{$rate->approval_remarks}}</textarea>
+                                                                                                 <label for="hire_vehicle_model{{$rate->id}}">Vehicle Model<span style="color: red;">*</span></label>
+                                                                                                 <input type="text" id="hire_vehicle_model{{$rate->id}}" name="hire_vehicle_model" class="form-control" required="" autocomplete="off" value="{{$rate->vehicle_model}}">
                                                                                              </div>
                                                                                          </div>
                                                                                          <br>
+
+                                                                                         <div class="form-group">
+                                                                                             <div class="form-wrapper">
+                                                                                                 <label for="hire_hire_rate{{$rate->id}}">Hire Rate/KM<span style="color: red;">*</span><span id="ratemessage{{$rate->id}}"></span></label>
+
+                                                                                                 <input type="text" id="hire_hire_rate{{$rate->id}}" name="hire_hire_rate" class="form-control" required="" value="{{$rate->hire_rate}}" onkeypress="if((this.value.length<10)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
+                                                                                             </div>
+                                                                                         </div>
                                                                                          <br>
+                                                                                         <input type="text" name="id" value="{{$rate->id}}" hidden="">
+                                                                                         <input type="text" name="rejected_by" value="{{$rate->rejected_by}}" hidden="">
+
+                                                                                         <div align="right">
+                                                                                             <button class="btn btn-primary" type="submit" name="rate_editSubmit" id="{{$rate->id}}">Forward</button>
+                                                                                             <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                                                                         </div>
 
 
+                                                                                     </form>
 
-                                                                                     </div>
-
-
-                                                                                     <div align="right">
-
-                                                                                         <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button>
-                                                                                     </div>
-                                                                                 </form>
-
+                                                                                 </div>
                                                                              </div>
                                                                          </div>
                                                                      </div>
-                                                                 </div>
 
 
-                                                             </center></td>
-                                                         <td><center>
-                                                                 @if($rate->rejected_by=='DVC')
-                                                                     DVC Administration
-                                                                 @elseif($rate->rejected_by=='DIRECTOR')
-                                                                     Director DPDI
 
-                                                                 @endif
-                                                             </center></td>
+                                                                     @if($rate->terminated_stage=='1')
+                                                                         <a title="Revoke the deletion of this Hire Rate" data-toggle="modal" data-target="#revoke_Deactivatehire{{$rate->id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px; color:red; cursor: pointer;"></i></a>
+                                                                     @else
+                                                                         @if($rate->edit_status=='1')
+                                                                         @else
 
-                                                         <td><center>
-                                                                 <a title="Review this Hire Rate" data-toggle="modal" data-target="#hire{{$rate->id}}" role="button" aria-pressed="true" id="{{$rate->id}}"><i class="fas fa-reply" style=" color: #3490dc; cursor: pointer;"></i></a>
-                                                                 <div class="modal fade" id="hire{{$rate->id}}" role="dialog">
+                                                                             <a title="Delete this Hire Rate" data-toggle="modal" data-target="#Deactivatehire{{$rate->id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px; color:red; cursor: pointer;"></i></a>
+                                                                         @endif
 
-                                                                     <div class="modal-dialog modal-dialog-scrollable" role="document">
-                                                                         <div class="modal-content">
-                                                                             <div class="modal-header">
-                                                                                 <b><h5 class="modal-title">Fill the form below to edit hire rate details</h5></b>
+                                                                     @endif
 
-                                                                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                                             </div>
 
-                                                                             <div class="modal-body">
-                                                                                 <form method="post" action="{{ route('edithirerate') }}">
-                                                                                     {{csrf_field()}}
-                                                                                     <div class="form-group">
-                                                                                         <div class="form-wrapper">
-                                                                                             <label for="hire_vehicle_model{{$rate->id}}">Vehicle Model<span style="color: red;">*</span></label>
-                                                                                             <input type="text" id="hire_vehicle_model{{$rate->id}}" name="hire_vehicle_model" class="form-control" required="" autocomplete="off" value="{{$rate->vehicle_model}}">
-                                                                                         </div>
-                                                                                     </div>
-                                                                                     <br>
 
-                                                                                     <div class="form-group">
-                                                                                         <div class="form-wrapper">
-                                                                                             <label for="hire_hire_rate{{$rate->id}}">Hire Rate/KM<span style="color: red;">*</span><span id="ratemessage{{$rate->id}}"></span></label>
 
-                                                                                             <input type="text" id="hire_hire_rate{{$rate->id}}" name="hire_hire_rate" class="form-control" required="" value="{{$rate->hire_rate}}" onkeypress="if((this.value.length<10)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
-                                                                                         </div>
-                                                                                     </div>
-                                                                                     <br>
-                                                                                     <input type="text" name="id" value="{{$rate->id}}" hidden="">
-                                                                                     <input type="text" name="rejected_by" value="{{$rate->rejected_by}}" hidden="">
 
-                                                                                     <div align="right">
-                                                                                         <button class="btn btn-primary" type="submit" name="rate_editSubmit" id="{{$rate->id}}">Submit</button>
-                                                                                         <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
-                                                                                     </div>
-
-                                                                                 </form>
-
-                                                                             </div>
-                                                                         </div>
-                                                                     </div>
-                                                                 </div>
-
-                                                                 <a title="Delete this Hire Rate" data-toggle="modal" data-target="#Deactivatehire{{$rate->id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px; color:red; cursor: pointer;"></i></a>
-                                                                 <div class="modal fade" id="Deactivatehire{{$rate->id}}" role="dialog">
-                                                                     <div class="modal-dialog" role="document">
-                                                                         <div class="modal-content">
-                                                                             <div class="modal-header">
-                                                                                 <b><h5 class="modal-title" style="color: red;"><b>WARNING</b></h5></b>
-                                                                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                                             </div>
-
-                                                                             <div class="modal-body">
-                                                                                 <p style="font-size: 20px;">Are you sure you want to delete this hire rate?</p>
-                                                                                 <br>
-                                                                                 <div align="right">
-                                                                                     <a class="btn btn-info" href="{{route('deletehireratepermanent',$rate->id)}}">Proceed</a>
-                                                                                     <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                                                                     <div class="modal fade" id="Deactivatehire{{$rate->id}}" role="dialog">
+                                                                         <div class="modal-dialog" role="document">
+                                                                             <div class="modal-content">
+                                                                                 <div class="modal-header">
+                                                                                     <b><h5 class="modal-title" style="color: red;"><b>WARNING</b></h5></b>
+                                                                                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                                                                                  </div>
 
+                                                                                 <div class="modal-body">
+                                                                                     <p style="font-size: 20px;">Are you sure you want to delete this hire rate?</p>
+                                                                                     <br>
+                                                                                     <div align="right">
+                                                                                         <a class="btn btn-info" href="{{route('deletehireratepermanent',$rate->id)}}">Yes</a>
+                                                                                         <button type="button" class="btn btn-danger" data-dismiss="modal">No</button>
+                                                                                     </div>
+
+                                                                                 </div>
                                                                              </div>
                                                                          </div>
                                                                      </div>
-                                                                 </div></center>
-                                                         </td>
-                                                     </tr>
-                                                 @endforeach
-                                                 </tbody>
-                                             </table>
+
+
+
+
+                                                                     <div class="modal fade" id="revoke_Deactivatehire{{$rate->id}}" role="dialog">
+                                                                         <div class="modal-dialog" role="document">
+                                                                             <div class="modal-content">
+                                                                                 <div class="modal-header">
+                                                                                     <b><h5 class="modal-title" style="color: red;"><b>WARNING</b></h5></b>
+                                                                                     <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                                 </div>
+
+                                                                                 <div class="modal-body">
+                                                                                     <p style="font-size: 20px;">Are you sure you want to revoke the deletion of this hire rate?</p>
+                                                                                     <br>
+                                                                                     <div align="right">
+                                                                                         <a class="btn btn-info" href="{{route('revoke_deletehirerate',$rate->id)}}">Yes</a>
+                                                                                         <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                                                                                     </div>
+
+                                                                                 </div>
+                                                                             </div>
+                                                                         </div>
+                                                                     </div>
+
+
+
+                                                                 </center>
+                                                             </td>
+                                                         </tr>
+                                                     @endforeach
+                                                     </tbody>
+                                                 </table>
 
 
                                              @else
@@ -3390,9 +3871,10 @@ input[type=radio]{
                                          <table class="table" style="width: 100%;" id="myTable4">
                                              <thead >
                                              <tr>
-                                                 <th scope="col" style="color:#fff; width: 3%;"><center>S/N</center></th>
-                                                 <th scope="col" style="color:#fff;"><center>Vehicle Model</center></th>
-                                                 <th scope="col" style="color:#fff;"><center>Hire Rate/KM (TZS)</center></th>
+                                                 <th scope="col" style=" width: 3%;"><center>S/N</center></th>
+                                                 <th scope="col" style=""><center>Vehicle Model</center></th>
+                                                 <th scope="col" style=""><center>Hire Rate/KM (TZS)</center></th>
+                                                 <th style="width: 14%"><center>Status</center></th>
                                                  <th scope="col"  ><center>Stage</center></th>
 
 
@@ -3402,17 +3884,98 @@ input[type=radio]{
                                              @foreach($hire_rate_outbox as $rate)
                                                  <tr>
                                                      <th scope="row" class="counterCell text-center">.</th>
-                                                     <td>{{$rate->vehicle_model}}</td>
+                                                     <td class="text-center">{{$rate->vehicle_model}}</td>
                                                      <td><center>{{number_format($rate->hire_rate)}}</center></td>
+
+
+
+
+                                                     @if(Auth::user()->role=='Director DPDI')
+
+
+                                                         @if($rate->stage=='2' AND $rate->rejected_by=='DVC')
+                                                             <td><center>
+
+
+
+
+                                                                     <a title="View Reason for the Declination" style="cursor: pointer; color:#3490dc;"  class="" data-toggle="modal" data-target="#decline_reason{{$rate->id}}" aria-pressed="true"><div ><span style="background-color: red; color:white;  padding:3px;   text-align: center;">DECLINED</span> </div></a>
+
+                                                                     <div class="modal fade" id="decline_reason{{$rate->id}}" role="dialog">
+
+                                                                         <div class="modal-dialog" role="document">
+                                                                             <div class="modal-content">
+                                                                                 <div class="modal-header">
+                                                                                     <b><h5 class="modal-title">Reason(s) for Declination by DVC Administration</h5></b>
+
+                                                                                     <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                                 </div>
+
+                                                                                 <div class="modal-body">
+                                                                                     <form method="post" action=""   >
+                                                                                         {{csrf_field()}}
+
+
+                                                                                         <div class="form-row">
+
+
+                                                                                             <div class="form-group col-12">
+                                                                                                 <div class="form-wrapper">
+                                                                                                     <label for="remarks" style="color: red;"></label>
+                                                                                                     <textarea type="text"  name="reason" class="form-control" readonly="">{{$rate->approval_remarks}}</textarea>
+                                                                                                 </div>
+                                                                                             </div>
+                                                                                             <br>
+                                                                                             <br>
+
+
+
+                                                                                         </div>
+
+
+                                                                                         <div align="right">
+
+                                                                                             <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button>
+                                                                                         </div>
+                                                                                     </form>
+
+                                                                                 </div>
+                                                                             </div>
+                                                                         </div>
+                                                                     </div>
+
+
+                                                                 </center></td>
+                                                         @else
+
+                                                             <td><center>PENDING</center></td>
+                                                         @endif
+                                                     @elseif(Auth::user()->role=='DVC Administrator')
+                                                         <td><center>PENDING</center></td>
+
+                                                     @elseif(Auth::user()->role=='Transport Officer-CPTU' AND $rate->stage=='1')
+                                                         <td><center>PENDING</center></td>
+
+                                                     @elseif(Auth::user()->role=='Transport Officer-CPTU' AND $rate->stage=='1b')
+                                                         <td><center>PENDING</center></td>
+                                                     @else
+                                                     @endif
+
+
+
+
+
+
                                                      @if(Auth::user()->role=='Director DPDI')
 
                                                          @if($rate->stage=='1b')
                                                              <td><center>DVC Administration</center></td>
                                                          @else
-                                                             <td><center>Planning Officer</center></td>
+                                                             <td><center>Transport Officer-CPTU</center></td>
+
                                                          @endif
                                                      @elseif(Auth::user()->role=='DVC Administrator')
-                                                         <td><center>Planning Officer</center></td>
+                                                         <td><center>Transport Officer-CPTU</center></td>
 
                                                      @elseif(Auth::user()->role=='Transport Officer-CPTU' AND $rate->stage=='1')
                                                          <td><center>Director DPDI</center></td>
@@ -3468,14 +4031,14 @@ input[type=radio]{
 
                                                                     <div class="form-group" id="hirediv">
                                                                         <div class="form-wrapper">
-                                                                            <label for="hire_hire_rate">Hire Rate/Km<span style="color: red;">*</span></label>
+                                                                            <label for="hire_hire_rate">Hire Rate/Km (Tshs)<span style="color: red;">*</span></label>
                                                                             <span id="ratemessage"></span>
                                                                             <input type="text" id="hire_hire_rate" name="hire_rate" class="form-control" required="" onkeypress="if((this.value.length<10)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
                                                                         </div>
                                                                     </div>
 
                                                                     <div align="right">
-                                                                        <button class="btn btn-primary" type="submit">Save</button>
+                                                                        <button class="btn btn-primary" type="submit">Forward</button>
                                                                         <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
                                                                     </div>
                                                                 </form>
@@ -3543,8 +4106,10 @@ input[type=radio]{
                                                                                             <br>
                                                                                             <input type="text" name="id" value="{{$rate->id}}" hidden="">
                                                                                             <input type="text" name="rejected_by" value="{{$rate->rejected_by}}" hidden="">
+                                                                                            <input type="text" name="edit_case" value="True" hidden="">
+
                                                                                             <div align="right">
-                                                                                                <button class="btn btn-primary" type="submit" name="rate_editSubmit" id="{{$rate->id}}">Submit</button>
+                                                                                                <button class="btn btn-primary" type="submit" name="rate_editSubmit" id="{{$rate->id}}">Forward</button>
                                                                                                 <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
                                                                                             </div>
 
@@ -3554,7 +4119,8 @@ input[type=radio]{
                                                                                 </div>
                                                                             </div>
                                                                         </div>
-                                                                        @admin
+
+                                                                        @if(Auth::user()->role=='Transport Officer-CPTU')
                                                                         <a title="Delete this Hire Rate" data-toggle="modal" data-target="#Deactivatehire{{$rate->id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px; color:red; cursor: pointer;"></i></a>
                                                                         <div class="modal fade" id="Deactivatehire{{$rate->id}}" role="dialog">
                                                                             <div class="modal-dialog" role="document">
@@ -3568,15 +4134,15 @@ input[type=radio]{
                                                                                         <p style="font-size: 20px;">Are you sure you want to delete this hire rate?</p>
                                                                                         <br>
                                                                                         <div align="right">
-                                                                                            <a class="btn btn-info" href="{{route('deletehirerate',$rate->id)}}">Proceed</a>
-                                                                                            <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                                                                                            <a class="btn btn-info" href="{{route('deletehirerate',$rate->id)}}">Yes</a>
+                                                                                            <button type="button" class="btn btn-danger" data-dismiss="modal">No</button>
                                                                                         </div>
 
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
-                                                                        @endadmin
+                                                                        @endif
 
 
                                                                     </center>
@@ -3650,8 +4216,9 @@ input[type=radio]{
                                                                                          <br>
                                                                                          <input type="text" name="id" value="{{$rate->id}}" hidden="">
                                                                                          <input type="text" name="rejected_by" value="{{$rate->rejected_by}}" hidden="">
+                                                                                         <input type="text" name="edit_case" value="True" hidden="">
                                                                                          <div align="right">
-                                                                                             <button class="btn btn-primary" type="submit" name="rate_editSubmit" id="{{$rate->id}}">Submit</button>
+                                                                                             <button class="btn btn-primary" type="submit" name="rate_editSubmit" id="{{$rate->id}}">Forward</button>
                                                                                              <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
                                                                                          </div>
 
@@ -3661,7 +4228,8 @@ input[type=radio]{
                                                                              </div>
                                                                          </div>
                                                                      </div>
-                                                                        @admin
+
+                                                                     @if(Auth::user()->role=='Transport Officer-CPTU')
                                                                      <a title="Delete this Hire Rate" data-toggle="modal" data-target="#Deactivatehire{{$rate->id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px; color:red; cursor: pointer;"></i></a>
                                                                      <div class="modal fade" id="Deactivatehire{{$rate->id}}" role="dialog">
                                                                          <div class="modal-dialog" role="document">
@@ -3675,15 +4243,15 @@ input[type=radio]{
                                                                                      <p style="font-size: 20px;">Are you sure you want to delete this hire rate?</p>
                                                                                      <br>
                                                                                      <div align="right">
-                                                                                         <a class="btn btn-info" href="{{route('deletehirerate',$rate->id)}}">Proceed</a>
-                                                                                         <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                                                                                         <a class="btn btn-info" href="{{route('deletehirerate',$rate->id)}}">Yes</a>
+                                                                                         <button type="button" class="btn btn-danger" data-dismiss="modal">No</button>
                                                                                      </div>
 
                                                                                  </div>
                                                                              </div>
                                                                          </div>
                                                                      </div>
-                                                                    @endadmin
+                                                                    @endif
 
 
                                                                  </center>
@@ -3767,6 +4335,35 @@ input[type=radio]{
 
 
 
+
+
+                             function openHire(evt, evtName) {
+                                 // Declare all variables
+                                 var i, tabcontent, tablinks;
+
+                                 // Get all elements with class="tabcontent" and hide them
+                                 tabcontent = document.getElementsByClassName("tabcontent_hire");
+                                 for (i = 0; i < tabcontent.length; i++) {
+                                     tabcontent[i].style.display = "none";
+                                 }
+
+                                 // Get all elements with class="tablinks" and remove the class "active"
+                                 tablinks = document.getElementsByClassName("tablinks_hire");
+                                 for (i = 0; i < tablinks.length; i++) {
+                                     tablinks[i].className = tablinks[i].className.replace(" active", "");
+                                 }
+
+                                 // Show the current tab, and add an "active" class to the button that opened the tab
+                                 document.getElementById(evtName).style.display = "block";
+                                 evt.currentTarget.className += " active";
+                             }
+                             @if ($category=='CPTU only' OR $category=='All')
+                             document.getElementById("defaultOpenHire").click();
+                             @else
+                             @endif
+
+
+
                          </script>
 
 
@@ -3808,7 +4405,7 @@ input[type=radio]{
                              </div>
 
 
-                         @if((Auth::user()->role=='DPDI Planner') || (Auth::user()->role=='Director DPDI'))
+                         @if((Auth::user()->role=='DPDI Planner') || (Auth::user()->role=='Director DPDI') || (Auth::user()->role=='DVC Administrator'))
 
 
 
@@ -3820,14 +4417,14 @@ input[type=radio]{
                                      <button class="spaces_tablinks" onclick="openSpaces(event, 'approved_spaces')"><strong>Real Estate</strong></button>
                                  </div>
 
-
+                                 @if((Auth::user()->role=='Director DPDI')  || (Auth::user()->role=='DVC Administrator'))
                                  <div id="space_inbox" style="border-bottom-left-radius: 50px 20px;   border: 1px solid #ccc; padding: 1%;" class="tabcontent_spaces">
                                      <br>
                                      <?php
                                      $i=1;
                                      ?>
                                      @if($space_inbox!='')
-                                         <table class="table" >
+                                         <table class="table">
                                              <thead >
                                              <tr >
                                                  <th scope="col" ><center>S/N</center></th>
@@ -3872,364 +4469,410 @@ input[type=radio]{
                                                      <td><center>
 
 
-                                                             @if(Auth::user()->role=='Director DPDI')
-
-                                                             <a title="Approve this Space" data-toggle="modal" data-target="#approve{{$var->id}}" role="button" aria-pressed="true" id="{{$var->id}}"><center><i class="fas fa-reply" style=" color: #3490dc; cursor: pointer;"></i></center></a>
-                                                             <div class="modal fade" id="approve{{$var->id}}" role="dialog">
-
-                                                                 <div class="modal-dialog" role="document">
-                                                                     <div class="modal-content">
-                                                                         <div class="modal-header">
-                                                                             <b><h5 class="modal-title">CONFIRMATION</h5></b>
-                                                                             <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                                         </div>
-
-                                                                         <div class="modal-body">
-                                                                             <form method='post' action="{{ route('approve_space') }}">
-                                                                                 {{csrf_field()}}
-                                                                                 <div class="form-group">
-                                                                                     <div class="row">
-                                                                                         <div class="form-wrapper col-12">
-                                                                                             <label for="approval_status">Do you approve the addition of this real estate?</label>
-                                                                                         </div>
-                                                                                     </div>
-                                                                                     <div class="row">
-                                                                                         <div class="form-wrapper col-6">
-                                                                                             <input class="form-check-input" type="radio" name="approval_status" id="Approve{{$var->id}}" value="Accepted" checked="">
-                                                                                             <label for="Approve{{$var->id}}" class="form-check-label">Approve</label>
-                                                                                         </div>
-
-                                                                                         <div class="form-wrapper col-6">
-                                                                                             <input class="form-check-input" type="radio" name="approval_status" id="Reject{{$var->id}}" value="Rejected">
-                                                                                             <label for="Reject{{$var->id}}" class="form-check-label">Decline</label>
-                                                                                         </div>
-
-                                                                                     </div>
-                                                                                 </div>
-
-                                                                                 <div class="form-group" id="remarksDiv{{$var->id}}" style="display: none;">
-                                                                                     <div class="form-wrapper">
-                                                                                         <label for="remarks">Remark(s)<span style="color: red;">*</span></label>
-                                                                                         <span id="remarksmsg{{$var->id}}"></span>
-                                                                                         <textarea type="text" id="remarks{{$var->id}}" name="reason" class="form-control"></textarea>
-                                                                                     </div>
-                                                                                 </div>
-
-                                                                                 <input type="text" name="id" value="{{$var->id}}" hidden="">
-
-                                                                                 <div align="right">
-                                                                                     <button class="btn btn-primary" type="submit" id="{{$var->id}}" onclick=" return validate(this.id)">Proceed</button>
-                                                                                     <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
-                                                                                 </div>
-
-                                                                             </form>
-
-
-                                                                         </div>
-                                                                     </div>
-                                                                 </div>
-                                                             </div>
-
-
-                                                             @else
-                                                                 <a data-toggle="modal" title="View more" data-target="#see_feedback_space{{$var->id}}"  role="button" aria-pressed="true" name="editC"><i class="fa fa-eye" style="font-size:20px; color: blue;"></i></a>
 
 
 
 
 
-                                                                 <a data-toggle="modal" title="Delete space" data-target="#delete{{$var->id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px; color:red;"></i></a>
-                                                             @endif
+
+                                                                 <a data-toggle="modal" title="Review" data-target="#see_feedback_space{{$var->id}}"  role="button" aria-pressed="true" name="editC"><i class="fas fa-reply" style=" color: #3490dc; cursor: pointer;"></i></a>
+
+
+
 
                                                              <div class="modal fade" id="see_feedback_space{{$var->id}}" role="dialog">
 
                                                                  <div class="modal-dialog" role="document">
                                                                      <div class="modal-content">
-
-
-                                                                         <div class="modal-body">
-                                                                             <form method="post" action="{{ route('resubmit_space',$var->id)}}"  id="form1" >
-                                                                                 {{csrf_field()}}
-
-                                                                                 <div class="form-group">
-                                                                                     <div class="form-wrapper">
-                                                                                         <label for="remarks" style="color: red;">This space has been declined due to the following reason(s):</label>
-                                                                                         <textarea type="text" id="remarks{{$var->id}}" name="reason" class="form-control" readonly="">{{$var->approval_remarks}}</textarea>
-                                                                                     </div>
-                                                                                 </div>
-
-
-                                                                                 <div class="form-group">
-                                                                                     <div class="form-wrapper">
-                                                                                         <label for="major_industry"  ><strong>Category <span style="color: red;"> *</span></strong></label>
-                                                                                         <select id="getMajor_rejected"  class="form-control" name="major_industry" required>
-                                                                                             <option value="{{$var->major_industry}}" selected>{{$var->major_industry}}</option>
-
-                                                                                             <?php
-                                                                                             $major_industries=DB::table('space_classification')->get();
-
-
-                                                                                             $tempOut = array();
-                                                                                             foreach($major_industries as $values){
-                                                                                                 $iterator = new RecursiveIteratorIterator(new RecursiveArrayIterator($values));
-                                                                                                 $val = (iterator_to_array($iterator,true));
-                                                                                                 $tempoIn=$val['major_industry'];
-
-                                                                                                 if(!in_array($tempoIn, $tempOut))
-                                                                                                 {
-                                                                                                     print('<option value="'.$val['major_industry'].'">'.$val['major_industry'].'</option>');
-                                                                                                     array_push($tempOut,$tempoIn);
-                                                                                                 }
-
-                                                                                             }
-                                                                                             ?>
-                                                                                         </select>
-                                                                                     </div>
-                                                                                 </div>
-                                                                                 <br>
-
-
-                                                                                 <div id="descriptionDiv"  class="form-group">
-                                                                                     <div class="form-wrapper">
-                                                                                         <label for=""  ><strong>Sub Category <span style="color: red;"> *</span></strong></label>
-                                                                                         <select id="minor_list_rejected" required class="form-control" name="minor_industry" >
-                                                                                             <option value="{{$var->minor_industry}}" selected>{{$var->minor_industry}}</option>
-
-                                                                                         </select>
-                                                                                     </div>
-                                                                                 </div>
-                                                                                 <br>
-
-
-
-
-
-
-                                                                                 <div class="form-group">
-                                                                                     <div class="form-wrapper">
-                                                                                         <label for="space_location"  ><strong>Location <span style="color: red;"> *</span></strong></label>
-                                                                                         <select class="form-control" id="space_location" required name="space_location" >
-                                                                                             <?php
-                                                                                             $locations=DB::table('space_locations')->get();
-                                                                                             ?>
-                                                                                             <option value="{{$var->location}}">{{$var->location}}</option>
-                                                                                             @foreach($locations as $location)
-                                                                                                 <option value="{{$location->location}}">{{$location->location}}</option>
-                                                                                             @endforeach
-                                                                                         </select>
-                                                                                     </div>
-                                                                                 </div>
-                                                                                 <br>
-
-
-
-                                                                                 <div class="form-group">
-                                                                                     <div class="form-wrapper">
-                                                                                         <label for="space_location"><strong>Sub location <span style="color: red;"> *</span></strong></label>
-                                                                                         <input type="text"  class="form-control" id="" name="space_sub_location" value="{{$var->sub_location}}" required autocomplete="off">
-                                                                                     </div>
-                                                                                 </div>
-                                                                                 <br>
-
-
-                                                                                 <div class="form-group">
-                                                                                     <div class="form-wrapper">
-                                                                                         <label for=""  ><strong>Size (SQM)</strong></label>
-                                                                                         <input type="number" min="1" step="0.01" class="form-control" id="" name="space_size" value="{{$var->size}}"  autocomplete="off">
-                                                                                     </div>
-                                                                                 </div>
-                                                                                 <br>
-
-
-                                                                                 <div class="form-group">
-                                                                                     <div class="form-wrapper">
-                                                                                         <label for="has_water_bill"  ><strong>Required to also pay Water bill <span style="color: red;"> *</span></strong></label>
-                                                                                         <select class="form-control" id="has_water_bill" required name="has_water_bill" >
-
-                                                                                             @if($var->has_water_bill_space=='Yes')
-                                                                                                 <option value="{{$var->has_water_bill_space}}" selected>{{$var->has_water_bill_space}}</option>
-                                                                                                 <option value="No" id="Option" >No</option>
-                                                                                             @elseif($var->has_water_bill_space=='No')
-                                                                                                 <option value="{{$var->has_water_bill_space}}" selected>{{$var->has_water_bill_space}}</option>
-                                                                                                 <option value="Yes" id="Option">Yes</option>
-                                                                                             @else
-                                                                                             @endif
-                                                                                         </select>
-                                                                                     </div>
-                                                                                 </div>
-                                                                                 <br>
-
-
-                                                                                 <div class="form-group">
-                                                                                     <div class="form-wrapper">
-                                                                                         <label for="has_electricity_bill"  ><strong>Required to also pay Electricity bill <span style="color: red;"> *</span></strong></label>
-                                                                                         <select class="form-control" id="has_electricity_bill" required name="has_electricity_bill" >
-
-                                                                                             @if($var->has_electricity_bill_space=='Yes')
-                                                                                                 <option value="{{$var->has_electricity_bill_space}}" selected>{{$var->has_electricity_bill_space}}</option>
-                                                                                                 <option value="No" id="Option" >No</option>
-                                                                                             @elseif($var->has_electricity_bill_space=='No')
-                                                                                                 <option value="{{$var->has_electricity_bill_space}}" selected>{{$var->has_electricity_bill_space}}</option>
-                                                                                                 <option value="Yes" id="Option">Yes</option>
-                                                                                             @else
-                                                                                             @endif
-
-                                                                                         </select>
-                                                                                     </div>
-                                                                                 </div>
-                                                                                 <br>
-
-
-                                                                                 <div class="form-group">
-                                                                                     <div class="form-wrapper">
-                                                                                         <label for="rent_price_guide_checkbox_edit" style="display: inline-block;"><strong>Rent Price Guide</strong></label>
-                                                                                         @if($var->rent_price_guide_checkbox==1 AND $var->rent_price_guide_from!=null AND $var->rent_price_guide_to!=null AND $var->rent_price_guide_currency!=null)
-                                                                                             <input type="checkbox" checked style="display: inline-block;"  onclick="checkbox({{$var->id}});" id="rent_price_guide_checkbox_edit_filled{{$var->id}}" name="rent_price_guide_checkbox"  value="rent_price_guide_selected_edit"  autocomplete="off">
-
-                                                                                             <div id="rent_price_guide_div_edit_filled{{$var->id}}"  class="form-group row">
-
-                                                                                                 <div class="col-4 inline_block form-wrapper">
-                                                                                                     <label  for="rent_price_guide_from" class=" col-form-label">From:</label>
-                                                                                                     <div class="">
-                                                                                                         <input type="number" min="5" class="form-control" id="rent_price_guide_from_edit_filled{{$var->id}}" name="rent_price_guide_from" value="{{$var->rent_price_guide_from}}"  autocomplete="off">
-                                                                                                     </div>
-                                                                                                 </div>
-
-                                                                                                 <div class="col-4 inline_block  form-wrapper">
-                                                                                                     <label  for="rent_price_guide_to" class=" col-form-label">To:</label>
-                                                                                                     <div  class="">
-                                                                                                         <input type="number" min="10" class="form-control" id="rent_price_guide_to_edit_filled{{$var->id}}" name="rent_price_guide_to" value="{{$var->rent_price_guide_to}}"  autocomplete="off">
-                                                                                                     </div>
-                                                                                                 </div>
-
-
-                                                                                                 <div class="col-3 inline_block  form-wrapper">
-                                                                                                     <label  for="rent_price_guide_currency" class="col-form-label">Currency:</label>
-                                                                                                     <div  class="">
-                                                                                                         <select id="rent_price_guide_currency_edit_filled{{$var->id}}" class="form-control" name="rent_price_guide_currency" >
-                                                                                                             <option value="" ></option>
-
-                                                                                                             @if($var->rent_price_guide_currency=='TZS')
-                                                                                                                 <option value="USD" >USD</option>
-                                                                                                                 <option value="{{$var->rent_price_guide_currency}}" selected>{{$var->rent_price_guide_currency}}</option>
-                                                                                                             @elseif($var->rent_price_guide_currency=='USD')
-                                                                                                                 <option value="TZS">TZS</option>
-                                                                                                                 <option value="{{$var->rent_price_guide_currency}}" selected>{{$var->rent_price_guide_currency}}</option>
-
-                                                                                                             @else
-
-                                                                                                             @endif
-
-                                                                                                         </select>
-                                                                                                     </div>
-
-                                                                                                 </div>
-
-                                                                                             </div>
-
-                                                                                         @else
-                                                                                             <input type="checkbox"  style="display: inline-block;"  onclick="checkbox({{$var->id}});" id="rent_price_guide_checkbox_edit_one{{$var->id}}" name="rent_price_guide_checkbox"  value="rent_price_guide_selected_edit"  autocomplete="off">
-                                                                                             <div  id="rent_price_guide_div_edit{{$var->id}}"  style="display: none;" class="form-group row">
-
-                                                                                                 <div class="col-4 inline_block form-wrapper">
-                                                                                                     <label  for="rent_price_guide_from" class=" col-form-label">From:</label>
-                                                                                                     <div class="">
-                                                                                                         <input type="number" min="1" class="form-control" id="rent_price_guide_from_edit{{$var->id}}" name="rent_price_guide_from" value=""  autocomplete="off">
-                                                                                                     </div>
-                                                                                                 </div>
-
-                                                                                                 <div class="col-4 inline_block  form-wrapper">
-                                                                                                     <label  for="rent_price_guide_to" class=" col-form-label">To:</label>
-                                                                                                     <div  class="">
-                                                                                                         <input type="number" min="1" class="form-control" id="rent_price_guide_to_edit{{$var->id}}" name="rent_price_guide_to" value=""  autocomplete="off">
-                                                                                                     </div>
-                                                                                                 </div>
-
-
-                                                                                                 <div class="col-3 inline_block  form-wrapper">
-                                                                                                     <label  for="rent_price_guide_currency" class="col-form-label">Currency:</label>
-                                                                                                     <div  class="">
-                                                                                                         <select id="rent_price_guide_currency_edit{{$var->id}}" class="form-control" name="rent_price_guide_currency" >
-                                                                                                             <option value=""></option>
-                                                                                                             <option value="USD" >USD</option>
-                                                                                                             <option value="TZS">TZS</option>
-                                                                                                         </select>
-                                                                                                     </div>
-
-                                                                                                 </div>
-
-                                                                                             </div>
-                                                                                         @endif
-
-
-
-
-                                                                                     </div>
-                                                                                 </div>
-                                                                                 <br>
-
-
-                                                                                 <div class="form-group">
-                                                                                     <div class="form-wrapper">
-                                                                                         <label for=""  ><strong>Comments</strong></label>
-                                                                                         <input type="text" class="form-control" id="" name="comments" value="{{$var->comments}}"  autocomplete="off">
-                                                                                     </div>
-                                                                                 </div>
-                                                                                 <br>
-
-
-
-
-
-
-
-
-
-                                                                                 <div align="right">
-                                                                                     <button class="btn btn-primary" type="submit">Foward</button>
-                                                                                     <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
-                                                                                 </div>
-                                                                             </form>
-
-
-                                                                         </div>
-                                                                     </div>
-                                                                 </div>
-
-
-                                                             </div>
-
-
-
-                                                             <div class="modal fade" id="delete{{$var->id}}" role="dialog">
-
-                                                                 <div class="modal-dialog" role="document">
-                                                                     <div class="modal-content">
                                                                          <div class="modal-header">
-                                                                             <b><h5 class="modal-title">Are you sure you want to delete the Real Estate with Real Estate number {{$var->space_id}}?</h5></b>
+                                                                             <b><h5 class="modal-title">CONFIRMATION</h5></b>
 
                                                                              <button type="button" class="close" data-dismiss="modal">&times;</button>
                                                                          </div>
 
                                                                          <div class="modal-body">
-                                                                             <form method="get" action="{{ route('cancel_space_addition',$var->id)}}" >
-                                                                                 {{csrf_field()}}
+
+
+                                                                             @if($var->terminated_stage=='1')
+
+                                                                                 <p style="color: red"><strong style="color:black !important;">CASE: </strong> Deletion of an Existing Real Estate</p>
+                                                                             @else
+
+                                                                                 @if($var->edit_status=='1')
+                                                                                 <p style="color: red"><strong style="color:black !important;">CASE: </strong> Editing of Information for an Existing Real Estate</p>
+                                                                             @else
+                                                                                 <p style="color: red"><strong style="color:black !important;">CASE: </strong> Addition of a New Real Estate</p>
+                                                                             @endif
+
+                                                                             @endif
+
+
+                                                                             @if(Auth::user()->role=='Director DPDI')
+                                                                                     <form method="post" action="{{ route('approve_space',$var->id)}}">
+                                                                                         {{csrf_field()}}
+
+                                                                                         @if($var->rejected_by=='DVC')
+                                                                                             <div class="form-group">
+                                                                                                 <div class="form-wrapper">
+                                                                                                     <label for="remarks" style="color: red;">Reason(s) for Declination by DVC Administration:</label>
+                                                                                                     <textarea type="text"  class="form-control" readonly="">{{$var->approval_remarks}}</textarea>
+                                                                                                 </div>
+                                                                                             </div>
+                                                                                             <br>
+                                                                                         @endif
+
+
+                                                                                         <div class="form-group">
+                                                                                             <div class="form-wrapper">
+                                                                                                 <label for="major_industry"  ><strong>Category <span style="color: red;"> *</span></strong></label>
+
+                                                                                                 <input type="text" readonly class="form-control" id=""  value="{{$var->major_industry}}" required autocomplete="off">
+
+
+                                                                                             </div>
+                                                                                         </div>
+                                                                                         <br>
+
+
+                                                                                         <div id="descriptionDiv"  class="form-group">
+                                                                                             <div class="form-wrapper">
+                                                                                                 <label for=""  ><strong>Sub Category <span style="color: red;"> *</span></strong></label>
+                                                                                                 <input type="text" readonly class="form-control" id=""  value="{{$var->minor_industry}}" required autocomplete="off">
+                                                                                             </div>
+                                                                                         </div>
+                                                                                         <br>
 
 
 
-                                                                                 <div align="right">
-                                                                                     <button class="btn btn-primary" type="submit" id="newdata">Yes</button>
-                                                                                     <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">No</button>
-                                                                                 </div>
 
 
-                                                                             </form>
+
+                                                                                         <div class="form-group">
+                                                                                             <div class="form-wrapper">
+                                                                                                 <label for="space_location"  ><strong>Location <span style="color: red;"> *</span></strong></label>
+
+                                                                                                 <input type="text" readonly class="form-control" id=""  value="{{$var->location}}" required autocomplete="off">
+                                                                                             </div>
+                                                                                         </div>
+                                                                                         <br>
+
+
+
+                                                                                         <div class="form-group">
+                                                                                             <div class="form-wrapper">
+                                                                                                 <label for="space_location"><strong>Sub location <span style="color: red;"> *</span></strong></label>
+                                                                                                 <input type="text"  class="form-control" id="" readonly name="space_sub_location" value="{{$var->sub_location}}" required autocomplete="off">
+                                                                                             </div>
+                                                                                         </div>
+                                                                                         <br>
+
+
+                                                                                         <div class="form-group">
+                                                                                             <div class="form-wrapper">
+                                                                                                 <label for=""  ><strong>Size (SQM)</strong></label>
+                                                                                                 <input type="text" readonly min="1"  class="form-control" id="" name="space_size" value="{{$var->size}}"  autocomplete="off">
+                                                                                             </div>
+                                                                                         </div>
+                                                                                         <br>
+
+
+                                                                                         <div class="form-group">
+                                                                                             <div class="form-wrapper">
+                                                                                                 <label for="has_water_bill"  ><strong>Required to also pay Water bill <span style="color: red;"> *</span></strong></label>
+                                                                                                 <input type="text"  class="form-control" id="" readonly value="{{$var->has_water_bill_space}}" required autocomplete="off">
+
+
+                                                                                             </div>
+                                                                                         </div>
+                                                                                         <br>
+
+
+                                                                                         <div class="form-group">
+                                                                                             <div class="form-wrapper">
+                                                                                                 <label for="has_electricity_bill"  ><strong>Required to also pay Electricity bill <span style="color: red;"> *</span></strong></label>
+                                                                                                 <input type="text"  class="form-control" id="" readonly value="{{$var->has_electricity_bill_space}}" required autocomplete="off">
+                                                                                             </div>
+                                                                                         </div>
+                                                                                         <br>
+
+
+                                                                                         @if($var->rent_price_guide_checkbox==1 AND $var->rent_price_guide_from!=null AND $var->rent_price_guide_to!=null AND $var->rent_price_guide_currency!=null)
+                                                                                             <div class="form-group">
+                                                                                                 <div class="form-wrapper">
+                                                                                                     <label for="rent_price_guide_checkbox_edit" style="display: inline-block;"><strong>Rent Price Guide</strong></label>
+
+                                                                                                     <div id="rent_price_guide_div_edit_filled{{$var->id}}"  class="form-group row">
+
+                                                                                                         <div class="col-4 inline_block form-wrapper">
+                                                                                                             <label  for="rent_price_guide_from" class=" col-form-label">From:</label>
+                                                                                                             <div class="">
+                                                                                                                 <input type="text" readonly min="5" class="form-control" id="rent_price_guide_from_edit_filled{{$var->id}}" name="rent_price_guide_from" value="{{$var->rent_price_guide_from}}"  autocomplete="off">
+                                                                                                             </div>
+                                                                                                         </div>
+
+                                                                                                         <div class="col-4 inline_block  form-wrapper">
+                                                                                                             <label  for="rent_price_guide_to" class=" col-form-label">To:</label>
+                                                                                                             <div  class="">
+                                                                                                                 <input type="text" readonly min="10" class="form-control" id="rent_price_guide_to_edit_filled{{$var->id}}" name="rent_price_guide_to" value="{{$var->rent_price_guide_to}}"  autocomplete="off">
+                                                                                                             </div>
+                                                                                                         </div>
+
+
+                                                                                                         <div class="col-3 inline_block  form-wrapper">
+                                                                                                             <label  for="rent_price_guide_currency" class="col-form-label">Currency:</label>
+                                                                                                             <div  class="">
+                                                                                                                 <input type="text"  class="form-control" id="" readonly value="{{$var->rent_price_guide_currency}}" required autocomplete="off">
+                                                                                                             </div>
+
+                                                                                                         </div>
+
+                                                                                                     </div>
+
+
+
+
+
+
+                                                                                                 </div>
+                                                                                             </div>
+                                                                                             <br>
+                                                                                         @else
+                                                                                         @endif
+
+
+
+
+
+                                                                                         <div class="form-group">
+                                                                                             <div class="form-wrapper">
+                                                                                                 <label for=""  ><strong>Comments</strong></label>
+                                                                                                 <input type="text" class="form-control" readonly id="" name="comments" value="{{$var->comments}}"  autocomplete="off">
+                                                                                             </div>
+                                                                                         </div>
+                                                                                         <br>
+
+
+                                                                                         <div class="form-group">
+                                                                                             <div class="row">
+                                                                                                 <div class="form-wrapper col-12">
+                                                                                                     <label for="approval_status">Do you approve the addition of this real estate?</label>
+                                                                                                 </div>
+                                                                                             </div>
+                                                                                             <div class="row">
+                                                                                                 <div class="form-wrapper col-6">
+                                                                                                     <input class="form-check-input" type="radio" name="approval_status" id="Approve{{$var->id}}" value="Accepted" checked="">
+                                                                                                     <label for="Approve{{$var->id}}" class="form-check-label">Approve</label>
+                                                                                                 </div>
+
+                                                                                                 <div class="form-wrapper col-6">
+                                                                                                     <input class="form-check-input" type="radio" name="approval_status" id="Reject{{$var->id}}" value="Rejected">
+                                                                                                     <label for="Reject{{$var->id}}" class="form-check-label">Decline</label>
+                                                                                                 </div>
+
+                                                                                             </div>
+                                                                                         </div>
+
+                                                                                         <div class="form-group" id="remarksDiv{{$var->id}}" style="display: none;">
+                                                                                             <div class="form-wrapper">
+                                                                                                 <label for="remarks">Reasons for decline<span style="color: red;">*</span></label>
+                                                                                                 <span id="remarksmsg{{$var->id}}"></span>
+                                                                                                 <textarea type="text" id="remarks{{$var->id}}" name="approval_remarks" class="form-control"></textarea>
+                                                                                             </div>
+                                                                                         </div>
+
+                                                                                         <input type="text" name="id" value="{{$var->id}}" hidden="">
+
+                                                                                         <div align="right">
+                                                                                             <button class="btn btn-primary" type="submit" id="{{$var->id}}" onclick=" return validate(this.id)">Proceed</button>
+                                                                                             <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                                                                         </div>
+                                                                                     </form>
+                                                                                 @elseif(Auth::user()->role=='DVC Administrator')
+
+                                                                                     <form method="post" action="{{ route('approve_space_second',$var->id)}}">
+                                                                                         {{csrf_field()}}
+
+
+
+
+                                                                                         <div class="form-group">
+                                                                                             <div class="form-wrapper">
+                                                                                                 <label for="major_industry"  ><strong>Category <span style="color: red;"> *</span></strong></label>
+
+                                                                                                 <input type="text" readonly class="form-control" id=""  value="{{$var->major_industry}}" required autocomplete="off">
+
+
+                                                                                             </div>
+                                                                                         </div>
+                                                                                         <br>
+
+
+                                                                                         <div id="descriptionDiv"  class="form-group">
+                                                                                             <div class="form-wrapper">
+                                                                                                 <label for=""  ><strong>Sub Category <span style="color: red;"> *</span></strong></label>
+                                                                                                 <input type="text" readonly class="form-control" id=""  value="{{$var->minor_industry}}" required autocomplete="off">
+                                                                                             </div>
+                                                                                         </div>
+                                                                                         <br>
+
+
+
+
+
+
+                                                                                         <div class="form-group">
+                                                                                             <div class="form-wrapper">
+                                                                                                 <label for="space_location"  ><strong>Location <span style="color: red;"> *</span></strong></label>
+
+                                                                                                 <input type="text" readonly class="form-control" id=""  value="{{$var->location}}" required autocomplete="off">
+                                                                                             </div>
+                                                                                         </div>
+                                                                                         <br>
+
+
+
+                                                                                         <div class="form-group">
+                                                                                             <div class="form-wrapper">
+                                                                                                 <label for="space_location"><strong>Sub location <span style="color: red;"> *</span></strong></label>
+                                                                                                 <input type="text"  class="form-control" id="" readonly name="space_sub_location" value="{{$var->sub_location}}" required autocomplete="off">
+                                                                                             </div>
+                                                                                         </div>
+                                                                                         <br>
+
+
+                                                                                         <div class="form-group">
+                                                                                             <div class="form-wrapper">
+                                                                                                 <label for=""  ><strong>Size (SQM)</strong></label>
+                                                                                                 <input type="text" readonly min="1"  class="form-control" id="" name="space_size" value="{{$var->size}}"  autocomplete="off">
+                                                                                             </div>
+                                                                                         </div>
+                                                                                         <br>
+
+
+                                                                                         <div class="form-group">
+                                                                                             <div class="form-wrapper">
+                                                                                                 <label for="has_water_bill"  ><strong>Required to also pay Water bill <span style="color: red;"> *</span></strong></label>
+                                                                                                 <input type="text"  class="form-control" id="" readonly value="{{$var->has_water_bill_space}}" required autocomplete="off">
+
+
+                                                                                             </div>
+                                                                                         </div>
+                                                                                         <br>
+
+
+                                                                                         <div class="form-group">
+                                                                                             <div class="form-wrapper">
+                                                                                                 <label for="has_electricity_bill"  ><strong>Required to also pay Electricity bill <span style="color: red;"> *</span></strong></label>
+                                                                                                 <input type="text"  class="form-control" id="" readonly value="{{$var->has_electricity_bill_space}}" required autocomplete="off">
+                                                                                             </div>
+                                                                                         </div>
+                                                                                         <br>
+
+
+                                                                                         @if($var->rent_price_guide_checkbox==1 AND $var->rent_price_guide_from!=null AND $var->rent_price_guide_to!=null AND $var->rent_price_guide_currency!=null)
+                                                                                         <div class="form-group">
+                                                                                             <div class="form-wrapper">
+                                                                                                 <label for="rent_price_guide_checkbox_edit" style="display: inline-block;"><strong>Rent Price Guide</strong></label>
+
+                                                                                                     <div id="rent_price_guide_div_edit_filled{{$var->id}}"  class="form-group row">
+
+                                                                                                         <div class="col-4 inline_block form-wrapper">
+                                                                                                             <label  for="rent_price_guide_from" class=" col-form-label">From:</label>
+                                                                                                             <div class="">
+                                                                                                                 <input type="text" readonly min="5" class="form-control" id="rent_price_guide_from_edit_filled{{$var->id}}" name="rent_price_guide_from" value="{{$var->rent_price_guide_from}}"  autocomplete="off">
+                                                                                                             </div>
+                                                                                                         </div>
+
+                                                                                                         <div class="col-4 inline_block  form-wrapper">
+                                                                                                             <label  for="rent_price_guide_to" class=" col-form-label">To:</label>
+                                                                                                             <div  class="">
+                                                                                                                 <input type="text" readonly min="10" class="form-control" id="rent_price_guide_to_edit_filled{{$var->id}}" name="rent_price_guide_to" value="{{$var->rent_price_guide_to}}"  autocomplete="off">
+                                                                                                             </div>
+                                                                                                         </div>
+
+
+                                                                                                         <div class="col-3 inline_block  form-wrapper">
+                                                                                                             <label  for="rent_price_guide_currency" class="col-form-label">Currency:</label>
+                                                                                                             <div  class="">
+                                                                                                                 <input type="text"  class="form-control" id="" readonly value="{{$var->rent_price_guide_currency}}" required autocomplete="off">
+                                                                                                             </div>
+
+                                                                                                         </div>
+
+                                                                                                     </div>
+
+
+
+
+
+
+                                                                                             </div>
+                                                                                         </div>
+                                                                                         <br>
+                                                                                         @else
+                                                                                         @endif
+
+
+
+
+
+                                                                                         <div class="form-group">
+                                                                                             <div class="form-wrapper">
+                                                                                                 <label for=""  ><strong>Comments</strong></label>
+                                                                                                 <input type="text" class="form-control" readonly id="" name="comments" value="{{$var->comments}}"  autocomplete="off">
+                                                                                             </div>
+                                                                                         </div>
+                                                                                         <br>
+
+
+                                                                                         <div class="form-group">
+                                                                                             <div class="row">
+                                                                                                 <div class="form-wrapper col-12">
+                                                                                                     <label for="approval_status">Do you approve the addition of this real estate?</label>
+                                                                                                 </div>
+                                                                                             </div>
+                                                                                             <div class="row">
+                                                                                                 <div class="form-wrapper col-6">
+                                                                                                     <input class="form-check-input" type="radio" name="approval_status" id="Approve{{$var->id}}" value="Accepted" checked="">
+                                                                                                     <label for="Approve{{$var->id}}" class="form-check-label">Approve</label>
+                                                                                                 </div>
+
+                                                                                                 <div class="form-wrapper col-6">
+                                                                                                     <input class="form-check-input" type="radio" name="approval_status" id="Reject{{$var->id}}" value="Rejected">
+                                                                                                     <label for="Reject{{$var->id}}" class="form-check-label">Decline</label>
+                                                                                                 </div>
+
+                                                                                             </div>
+                                                                                         </div>
+
+                                                                                         <div class="form-group" id="remarksDiv{{$var->id}}" style="display: none;">
+                                                                                             <div class="form-wrapper">
+                                                                                                 <label for="remarks">Reasons for decline<span style="color: red;">*</span></label>
+                                                                                                 <span id="remarksmsg{{$var->id}}"></span>
+                                                                                                 <textarea type="text" id="remarks{{$var->id}}" name="approval_remarks" class="form-control"></textarea>
+                                                                                             </div>
+                                                                                         </div>
+
+                                                                                         <input type="text" name="id" value="{{$var->id}}" hidden="">
+
+                                                                                         <div align="right">
+                                                                                             <button class="btn btn-primary" type="submit" id="{{$var->id}}" onclick=" return validate(this.id)">Proceed</button>
+                                                                                             <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                                                                         </div>
+                                                                                     </form>
+                                                                             @endif
+
+
                                                                          </div>
                                                                      </div>
                                                                  </div>
 
 
                                                              </div>
+
+
+
+
 
 
                                                          </center>
@@ -4248,9 +4891,711 @@ input[type=radio]{
                                              </tbody>
                                          </table>
                                      @else
-                                         <p style="line-height: 1.5;font-size: 17px;"><i class="fa fa-envelope-o" style="font-size:25px;color:#3490dc;"></i> No new message</p>
+                                         <p class="mt-4" style="text-align:center;">No records found</p>
                                      @endif
                                  </div>
+
+
+                                 @else
+
+                                     <div id="space_inbox" style="border-bottom-left-radius: 50px 20px;   border: 1px solid #ccc; padding: 1%;" class="tabcontent_spaces">
+                                         <br>
+                                         <?php
+                                         $i=1;
+                                         ?>
+                                         @if($space_inbox!='')
+                                             <table class="table">
+                                                 <thead >
+                                                 <tr >
+                                                     <th scope="col" ><center>S/N</center></th>
+                                                     <th scope="col">Category</th>
+                                                     <th scope="col">Sub Category</th>
+                                                     <th scope="col">Real Estate Number</th>
+                                                     <th scope="col">Description</th>
+                                                     <th scope="col">From</th>
+
+
+                                                     <th scope="col" ><center>Action</center></th>
+                                                 </tr>
+                                                 </thead>
+                                                 <tbody>
+
+                                                 @foreach($space_inbox as $var)
+                                                     <tr>
+
+                                                         <td class=""><center>{{$i}}</center></td>
+                                                         <td>{{$var->major_industry}}</td>
+                                                         <td>{{$var->minor_industry}}</td>
+                                                         <td>{{$var->space_id}}</td>
+
+
+                                                         <td>
+
+
+                                                                 <a title="View Reason" style="cursor: pointer; color:#3490dc;"  class="" data-toggle="modal" data-target="#reason_space{{$var->id}}" aria-pressed="true">View Reason</a>
+
+                                                                 <div class="modal fade" id="reason_space{{$var->id}}" role="dialog">
+
+                                                                     <div class="modal-dialog" role="document">
+                                                                         <div class="modal-content">
+                                                                             <div class="modal-header">
+                                                                                 <b><h5 class="modal-title">Reason</h5></b>
+
+                                                                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                             </div>
+
+                                                                             <div class="modal-body">
+                                                                                 <form method="post" action=""   >
+                                                                                     {{csrf_field()}}
+
+
+                                                                                     <div class="form-row">
+
+
+                                                                                         <div class="form-group col-12">
+                                                                                             <div class="form-wrapper">
+                                                                                                 <label for="remarks" style="color: red;"></label>
+                                                                                                 <textarea type="text"  name="reason" class="form-control" readonly="">{{$var->approval_remarks}}</textarea>
+                                                                                             </div>
+                                                                                         </div>
+                                                                                         <br>
+                                                                                         <br>
+
+
+
+                                                                                     </div>
+
+
+                                                                                     <div align="right">
+
+                                                                                         <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button>
+                                                                                     </div>
+                                                                                 </form>
+
+                                                                             </div>
+                                                                         </div>
+                                                                     </div>
+                                                                 </div>
+
+</td>
+
+                                                         <td>
+                                                                 @if($var->rejected_by=='DVC')
+                                                                     DVC Administration
+                                                                 @elseif($var->rejected_by=='DIRECTOR')
+                                                                     Director DPDI
+
+                                                                 @endif
+                                                             </td>
+
+
+
+                                                         <td><center>
+
+
+
+
+
+
+                                                                 <a data-toggle="modal" title="Edit Real Estate Information" data-target="#edit_space_approval{{$var->id}}"  role="button" aria-pressed="true" name="editC"><i class="fa fa-edit" style="font-size:20px; color: green;"></i></a>
+
+                                                                 <div class="modal fade" id="edit_space_approval{{$var->id}}" role="dialog">
+
+                                                                     <div class="modal-dialog" role="document">
+                                                                         <div class="modal-content">
+                                                                             <div class="modal-header">
+                                                                                 <b><h5 class="modal-title">Edit Real Estate Information</h5></b>
+
+                                                                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                             </div>
+
+                                                                             <div class="modal-body">
+                                                                                 <form method="post" action="{{ route('edit_space',$var->id)}}"  id="form1" >
+                                                                                     {{csrf_field()}}
+
+
+
+
+                                                                                     <div class="form-group">
+                                                                                         <div class="form-wrapper">
+                                                                                             <label for="major_industry"  ><strong>Category <span style="color: red;"> *</span></strong></label>
+
+                                                                                             <input type="text" readonly  class="form-control" readonly id="" name="major_industry" value="{{$var->major_industry}}" required autocomplete="off">
+                                                                                         </div>
+                                                                                     </div>
+                                                                                     <br>
+
+
+                                                                                     <div id="descriptionDiv"  class="form-group">
+                                                                                         <div class="form-wrapper">
+                                                                                             <label for=""  ><strong>Sub Category <span style="color: red;"> *</span></strong></label>
+
+
+                                                                                             <input type="text"  class="form-control" readonly id="" name="minor_industry" value="{{$var->minor_industry}}" required autocomplete="off">
+                                                                                         </div>
+                                                                                     </div>
+                                                                                     <br>
+
+
+
+
+
+
+                                                                                     <div class="form-group">
+                                                                                         <div class="form-wrapper">
+                                                                                             <label for="space_location"  ><strong>Location <span style="color: red;"> *</span></strong></label>
+                                                                                             <select class="form-control" id="space_location" required name="space_location" >
+                                                                                                 <?php
+                                                                                                 $locations=DB::table('space_locations')->get();
+                                                                                                 ?>
+                                                                                                 <option value="{{$var->location}}">{{$var->location}}</option>
+                                                                                                 @foreach($locations as $location)
+                                                                                                     <option value="{{$location->location}}">{{$location->location}}</option>
+                                                                                                 @endforeach
+                                                                                             </select>
+                                                                                         </div>
+                                                                                     </div>
+                                                                                     <br>
+
+
+
+                                                                                     <div class="form-group">
+                                                                                         <div class="form-wrapper">
+                                                                                             <label for="space_location"><strong>Sub location <span style="color: red;"> *</span></strong></label>
+                                                                                             <input type="text"  class="form-control" id="" name="space_sub_location" value="{{$var->sub_location}}" required autocomplete="off">
+                                                                                         </div>
+                                                                                     </div>
+                                                                                     <br>
+
+
+                                                                                     <div class="form-group">
+                                                                                         <div class="form-wrapper">
+                                                                                             <label for=""  ><strong>Size (SQM)</strong></label>
+                                                                                             <input type="number" min="1" step="0.01" class="form-control" id="" name="space_size" value="{{$var->size}}"  autocomplete="off">
+                                                                                         </div>
+                                                                                     </div>
+                                                                                     <br>
+
+
+                                                                                     <div class="form-group">
+                                                                                         <div class="form-wrapper">
+                                                                                             <label for="has_water_bill"  ><strong>Required to also pay Water bill <span style="color: red;"> *</span></strong></label>
+                                                                                             <select class="form-control" id="has_water_bill" required name="has_water_bill" >
+
+                                                                                                 @if($var->has_water_bill_space=='Yes')
+                                                                                                     <option value="{{$var->has_water_bill_space}}" selected>{{$var->has_water_bill_space}}</option>
+                                                                                                     <option value="No" id="Option" >No</option>
+                                                                                                 @elseif($var->has_water_bill_space=='No')
+                                                                                                     <option value="{{$var->has_water_bill_space}}" selected>{{$var->has_water_bill_space}}</option>
+                                                                                                     <option value="Yes" id="Option">Yes</option>
+                                                                                                 @else
+                                                                                                 @endif
+                                                                                             </select>
+                                                                                         </div>
+                                                                                     </div>
+                                                                                     <br>
+
+
+                                                                                     <div class="form-group">
+                                                                                         <div class="form-wrapper">
+                                                                                             <label for="has_electricity_bill"  ><strong>Required to also pay Electricity bill <span style="color: red;"> *</span></strong></label>
+                                                                                             <select class="form-control" id="has_electricity_bill" required name="has_electricity_bill" >
+
+                                                                                                 @if($var->has_electricity_bill_space=='Yes')
+                                                                                                     <option value="{{$var->has_electricity_bill_space}}" selected>{{$var->has_electricity_bill_space}}</option>
+                                                                                                     <option value="No" id="Option" >No</option>
+                                                                                                 @elseif($var->has_electricity_bill_space=='No')
+                                                                                                     <option value="{{$var->has_electricity_bill_space}}" selected>{{$var->has_electricity_bill_space}}</option>
+                                                                                                     <option value="Yes" id="Option">Yes</option>
+                                                                                                 @else
+                                                                                                 @endif
+
+                                                                                             </select>
+                                                                                         </div>
+                                                                                     </div>
+                                                                                     <br>
+
+
+                                                                                     <div class="form-group">
+                                                                                         <div class="form-wrapper">
+                                                                                             <label for="rent_price_guide_checkbox_edit" style="display: inline-block;"><strong>Rent Price Guide</strong></label>
+                                                                                             @if($var->rent_price_guide_checkbox==1 AND $var->rent_price_guide_from!=null AND $var->rent_price_guide_to!=null AND $var->rent_price_guide_currency!=null)
+                                                                                                 <input type="checkbox" checked style="display: inline-block;"  onclick="checkbox({{$var->id}});" id="rent_price_guide_checkbox_edit_filled{{$var->id}}" name="rent_price_guide_checkbox"  value="rent_price_guide_selected_edit"  autocomplete="off">
+
+                                                                                                 <div id="rent_price_guide_div_edit_filled{{$var->id}}"  class="form-group row">
+
+                                                                                                     <div class="col-4 inline_block form-wrapper">
+                                                                                                         <label  for="rent_price_guide_from" class=" col-form-label">From:</label>
+                                                                                                         <div class="">
+                                                                                                             <input type="number" min="5" class="form-control" id="rent_price_guide_from_edit_filled{{$var->id}}" name="rent_price_guide_from" value="{{$var->rent_price_guide_from}}"  autocomplete="off">
+                                                                                                         </div>
+                                                                                                     </div>
+
+                                                                                                     <div class="col-4 inline_block  form-wrapper">
+                                                                                                         <label  for="rent_price_guide_to" class=" col-form-label">To:</label>
+                                                                                                         <div  class="">
+                                                                                                             <input type="number" min="10" class="form-control" id="rent_price_guide_to_edit_filled{{$var->id}}" name="rent_price_guide_to" value="{{$var->rent_price_guide_to}}"  autocomplete="off">
+                                                                                                         </div>
+                                                                                                     </div>
+
+
+                                                                                                     <div class="col-3 inline_block  form-wrapper">
+                                                                                                         <label  for="rent_price_guide_currency" class="col-form-label">Currency:</label>
+                                                                                                         <div  class="">
+                                                                                                             <select id="rent_price_guide_currency_edit_filled{{$var->id}}" class="form-control" name="rent_price_guide_currency" >
+                                                                                                                 <option value="" ></option>
+
+                                                                                                                 @if($var->rent_price_guide_currency=='TZS')
+                                                                                                                     <option value="USD" >USD</option>
+                                                                                                                     <option value="{{$var->rent_price_guide_currency}}" selected>{{$var->rent_price_guide_currency}}</option>
+                                                                                                                 @elseif($var->rent_price_guide_currency=='USD')
+                                                                                                                     <option value="TZS">TZS</option>
+                                                                                                                     <option value="{{$var->rent_price_guide_currency}}" selected>{{$var->rent_price_guide_currency}}</option>
+
+                                                                                                                 @else
+
+                                                                                                                 @endif
+
+                                                                                                             </select>
+                                                                                                         </div>
+
+                                                                                                     </div>
+
+                                                                                                 </div>
+
+                                                                                             @else
+                                                                                                 <input type="checkbox"  style="display: inline-block;"  onclick="checkbox({{$var->id}});" id="rent_price_guide_checkbox_edit_one{{$var->id}}" name="rent_price_guide_checkbox"  value="rent_price_guide_selected_edit"  autocomplete="off">
+                                                                                                 <div  id="rent_price_guide_div_edit{{$var->id}}"  style="display: none;" class="form-group row">
+
+                                                                                                     <div class="col-4 inline_block form-wrapper">
+                                                                                                         <label  for="rent_price_guide_from" class=" col-form-label">From:</label>
+                                                                                                         <div class="">
+                                                                                                             <input type="number" min="1" class="form-control" id="rent_price_guide_from_edit{{$var->id}}" name="rent_price_guide_from" value=""  autocomplete="off">
+                                                                                                         </div>
+                                                                                                     </div>
+
+                                                                                                     <div class="col-4 inline_block  form-wrapper">
+                                                                                                         <label  for="rent_price_guide_to" class=" col-form-label">To:</label>
+                                                                                                         <div  class="">
+                                                                                                             <input type="number" min="1" class="form-control" id="rent_price_guide_to_edit{{$var->id}}" name="rent_price_guide_to" value=""  autocomplete="off">
+                                                                                                         </div>
+                                                                                                     </div>
+
+
+                                                                                                     <div class="col-3 inline_block  form-wrapper">
+                                                                                                         <label  for="rent_price_guide_currency" class="col-form-label">Currency:</label>
+                                                                                                         <div  class="">
+                                                                                                             <select id="rent_price_guide_currency_edit{{$var->id}}" class="form-control" name="rent_price_guide_currency" >
+                                                                                                                 <option value=""></option>
+                                                                                                                 <option value="USD" >USD</option>
+                                                                                                                 <option value="TZS">TZS</option>
+                                                                                                             </select>
+                                                                                                         </div>
+
+                                                                                                     </div>
+
+                                                                                                 </div>
+                                                                                             @endif
+
+
+
+
+                                                                                         </div>
+                                                                                     </div>
+                                                                                     <br>
+
+
+                                                                                     <div class="form-group">
+                                                                                         <div class="form-wrapper">
+                                                                                             <label for=""  ><strong>Comments</strong></label>
+                                                                                             <input type="text" class="form-control" id="" name="comments" value="{{$var->comments}}"  autocomplete="off">
+                                                                                         </div>
+                                                                                     </div>
+                                                                                     <br>
+
+
+
+
+
+
+
+
+
+                                                                                     <div align="right">
+                                                                                         <button class="btn btn-primary" type="submit">Forward</button>
+                                                                                         <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                                                                     </div>
+                                                                                 </form>
+
+
+                                                                             </div>
+                                                                         </div>
+                                                                     </div>
+
+
+                                                                 </div>
+
+
+
+
+
+                                                                 @if($var->terminated_stage=='1')
+                                                                 <a data-toggle="modal" title="Revoke deletion of this space" data-target="#revoke_delete{{$var->id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px; color:red;"></i></a>
+                                                                 @else
+                                                                     @if($var->edit_status=='1')
+                                                                     @else
+                                                                         <a data-toggle="modal" title="Delete space" data-target="#delete{{$var->id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px; color:red;"></i></a>
+                                                                     @endif
+                                                                 @endif
+
+                                                                 <div class="modal fade" id="see_feedback_space{{$var->id}}" role="dialog">
+
+                                                                     <div class="modal-dialog" role="document">
+                                                                         <div class="modal-content">
+
+
+                                                                             <div class="modal-body">
+                                                                                 <form method="post" action="{{ route('resubmit_space',$var->id)}}"  id="form1" >
+                                                                                     {{csrf_field()}}
+
+                                                                                     <div class="form-group">
+                                                                                         <div class="form-wrapper">
+                                                                                             <label for="remarks" style="color: red;">This space has been declined due to the following reason(s):</label>
+                                                                                             <textarea type="text" id="remarks{{$var->id}}" name="reason" class="form-control" readonly="">{{$var->approval_remarks}}</textarea>
+                                                                                         </div>
+                                                                                     </div>
+
+
+                                                                                     <div class="form-group">
+                                                                                         <div class="form-wrapper">
+                                                                                             <label for="major_industry"  ><strong>Category <span style="color: red;"> *</span></strong></label>
+                                                                                             <select id="getMajor_rejected"  class="form-control" name="major_industry" required>
+                                                                                                 <option value="{{$var->major_industry}}" selected>{{$var->major_industry}}</option>
+
+                                                                                                 <?php
+                                                                                                 $major_industries=DB::table('space_classification')->get();
+
+
+                                                                                                 $tempOut = array();
+                                                                                                 foreach($major_industries as $values){
+                                                                                                     $iterator = new RecursiveIteratorIterator(new RecursiveArrayIterator($values));
+                                                                                                     $val = (iterator_to_array($iterator,true));
+                                                                                                     $tempoIn=$val['major_industry'];
+
+                                                                                                     if(!in_array($tempoIn, $tempOut))
+                                                                                                     {
+                                                                                                         print('<option value="'.$val['major_industry'].'">'.$val['major_industry'].'</option>');
+                                                                                                         array_push($tempOut,$tempoIn);
+                                                                                                     }
+
+                                                                                                 }
+                                                                                                 ?>
+                                                                                             </select>
+                                                                                         </div>
+                                                                                     </div>
+                                                                                     <br>
+
+
+                                                                                     <div id="descriptionDiv"  class="form-group">
+                                                                                         <div class="form-wrapper">
+                                                                                             <label for=""  ><strong>Sub Category <span style="color: red;"> *</span></strong></label>
+                                                                                             <select id="minor_list_rejected" required class="form-control" name="minor_industry" >
+                                                                                                 <option value="{{$var->minor_industry}}" selected>{{$var->minor_industry}}</option>
+
+                                                                                             </select>
+                                                                                         </div>
+                                                                                     </div>
+                                                                                     <br>
+
+
+
+
+
+
+                                                                                     <div class="form-group">
+                                                                                         <div class="form-wrapper">
+                                                                                             <label for="space_location"  ><strong>Location <span style="color: red;"> *</span></strong></label>
+                                                                                             <select class="form-control" id="space_location" required name="space_location" >
+                                                                                                 <?php
+                                                                                                 $locations=DB::table('space_locations')->get();
+                                                                                                 ?>
+                                                                                                 <option value="{{$var->location}}">{{$var->location}}</option>
+                                                                                                 @foreach($locations as $location)
+                                                                                                     <option value="{{$location->location}}">{{$location->location}}</option>
+                                                                                                 @endforeach
+                                                                                             </select>
+                                                                                         </div>
+                                                                                     </div>
+                                                                                     <br>
+
+
+
+                                                                                     <div class="form-group">
+                                                                                         <div class="form-wrapper">
+                                                                                             <label for="space_location"><strong>Sub location <span style="color: red;"> *</span></strong></label>
+                                                                                             <input type="text"  class="form-control" id="" name="space_sub_location" value="{{$var->sub_location}}" required autocomplete="off">
+                                                                                         </div>
+                                                                                     </div>
+                                                                                     <br>
+
+
+                                                                                     <div class="form-group">
+                                                                                         <div class="form-wrapper">
+                                                                                             <label for=""  ><strong>Size (SQM)</strong></label>
+                                                                                             <input type="number" min="1" step="0.01" class="form-control" id="" name="space_size" value="{{$var->size}}"  autocomplete="off">
+                                                                                         </div>
+                                                                                     </div>
+                                                                                     <br>
+
+
+                                                                                     <div class="form-group">
+                                                                                         <div class="form-wrapper">
+                                                                                             <label for="has_water_bill"  ><strong>Required to also pay Water bill <span style="color: red;"> *</span></strong></label>
+                                                                                             <select class="form-control" id="has_water_bill" required name="has_water_bill" >
+
+                                                                                                 @if($var->has_water_bill_space=='Yes')
+                                                                                                     <option value="{{$var->has_water_bill_space}}" selected>{{$var->has_water_bill_space}}</option>
+                                                                                                     <option value="No" id="Option" >No</option>
+                                                                                                 @elseif($var->has_water_bill_space=='No')
+                                                                                                     <option value="{{$var->has_water_bill_space}}" selected>{{$var->has_water_bill_space}}</option>
+                                                                                                     <option value="Yes" id="Option">Yes</option>
+                                                                                                 @else
+                                                                                                 @endif
+                                                                                             </select>
+                                                                                         </div>
+                                                                                     </div>
+                                                                                     <br>
+
+
+                                                                                     <div class="form-group">
+                                                                                         <div class="form-wrapper">
+                                                                                             <label for="has_electricity_bill"  ><strong>Required to also pay Electricity bill <span style="color: red;"> *</span></strong></label>
+                                                                                             <select class="form-control" id="has_electricity_bill" required name="has_electricity_bill" >
+
+                                                                                                 @if($var->has_electricity_bill_space=='Yes')
+                                                                                                     <option value="{{$var->has_electricity_bill_space}}" selected>{{$var->has_electricity_bill_space}}</option>
+                                                                                                     <option value="No" id="Option" >No</option>
+                                                                                                 @elseif($var->has_electricity_bill_space=='No')
+                                                                                                     <option value="{{$var->has_electricity_bill_space}}" selected>{{$var->has_electricity_bill_space}}</option>
+                                                                                                     <option value="Yes" id="Option">Yes</option>
+                                                                                                 @else
+                                                                                                 @endif
+
+                                                                                             </select>
+                                                                                         </div>
+                                                                                     </div>
+                                                                                     <br>
+
+
+                                                                                     <div class="form-group">
+                                                                                         <div class="form-wrapper">
+                                                                                             <label for="rent_price_guide_checkbox_edit" style="display: inline-block;"><strong>Rent Price Guide</strong></label>
+                                                                                             @if($var->rent_price_guide_checkbox==1 AND $var->rent_price_guide_from!=null AND $var->rent_price_guide_to!=null AND $var->rent_price_guide_currency!=null)
+                                                                                                 <input type="checkbox" checked style="display: inline-block;"  onclick="checkbox({{$var->id}});" id="rent_price_guide_checkbox_edit_filled{{$var->id}}" name="rent_price_guide_checkbox"  value="rent_price_guide_selected_edit"  autocomplete="off">
+
+                                                                                                 <div id="rent_price_guide_div_edit_filled{{$var->id}}"  class="form-group row">
+
+                                                                                                     <div class="col-4 inline_block form-wrapper">
+                                                                                                         <label  for="rent_price_guide_from" class=" col-form-label">From:</label>
+                                                                                                         <div class="">
+                                                                                                             <input type="number" min="5" class="form-control" id="rent_price_guide_from_edit_filled{{$var->id}}" name="rent_price_guide_from" value="{{$var->rent_price_guide_from}}"  autocomplete="off">
+                                                                                                         </div>
+                                                                                                     </div>
+
+                                                                                                     <div class="col-4 inline_block  form-wrapper">
+                                                                                                         <label  for="rent_price_guide_to" class=" col-form-label">To:</label>
+                                                                                                         <div  class="">
+                                                                                                             <input type="number" min="10" class="form-control" id="rent_price_guide_to_edit_filled{{$var->id}}" name="rent_price_guide_to" value="{{$var->rent_price_guide_to}}"  autocomplete="off">
+                                                                                                         </div>
+                                                                                                     </div>
+
+
+                                                                                                     <div class="col-3 inline_block  form-wrapper">
+                                                                                                         <label  for="rent_price_guide_currency" class="col-form-label">Currency:</label>
+                                                                                                         <div  class="">
+                                                                                                             <select id="rent_price_guide_currency_edit_filled{{$var->id}}" class="form-control" name="rent_price_guide_currency" >
+                                                                                                                 <option value="" ></option>
+
+                                                                                                                 @if($var->rent_price_guide_currency=='TZS')
+                                                                                                                     <option value="USD" >USD</option>
+                                                                                                                     <option value="{{$var->rent_price_guide_currency}}" selected>{{$var->rent_price_guide_currency}}</option>
+                                                                                                                 @elseif($var->rent_price_guide_currency=='USD')
+                                                                                                                     <option value="TZS">TZS</option>
+                                                                                                                     <option value="{{$var->rent_price_guide_currency}}" selected>{{$var->rent_price_guide_currency}}</option>
+
+                                                                                                                 @else
+
+                                                                                                                 @endif
+
+                                                                                                             </select>
+                                                                                                         </div>
+
+                                                                                                     </div>
+
+                                                                                                 </div>
+
+                                                                                             @else
+                                                                                                 <input type="checkbox"  style="display: inline-block;"  onclick="checkbox({{$var->id}});" id="rent_price_guide_checkbox_edit_one{{$var->id}}" name="rent_price_guide_checkbox"  value="rent_price_guide_selected_edit"  autocomplete="off">
+                                                                                                 <div  id="rent_price_guide_div_edit{{$var->id}}"  style="display: none;" class="form-group row">
+
+                                                                                                     <div class="col-4 inline_block form-wrapper">
+                                                                                                         <label  for="rent_price_guide_from" class=" col-form-label">From:</label>
+                                                                                                         <div class="">
+                                                                                                             <input type="number" min="1" class="form-control" id="rent_price_guide_from_edit{{$var->id}}" name="rent_price_guide_from" value=""  autocomplete="off">
+                                                                                                         </div>
+                                                                                                     </div>
+
+                                                                                                     <div class="col-4 inline_block  form-wrapper">
+                                                                                                         <label  for="rent_price_guide_to" class=" col-form-label">To:</label>
+                                                                                                         <div  class="">
+                                                                                                             <input type="number" min="1" class="form-control" id="rent_price_guide_to_edit{{$var->id}}" name="rent_price_guide_to" value=""  autocomplete="off">
+                                                                                                         </div>
+                                                                                                     </div>
+
+
+                                                                                                     <div class="col-3 inline_block  form-wrapper">
+                                                                                                         <label  for="rent_price_guide_currency" class="col-form-label">Currency:</label>
+                                                                                                         <div  class="">
+                                                                                                             <select id="rent_price_guide_currency_edit{{$var->id}}" class="form-control" name="rent_price_guide_currency" >
+                                                                                                                 <option value=""></option>
+                                                                                                                 <option value="USD" >USD</option>
+                                                                                                                 <option value="TZS">TZS</option>
+                                                                                                             </select>
+                                                                                                         </div>
+
+                                                                                                     </div>
+
+                                                                                                 </div>
+                                                                                             @endif
+
+
+
+
+                                                                                         </div>
+                                                                                     </div>
+                                                                                     <br>
+
+
+                                                                                     <div class="form-group">
+                                                                                         <div class="form-wrapper">
+                                                                                             <label for=""  ><strong>Comments</strong></label>
+                                                                                             <input type="text" class="form-control" id="" name="comments" value="{{$var->comments}}"  autocomplete="off">
+                                                                                         </div>
+                                                                                     </div>
+                                                                                     <br>
+
+
+
+
+
+
+
+
+
+                                                                                     <div align="right">
+                                                                                         <button class="btn btn-primary" type="submit">Foward</button>
+                                                                                         <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                                                                     </div>
+                                                                                 </form>
+
+
+                                                                             </div>
+                                                                         </div>
+                                                                     </div>
+
+
+                                                                 </div>
+
+
+
+                                                                 <div class="modal fade" id="delete{{$var->id}}" role="dialog">
+
+                                                                     <div class="modal-dialog" role="document">
+                                                                         <div class="modal-content">
+                                                                             <div class="modal-header">
+                                                                                 <b><h5 class="modal-title">Are you sure you want to delete the Real Estate number {{$var->space_id}}?</h5></b>
+
+                                                                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                             </div>
+
+                                                                             <div class="modal-body">
+                                                                                 <form method="get" action="{{ route('cancel_space_addition',$var->id)}}" >
+                                                                                     {{csrf_field()}}
+
+
+
+                                                                                     <div align="right">
+                                                                                         <button class="btn btn-primary" type="submit" id="newdata">Yes</button>
+                                                                                         <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">No</button>
+                                                                                     </div>
+
+
+                                                                                 </form>
+                                                                             </div>
+                                                                         </div>
+                                                                     </div>
+
+
+                                                                 </div>
+
+
+
+
+                                                                 <div class="modal fade" id="revoke_delete{{$var->id}}" role="dialog">
+
+                                                                     <div class="modal-dialog" role="document">
+                                                                         <div class="modal-content">
+                                                                             <div class="modal-header">
+                                                                                 <b><h5 class="modal-title">Are you sure you want to revoke the deletion of  Real Estate with Real Estate number {{$var->space_id}}?</h5></b>
+
+                                                                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                             </div>
+
+                                                                             <div class="modal-body">
+                                                                                 <form method="get" action="{{ route('revoke_deletion_space',$var->id)}}" >
+                                                                                     {{csrf_field()}}
+
+
+
+                                                                                     <div align="right">
+                                                                                         <button class="btn btn-primary" type="submit" id="newdata">Yes</button>
+                                                                                         <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">No</button>
+                                                                                     </div>
+
+
+                                                                                 </form>
+                                                                             </div>
+                                                                         </div>
+                                                                     </div>
+
+
+                                                                 </div>
+
+
+
+
+
+                                                             </center>
+                                                         </td>
+                                                     </tr>
+
+                                                     <?php
+                                                     $i=$i+1;
+                                                     ?>
+                                                 @endforeach
+
+
+
+
+
+                                                 </tbody>
+                                             </table>
+                                         @else
+                                             <p class="mt-4" style="text-align:center;">No records found</p>
+                                         @endif
+                                     </div>
+
+                                 @endif
 
 
                                  <div id="space_outbox" style="border-bottom-left-radius: 50px 20px;   border: 1px solid #ccc; padding: 1%;" class="tabcontent_spaces">
@@ -4260,7 +5605,7 @@ input[type=radio]{
                                      ?>
                                      @if($space_outbox!='')
                                          <table class="table">
-                                             <thead >
+                                             <thead>
                                              <tr>
                                                  <th scope="col"><center>S/N</center></th>
                                                  <th scope="col">Category</th>
@@ -4269,7 +5614,8 @@ input[type=radio]{
                                                  <th scope="col" >Location</th>
                                                  <th scope="col" >Sub Location</th>
                                                  <th scope="col" ><center>Size (SQM)</center></th>
-                                                 <th scope="col" ><center>Form status</center></th>
+                                                 <th scope="col" ><center>Status</center></th>
+                                                 <th scope="col" ><center>Stage</center></th>
                                              </tr>
                                              </thead>
                                              <tbody>
@@ -4292,26 +5638,98 @@ input[type=radio]{
 
 
 
-                                                     {{--            <td><center>--}}
-
-                                                     {{--                @if($var->rent_price_guide_from==null)--}}
-                                                     {{--                  N/A--}}
-                                                     {{--                @else--}}
-                                                     {{--                  {{$var->rent_price_guide_from}} - {{$var->rent_price_guide_to}} {{$var->rent_price_guide_currency}}--}}
-                                                     {{--                @endif--}}
-
-                                                     {{--                </center></td>--}}
-
-                                                     <td><center>
-                                                             @if($var->flag==0)
-                                                                 Director DPDI
-                                                             @elseif($var->flag==1)
-                                                                 DPDI Planner
-                                                             @else
-                                                             @endif
 
 
-                                                         </center></td>
+                                                     @if(Auth::user()->role=='Director DPDI')
+
+
+                                                         @if($var->stage=='2' AND $var->rejected_by=='DVC')
+                                                             <td><center>
+
+
+
+
+                                                                     <a title="View Reason for the Declination" style="cursor: pointer; color:#3490dc;"  class="" data-toggle="modal" data-target="#decline_reason_space{{$var->id}}" aria-pressed="true"><div ><span style="background-color: red; color:white;  padding:3px;   text-align: center;">DECLINED</span> </div></a>
+
+                                                                     <div class="modal fade" id="decline_reason_space{{$var->id}}" role="dialog">
+
+                                                                         <div class="modal-dialog" role="document">
+                                                                             <div class="modal-content">
+                                                                                 <div class="modal-header">
+                                                                                     <b><h5 class="modal-title">Reason(s) for Declination by DVC Administration</h5></b>
+
+                                                                                     <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                                 </div>
+
+                                                                                 <div class="modal-body">
+                                                                                     <form method="post" action=""   >
+                                                                                         {{csrf_field()}}
+
+
+                                                                                         <div class="form-row">
+
+
+                                                                                             <div class="form-group col-12">
+                                                                                                 <div class="form-wrapper">
+                                                                                                     <label for="remarks" style="color: red;"></label>
+                                                                                                     <textarea type="text"  name="reason" class="form-control" readonly="">{{$var->approval_remarks}}</textarea>
+                                                                                                 </div>
+                                                                                             </div>
+                                                                                             <br>
+                                                                                             <br>
+
+
+
+                                                                                         </div>
+
+
+                                                                                         <div align="right">
+
+                                                                                             <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button>
+                                                                                         </div>
+                                                                                     </form>
+
+                                                                                 </div>
+                                                                             </div>
+                                                                         </div>
+                                                                     </div>
+
+
+                                                                 </center></td>
+                                                         @else
+
+                                                             <td><center>PENDING</center></td>
+                                                         @endif
+                                                     @elseif(Auth::user()->role=='DVC Administrator')
+                                                         <td><center>PENDING</center></td>
+
+                                                     @elseif(Auth::user()->role=='DPDI Planner' AND $var->stage=='1')
+                                                         <td><center>PENDING</center></td>
+
+                                                     @elseif(Auth::user()->role=='DPDI Planner' AND $var->stage=='1b')
+                                                         <td><center>PENDING</center></td>
+                                                     @else
+                                                     @endif
+
+
+
+                                                     @if(Auth::user()->role=='Director DPDI')
+
+                                                         @if($var->stage=='1b')
+                                                             <td><center>DVC Administration</center></td>
+                                                         @else
+                                                             <td><center>DPDI Planner</center></td>
+                                                         @endif
+                                                     @elseif(Auth::user()->role=='DVC Administrator')
+                                                         <td><center>DPDI Planner</center></td>
+
+                                                     @elseif(Auth::user()->role=='DPDI Planner' AND $var->stage=='1')
+                                                         <td><center>Director DPDI</center></td>
+
+                                                     @elseif(Auth::user()->role=='DPDI Planner' AND $var->stage=='1b')
+                                                         <td><center>DVC Administration</center></td>
+                                                     @else
+                                                     @endif
 
 
                                                  </tr>
@@ -4328,7 +5746,7 @@ input[type=radio]{
                                              </tbody>
                                          </table>
                                      @else
-                                         <p style="line-height: 1.5;font-size: 17px;"><i class="fa fa-envelope-o" style="font-size:25px;color:#3490dc;"></i> No new message</p>
+                                         <p class="mt-4" style="text-align:center;">No records found</p>
                                      @endif
                                  </div>
 
@@ -4714,9 +6132,9 @@ input[type=radio]{
                                                                  </div>
                                                              </div>
 
-                                                             @if($privileges=='Read only')
-                                                             @else
-                                                                 @admin
+                                                             @if(Auth::user()->role=='DPDI Planner')
+
+
                                                                  <a data-toggle="modal" title="Edit Real Estate Information" data-target="#edit_space{{$var->id}}"  role="button" aria-pressed="true" name="editC"><i class="fa fa-edit" style="font-size:20px; color: green;"></i></a>
 
                                                                  <div class="modal fade" id="edit_space{{$var->id}}" role="dialog">
@@ -4898,13 +6316,15 @@ input[type=radio]{
                                                                                          <div class="form-wrapper">
                                                                                              <label for=""  ><strong>Comments</strong></label>
                                                                                              <input type="text" class="form-control" id="" name="comments" value="{{$var->comments}}"  autocomplete="off">
+
                                                                                          </div>
                                                                                      </div>
                                                                                      <br>
 
+                                                                                     <input type="hidden" class="form-control" id="" name="edit_case" value="True"  autocomplete="off">
 
                                                                                      <div align="right">
-                                                                                         <button class="btn btn-primary" type="submit">Save</button>
+                                                                                         <button class="btn btn-primary" type="submit">Forward</button>
                                                                                          <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
                                                                                      </div>
                                                                                  </form>
@@ -4916,8 +6336,8 @@ input[type=radio]{
 
 
                                                                  </div>
+                                                                    @endif
 
-                                                                 @endadmin
                                                                  @if($var->occupation_status==1)
 
                                                                  @else
@@ -4929,14 +6349,14 @@ input[type=radio]{
                                                                      @endif
 
 
-                                                                @admin
+                                                             @if(Auth::user()->role=='DPDI Planner')
                                                                  <a data-toggle="modal" title="Delete Real Estate" data-target="#deactivate{{$var->id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px; color:red;"></i></a>
                                                                  <div class="modal fade" id="deactivate{{$var->id}}" role="dialog">
 
                                                                      <div class="modal-dialog" role="document">
                                                                          <div class="modal-content">
                                                                              <div class="modal-header">
-                                                                                 <b><h5 class="modal-title">Are you sure you want to deactivate the Real Estate with Real Estate number {{$var->space_id}}?</h5></b>
+                                                                                 <b><h5 class="modal-title">Are you sure you want to delete the Real Estate number {{$var->space_id}}?</h5></b>
 
                                                                                  <button type="button" class="close" data-dismiss="modal">&times;</button>
                                                                              </div>
@@ -4961,8 +6381,8 @@ input[type=radio]{
 
                                                                  </div>
 
-                                                                 @endadmin
-                                                             @endif
+                                                                 @endif
+
 
 
 
@@ -5444,9 +6864,8 @@ input[type=radio]{
                                                              </div>
                                                          </div>
 
-                                                         @if($privileges=='Read only')
-                                                         @else
-                                                             @admin
+                                                         @if(Auth::user()->role=='DPDI Planner')
+
                                                              <a data-toggle="modal" title="Edit Real Estate information" data-target="#edit_space{{$var->id}}"  role="button" aria-pressed="true" name="editC"><i class="fa fa-edit" style="font-size:20px; color: green;"></i></a>
 
                                                              <div class="modal fade" id="edit_space{{$var->id}}" role="dialog">
@@ -5632,6 +7051,7 @@ input[type=radio]{
                                                                                  </div>
                                                                                  <br>
 
+                                                                                 <input type="hidden" class="form-control" id="" name="edit_case" value="True"  autocomplete="off">
 
                                                                                  <div align="right">
                                                                                      <button class="btn btn-primary" type="submit">Save</button>
@@ -5646,7 +7066,10 @@ input[type=radio]{
 
 
                                                              </div>
-                                                         @endadmin
+                                                         @endif
+
+
+
                                                              @if($var->occupation_status==1)
 
                                                              @else
@@ -5661,7 +7084,7 @@ input[type=radio]{
 
 
 
-                                                         @admin
+                                                         @if(Auth::user()->role=='DPDI Planner')
                                                              <a data-toggle="modal" title="Delete Real Estate" data-target="#deactivate{{$var->id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px; color:red;"></i></a>
 
                                                              <div class="modal fade" id="deactivate{{$var->id}}" role="dialog">
@@ -5669,7 +7092,7 @@ input[type=radio]{
                                                                  <div class="modal-dialog" role="document">
                                                                      <div class="modal-content">
                                                                          <div class="modal-header">
-                                                                             <b><h5 class="modal-title">Are you sure you want to deactivate the Real Estate with Real Estate number {{$var->space_id}}?</h5></b>
+                                                                             <b><h5 class="modal-title">Are you sure you want to delete the Real Estate number {{$var->space_id}}?</h5></b>
 
                                                                              <button type="button" class="close" data-dismiss="modal">&times;</button>
                                                                          </div>
@@ -5693,8 +7116,8 @@ input[type=radio]{
 
 
                                                              </div>
-                                                             @endadmin
                                                          @endif
+
 
 
 
@@ -5752,7 +7175,7 @@ input[type=radio]{
                                  evt.currentTarget.className += " active";
                              }
 
-                             @if((Auth::user()->role=='DPDI Planner') || (Auth::user()->role=='Director DPDI'))
+                             @if((Auth::user()->role=='DPDI Planner') || (Auth::user()->role=='Director DPDI') || Auth::user()->role=='DVC Administrator')
                              document.getElementById("default_space").click();
                              @else
                              @endif
@@ -6589,56 +8012,12 @@ input[type=radio]{
                 }
             }
 
-            function openHire(evt, evtName) {
-                // Declare all variables
-                var i, tabcontent, tablinks;
-
-                // Get all elements with class="tabcontent" and hide them
-                tabcontent = document.getElementsByClassName("tabcontent_hire");
-                for (i = 0; i < tabcontent.length; i++) {
-                    tabcontent[i].style.display = "none";
-                }
-
-                // Get all elements with class="tablinks" and remove the class "active"
-                tablinks = document.getElementsByClassName("tablinks_hire");
-                for (i = 0; i < tablinks.length; i++) {
-                    tablinks[i].className = tablinks[i].className.replace(" active", "");
-                }
-
-                // Show the current tab, and add an "active" class to the button that opened the tab
-                document.getElementById(evtName).style.display = "block";
-                evt.currentTarget.className += " active";
-            }
-            @if ($category=='CPTU only' OR $category=='All')
-            document.getElementById("defaultOpenHire").click();
-            @else
-            @endif
 
 
 
 
 
-            function openRoom(evt, evtName) {
-                // Declare all variables
-                var i, tabcontent, tablinks;
 
-                // Get all elements with class="tabcontent" and hide them
-                tabcontent = document.getElementsByClassName("tabcontent_room");
-                for (i = 0; i < tabcontent.length; i++) {
-                    tabcontent[i].style.display = "none";
-                }
-
-                // Get all elements with class="tablinks" and remove the class "active"
-                tablinks = document.getElementsByClassName("tablinks_room");
-                for (i = 0; i < tablinks.length; i++) {
-                    tablinks[i].className = tablinks[i].className.replace(" active", "");
-                }
-
-                // Show the current tab, and add an "active" class to the button that opened the tab
-                document.getElementById(evtName).style.display = "block";
-                evt.currentTarget.className += " active";
-            }
-            document.getElementById("defaultOpenRoom").click();
 
 
 

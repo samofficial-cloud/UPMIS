@@ -412,23 +412,11 @@
 
                                                         <br>
                                                         <div id="vehicle_useDiv" class="form-wrapper col-12" style="display: none;">
-                                                            <label for="vehicle_use"  ><strong>Vehicle Use</strong> <span style="color: red;"> *</span></label>
+                                                            <label for="vehicle_use"  ><strong>Vehicle Class</strong> <span style="color: red;"> *</span></label>
                                                             <span id="vehicle_use_msg"></span>
-                                                            <select class="form-control" id="vehicle_use" name="vehicle_use">
 
-                                                                @if($var->vehicle_use=='PRIVATE')
-                                                                    <option value="COMMERCIAL" id="Option">COMMERCIAL</option>
-                                                                    <option value="{{$var->vehicle_use}}" selected id="Option">{{$var->vehicle_use}}</option>
-                                                                @elseif($var->vehicle_use=='COMMERCIAL')
-                                                                    <option value="PRIVATE" id="Option" >PRIVATE</option>
-                                                                    <option value="{{$var->vehicle_use}}" selected id="Option">{{$var->vehicle_use}}</option>
-                                                                @else
-                                                                    <option value="" id="Option"></option>
-                                                                    <option value="PRIVATE" id="Option" >PRIVATE</option>
-                                                                    <option value="COMMERCIAL" id="Option">COMMERCIAL</option>
-                                                                @endif
 
-                                                            </select>
+                                                            <input type="text" id="vehicle_use" readonly value="{{$var->vehicle_use}}" name="vehicle_use" class="form-control" >
                                                         </div>
 
 

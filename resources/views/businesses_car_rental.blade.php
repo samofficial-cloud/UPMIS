@@ -301,10 +301,25 @@ input[type=radio]{
                                                                          <div class="modal-content">
                                                                              <div class="modal-header">
                                                                                  <b><h5 class="modal-title">CONFIRMATION</h5></b>
+
                                                                                  <button type="button" class="close" data-dismiss="modal">&times;</button>
                                                                              </div>
 
                                                                              <div class="modal-body">
+
+
+                                                                                 @if($car->terminated_stage=='1')
+
+                                                                                     <p style="color: red"><strong style="color:black !important;">CASE: </strong> Deletion of an Existing Vehicle</p>
+                                                                                 @else
+
+                                                                                     @if($car->edit_status=='1')
+                                                                                         <p style="color: red"><strong style="color:black !important;">CASE: </strong> Editing of Information for an Existing Vehicle</p>
+                                                                                     @else
+                                                                                         <p style="color: red"><strong style="color:black !important;">CASE: </strong> Addition of a New Vehicle</p>
+                                                                                     @endif
+
+                                                                                 @endif
 
 
 
@@ -312,6 +327,19 @@ input[type=radio]{
 
                                                                                      <form method="post" action="{{ route('car_approval_response')}}">
                                                                                          {{csrf_field()}}
+
+
+                                                                                         @if($car->rejected_by=='DVC')
+                                                                                             <div class="form-group">
+                                                                                                 <div class="form-wrapper">
+                                                                                                     <label for="remarks" style="color: red;">Reason(s) for Declination by DVC Administration:</label>
+                                                                                                     <textarea type="text"  class="form-control" readonly="">{{$car->approval_remarks}}</textarea>
+                                                                                                 </div>
+                                                                                             </div>
+                                                                                             <br>
+                                                                                         @endif
+
+
                                                                                          <div class="form-group">
                                                                                              <div class="form-wrapper">
                                                                                                  <label for="reg_no">Vehicle Registration No<span style="color: red;">*</span></label>
@@ -360,7 +388,7 @@ input[type=radio]{
 
                                                                                          <div class="row">
                                                                                              <div class="form-wrapper col-12">
-                                                                                                 <label for="approval_status">Do you approve this Car?</label>
+                                                                                                 <label for="approval_status">Do you approve this Vehicle?</label>
                                                                                              </div>
                                                                                          </div>
 
@@ -385,7 +413,7 @@ input[type=radio]{
 
                                                                                          <div class="form-group" id="remarksDiv{{$car->id}}" style="display: none;">
                                                                                              <div class="form-wrapper">
-                                                                                                 <label for="remarks">Reason<span style="color: red;">*</span></label>
+                                                                                                 <label for="remarks">Reasons for decline<span style="color: red;">*</span></label>
                                                                                                  <span id="remarksmsg{{$car->id}}"></span>
                                                                                                  <textarea  type="text" id="remarks{{$car->id}}" name="approval_remarks" class="form-control"></textarea>
                                                                                              </div>
@@ -395,7 +423,7 @@ input[type=radio]{
                                                                                          <br>
 
                                                                                          <div align="right">
-                                                                                             <button class="btn btn-primary" type="submit">Save</button>
+                                                                                             <button class="btn btn-primary" type="submit">Proceed</button>
                                                                                              <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
                                                                                          </div>
                                                                                      </form>
@@ -450,7 +478,7 @@ input[type=radio]{
 
                                                                                          <div class="row">
                                                                                              <div class="form-wrapper col-12">
-                                                                                                 <label for="approval_status">Do you approve this Car?</label>
+                                                                                                 <label for="approval_status">Do you approve this Vehicle?</label>
                                                                                              </div>
                                                                                          </div>
 
@@ -475,7 +503,7 @@ input[type=radio]{
 
                                                                                          <div class="form-group" id="remarksDiv{{$car->id}}" style="display: none;">
                                                                                              <div class="form-wrapper">
-                                                                                                 <label for="remarks">Reason<span style="color: red;">*</span></label>
+                                                                                                 <label for="remarks">Reasons for decline<span style="color: red;">*</span></label>
                                                                                                  <span id="remarksmsg{{$car->id}}"></span>
                                                                                                  <textarea  type="text" id="remarks{{$car->id}}" name="approval_remarks" class="form-control"></textarea>
                                                                                              </div>
@@ -485,11 +513,12 @@ input[type=radio]{
                                                                                          <br>
 
                                                                                          <div align="right">
-                                                                                             <button class="btn btn-primary" type="submit">Save</button>
+                                                                                             <button class="btn btn-primary" type="submit">Proceed</button>
                                                                                              <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
                                                                                          </div>
                                                                                      </form>
                                                                                  @endif
+
 
 
                                                                              </div>
@@ -688,9 +717,9 @@ input[type=radio]{
 
                                                                                  <input type="text" name="id" value="{{$car->id}}" hidden="">
                                                                                  <input type="text" name="rejected_by" value="{{$car->rejected_by}}" hidden="">
-
+                                                                                 <input type="text" name="edit_case" value="False" hidden="">
                                                                                  <div align="right">
-                                                                                     <button class="btn btn-primary" type="submit">Submit</button>
+                                                                                     <button class="btn btn-primary" type="submit">Forward</button>
                                                                                      <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
                                                                                  </div>
                                                                              </form>
@@ -699,9 +728,17 @@ input[type=radio]{
                                                                  </div>
                                                              </div>
 
+                                                             @if($car->terminated_stage=='1')
+                                                                 <a title="Revoke the deletion of this Vehicle" data-toggle="modal" data-target="#revoke_Deactivate{{$car->id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px; color:red; cursor: pointer;"></i></a>
+                                                             @else
+                                                                 @if($car->edit_status=='1')
+                                                                 @else
 
+                                                                     <a title="Delete this Vehicle" data-toggle="modal" data-target="#Deactivate{{$car->id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px; color:red; cursor: pointer;"></i></a>
+                                                                 @endif
 
-                                                             <a title="Delete this Car" data-toggle="modal" data-target="#Deactivate{{$car->id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px; color:red; cursor: pointer;"></i></a>
+                                                             @endif
+
                                                              <div class="modal fade" id="Deactivate{{$car->id}}" role="dialog">
 
                                                                  <div class="modal-dialog" role="document">
@@ -723,6 +760,35 @@ input[type=radio]{
                                                                      </div>
                                                                  </div>
                                                              </div>
+
+
+
+
+                                                             <div class="modal fade" id="revoke_Deactivate{{$car->id}}" role="dialog">
+
+                                                                 <div class="modal-dialog" role="document">
+                                                                     <div class="modal-content">
+                                                                         <div class="modal-header">
+                                                                             <b><h5 class="modal-title" style="color: red;"><b>WARNING</b></h5></b>
+                                                                             <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                         </div>
+
+                                                                         <div class="modal-body">
+                                                                             <p style="font-size: 20px;">Are you sure you want to revoke the deletion of this vehicle?</p>
+                                                                             <br>
+                                                                             <div align="right">
+                                                                                 <a class="btn btn-info" href="{{route('revoke_deletecar',$car->id)}}">Yes</a>
+                                                                                 <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                                                                             </div>
+
+                                                                         </div>
+                                                                     </div>
+                                                                 </div>
+                                                             </div>
+
+
+
+
                                                          </td>
                                                      </tr>
                                                      <?php $c = $c + 1; ?>
@@ -748,6 +814,8 @@ input[type=radio]{
                                                  <th style="width: 14%"><center>Vehicle Model</center></th>
                                                  <th style="width: 14%"><center>Vehicle Status</center></th>
                                                  <th style="width: 14%"><center>Hire Rate</center></th>
+                                                 <th style="width: 14%"><center>Status</center></th>
+
                                                  <th style="width: 14%"><center>Stage</center></th>
                                              </tr>
                                              </thead>
@@ -759,6 +827,82 @@ input[type=radio]{
                                                      <td><center>{{$car->vehicle_model}}</center></td>
                                                      <td><center>{{$car->vehicle_status}}</center></td>
                                                      <td><center>{{number_format($car->hire_rate)}}</center></td>
+
+
+
+                                                     @if(Auth::user()->role=='Director DPDI')
+
+
+                                                             @if($car->stage=='2' AND $car->rejected_by=='DVC')
+                                                             <td><center>
+
+
+
+
+                                                                     <a title="View Reason for the Declination" style="cursor: pointer; color:#3490dc;"  class="" data-toggle="modal" data-target="#decline_reason{{$car->id}}" aria-pressed="true"><div ><span style="background-color: red; color:white;  padding:3px;   text-align: center;">DECLINED</span> </div></a>
+
+                                                                     <div class="modal fade" id="decline_reason{{$car->id}}" role="dialog">
+
+                                                                         <div class="modal-dialog" role="document">
+                                                                             <div class="modal-content">
+                                                                                 <div class="modal-header">
+                                                                                     <b><h5 class="modal-title">Reason(s) for Declination by DVC Administration</h5></b>
+
+                                                                                     <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                                 </div>
+
+                                                                                 <div class="modal-body">
+                                                                                     <form method="post" action=""   >
+                                                                                         {{csrf_field()}}
+
+
+                                                                                         <div class="form-row">
+
+
+                                                                                             <div class="form-group col-12">
+                                                                                                 <div class="form-wrapper">
+                                                                                                     <label for="remarks" style="color: red;"></label>
+                                                                                                     <textarea type="text"  name="reason" class="form-control" readonly="">{{$car->approval_remarks}}</textarea>
+                                                                                                 </div>
+                                                                                             </div>
+                                                                                             <br>
+                                                                                             <br>
+
+
+
+                                                                                         </div>
+
+
+                                                                                         <div align="right">
+
+                                                                                             <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button>
+                                                                                         </div>
+                                                                                     </form>
+
+                                                                                 </div>
+                                                                             </div>
+                                                                         </div>
+                                                                     </div>
+
+
+                                                                 </center></td>
+                                                         @else
+
+                                                                 <td><center>PENDING</center></td>
+                                                         @endif
+                                                     @elseif(Auth::user()->role=='DVC Administrator')
+                                                         <td><center>PENDING</center></td>
+
+                                                     @elseif(Auth::user()->role=='Transport Officer-CPTU' AND $car->stage=='1')
+                                                         <td><center>PENDING</center></td>
+
+                                                     @elseif(Auth::user()->role=='Transport Officer-CPTU' AND $car->stage=='1b')
+                                                         <td><center>PENDING</center></td>
+                                                     @else
+                                                     @endif
+
+
+
                                                      @if(Auth::user()->role=='Director DPDI')
 
                                                          @if($car->stage=='1b')
@@ -776,6 +920,8 @@ input[type=radio]{
                                                          <td><center>DVC Administration</center></td>
                                                      @else
                                                      @endif
+
+
                                                  </tr>
                                                  <?php $c = $c + 1; ?>
                                              @endforeach
@@ -993,9 +1139,9 @@ input[type=radio]{
 
                                                                                  <input type="text" name="id" value="{{$cars->id}}" hidden="">
                                                                                  <input type="text" name="rejected_by" value="{{$cars->rejected_by}}" hidden="">
-
+                                                                                 <input type="text" name="edit_case" value="False" hidden="">
                                                                                  <div align="right">
-                                                                                     <button class="btn btn-primary" type="submit">Submit</button>
+                                                                                     <button class="btn btn-primary" type="submit">Forward</button>
                                                                                      <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
                                                                                  </div>
                                                                              </form>
@@ -1005,7 +1151,7 @@ input[type=radio]{
                                                              </div>
                                                          @endif
 
-                                                         @admin
+                                                         @if(Auth::user()->role=='Transport Officer-CPTU')
                                                          <a title="Delete this Car" data-toggle="modal" data-target="#Deactivate{{$cars->id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px; color:red; cursor: pointer;"></i></a>
                                                          <div class="modal fade" id="Deactivate{{$cars->id}}" role="dialog">
 
@@ -1017,10 +1163,10 @@ input[type=radio]{
                                                                      </div>
 
                                                                      <div class="modal-body">
-                                                                         <p style="font-size: 20px;">Are you sure you want to delete this car?</p>
+                                                                         <p style="font-size: 20px;">Are you sure you want to delete this Vehicle?</p>
                                                                          <br>
                                                                          <div align="right">
-                                                                             <a class="btn btn-info" href="{{route('deletecar',$cars->id)}}">Proceed</a>
+                                                                             <a class="btn btn-info" href="{{route('deletecar',$cars->id)}}">Yes</a>
                                                                              <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
                                                                          </div>
 
@@ -1028,7 +1174,7 @@ input[type=radio]{
                                                                  </div>
                                                              </div>
                                                          </div>
-                                                         @endadmin
+                                                         @endif
 
                                                      </center>
                                                  </td>
@@ -1160,7 +1306,7 @@ input[type=radio]{
                                                          {{--  @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR (Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator')) --}}
                                                          @if($privileges=='Read only')
                                                          @else
-                                                             @admin
+                                                             @if(Auth::user()->role=='Transport Officer-CPTU')
                                                              <a title="Edit Car Details" data-toggle="modal" data-target="#edit{{$cars->id}}" role="button" aria-pressed="true" id="{{$cars->id}}"><i class="fa fa-edit" style="font-size:20px; color: green; cursor: pointer;"></i></a>
                                                              <div class="modal fade" id="edit{{$cars->id}}" role="dialog">
 
@@ -1244,9 +1390,9 @@ input[type=radio]{
 
 
                                                                                  <input type="text" name="id" value="{{$cars->id}}" hidden="">
-
+                                                                                 <input type="text" name="edit_case" value="False" hidden="">
                                                                                  <div align="right">
-                                                                                     <button class="btn btn-primary" type="submit">Submit</button>
+                                                                                     <button class="btn btn-primary" type="submit">Forward</button>
                                                                                      <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
                                                                                  </div>
                                                                              </form>
@@ -1268,10 +1414,10 @@ input[type=radio]{
                                                                          </div>
 
                                                                          <div class="modal-body">
-                                                                             <p style="font-size: 20px;">Are you sure you want to delete this car?</p>
+                                                                             <p style="font-size: 20px;">Are you sure you want to delete this Vehicle?</p>
                                                                              <br>
                                                                              <div align="right">
-                                                                                 <a class="btn btn-info" href="{{route('deletecar',$cars->id)}}">Proceed</a>
+                                                                                 <a class="btn btn-info" href="{{route('deletecar',$cars->id)}}">Yes</a>
                                                                                  <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
                                                                              </div>
 
@@ -1279,7 +1425,7 @@ input[type=radio]{
                                                                      </div>
                                                                  </div>
                                                              </div>
-                                                             @endadmin
+                                                             @endif
                                                          @endif
                                                      </center>
                                                  </td>
@@ -1338,170 +1484,205 @@ input[type=radio]{
                                                          <td class="text-center"><center>{{number_format($rate->hire_rate)}}</center></td>
 
 
-                                                             <td><center>
-                                                                     <a title="Review" data-toggle="modal" data-target="#hire{{$rate->id}}" role="button" aria-pressed="true" id="{{$rate->id}}"><i style="color: #3490dc;" class="fas fa-reply"></i></a>
-                                                                     <div class="modal fade" id="hire{{$rate->id}}" role="dialog">
+                                                         <td><center>
+                                                                 <a title="Review" data-toggle="modal" data-target="#hire{{$rate->id}}" role="button" aria-pressed="true" id="{{$rate->id}}"><i style="color: #3490dc;" class="fas fa-reply"></i></a>
+                                                                 <div class="modal fade" id="hire{{$rate->id}}" role="dialog">
 
-                                                                         <div class="modal-dialog modal-dialog-scrollable" role="document">
-                                                                             <div class="modal-content">
-                                                                                 <div class="modal-header">
-                                                                                     <b><h5 class="modal-title">Approval for Car Hire Rate</h5></b>
+                                                                     <div class="modal-dialog modal-dialog-scrollable" role="document">
+                                                                         <div class="modal-content">
+                                                                             <div class="modal-header">
+                                                                                 <b><h5 class="modal-title">Approval for Car Hire Rate</h5></b>
 
-                                                                                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                                                 </div>
+                                                                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                             </div>
 
-                                                                                 <div class="modal-body">
-
-    @if(Auth::user()->role=='Director DPDI')
-
-    <form method="post" action="{{ route('hire_rate_approval_response') }}">
-        {{csrf_field()}}
-        <div class="form-group">
-            <div class="form-wrapper">
-                <label for="hire_vehicle_model{{$rate->id}}">Vehicle Model</label>
-                <input type="text" id="hire_vehicle_model{{$rate->id}}" readonly name="hire_vehicle_model" class="form-control" required="" autocomplete="off" value="{{$rate->vehicle_model}}">
-            </div>
-        </div>
-        <br>
-
-        <div class="form-group">
-            <div class="form-wrapper">
-                <label for="hire_hire_rate{{$rate->id}}">Hire Rate/KM<span id="ratemessage{{$rate->id}}"></span></label>
-
-                <input type="text" id="hire_hire_rate{{$rate->id}}" readonly name="hire_hire_rate" class="form-control" required="" value="{{$rate->hire_rate}}" onkeypress="if((this.value.length<10)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
-            </div>
-        </div>
-        <br>
-        <input type="text" name="id" value="{{$rate->id}}" hidden="">
+                                                                             <div class="modal-body">
 
 
-        <div class="row">
-            <div class="form-wrapper col-12">
-                <label for="approval_status">Do you approve this Hire Rate?</label>
-            </div>
-        </div>
+                                                                                 @if($rate->terminated_stage=='1')
 
-        <div class="form-group">
+                                                                                     <p style="color: red"><strong style="color:black !important;">CASE: </strong> Deletion of an Existing Car Hire Rate</p>
+                                                                                 @else
+
+                                                                                     @if($rate->edit_status=='1')
+                                                                                         <p style="color: red"><strong style="color:black !important;">CASE: </strong> Editing of Information for an Existing Car Hire Rate</p>
+                                                                                     @else
+                                                                                         <p style="color: red"><strong style="color:black !important;">CASE: </strong> Addition of a New Car Hire Rate</p>
+                                                                                     @endif
+
+                                                                                 @endif
 
 
 
 
-            <div class="row">
-                <div class="form-wrapper col-6">
-                    <input class="form-check-input" type="radio" name="approval_status" id="Approve{{$rate->id}}" value="Accepted" checked="">
-                    <label for="Approve{{$rate->id}}" class="form-check-label">Approve</label>
-                </div>
-
-                <div class="form-wrapper col-6">
-                    <input class="form-check-input" type="radio" name="approval_status" id="Reject{{$rate->id}}" value="Rejected">
-                    <label for="Reject{{$rate->id}}" class="form-check-label">Decline</label>
-                </div>
-
-            </div>
-        </div>
-
-        <div class="form-group" id="remarksDiv{{$rate->id}}" style="display: none;">
-            <div class="form-wrapper">
-                <label for="remarks">Reason<span style="color: red;">*</span></label>
-                <span id="remarksmsg{{$rate->id}}"></span>
-                <textarea  type="text" id="remarks{{$rate->id}}" name="approval_remarks" class="form-control"></textarea>
-            </div>
-        </div>
 
 
 
-        <div align="right">
-            <button class="btn btn-primary" type="submit" name="rate_editSubmit" id="{{$rate->id}}">Submit</button>
-            <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
-        </div>
+                                                                                 @if(Auth::user()->role=='Director DPDI')
 
-    </form>
-        @elseif(Auth::user()->role=='DVC Administrator')
+                                                                                     <form method="post" action="{{ route('hire_rate_approval_response') }}">
+                                                                                         {{csrf_field()}}
 
-                                                                                         <form method="post" action="{{ route('hire_rate_second_approval_response') }}">
-                                                                                             {{csrf_field()}}
+
+
+                                                                                         @if($rate->rejected_by=='DVC')
                                                                                              <div class="form-group">
                                                                                                  <div class="form-wrapper">
-                                                                                                     <label for="hire_vehicle_model{{$rate->id}}">Vehicle Model</label>
-                                                                                                     <input type="text" id="hire_vehicle_model{{$rate->id}}" readonly name="hire_vehicle_model" class="form-control" required="" autocomplete="off" value="{{$rate->vehicle_model}}">
+                                                                                                     <label for="remarks" style="color: red;">Reason(s) for Declination by DVC Administration:</label>
+                                                                                                     <textarea type="text"  class="form-control" readonly="">{{$rate->approval_remarks}}</textarea>
                                                                                                  </div>
                                                                                              </div>
                                                                                              <br>
+                                                                                         @endif
 
-                                                                                             <div class="form-group">
-                                                                                                 <div class="form-wrapper">
-                                                                                                     <label for="hire_hire_rate{{$rate->id}}">Hire Rate/KM<span id="ratemessage{{$rate->id}}"></span></label>
 
-                                                                                                     <input type="text" id="hire_hire_rate{{$rate->id}}" readonly name="hire_hire_rate" class="form-control" required="" value="{{$rate->hire_rate}}" onkeypress="if((this.value.length<10)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
-                                                                                                 </div>
+
+                                                                                         <div class="form-group">
+                                                                                             <div class="form-wrapper">
+                                                                                                 <label for="hire_vehicle_model{{$rate->id}}">Vehicle Model</label>
+                                                                                                 <input type="text" id="hire_vehicle_model{{$rate->id}}" readonly name="hire_vehicle_model" class="form-control" required="" autocomplete="off" value="{{$rate->vehicle_model}}">
                                                                                              </div>
-                                                                                             <br>
-                                                                                             <input type="text" name="id" value="{{$rate->id}}" hidden="">
+                                                                                         </div>
+                                                                                         <br>
+
+                                                                                         <div class="form-group">
+                                                                                             <div class="form-wrapper">
+                                                                                                 <label for="hire_hire_rate{{$rate->id}}">Hire Rate/KM<span id="ratemessage{{$rate->id}}"></span></label>
+
+                                                                                                 <input type="text" id="hire_hire_rate{{$rate->id}}" readonly name="hire_hire_rate" class="form-control" required="" value="{{$rate->hire_rate}}" onkeypress="if((this.value.length<10)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
+                                                                                             </div>
+                                                                                         </div>
+                                                                                         <br>
+                                                                                         <input type="text" name="id" value="{{$rate->id}}" hidden="">
+
+
+                                                                                         <div class="row">
+                                                                                             <div class="form-wrapper col-12">
+                                                                                                 <label for="approval_status">Do you approve this Hire Rate?</label>
+                                                                                             </div>
+                                                                                         </div>
+
+                                                                                         <div class="form-group">
+
 
 
 
                                                                                              <div class="row">
-                                                                                                 <div class="form-wrapper col-12">
-                                                                                                     <label for="approval_status">Do you approve this Hire Rate?</label>
+                                                                                                 <div class="form-wrapper col-6">
+                                                                                                     <input class="form-check-input" type="radio" name="approval_status" id="Approve{{$rate->id}}" value="Accepted" checked="">
+                                                                                                     <label for="Approve{{$rate->id}}" class="form-check-label">Approve</label>
                                                                                                  </div>
-                                                                                             </div>
 
-                                                                                             <div class="form-group">
-
-
-
-
-                                                                                                 <div class="row">
-                                                                                                     <div class="form-wrapper col-6">
-                                                                                                         <input class="form-check-input" type="radio" name="approval_status" id="Approve{{$rate->id}}" value="Accepted" checked="">
-                                                                                                         <label for="Approve{{$rate->id}}" class="form-check-label">Approve</label>
-                                                                                                     </div>
-
-                                                                                                     <div class="form-wrapper col-6">
-                                                                                                         <input class="form-check-input" type="radio" name="approval_status" id="Reject{{$rate->id}}" value="Rejected">
-                                                                                                         <label for="Reject{{$rate->id}}" class="form-check-label">Decline</label>
-                                                                                                     </div>
-
+                                                                                                 <div class="form-wrapper col-6">
+                                                                                                     <input class="form-check-input" type="radio" name="approval_status" id="Reject{{$rate->id}}" value="Rejected">
+                                                                                                     <label for="Reject{{$rate->id}}" class="form-check-label">Decline</label>
                                                                                                  </div>
-                                                                                             </div>
 
-                                                                                             <div class="form-group" id="remarksDiv{{$rate->id}}" style="display: none;">
-                                                                                                 <div class="form-wrapper">
-                                                                                                     <label for="remarks">Reason<span style="color: red;">*</span></label>
-                                                                                                     <span id="remarksmsg{{$rate->id}}"></span>
-                                                                                                     <textarea  type="text" id="remarks{{$rate->id}}" name="approval_remarks" class="form-control"></textarea>
+                                                                                             </div>
+                                                                                         </div>
+
+                                                                                         <div class="form-group" id="remarksDiv{{$rate->id}}" style="display: none;">
+                                                                                             <div class="form-wrapper">
+                                                                                                 <label for="remarks">Reason<span style="color: red;">*</span></label>
+                                                                                                 <span id="remarksmsg{{$rate->id}}"></span>
+                                                                                                 <textarea  type="text" id="remarks{{$rate->id}}" name="approval_remarks" class="form-control"></textarea>
+                                                                                             </div>
+                                                                                         </div>
+
+
+
+                                                                                         <div align="right">
+                                                                                             <button class="btn btn-primary" type="submit" name="rate_editSubmit" id="{{$rate->id}}">Proceed</button>
+                                                                                             <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                                                                         </div>
+
+                                                                                     </form>
+                                                                                 @elseif(Auth::user()->role=='DVC Administrator')
+
+                                                                                     <form method="post" action="{{ route('hire_rate_second_approval_response') }}">
+                                                                                         {{csrf_field()}}
+                                                                                         <div class="form-group">
+                                                                                             <div class="form-wrapper">
+                                                                                                 <label for="hire_vehicle_model{{$rate->id}}">Vehicle Model</label>
+                                                                                                 <input type="text" id="hire_vehicle_model{{$rate->id}}" readonly name="hire_vehicle_model" class="form-control" required="" autocomplete="off" value="{{$rate->vehicle_model}}">
+                                                                                             </div>
+                                                                                         </div>
+                                                                                         <br>
+
+                                                                                         <div class="form-group">
+                                                                                             <div class="form-wrapper">
+                                                                                                 <label for="hire_hire_rate{{$rate->id}}">Hire Rate/KM<span id="ratemessage{{$rate->id}}"></span></label>
+
+                                                                                                 <input type="text" id="hire_hire_rate{{$rate->id}}" readonly name="hire_hire_rate" class="form-control" required="" value="{{$rate->hire_rate}}" onkeypress="if((this.value.length<10)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
+                                                                                             </div>
+                                                                                         </div>
+                                                                                         <br>
+                                                                                         <input type="text" name="id" value="{{$rate->id}}" hidden="">
+
+
+
+                                                                                         <div class="row">
+                                                                                             <div class="form-wrapper col-12">
+                                                                                                 <label for="approval_status">Do you approve this Hire Rate?</label>
+                                                                                             </div>
+                                                                                         </div>
+
+                                                                                         <div class="form-group">
+
+
+
+
+                                                                                             <div class="row">
+                                                                                                 <div class="form-wrapper col-6">
+                                                                                                     <input class="form-check-input" type="radio" name="approval_status" id="Approve{{$rate->id}}" value="Accepted" checked="">
+                                                                                                     <label for="Approve{{$rate->id}}" class="form-check-label">Approve</label>
                                                                                                  </div>
+
+                                                                                                 <div class="form-wrapper col-6">
+                                                                                                     <input class="form-check-input" type="radio" name="approval_status" id="Reject{{$rate->id}}" value="Rejected">
+                                                                                                     <label for="Reject{{$rate->id}}" class="form-check-label">Decline</label>
+                                                                                                 </div>
+
                                                                                              </div>
+                                                                                         </div>
 
-
-                                                                                             <div align="right">
-                                                                                                 <button class="btn btn-primary" type="submit" name="rate_editSubmit" id="{{$rate->id}}">Submit</button>
-                                                                                                 <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                                                                         <div class="form-group" id="remarksDiv{{$rate->id}}" style="display: none;">
+                                                                                             <div class="form-wrapper">
+                                                                                                 <label for="remarks">Reason<span style="color: red;">*</span></label>
+                                                                                                 <span id="remarksmsg{{$rate->id}}"></span>
+                                                                                                 <textarea  type="text" id="remarks{{$rate->id}}" name="approval_remarks" class="form-control"></textarea>
                                                                                              </div>
-
-                                                                                         </form>
-                                                                                     @endif
-
-</div>
-</div>
-</div>
-</div>
-
-</center>
-</td>
-
-</tr>
-@endforeach
-</tbody>
-</table>
+                                                                                         </div>
 
 
-@else
-<p class="mt-4" style="text-align:center;">No records found</p>
-@endif
+                                                                                         <div align="right">
+                                                                                             <button class="btn btn-primary" type="submit" name="rate_editSubmit" id="{{$rate->id}}">Proceed</button>
+                                                                                             <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                                                                         </div>
+
+                                                                                     </form>
+                                                                                 @endif
+
+                                                                             </div>
+                                                                         </div>
+                                                                     </div>
+                                                                 </div>
+
+                                                             </center>
+                                                         </td>
+
+                                                     </tr>
+                                                 @endforeach
+                                                 </tbody>
+                                             </table>
 
 
-</div>
+                                         @else
+                                             <p class="mt-4" style="text-align:center;">No records found</p>
+                                         @endif
+
+
+                                     </div>
 
 
 
@@ -1512,7 +1693,7 @@ input[type=radio]{
 
 
                                          @if($hire_rate_inbox!='')
-                                             <table class=" table " style="width: 100%;" >
+                                             <table class="table" style="width: 100%;" >
                                                  <thead class="">
                                                  <tr>
                                                      <th scope="col" style=" width: 3%;"><center>S/N</center></th>
@@ -1599,7 +1780,7 @@ input[type=radio]{
                                                              </center></td>
 
                                                          <td><center>
-                                                                 <a title="Review this Hire Rate" data-toggle="modal" data-target="#hire{{$rate->id}}" role="button" aria-pressed="true" id="{{$rate->id}}"><i class="fas fa-reply" style=" color: #3490dc; cursor: pointer;"></i></a>
+                                                                 <a title="Edit this Hire Rate" data-toggle="modal" data-target="#hire{{$rate->id}}" role="button" aria-pressed="true" id="{{$rate->id}}"><i class="fa fa-edit" style="font-size:20px; color: green; cursor: pointer;"></i></a>
                                                                  <div class="modal fade" id="hire{{$rate->id}}" role="dialog">
 
                                                                      <div class="modal-dialog modal-dialog-scrollable" role="document">
@@ -1633,9 +1814,10 @@ input[type=radio]{
                                                                                      <input type="text" name="rejected_by" value="{{$rate->rejected_by}}" hidden="">
 
                                                                                      <div align="right">
-                                                                                         <button class="btn btn-primary" type="submit" name="rate_editSubmit" id="{{$rate->id}}">Submit</button>
+                                                                                         <button class="btn btn-primary" type="submit" name="rate_editSubmit" id="{{$rate->id}}">Forward</button>
                                                                                          <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
                                                                                      </div>
+
 
                                                                                  </form>
 
@@ -1644,7 +1826,23 @@ input[type=radio]{
                                                                      </div>
                                                                  </div>
 
-                                                                 <a title="Delete this Hire Rate" data-toggle="modal" data-target="#Deactivatehire{{$rate->id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px; color:red; cursor: pointer;"></i></a>
+
+
+                                                                 @if($rate->terminated_stage=='1')
+                                                                     <a title="Revoke the deletion of this Hire Rate" data-toggle="modal" data-target="#revoke_Deactivatehire{{$rate->id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px; color:red; cursor: pointer;"></i></a>
+                                                                 @else
+                                                                     @if($rate->edit_status=='1')
+                                                                     @else
+
+                                                                         <a title="Delete this Hire Rate" data-toggle="modal" data-target="#Deactivatehire{{$rate->id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px; color:red; cursor: pointer;"></i></a>
+                                                                     @endif
+
+                                                                 @endif
+
+
+
+
+
                                                                  <div class="modal fade" id="Deactivatehire{{$rate->id}}" role="dialog">
                                                                      <div class="modal-dialog" role="document">
                                                                          <div class="modal-content">
@@ -1657,14 +1855,42 @@ input[type=radio]{
                                                                                  <p style="font-size: 20px;">Are you sure you want to delete this hire rate?</p>
                                                                                  <br>
                                                                                  <div align="right">
-                                                                                     <a class="btn btn-info" href="{{route('deletehireratepermanent',$rate->id)}}">Proceed</a>
+                                                                                     <a class="btn btn-info" href="{{route('deletehireratepermanent',$rate->id)}}">Yes</a>
                                                                                      <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
                                                                                  </div>
 
                                                                              </div>
                                                                          </div>
                                                                      </div>
-                                                                 </div></center>
+                                                                 </div>
+
+
+
+
+                                                                 <div class="modal fade" id="revoke_Deactivatehire{{$rate->id}}" role="dialog">
+                                                                     <div class="modal-dialog" role="document">
+                                                                         <div class="modal-content">
+                                                                             <div class="modal-header">
+                                                                                 <b><h5 class="modal-title" style="color: red;"><b>WARNING</b></h5></b>
+                                                                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                             </div>
+
+                                                                             <div class="modal-body">
+                                                                                 <p style="font-size: 20px;">Are you sure you want to revoke the deletion of this hire rate?</p>
+                                                                                 <br>
+                                                                                 <div align="right">
+                                                                                     <a class="btn btn-info" href="{{route('revoke_deletehirerate',$rate->id)}}">Yes</a>
+                                                                                     <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                                                                                 </div>
+
+                                                                             </div>
+                                                                         </div>
+                                                                     </div>
+                                                                 </div>
+
+
+
+                                                             </center>
                                                          </td>
                                                      </tr>
                                                  @endforeach
@@ -1686,50 +1912,132 @@ input[type=radio]{
 @endif
 
 
-<div id="hire_rate_outbox" class="tabcontent_hire">
-@if($hire_rate_outbox!='')
-<table class=" table " style="width: 100%;" >
-<thead class="">
-<tr>
-<th scope="col" style=" width: 3%;"><center>S/N</center></th>
-<th scope="col" style=""><center>Vehicle Model</center></th>
-<th scope="col" style=""><center>Hire Rate/KM (TZS)</center></th>
-<th scope="col"  ><center>Stage</center></th>
+                                 <div id="hire_rate_outbox" class="tabcontent_hire">
+                                     @if($hire_rate_outbox!='')
+                                         <table class="table" style="width: 100%;" id="myTable4">
+                                             <thead >
+                                             <tr>
+                                                 <th scope="col" style=" width: 3%;"><center>S/N</center></th>
+                                                 <th scope="col" style=""><center>Vehicle Model</center></th>
+                                                 <th scope="col" style=""><center>Hire Rate/KM (TZS)</center></th>
+                                                 <th style="width: 14%"><center>Status</center></th>
+                                                 <th scope="col"  ><center>Stage</center></th>
 
 
-</tr>
-</thead>
-<tbody>
-@foreach($hire_rate_outbox as $rate)
-<tr>
-<th scope="row" class="counterCell text-center">.</th>
-<td class="text-center">{{$rate->vehicle_model}}</td>
-<td><center>{{number_format($rate->hire_rate)}}</center></td>
-    @if(Auth::user()->role=='Director DPDI')
+                                             </tr>
+                                             </thead>
+                                             <tbody>
+                                             @foreach($hire_rate_outbox as $rate)
+                                                 <tr>
+                                                     <th scope="row" class="counterCell text-center">.</th>
+                                                     <td class="text-center">{{$rate->vehicle_model}}</td>
+                                                     <td><center>{{number_format($rate->hire_rate)}}</center></td>
 
-        @if($rate->stage=='1b')
-            <td><center>DVC Administration</center></td>
-        @else
-            <td><center>Transport Officer-CPTU</center></td>
-        @endif
-    @elseif(Auth::user()->role=='DVC Administrator')
-        <td><center>Transport Officer-CPTU</center></td>
 
-    @elseif(Auth::user()->role=='Transport Officer-CPTU' AND $rate->stage=='1')
-        <td><center>Director DPDI</center></td>
 
-    @elseif(Auth::user()->role=='Transport Officer-CPTU' AND $rate->stage=='1b')
-        <td><center>DVC Administration</center></td>
-    @else
-    @endif
-</tr>
-@endforeach
-</tbody>
-</table>
-@else
-<p class="mt-4" style="text-align:center;">No records found</p>
-@endif
-</div>
+
+                                                     @if(Auth::user()->role=='Director DPDI')
+
+
+                                                         @if($rate->stage=='2' AND $rate->rejected_by=='DVC')
+                                                             <td><center>
+
+
+
+
+                                                                     <a title="View Reason for the Declination" style="cursor: pointer; color:#3490dc;"  class="" data-toggle="modal" data-target="#decline_reason{{$rate->id}}" aria-pressed="true"><div ><span style="background-color: red; color:white;  padding:3px;   text-align: center;">DECLINED</span> </div></a>
+
+                                                                     <div class="modal fade" id="decline_reason{{$rate->id}}" role="dialog">
+
+                                                                         <div class="modal-dialog" role="document">
+                                                                             <div class="modal-content">
+                                                                                 <div class="modal-header">
+                                                                                     <b><h5 class="modal-title">Reason(s) for Declination by DVC Administration</h5></b>
+
+                                                                                     <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                                 </div>
+
+                                                                                 <div class="modal-body">
+                                                                                     <form method="post" action=""   >
+                                                                                         {{csrf_field()}}
+
+
+                                                                                         <div class="form-row">
+
+
+                                                                                             <div class="form-group col-12">
+                                                                                                 <div class="form-wrapper">
+                                                                                                     <label for="remarks" style="color: red;"></label>
+                                                                                                     <textarea type="text"  name="reason" class="form-control" readonly="">{{$rate->approval_remarks}}</textarea>
+                                                                                                 </div>
+                                                                                             </div>
+                                                                                             <br>
+                                                                                             <br>
+
+
+
+                                                                                         </div>
+
+
+                                                                                         <div align="right">
+
+                                                                                             <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button>
+                                                                                         </div>
+                                                                                     </form>
+
+                                                                                 </div>
+                                                                             </div>
+                                                                         </div>
+                                                                     </div>
+
+
+                                                                 </center></td>
+                                                         @else
+
+                                                             <td><center>PENDING</center></td>
+                                                         @endif
+                                                     @elseif(Auth::user()->role=='DVC Administrator')
+                                                         <td><center>PENDING</center></td>
+
+                                                     @elseif(Auth::user()->role=='Transport Officer-CPTU' AND $rate->stage=='1')
+                                                         <td><center>PENDING</center></td>
+
+                                                     @elseif(Auth::user()->role=='Transport Officer-CPTU' AND $rate->stage=='1b')
+                                                         <td><center>PENDING</center></td>
+                                                     @else
+                                                     @endif
+
+
+
+
+
+
+                                                     @if(Auth::user()->role=='Director DPDI')
+
+                                                         @if($rate->stage=='1b')
+                                                             <td><center>DVC Administration</center></td>
+                                                         @else
+                                                             <td><center>Transport Officer-CPTU</center></td>
+
+                                                         @endif
+                                                     @elseif(Auth::user()->role=='DVC Administrator')
+                                                         <td><center>Transport Officer-CPTU</center></td>
+
+                                                     @elseif(Auth::user()->role=='Transport Officer-CPTU' AND $rate->stage=='1')
+                                                         <td><center>Director DPDI</center></td>
+
+                                                     @elseif(Auth::user()->role=='Transport Officer-CPTU' AND $rate->stage=='1b')
+                                                         <td><center>DVC Administration</center></td>
+                                                     @else
+                                                     @endif
+                                                 </tr>
+                                             @endforeach
+                                             </tbody>
+                                         </table>
+                                     @else
+                                         <p class="mt-4" style="text-align:center;">No records found</p>
+                                     @endif
+                                 </div>
 
 
 
@@ -1769,14 +2077,14 @@ margin-top: 4px;" role="button" aria-pressed="true">Add Rate</a>
 
 <div class="form-group" id="hirediv">
 <div class="form-wrapper">
-<label for="hire_hire_rate">Hire Rate/Km<span style="color: red;">*</span></label>
+<label for="hire_hire_rate">Hire Rate/Km (Tshs)<span style="color: red;">*</span></label>
 <span id="ratemessage"></span>
 <input type="text" id="hire_hire_rate" name="hire_rate" class="form-control" required="" onkeypress="if((this.value.length<10)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
 </div>
 </div>
 
 <div align="right">
-<button class="btn btn-primary" type="submit">Save</button>
+<button class="btn btn-primary" type="submit">Forward</button>
 <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
 </div>
 </form>
@@ -1841,9 +2149,10 @@ margin-top: 4px;" role="button" aria-pressed="true">Add Rate</a>
     </div>
     <br>
     <input type="text" name="id" value="{{$rate->id}}" hidden="">
+    <input type="text" name="edit_case" value="True" hidden="">
 
     <div align="right">
-        <button class="btn btn-primary" type="submit" name="rate_editSubmit" id="{{$rate->id}}">Submit</button>
+        <button class="btn btn-primary" type="submit" name="rate_editSubmit" id="{{$rate->id}}">Forward</button>
         <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
     </div>
 
@@ -1853,7 +2162,7 @@ margin-top: 4px;" role="button" aria-pressed="true">Add Rate</a>
 </div>
 </div>
 </div>
-@admin
+        @if(Auth::user()->role=='Transport Officer-CPTU')
 <a title="Delete this Hire Rate" data-toggle="modal" data-target="#Deactivatehire{{$rate->id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px; color:red; cursor: pointer;"></i></a>
 <div class="modal fade" id="Deactivatehire{{$rate->id}}" role="dialog">
 <div class="modal-dialog" role="document">
@@ -1867,7 +2176,7 @@ margin-top: 4px;" role="button" aria-pressed="true">Add Rate</a>
 <p style="font-size: 20px;">Are you sure you want to delete this hire rate?</p>
 <br>
 <div align="right">
-    <a class="btn btn-info" href="{{route('deletehirerate',$rate->id)}}">Proceed</a>
+    <a class="btn btn-info" href="{{route('deletehirerate',$rate->id)}}">Yes</a>
     <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
 </div>
 
@@ -1875,7 +2184,7 @@ margin-top: 4px;" role="button" aria-pressed="true">Add Rate</a>
 </div>
 </div>
 </div>
-@endadmin
+@endif
 
 </center>
 </td>
@@ -1986,7 +2295,7 @@ margin-top: 4px;" role="button" aria-pressed="true">Add Rate</a>
 @else
 <td><center>
 
-@admin
+        @if(Auth::user()->role=='Transport Officer-CPTU')
 <a title="Delete this Hire Rate" data-toggle="modal" data-target="#Deactivatehire{{$rate->id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px; color:red; cursor: pointer;"></i></a>
 <div class="modal fade" id="Deactivatehire{{$rate->id}}" role="dialog">
 <div class="modal-dialog" role="document">
@@ -2000,7 +2309,7 @@ margin-top: 4px;" role="button" aria-pressed="true">Add Rate</a>
 <p style="font-size: 20px;">Are you sure you want to delete this hire rate?</p>
 <br>
 <div align="right">
-<a class="btn btn-info" href="{{route('deletehirerate',$rate->id)}}">Proceed</a>
+<a class="btn btn-info" href="{{route('deletehirerate',$rate->id)}}">Yes</a>
 <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
 </div>
 
@@ -2008,7 +2317,7 @@ margin-top: 4px;" role="button" aria-pressed="true">Add Rate</a>
 </div>
 </div>
 </div>
-@endadmin
+@endif
 
 
 </center>

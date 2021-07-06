@@ -787,13 +787,173 @@ select.list-dt:focus {
                                         <br>
                                         <br>
 
-                                        @endforeach
+
                                     </div>
                                     <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
 
                                     <input type="button" id="next3" name="next" class="next action-button" value="Next" />
                                     <input type="button" class="btn btn-danger action-button" value="Cancel" onclick="history.back()" style="background-color: red !important;">
                                 </fieldset>
+
+
+                                <?php
+
+                                $invoice=DB::table('invoices')->where('contract_id',$var->contract_id)->where('stage','5')->orderBy('invoice_number','desc')->get();
+                                $terminate_status=$var->terminated_stage;
+                                ?>
+                                @endforeach
+
+                                @if($terminate_status=='1' AND count($invoice)>0)
+
+                                    <fieldset>
+                                        <div class="form-card">
+                                            <h2 class="fs-title">Invoice Information</h2>
+                                            <div class="form-group row">
+
+
+
+
+                                                @foreach($invoice as $var)
+
+
+
+
+
+                                                    <div  class="form-group col-md-6 mt-1">
+                                                        <div class="form-wrapper">
+                                                            <label for=""  >Client Full Name <span style="color: red;">*</span></label>
+                                                            <input type="text" class="form-control"  name="debtor_name" readonly value="{{$var->debtor_name}}" Required autocomplete="off">
+                                                        </div>
+                                                    </div>
+
+
+
+                                                    <div  class="form-group col-md-6 mt-1">
+                                                        <div class="form-wrapper">
+                                                            <label for=""  >Client Account Code</label>
+                                                            <input type="text" class="form-control"  readonly name="debtor_account_code" value="{{$var->debtor_account_code}}"  autocomplete="off">
+                                                        </div>
+                                                    </div>
+
+
+
+
+
+
+
+
+
+                                                    <div  class="form-group col-md-12 mt-1">
+                                                        <div class="form-wrapper">
+                                                            <label for=""  >Client Address <span style="color: red;">*</span></label>
+                                                            <input type="text" class="form-control"  name="debtor_address" value="{{$var->debtor_address}}" readonly  autocomplete="off">
+                                                        </div>
+                                                    </div>
+
+
+
+
+
+                                                    <div  class="form-group col-md-6 mt-1">
+                                                        <div class="form-wrapper">
+                                                            <label for=""  >Invoice Start Date <span style="color: red;">*</span></label>
+                                                            <input  class=" form-control" readonly name="invoicing_period_start_date" value="{{date('d/m/Y',strtotime($var->invoicing_period_start_date))}}" Required autocomplete="off">
+                                                        </div>
+                                                    </div>
+
+
+
+                                                    <div  class="form-group col-md-6 mt-1">
+                                                        <div class="form-wrapper">
+                                                            <label for=""  >Invoice End Date <span style="color: red;">*</span></label>
+                                                            <input  class=" form-control" readonly id="" name="invoicing_period_end_date" value="{{date('d/m/Y',strtotime($var->invoicing_period_end_date))}}" Required autocomplete="off">
+                                                        </div>
+                                                    </div>
+
+
+                                                    <div  class="form-group col-md-12 mt-1">
+                                                        <div class="form-wrapper">
+                                                            <label for="">Period <span style="color: red;">*</span></label>
+                                                            <input type="text" class="form-control" readonly id="" name="period" value="{{$var->period}}"  required  autocomplete="off">
+                                                        </div>
+                                                    </div>
+
+
+                                                    <div   class="form-group col-md-12 mt-1">
+                                                        <div class="form-wrapper">
+                                                            <label for=""  >Project ID <span style="color: red;">*</span></label>
+                                                            <input type="text" class="form-control" readonly id="" name="project_id" value="{{$var->project_id}}" Required autocomplete="off">
+                                                        </div>
+                                                    </div>
+
+
+
+
+                                                    <div   class="form-group col-md-6 mt-1">
+                                                        <div class="form-wrapper">
+                                                            <label for="">Amount <span style="color: red;">*</span></label>
+                                                            <input type="number" min="20" class="form-control" readonly id="" name="amount_to_be_paid" value="{{$var->amount_to_be_paid}}" Required  autocomplete="off">
+                                                        </div>
+                                                    </div>
+
+
+
+                                                    <div  class="form-group col-md-6 mt-1">
+                                                        <label>Currency <span style="color: red;">*</span></label>
+                                                        <div  class="form-wrapper">
+                                                            <input type="text"  class="form-control" readonly id="" name="currency" value="{{$var->currency_invoice}}" Required  autocomplete="off">
+                                                        </div>
+                                                    </div>
+
+
+
+                                                    <div  class="form-group col-md-12 mt-1">
+                                                        <div class="form-wrapper">
+                                                            <label for=""  >Status <span style="color: red;">*</span></label>
+                                                            <input type="text" class="form-control" readonly id="" name="status" value="{{$var->status}}" required  autocomplete="off">
+                                                        </div>
+                                                    </div>
+
+
+                                                    <div  class="form-group col-md-12 mt-1">
+                                                        <div class="form-wrapper">
+                                                            <label for=""  >Description <span style="color: red;">*</span></label>
+                                                            <input type="text" class="form-control" readonly id="" name="description" value="{{$var->description}}" required  autocomplete="off">
+                                                        </div>
+                                                    </div>
+
+
+
+
+
+
+                                                    <br>
+
+
+                                                @endforeach
+
+
+
+
+
+                                            </div>
+
+
+
+
+
+
+
+
+                                        </div>
+                                        <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
+
+                                        <input type="button" id="next6" name="next" class="next action-button" value="Next" />
+                                        <input type="button" class="btn btn-danger action-button" value="Cancel" onclick="history.back()" style="background-color: red !important;">
+
+                                    </fieldset>
+
+                                @endif
 
 
 
@@ -1332,7 +1492,7 @@ select.list-dt:focus {
                                         <br>
                                         <br>
 
-                                        @endforeach
+
                                     </div>
                                     <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
 
@@ -1341,6 +1501,164 @@ select.list-dt:focus {
                                 </fieldset>
 
 
+                                <?php
+
+                                $invoice=DB::table('invoices')->where('contract_id',$var->contract_id)->where('stage','5')->orderBy('invoice_number','desc')->get();
+                                $terminate_status=$var->terminated_stage;
+                                ?>
+                                @endforeach
+
+                            @if($terminate_status=='1' AND count($invoice)>0)
+
+                                    <fieldset>
+                                        <div class="form-card">
+                                            <h2 class="fs-title">Invoice Information</h2>
+                                            <div class="form-group row">
+
+
+
+
+                                                    @foreach($invoice as $var)
+
+
+
+
+
+                                                        <div  class="form-group col-md-6 mt-1">
+                                                            <div class="form-wrapper">
+                                                                <label for=""  >Client Full Name <span style="color: red;">*</span></label>
+                                                                <input type="text" class="form-control"  name="debtor_name" readonly value="{{$var->debtor_name}}" Required autocomplete="off">
+                                                            </div>
+                                                        </div>
+
+
+
+                                                        <div  class="form-group col-md-6 mt-1">
+                                                            <div class="form-wrapper">
+                                                                <label for=""  >Client Account Code</label>
+                                                                <input type="text" class="form-control"  readonly name="debtor_account_code" value="{{$var->debtor_account_code}}"  autocomplete="off">
+                                                            </div>
+                                                        </div>
+
+
+
+
+
+
+
+
+
+                                                        <div  class="form-group col-md-12 mt-1">
+                                                            <div class="form-wrapper">
+                                                                <label for=""  >Client Address <span style="color: red;">*</span></label>
+                                                                <input type="text" class="form-control"  name="debtor_address" value="{{$var->debtor_address}}" readonly  autocomplete="off">
+                                                            </div>
+                                                        </div>
+
+
+
+
+
+                                                    <div  class="form-group col-md-6 mt-1">
+                                                        <div class="form-wrapper">
+                                                            <label for=""  >Invoice Start Date <span style="color: red;">*</span></label>
+                                                            <input  class=" form-control" readonly name="invoicing_period_start_date" value="{{date('d/m/Y',strtotime($var->invoicing_period_start_date))}}" Required autocomplete="off">
+                                                        </div>
+                                                    </div>
+
+
+
+                                                    <div  class="form-group col-md-6 mt-1">
+                                                        <div class="form-wrapper">
+                                                            <label for=""  >Invoice End Date <span style="color: red;">*</span></label>
+                                                            <input  class=" form-control" readonly id="" name="invoicing_period_end_date" value="{{date('d/m/Y',strtotime($var->invoicing_period_end_date))}}" Required autocomplete="off">
+                                                        </div>
+                                                    </div>
+
+
+                                                        <div  class="form-group col-md-12 mt-1">
+                                                            <div class="form-wrapper">
+                                                                <label for="">Period <span style="color: red;">*</span></label>
+                                                                <input type="text" class="form-control" readonly id="" name="period" value="{{$var->period}}"  required  autocomplete="off">
+                                                            </div>
+                                                        </div>
+
+
+                                                        <div   class="form-group col-md-12 mt-1">
+                                                            <div class="form-wrapper">
+                                                                <label for=""  >Project ID <span style="color: red;">*</span></label>
+                                                                <input type="text" class="form-control" readonly id="" name="project_id" value="{{$var->project_id}}" Required autocomplete="off">
+                                                            </div>
+                                                        </div>
+
+
+
+
+                                                        <div   class="form-group col-md-6 mt-1">
+                                                            <div class="form-wrapper">
+                                                                <label for="">Amount <span style="color: red;">*</span></label>
+                                                                <input type="number" min="20" class="form-control" readonly id="" name="amount_to_be_paid" value="{{$var->amount_to_be_paid}}" Required  autocomplete="off">
+                                                            </div>
+                                                        </div>
+
+
+
+                                                        <div  class="form-group col-md-6 mt-1">
+                                                            <label>Currency <span style="color: red;">*</span></label>
+                                                            <div  class="form-wrapper">
+                                                                <input type="text"  class="form-control" readonly id="" name="currency" value="{{$var->currency_invoice}}" Required  autocomplete="off">
+                                                            </div>
+                                                        </div>
+
+
+
+                                                        <div  class="form-group col-md-12 mt-1">
+                                                            <div class="form-wrapper">
+                                                                <label for=""  >Status <span style="color: red;">*</span></label>
+                                                                <input type="text" class="form-control" readonly id="" name="status" value="{{$var->status}}" required  autocomplete="off">
+                                                            </div>
+                                                        </div>
+
+
+                                                        <div  class="form-group col-md-12 mt-1">
+                                                            <div class="form-wrapper">
+                                                                <label for=""  >Description <span style="color: red;">*</span></label>
+                                                                <input type="text" class="form-control" readonly id="" name="description" value="{{$var->description}}" required  autocomplete="off">
+                                                            </div>
+                                                        </div>
+
+
+
+
+
+
+                                                    <br>
+
+
+                                                    @endforeach
+
+
+
+
+
+                                            </div>
+
+
+
+
+
+
+
+
+                                        </div>
+                                        <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
+
+                                        <input type="button" id="next6" name="next" class="next action-button" value="Next" />
+                                        <input type="button" class="btn btn-danger action-button" value="Cancel" onclick="history.back()" style="background-color: red !important;">
+
+                                    </fieldset>
+
+                                @endif
 
                                 <fieldset>
                                     <div class="form-card">
@@ -1885,6 +2203,26 @@ select.list-dt:focus {
 
 
             });
+
+
+
+            $("#next6").click(function(){
+
+
+                current_fs = $(this).parent();
+                next_fs = $(this).parent().next();
+
+
+
+
+                    gonext();
+
+
+
+
+            });
+
+
 
             $("#next2").click(function(){
                 current_fs = $(this).parent();

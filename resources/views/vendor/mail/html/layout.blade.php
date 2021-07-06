@@ -43,13 +43,13 @@
                                 </tr>
                                 <tr>
                                     <td class="content-cell" style="padding-top: 20px !important; vertical-align: bottom !important;">
-                                    <p style="font-style: italic;color: darkcyan; font-size: 12px;">Directorate Of Planning, Development & Investment<br>Postal Address 35091, Dar es Salaam<br>Telephone: + 255 22 2410514/5<br>Office Number: <br>Mlimani Campus, Utawala Building</p> 
+                                    <p style="font-style: italic;color: darkcyan; font-size: 12px;">Directorate Of Planning, Development & Investment<br>Postal Address 35091, Dar es Salaam<br>Office Number: + 255 22 2410514/5<br>Mlimani Campus, Utawala Building</p>
                                     </td>
                                 </tr>
                             </table>
                         </td>
                     </tr>
-                    
+
 
                     {{ $footer ?? '' }}
                 </table>

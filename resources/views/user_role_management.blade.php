@@ -389,7 +389,7 @@ div.dt-buttons{
                   <td class="text-right">{{$var->cost_centre}}</td>
 
                   <td>  @if($var->status==0)
-                       <p style="background-color: #b9b8b8; color:white; border-radius: 4px; text-align: center;">DISABLED</p>
+                       <p style="background-color: #b9b8b8; color:white; border-radius: 4px; text-align: center;">DEACTIVATED</p>
                       @else
                          <p style="background-color: #09cd1b; color:white; border-radius: 4px;     border: 2px solid #00af0c; text-align: center;">ACTIVE</p>
                     @endif

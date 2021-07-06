@@ -927,7 +927,7 @@ public function addlogsheet(Request $request){
 
 
 
-    return redirect()->route('contracts_management')->with('success', 'Details Added Successfully');
+    return redirect()->route('contracts_management_car_rental')->with('success', 'Details Added Successfully');
 }
 
 public function logsheet_view_more($id){

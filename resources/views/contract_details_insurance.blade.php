@@ -140,7 +140,7 @@
                             </tr>
 
                             <tr>
-                                <td>Vehicle use:</td>
+                                <td>Vehicle Class:</td>
                                 <td>{{$var->vehicle_use}}</td>
                             </tr>
 
@@ -735,7 +735,10 @@
 
 
 
+                    <div align="center">
 
+                        <button class="btn btn-danger" type="button" class="close" onclick="history.back()">Close</button>
+                    </div>
 
 
 

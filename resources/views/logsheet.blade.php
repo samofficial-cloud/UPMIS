@@ -178,10 +178,10 @@
         </thead>
         <tbody>
           <th scope="row">{{ $i }}.</th>
-          <td><input type="date" id="2" name="date2" class="form-control" required="" max="<?php echo(date('Y-m-d'))?>"></td>
-          <td><input type="time" id="3" name="start_time3" class="form-control" required=""></td>
+          <td><input  id="2" name="date2" class="form-control flatpickr_date" required="" max="<?php echo(date('Y-m-d'))?>"></td>
+          <td><input  id="3" name="start_time3" class="form-control" required=""></td>
           <td><input type="text" id="4" name="mileage_out4" class="form-control mileage_out" required="" onkeypress="if((this.value.length<15)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;"></td>
-          <td><input type="time" id="5" name="time_closing5" class="form-control" required=""></td>
+          <td><input  id="5" name="time_closing5" class="form-control" required=""></td>
           <td><input type="text" id="6" name="mileage_in6" class="form-control mileage_in" required="" onkeypress="if((this.value.length<15)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;"></td>
           {{-- <td></td>
           <td></td> --}}
@@ -197,7 +197,7 @@
       <div align="left">
         <button type="button" class="btn btn-success" onclick="javascript:appendRow();">Add New Row</button>
         <button type="button" class="btn btn-danger" onclick="javascript:deleteRows();" style="display: none;" id="deleterowbutton">Delete Row</button>
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" class="btn btn-primary">Save</button>
       </div>
     </form>
   </div>
@@ -236,7 +236,7 @@
         b=a-2,
         c=b*9,
         pointer=c+2;
-      var div = document.createElement('input'); 
+      var div = document.createElement('input');
         div.setAttribute('type', 'date');
         div.setAttribute('class', 'form-control');
         div.setAttribute('name', 'date'+pointer);
@@ -244,7 +244,7 @@
         div.setAttribute('max', today);
         div.setAttribute('required', ' ');
         //div.setAttribute('onblur', "getdata((((document.getElementById('myTable').rows.length)-2)*5)+2)");
-        cell.appendChild(div); 
+        cell.appendChild(div);
       }
 
       if(text == 2){
@@ -252,13 +252,13 @@
         b=a-2,
         c=b*9,
         pointer=c+3;
-      var div = document.createElement('input'); 
+      var div = document.createElement('input');
         div.setAttribute('type', 'time');
         div.setAttribute('class', 'form-control');
         div.setAttribute('name', 'start_time'+pointer);
          div.setAttribute('id', pointer);
         div.setAttribute('required', ' ');
-        cell.appendChild(div); 
+        cell.appendChild(div);
       }
 
       if(text == 3){
@@ -266,15 +266,15 @@
         b=a-2,
         c=b*9,
         pointer=c+4;
-      var div = document.createElement('input'); 
+      var div = document.createElement('input');
         div.setAttribute('type', 'text');
         div.setAttribute('class', 'form-control mileage_out');
         div.setAttribute('name', 'mileage_out'+pointer);
         div.setAttribute('onblur', 'mileage_calc2('+pointer+')');
         div.setAttribute('id', pointer);
         div.setAttribute('onkeypress', "if((this.value.length<15)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;");
-         div.setAttribute('required', ' '); 
-        cell.appendChild(div); 
+         div.setAttribute('required', ' ');
+        cell.appendChild(div);
       }
 
       if(text == 4){
@@ -282,13 +282,13 @@
         b=a-2,
         c=b*9,
         pointer=c+5;
-      var div = document.createElement('input'); 
+      var div = document.createElement('input');
         div.setAttribute('type', 'time');
         div.setAttribute('class', 'form-control');
         div.setAttribute('name', 'time_closing'+pointer);
          div.setAttribute('id', pointer);
-         div.setAttribute('required', ' '); 
-        cell.appendChild(div); 
+         div.setAttribute('required', ' ');
+        cell.appendChild(div);
       }
 
       if(text == 5){
@@ -296,15 +296,15 @@
         b=a-2,
         c=b*9,
         pointer=c+6;
-      var div = document.createElement('input'); 
+      var div = document.createElement('input');
         div.setAttribute('type', 'text');
         div.setAttribute('class', 'form-control mileage_in');
         div.setAttribute('name', 'mileage_in'+pointer);
         div.setAttribute('id', pointer);
         div.setAttribute('onblur', 'mileage_calc('+pointer+')');
         div.setAttribute('onkeypress', "if((this.value.length<15)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;");
-         div.setAttribute('required', ' '); 
-        cell.appendChild(div); 
+         div.setAttribute('required', ' ');
+        cell.appendChild(div);
       }
 
        if(text == 6){
@@ -312,14 +312,14 @@
         b=a-2,
         c=b*9,
         pointer=c+7;
-      var div = document.createElement('input'); 
+      var div = document.createElement('input');
         div.setAttribute('type', 'text');
         div.setAttribute('class', 'form-control');
         div.setAttribute('name', 'mileage'+pointer);
          div.setAttribute('id', pointer);
         div.setAttribute('onkeypress', "if((this.value.length<15)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;");
-         div.setAttribute('required', ' '); 
-        cell.appendChild(div); 
+         div.setAttribute('required', ' ');
+        cell.appendChild(div);
       }
 
       if(text == 7){
@@ -327,14 +327,14 @@
         b=a-2,
         c=b*9,
         pointer=c+8;
-      var div = document.createElement('input'); 
+      var div = document.createElement('input');
         div.setAttribute('type', 'text');
         div.setAttribute('class', 'form-control');
         div.setAttribute('name', 'standing_hrs'+pointer);
          div.setAttribute('id', pointer);
         div.setAttribute('onkeypress', "if((this.value.length<15)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;");
-         div.setAttribute('required', ' '); 
-        cell.appendChild(div); 
+         div.setAttribute('required', ' ');
+        cell.appendChild(div);
       }
 
       if(text == 8){
@@ -342,16 +342,16 @@
         b=a-2,
         c=b*9,
         pointer=c+9;
-      var div = document.createElement('input'); 
+      var div = document.createElement('input');
         div.setAttribute('type', 'text');
         div.setAttribute('class', 'form-control');
         div.setAttribute('name', 'standing_km'+pointer);
          div.setAttribute('id', pointer);
         div.setAttribute('onkeypress', "if((this.value.length<15)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;");
-         div.setAttribute('required', ' '); 
-        cell.appendChild(div); 
+         div.setAttribute('required', ' ');
+        cell.appendChild(div);
       }
-                    
+
 }
 
 function deleteRows() {
@@ -399,7 +399,7 @@ function mileage_calc(ids){
            $('#'+id5).val('50000');
         }
       }
-        
+
     }
   }
 }
@@ -435,7 +435,7 @@ function mileage_calc2(ids){
 }
 
 $('.mileage_in').blur(function(e){
-  
+
   var value = $(this).val();
    var id = e.target.id,
         id2 = parseInt(id) - 2,
@@ -461,7 +461,7 @@ $('.mileage_in').blur(function(e){
            $('#'+id5).val('50000');
         }
       }
-        
+
     }
   }
 })
@@ -496,6 +496,30 @@ $('.mileage_out').blur(function(e){
         }
 
 })
+
+
+
+
+
+    $('#3').timepicker({
+        timeFormat: 'HH:mm',
+        interval: 60,
+        dropdown: true,
+        scrollbar: true
+    });
+
+
+
+
+    $('#5').timepicker({
+        timeFormat: 'HH:mm',
+        interval: 60,
+        dropdown: true,
+        scrollbar: true
+    });
+
+
+
 </script>
 
 @endsection

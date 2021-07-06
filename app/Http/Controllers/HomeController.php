@@ -52,62 +52,110 @@ class HomeController extends Controller
 
     public function businesses()
     {
-        $space_approval_stage=DB::table('spaces')->where('flag',0)->get();
-        $space_rejected_stage=DB::table('spaces')->where('flag',1)->get();
-        $spaces=DB::table('spaces')->where('status',1)->where('flag',2)->get();
+
+
+        //space_starts
 
         $space_inbox=null;
         $space_outbox=null;
 
-        if(Auth::user()->role=='Director DPDI'){
+
+
+
+        $spaces=DB::table('spaces')->where('status',1)->where('stage','3')->get();
+
+        $space_approval_stage=space::where('stage','1')->orderBy('updated_at','desc')->orderBy('id','desc')->get();
+        $space_approval_stage_planner=space::where('stage','1')->orWhere('stage','1b')->orderBy('updated_at','desc')->orderBy('id','desc')->get();
+        $space_approval_second_stage=space::where('stage','1b')->orderBy('updated_at','desc')->orderBy('id','desc')->get();
+        $space_declined_stage=space::where('stage','2')->orderBy('updated_at','desc')->orderBy('id','desc')->get();
+        $space_declined_dvc_stage=space::where('stage','2')->where('rejected_by','DVC')->orderBy('updated_at','desc')->orderBy('id','desc')->get();
+        $space_declined_approval_stage=space::where('stage','2')->orWhere('stage','1b')->orderBy('updated_at','desc')->orderBy('id','desc')->get();
+
+
+
+        if(Auth::user()->role=='DPDI Planner'){
+
+            if(count($space_declined_stage)==0){
+
+
+            }else{
+
+                $space_inbox=$space_declined_stage;
+            }
+
+
+
+            if(count($space_approval_stage_planner)==0){
+
+
+
+            }else{
+
+                $space_outbox=$space_approval_stage_planner;
+
+            }
+
+
+
+        }else if (Auth::user()->role=='Director DPDI'){
+
             if(count($space_approval_stage)==0){
 
 
             }else{
 
-                $space_inbox=DB::table('spaces')->where('flag',0)->get();
+                $space_inbox=$space_approval_stage;
             }
 
-
-
-            if(count($space_rejected_stage)==0){
-
+            if(count($space_declined_approval_stage)==0){
 
 
             }else{
 
-                $space_outbox=DB::table('spaces')->where('flag',1)->get();
+                $space_outbox=$space_declined_approval_stage;
 
             }
 
 
 
-        }else if (Auth::user()->role=='DPDI Planner'){
 
-            if(count($space_approval_stage)==0){
+        }else if (Auth::user()->role=='DVC Administrator'){
+
+            if(count($space_approval_second_stage)==0){
 
 
             }else{
 
-                $space_outbox=DB::table('spaces')->where('flag',0)->get();
+                $space_inbox=$space_approval_second_stage;
             }
 
-            if(count($space_rejected_stage)==0){
+            if(count($space_declined_dvc_stage)==0){
 
 
             }else{
 
-                $space_inbox=DB::table('spaces')->where('flag',1)->get();
+                $space_outbox=$space_declined_dvc_stage;
+
             }
 
-
-
-
-        }else{
 
 
 
         }
+
+
+
+
+        else{
+
+
+
+        }
+
+        //space ends
+
+
+
 
 
 
@@ -460,13 +508,12 @@ class HomeController extends Controller
 
             $hire_rate=hire_rate::where('id',$request->get('id'))->first();
             $hire_rate->stage=2;
-            $hire_rate->edit_status=0;
             $hire_rate->rejected_by='DIRECTOR';
             $hire_rate->updated_at=Carbon::now()->toDateTimeString();
             $hire_rate->approval_remarks=$request->get('approval_remarks');
             $hire_rate->save();
 
-            return redirect('/businesses')
+            return redirect('/businesses/car_rental')
                 ->with('success', 'Operation completed successfully');
 
         }else{
@@ -477,8 +524,8 @@ class HomeController extends Controller
             $hire_rate->updated_at=Carbon::now()->toDateTimeString();
             $hire_rate->save();
 
-            return redirect('/businesses')
-                ->with('success', 'Hire Rate approved successfully');
+            return redirect('/businesses/car_rental')
+                ->with('success', 'Operation completed successfully');
         }
 
 
@@ -492,13 +539,13 @@ class HomeController extends Controller
 
             $hire_rate=hire_rate::where('id',$request->get('id'))->first();
             $hire_rate->stage=2;
-            $hire_rate->edit_status=0;
+
             $hire_rate->rejected_by='DVC';
             $hire_rate->updated_at=Carbon::now()->toDateTimeString();
             $hire_rate->approval_remarks=$request->get('approval_remarks');
             $hire_rate->save();
 
-            return redirect('/businesses')
+            return redirect('/businesses/car_rental')
                 ->with('success', 'Operation completed successfully');
 
         }else{
@@ -507,11 +554,23 @@ class HomeController extends Controller
             $hire_rate->stage=3;
             $hire_rate->edit_status=0;
             $hire_rate->rejected_by=0;
+
+
+            if($hire_rate->terminated_stage=='1'){
+                $hire_rate->flag=0;
+                $hire_rate->terminated_stage=0;
+
+            }else{
+
+
+            }
+
+
             $hire_rate->updated_at=Carbon::now()->toDateTimeString();
             $hire_rate->save();
 
-            return redirect('/businesses')
-                ->with('success', 'Hire Rate approved successfully');
+            return redirect('/businesses/car_rental')
+                ->with('success', 'Operation completed successfully');
         }
 
 
@@ -1032,13 +1091,13 @@ class HomeController extends Controller
 
             $research_flats_room=research_flats_room::where('id',$request->get('id'))->first();
             $research_flats_room->stage=2;
-            $research_flats_room->edit_status=0;
+
             $research_flats_room->rejected_by='DIRECTOR';
             $research_flats_room->updated_at=Carbon::now()->toDateTimeString();
             $research_flats_room->approval_remarks=$request->get('approval_remarks');
             $research_flats_room->save();
 
-            return redirect('/businesses')
+            return redirect('/businesses/research')
                 ->with('success', 'Operation completed successfully');
 
         }else{
@@ -1049,7 +1108,7 @@ class HomeController extends Controller
             $research_flats_room->updated_at=Carbon::now()->toDateTimeString();
             $research_flats_room->save();
 
-            return redirect('/businesses')
+            return redirect('/businesses/research')
                 ->with('success', 'Room approved successfully');
         }
 
@@ -1064,13 +1123,13 @@ class HomeController extends Controller
 
             $research_flats_room=research_flats_room::where('id',$request->get('id'))->first();
             $research_flats_room->stage=2;
-            $research_flats_room->edit_status=0;
+
             $research_flats_room->rejected_by='DVC';
             $research_flats_room->updated_at=Carbon::now()->toDateTimeString();
             $research_flats_room->approval_remarks=$request->get('approval_remarks');
             $research_flats_room->save();
 
-            return redirect('/businesses')
+            return redirect('/businesses/research')
                 ->with('success', 'Operation completed successfully');
 
         }else{
@@ -1078,11 +1137,23 @@ class HomeController extends Controller
             $research_flats_room=research_flats_room::where('id',$request->get('id'))->first();
             $research_flats_room->stage=3;
             $research_flats_room->edit_status=0;
+
+
+            if($research_flats_room->terminated_stage=='1'){
+
+                $research_flats_room->status=0;
+                $research_flats_room->terminated_stage=0;
+
+            }else{
+
+
+            }
+
             $research_flats_room->rejected_by=0;
             $research_flats_room->updated_at=Carbon::now()->toDateTimeString();
             $research_flats_room->save();
 
-            return redirect('/businesses')
+            return redirect('/businesses/research')
                 ->with('success', 'Room approved successfully');
         }
 
@@ -1258,16 +1329,26 @@ class HomeController extends Controller
          $research_flats_rooms->charge_students=$request->get('charge_students');
          $research_flats_rooms->occupational_status=$request->get('occupational_status');
 
-         if($request->get('rejected_by')=='DVC'){
+//         if($request->get('rejected_by')=='DVC'){
+//
+//             $research_flats_rooms->stage='1b';
+//         }else{
+//
+//             $research_flats_rooms->stage=1;
+//         }
 
-             $research_flats_rooms->stage='1b';
+
+
+         if($request->get('edit_case')=='True'){
+
+             $research_flats_rooms->edit_status=1;
+
          }else{
 
-             $research_flats_rooms->stage=1;
+
          }
 
-
-
+         $research_flats_rooms->stage=1;
 
          $research_flats_rooms->save();
 
@@ -1278,9 +1359,45 @@ class HomeController extends Controller
      public function deleteresearchflats($id){
       DB::table('research_flats_rooms')
       ->where('id', $id)
-      ->update(['status' => '0']);
-      return redirect()->back()->with('success', 'Room Deleted Successfully');
+      ->update(['terminated_stage' => '1']);
+
+
+
+         DB::table('research_flats_rooms')
+             ->where('id', $id)
+             ->update(['stage' => '1']);
+
+
+      return redirect()->back()->with('success', 'Request sent Successfully');
      }
+
+
+     public function revokeDeleteResearchflats($id){
+      DB::table('research_flats_rooms')
+      ->where('id', $id)
+      ->update(['terminated_stage' => '0']);
+
+
+
+         DB::table('research_flats_rooms')
+             ->where('id', $id)
+             ->update(['stage' => '3']);
+
+
+
+         DB::table('research_flats_rooms')
+             ->where('id', $id)
+             ->update(['rejected_by' => '0']);
+
+
+      return redirect()->back()->with('success', 'Operation completed successfully');
+     }
+
+
+
+
+
+
 
      public function deleteresearchflatsPermanently($id){
 

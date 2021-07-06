@@ -788,6 +788,10 @@
                                                     </div>
 
 
+                                                    <input type="hidden" class="form-control" id="" name="edit_case" value="True"  autocomplete="off">
+
+
+
 
 
 

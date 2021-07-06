@@ -120,13 +120,19 @@ maxlength = "10" minlength = "10"
 class="form-control" id="phone" aria-describedby="emailHelp"  placeholder="0xxxxxxxxxx" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength = "10"  minlength = "10" onkeypress="if(this.value.length<10){return event.charCode >= 48 && event.charCode <= 57} else return false;" value="{{ Auth::user()->phone_number }}">
           </div>
           </div>
-
-
+<br>
+        <div class="form-group row">
+            <div class="col-sm-3"><strong>Current Signature :</strong></div>
+            <div class="col-sm-7 " style="height: auto !important; ">
+                <center><img style="" class="" src="{{ Auth::user()->signature}}" height="100px"  alt="signature"></center>
+            </div>
+        </div>
+        <br>
 
       <div class="form-group row">
-        <div class="col-sm-3"><strong>Signature<span style="color: red;"> *</span></strong></div>
+        <div class="col-sm-3"><strong>New Signature<span style="color: red;"> *</span></strong></div>
           <div class="col-sm-7">
-          <canvas id="signature-pad" class="signature-pad" style="border:1px #000 solid; " width=400 height=200></canvas>
+          <canvas id="signature-pad"  class="signature-pad" style="border:1px #000 solid; " width=400 height=200> </canvas>
           <center><button id="clear" type="button" class="btn btn-danger">Erase Signature</button></center>
         </div>
       </div>

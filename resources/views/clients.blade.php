@@ -394,7 +394,7 @@
                                                                             <input type="text" name="id" value="{{$client->id}}" hidden="">
 
                                                                             <div align="right">
-                                                                                <button class="btn btn-primary" id="research_active{{$client->id}}" type="submit">Save</button>
+                                                                                <button class="btn btn-primary" id="research_active{{$client->id}}" type="submit">Update</button>
                                                                                 <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
                                                                             </div>
                                                                         </form>

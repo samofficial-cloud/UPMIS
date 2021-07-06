@@ -431,8 +431,8 @@ hr {
             <p style="font-size: 20px;">Are you sure you want to delete this operational expenditure?</p>
             <br>
             <div align="right">
-      <a class="btn btn-info" href="{{route('deleteops',$operational->id)}}">Proceed</a>
-      <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+      <a class="btn btn-info" href="{{route('deleteops',$operational->id)}}">Yes</a>
+      <button type="button" class="btn btn-danger" data-dismiss="modal">No</button>
 </div>
 
 </div>

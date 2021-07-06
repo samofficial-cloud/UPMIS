@@ -139,27 +139,26 @@ class carRentalController extends Controller
     {
         if($request->get('approval_status')=='Rejected'){
 
-            $research_flats_room=carRental::where('id',$request->get('id'))->first();
-            $research_flats_room->stage=2;
-            $research_flats_room->edit_status=0;
-            $research_flats_room->rejected_by='DIRECTOR';
-            $research_flats_room->updated_at=Carbon::now()->toDateTimeString();
-            $research_flats_room->approval_remarks=$request->get('approval_remarks');
-            $research_flats_room->save();
+            $car=carRental::where('id',$request->get('id'))->first();
+            $car->stage=2;
+            $car->rejected_by='DIRECTOR';
+            $car->updated_at=Carbon::now()->toDateTimeString();
+            $car->approval_remarks=$request->get('approval_remarks');
+            $car->save();
 
-            return redirect('/businesses')
+            return redirect('/businesses/car_rental')
                 ->with('success', 'Operation completed successfully');
 
         }else{
 
-            $research_flats_room=carRental::where('id',$request->get('id'))->first();
-            $research_flats_room->stage='1b';
+            $car=carRental::where('id',$request->get('id'))->first();
+            $car->stage='1b';
 
-            $research_flats_room->updated_at=Carbon::now()->toDateTimeString();
-            $research_flats_room->save();
+            $car->updated_at=Carbon::now()->toDateTimeString();
+            $car->save();
 
-            return redirect('/businesses')
-                ->with('success', 'Car approved successfully');
+            return redirect('/businesses/car_rental')
+                ->with('success', 'Operation completed successfully');
         }
 
 
@@ -171,28 +170,42 @@ class carRentalController extends Controller
 
         if($request->get('approval_status')=='Rejected'){
 
-            $research_flats_room=carRental::where('id',$request->get('id'))->first();
-            $research_flats_room->stage=2;
-            $research_flats_room->edit_status=0;
-            $research_flats_room->rejected_by='DVC';
-            $research_flats_room->updated_at=Carbon::now()->toDateTimeString();
-            $research_flats_room->approval_remarks=$request->get('approval_remarks');
-            $research_flats_room->save();
+            $car=carRental::where('id',$request->get('id'))->first();
+            $car->stage=2;
 
-            return redirect('/businesses')
+            $car->rejected_by='DVC';
+            $car->updated_at=Carbon::now()->toDateTimeString();
+            $car->approval_remarks=$request->get('approval_remarks');
+            $car->save();
+
+            return redirect('/businesses/car_rental')
                 ->with('success', 'Operation completed successfully');
 
         }else{
 
-            $research_flats_room=carRental::where('id',$request->get('id'))->first();
-            $research_flats_room->stage=3;
-            $research_flats_room->edit_status=0;
-            $research_flats_room->rejected_by=0;
-            $research_flats_room->updated_at=Carbon::now()->toDateTimeString();
-            $research_flats_room->save();
+            $car=carRental::where('id',$request->get('id'))->first();
+            $car->stage=3;
+            $car->edit_status=0;
 
-            return redirect('/businesses')
-                ->with('success', 'Car approved successfully');
+
+            if($car->terminated_stage=='1'){
+
+                $car->flag=0;
+                $car->terminated_stage=0;
+
+            }else{
+
+
+            }
+
+
+
+            $car->rejected_by=0;
+            $car->updated_at=Carbon::now()->toDateTimeString();
+            $car->save();
+
+            return redirect('/businesses/car_rental')
+                ->with('success', 'Operation completed successfully');
         }
 
 
@@ -209,24 +222,45 @@ public function editcar(Request $request){
 	$car->hire_rate=$request->get('hire_rate');
 	$car->hire_status=$request->get('hire_status');
 
-    if($request->get('rejected_by')=='DVC'){
+//    if($request->get('rejected_by')=='DVC'){
+//
+//        $car->stage='1b';
+//    }else{
+//
+//        $car->stage=1;
+//    }
 
-        $car->stage='1b';
+
+
+    if($request->get('edit_case')=='True'){
+
+            $car->edit_status=1;
+
     }else{
 
-        $car->stage=1;
+
     }
 
+
+
+    $car->stage=1;
 
 	$car->save();
 	return redirect()->back()->with('success', 'Car Details Edited Successfully');
 }
 
+
+
+
+
+
+
 public function deletecar($id){
     $car=carRental::find($id);
-    $car->flag='0';
+    $car->terminated_stage=1;
+    $car->stage=1;
     $car->save();
-    return redirect()->back()->with('success', 'Car Deleted Successfully');
+    return redirect()->back()->with('success', 'Request Sent Successfully');
 
 }
 
@@ -236,6 +270,20 @@ public function deletecar($id){
         $car=carRental::where('id',$id)->delete();
 
         return redirect()->back()->with('success', 'Request Deleted Successfully');
+
+    }
+
+
+    public function revokeDeleteCar($id){
+
+        $car=carRental::where('id',$id)->first();
+        $car->stage=3;
+        $car->terminated_stage=0;
+        $car->rejected_by=0;
+        $car->save();
+
+
+        return redirect()->back()->with('success', 'Operation Completed Successfully');
 
     }
 
@@ -378,7 +426,7 @@ public function deletecentre($id){
      if($request->get('query'))
      {
       $query = $request->get('query');
-      $data = hire_rate::select('hire_rate')->where('vehicle_model',$query)->value('hire_rate');
+      $data = hire_rate::select('hire_rate')->where('vehicle_model',$query)->where('flag','1')->value('hire_rate');
 
        $output = $data;
 

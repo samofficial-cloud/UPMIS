@@ -142,17 +142,14 @@ class SpaceController extends Controller
 
 
 
-
-
-
     }
 
-        $newly_created_space_id=DB::table('spaces')->orderBy('id','desc')->limit('1')->value('id');
-
-//        DB::table('spaces')->where('id',$newly_created_space_id)->update(['flag'=>0]);
-        DB::table('spaces')
-            ->where('id', $newly_created_space_id)
-            ->update(['flag' => '0']);
+//        $newly_created_space_id=DB::table('spaces')->orderBy('id','desc')->limit('1')->value('id');
+//
+////        DB::table('spaces')->where('id',$newly_created_space_id)->update(['flag'=>0]);
+//        DB::table('spaces')
+//            ->where('id', $newly_created_space_id)
+//            ->update(['flag' => '0']);
 
 
         return redirect('/businesses')
@@ -167,27 +164,75 @@ class SpaceController extends Controller
 
         if($request->get('approval_status')=='Rejected'){
 
-            DB::table('spaces')
-                ->where('id', $request->get('id'))
-                ->update(['flag' => '1']);
+            $space=space::where('id',$request->get('id'))->first();
+            $space->stage=2;
 
+            $space->rejected_by='DIRECTOR';
+            $space->updated_at=Carbon::now()->toDateTimeString();
+            $space->approval_remarks=$request->get('approval_remarks');
+            $space->save();
 
-            DB::table('spaces')
-                ->where('id', $request->get('id'))
-                ->update(['approval_remarks' => $request->get('reason')]);
+            return redirect('/businesses')
+                ->with('success', 'Operation completed successfully');
 
         }else{
 
-            DB::table('spaces')
-                ->where('id', $request->get('id'))
-                ->update(['flag' => '2']);
+            $space=space::where('id',$request->get('id'))->first();
+            $space->stage='1b';
 
+            $space->updated_at=Carbon::now()->toDateTimeString();
+            $space->save();
+
+            return redirect('/businesses')
+                ->with('success', 'Operation completed successfully');
         }
 
 
+    }
 
-        return redirect('/businesses')
-            ->with('success', 'Operation completed successfully');
+
+    public function approveSpaceSecond(Request $request)
+    {
+
+
+        if($request->get('approval_status')=='Rejected'){
+
+            $space=space::where('id',$request->get('id'))->first();
+            $space->stage=2;
+
+            $space->rejected_by='DVC';
+            $space->updated_at=Carbon::now()->toDateTimeString();
+            $space->approval_remarks=$request->get('approval_remarks');
+            $space->save();
+
+            return redirect('/businesses')
+                ->with('success', 'Operation completed successfully');
+
+        }else{
+
+            $space=space::where('id',$request->get('id'))->first();
+            $space->stage=3;
+            $space->edit_status=0;
+
+
+            if($space->terminated_stage=='1'){
+
+                $space->status=0;
+                $space->terminated_stage=0;
+
+            }else{
+
+
+            }
+
+
+            $space->rejected_by=0;
+            $space->updated_at=Carbon::now()->toDateTimeString();
+            $space->save();
+
+            return redirect('/businesses')
+                ->with('success', 'Operation completed successfully');
+        }
     }
 
 
@@ -201,6 +246,22 @@ class SpaceController extends Controller
 
         return redirect('/businesses')
             ->with('success', 'Space deleted successfully');
+    }
+
+
+    public function revokeDeletionSpace(Request $request,$id)
+    {
+
+        $space=space::where('id',$id)->first();
+        $space->stage=3;
+        $space->terminated_stage=0;
+        $space->rejected_by=0;
+        $space->save();
+
+
+
+        return redirect('/businesses')
+            ->with('success', 'Space deletion revoked successfully');
     }
 
 
@@ -308,6 +369,26 @@ class SpaceController extends Controller
 
 
         }
+
+
+        if($request->get('edit_case')=='True'){
+
+            DB::table('spaces')
+                ->where('id', $id)
+                ->update(['edit_status' => 1]);
+
+        }else{
+
+
+        }
+
+
+
+        DB::table('spaces')
+            ->where('id', $id)
+            ->update(['stage' => 1]);
+
+
 
         return redirect('/businesses')
             ->with('success', 'Renting space details edited successfully');
@@ -434,13 +515,25 @@ class SpaceController extends Controller
     public function deleteSpace(Request $request,$id)
     {
 
+//        DB::table('spaces')
+//            ->where('id', $id)
+//            ->update(['status' => 0]);
+
+
+
         DB::table('spaces')
             ->where('id', $id)
-            ->update(['status' => 0]);
+            ->update(['stage' => 1]);
+
+
+        DB::table('spaces')
+            ->where('id', $id)
+            ->update(['terminated_stage' => 1]);
+
 
 
         return redirect('/businesses')
-            ->with('success', 'Renting space deactivated successfully');
+            ->with('success', 'Request sent successfully');
     }
 
 

@@ -302,11 +302,39 @@ input[type=radio]{
                                                                              <div class="modal-body">
 
 
+                                                                                 @if($room->terminated_stage=='1')
+
+                                                                                     <p style="color: red"><strong style="color:black !important;">CASE: </strong> Deletion of an Existing Room</p>
+                                                                                 @else
+
+                                                                                 @if($room->edit_status=='1')
+                                                                                     <p style="color: red"><strong style="color:black !important;">CASE: </strong> Editing of Information for an Existing Room</p>
+                                                                                 @else
+                                                                                     <p style="color: red"><strong style="color:black !important;">CASE: </strong> Addition of a New Room</p>
+                                                                                 @endif
+
+                                                                                 @endif
+
 
                                                                                  @if(Auth::user()->role=='Director DPDI')
 
                                                                                  <form method="post" action="{{ route('flats_approval_response')}}">
                                                                                      {{csrf_field()}}
+
+
+
+                                                                                     @if($room->rejected_by=='DVC')
+                                                                                         <div class="form-group">
+                                                                                             <div class="form-wrapper">
+                                                                                                 <label for="remarks" style="color: red;">Reason(s) for Declination by DVC Administration:</label>
+                                                                                                 <textarea type="text"  class="form-control" readonly="">{{$room->approval_remarks}}</textarea>
+                                                                                             </div>
+                                                                                         </div>
+                                                                                         <br>
+                                                                                     @endif
+
+
+
                                                                                      <div class="form-group">
                                                                                          <div class="form-wrapper">
                                                                                              <label for="room_no{{$room->id}}">Room No.</label>
@@ -391,7 +419,7 @@ input[type=radio]{
                                                                                      <br>
 
                                                                                      <div align="right">
-                                                                                         <button class="btn btn-primary" type="submit">Save</button>
+                                                                                         <button class="btn btn-primary" type="submit">Proceed</button>
                                                                                          <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
                                                                                      </div>
                                                                                  </form>
@@ -482,7 +510,7 @@ input[type=radio]{
                                                                                          <br>
 
                                                                                          <div align="right">
-                                                                                             <button class="btn btn-primary" type="submit">Save</button>
+                                                                                             <button class="btn btn-primary" type="submit">Proceed</button>
                                                                                              <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
                                                                                          </div>
                                                                                      </form>
@@ -673,9 +701,8 @@ input[type=radio]{
                                                                                  </div>
                                                                                  <br>
                                                                                  <input type="text" name="room_id" value="{{$room->id}}" hidden="">
-
                                                                                  <input type="text" name="rejected_by" value="{{$room->rejected_by}}" hidden="">
-
+                                                                                 <input type="text" name="edit_case" value="False" hidden="">
 
 
                                                                                  <div class="form-group">
@@ -700,7 +727,7 @@ input[type=radio]{
                                                                                  <br>
 
                                                                                  <div align="right">
-                                                                                     <button class="btn btn-primary" type="submit">Save</button>
+                                                                                     <button class="btn btn-primary" type="submit">Forward</button>
                                                                                      <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
                                                                                  </div>
                                                                              </form>
@@ -709,7 +736,15 @@ input[type=radio]{
                                                                  </div>
                                                              </div>
 
-                                                             <a title="Delete this room" data-toggle="modal" data-target="#Deleteroom{{$room->id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px; color:red; cursor: pointer;"></i></a>
+                                                             @if($room->terminated_stage=='1')
+                                                                 <a title="Revoke the deletion of this room" data-toggle="modal" data-target="#revoke_Deleteroom{{$room->id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px; color:red; cursor: pointer;"></i></a>
+                                                             @else
+                                                                 @if($room->edit_status=='1')
+                                                                 @else
+                                                                     <a title="Delete this room" data-toggle="modal" data-target="#Deleteroom{{$room->id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px; color:red; cursor: pointer;"></i></a>
+                                                                 @endif
+
+                                                             @endif
 
                                                              <div class="modal fade" id="Deleteroom{{$room->id}}" role="dialog">
                                                                  <div class="modal-dialog" role="document">
@@ -723,7 +758,7 @@ input[type=radio]{
                                                                              <p style="font-size: 20px;">Are you sure you want to delete this request?</p>
                                                                              <br>
                                                                              <div align="right">
-                                                                                 <a class="btn btn-info" href="{{route('deleteflat_permanently',$room->id)}}">Proceed</a>
+                                                                                 <a class="btn btn-info" href="{{route('deleteflat_permanently',$room->id)}}">Yes</a>
                                                                                  <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
                                                                              </div>
 
@@ -731,6 +766,34 @@ input[type=radio]{
                                                                      </div>
                                                                  </div>
                                                              </div>
+
+
+
+
+                                                             <div class="modal fade" id="revoke_Deleteroom{{$room->id}}" role="dialog">
+                                                                 <div class="modal-dialog" role="document">
+                                                                     <div class="modal-content">
+                                                                         <div class="modal-header">
+                                                                             <b><h5 class="modal-title" style="color: red;"><b>WARNING</b></h5></b>
+                                                                             <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                         </div>
+
+                                                                         <div class="modal-body">
+                                                                             <p style="font-size: 20px;">Are you sure you want to revoke the deletion of this room?</p>
+                                                                             <br>
+                                                                             <div align="right">
+                                                                                 <a class="btn btn-info" href="{{route('revoke_deleteflat',$room->id)}}">Yes</a>
+                                                                                 <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                                                                             </div>
+
+                                                                         </div>
+                                                                     </div>
+                                                                 </div>
+                                                             </div>
+
+
+
+
 
                                                          </center>
                                                      </td>
@@ -751,35 +814,108 @@ input[type=radio]{
                                  <?php $i=1; ?>
 
                                  @if($room_outbox!='')
-                                 <table class="table">
-                                     <thead class="">
-                                     <tr>
-                                         <th scope="col" style=" width: 5%;"><center>S/N</center></th>
-                                         <th scope="col" style=""><center>Room No.</center></th>
-                                         <th scope="col" style=""><center>Category</center></th>
-                                         <th scope="col" style=""><center>Currency</center></th>
-                                         <th scope="col" style=" width: 20%;"><center>Staff Rate</center></th>
-                                         <th scope="col" style="width: 20%;"><center>Students Rate</center></th>
-                                         <th scope="col" style="width: 20%;"><center>Status</center></th>
-                                         <th scope="col" style="width: 20%;"><center>Stage</center></th>
-                                         @if($privileges=='Read only')
-                                         @else
-                                             @admin
-                                             <th scope="col" style=""><center>Action</center></th>
-                                             @endadmin
-                                         @endif
-                                     </tr>
-                                     </thead>
-                                     <tbody>
-                                     @foreach($room_outbox as $room)
+                                     <table class="table">
+                                         <thead class="">
                                          <tr>
-                                             <td style="text-align: center;">{{$i}}.</td>
-                                             <td style="text-align: center;">{{$room->room_no}}</td>
-                                             <td style="text-align: center;">{{$room->category}}</td>
-                                             <td><center>{{$room->currency}}</center></td>
-                                             <td style="text-align: center;">{{number_format($room->charge_workers)}}</td>
-                                             <td style="text-align: center;">{{number_format($room->charge_students)}}</td>
-                                             <td style="text-align: center;">{{$room->occupational_status}}</td>
+                                             <th scope="col" style=" width: 5%;"><center>S/N</center></th>
+                                             <th scope="col" style=""><center>Room No.</center></th>
+                                             <th scope="col" style=""><center>Category</center></th>
+                                             <th scope="col" style=""><center>Currency</center></th>
+                                             <th scope="col" style=" width: 20%;"><center>Staff Rate</center></th>
+                                             <th scope="col" style="width: 20%;"><center>Students Rate</center></th>
+                                             <th scope="col" style="width: 20%;"><center>Status</center></th>
+                                             <th scope="col" style="width: 20%;"><center>Approval Status</center></th>
+                                             <th scope="col" style="width: 20%;"><center>Stage</center></th>
+                                             @if($privileges=='Read only')
+                                             @else
+                                                 @admin
+                                                 <th scope="col" style=""><center>Action</center></th>
+                                                 @endadmin
+                                             @endif
+                                         </tr>
+                                         </thead>
+                                         <tbody>
+                                         @foreach($room_outbox as $room)
+                                             <tr>
+                                                 <td style="text-align: center;">{{$i}}.</td>
+                                                 <td style="text-align: center;">{{$room->room_no}}</td>
+                                                 <td style="text-align: center;">{{$room->category}}</td>
+                                                 <td><center>{{$room->currency}}</center></td>
+                                                 <td style="text-align: center;">{{number_format($room->charge_workers)}}</td>
+                                                 <td style="text-align: center;">{{number_format($room->charge_students)}}</td>
+                                                 <td style="text-align: center;">{{$room->occupational_status}}</td>
+
+
+                                                 @if(Auth::user()->role=='Director DPDI')
+
+
+                                                     @if($room->stage=='2' AND $room->rejected_by=='DVC')
+                                                         <td><center>
+
+
+
+
+                                                                 <a title="View Reason for the Declination" style="cursor: pointer; color:#3490dc;"  class="" data-toggle="modal" data-target="#decline_reason{{$room->id}}" aria-pressed="true"><div ><span style="background-color: red; color:white;  padding:3px;   text-align: center;">DECLINED</span> </div></a>
+
+                                                                 <div class="modal fade" id="decline_reason{{$room->id}}" role="dialog">
+
+                                                                     <div class="modal-dialog" role="document">
+                                                                         <div class="modal-content">
+                                                                             <div class="modal-header">
+                                                                                 <b><h5 class="modal-title">Reason(s) for Declination by DVC Administration</h5></b>
+
+                                                                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                             </div>
+
+                                                                             <div class="modal-body">
+                                                                                 <form method="post" action=""   >
+                                                                                     {{csrf_field()}}
+
+
+                                                                                     <div class="form-row">
+
+
+                                                                                         <div class="form-group col-12">
+                                                                                             <div class="form-wrapper">
+                                                                                                 <label for="remarks" style="color: red;"></label>
+                                                                                                 <textarea type="text"  name="reason" class="form-control" readonly="">{{$room->approval_remarks}}</textarea>
+                                                                                             </div>
+                                                                                         </div>
+                                                                                         <br>
+                                                                                         <br>
+
+
+
+                                                                                     </div>
+
+
+                                                                                     <div align="right">
+
+                                                                                         <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Close</button>
+                                                                                     </div>
+                                                                                 </form>
+
+                                                                             </div>
+                                                                         </div>
+                                                                     </div>
+                                                                 </div>
+
+
+                                                             </center></td>
+                                                     @else
+
+                                                         <td><center>PENDING</center></td>
+                                                     @endif
+                                                 @elseif(Auth::user()->role=='DVC Administrator')
+                                                     <td><center>PENDING</center></td>
+
+                                                 @elseif(Auth::user()->role=='Transport Officer-CPTU' AND $room->stage=='1')
+                                                     <td><center>PENDING</center></td>
+
+                                                 @elseif(Auth::user()->role=='Transport Officer-CPTU' AND $room->stage=='1b')
+                                                     <td><center>PENDING</center></td>
+                                                 @else
+                                                 @endif
 
 
                                                  @if(Auth::user()->role=='Director DPDI')
@@ -801,14 +937,14 @@ input[type=radio]{
                                                  @endif
 
 
-                                         </tr>
-                                         <?php $i = $i + 1; ?>
-                                     @endforeach
-                                     </tbody>
-                                 </table>
-                                     @else
-                                         <p class="mt-4" style="text-align:center;">No records found</p>
-                                     @endif
+                                             </tr>
+                                             <?php $i = $i + 1; ?>
+                                         @endforeach
+                                         </tbody>
+                                     </table>
+                                 @else
+                                     <p class="mt-4" style="text-align:center;">No records found</p>
+                                 @endif
 
                              </div>
                              <div id="room_complete"  class="tabcontent_room">
@@ -901,7 +1037,7 @@ input[type=radio]{
 
 
                                                              <div align="right">
-                                                                 <button class="btn btn-primary" type="submit">Save</button>
+                                                                 <button class="btn btn-primary" type="submit">Forward</button>
                                                                  <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
                                                              </div>
 
@@ -1113,7 +1249,7 @@ input[type=radio]{
                                                                                      <br>
 
                                                                                      <div align="right">
-                                                                                         <button class="btn btn-primary" type="submit">Save</button>
+                                                                                         <button class="btn btn-primary" type="submit">Forward</button>
                                                                                          <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
                                                                                      </div>
                                                                                  </form>
@@ -1121,8 +1257,8 @@ input[type=radio]{
                                                                          </div>
                                                                      </div>
                                                                  </div>
-                                                                 @endif
-                                                                 @admin
+
+
                                                                  <a title="Delete this room" data-toggle="modal" data-target="#Deleteroom{{$room->id}}" role="button" aria-pressed="true"><i class="fa fa-trash" aria-hidden="true" style="font-size:20px; color:red; cursor: pointer;"></i></a>
 
                                                                  <div class="modal fade" id="Deleteroom{{$room->id}}" role="dialog">
@@ -1145,7 +1281,7 @@ input[type=radio]{
                                                                          </div>
                                                                      </div>
                                                                  </div>
-                                                                 @endadmin
+                                                                 @endif
                                                              </center>
                                                          </td>
 
@@ -1261,7 +1397,7 @@ input[type=radio]{
 
 
                                                          <div align="right">
-                                                             <button class="btn btn-primary" type="submit">Save</button>
+                                                             <button class="btn btn-primary" type="submit">Forward</button>
                                                              <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
                                                          </div>
 
@@ -1378,10 +1514,10 @@ input[type=radio]{
                                              <td style="text-align: left;">{{$room->occupational_status}}</td>
                                              @if($privileges=='Read only')
                                              @else
-                                                 @admin
+
                                                  <td>
                                                      <center>
-
+                                                         @if(Auth::user()->role=='Research Flats Officer')
 {{--                                                         <a title="Edit Room Details" data-toggle="modal" data-target="#editroom{{$room->id}}" role="button" aria-pressed="true"><i class="fa fa-edit" style="font-size:20px; color: green; cursor: pointer;"></i></a>--}}
 {{--                                                         <div class="modal fade" id="editroom{{$room->id}}" role="dialog">--}}
 {{--                                                             <div class="modal-dialog" role="document">--}}
@@ -1505,10 +1641,10 @@ input[type=radio]{
                                                                  </div>
                                                              </div>
                                                          </div>
-
+                                                         @endif
                                                      </center>
                                                  </td>
-                                                 @endadmin
+
                                              @endif
                                          </tr>
                                          <?php $i = $i + 1; ?>

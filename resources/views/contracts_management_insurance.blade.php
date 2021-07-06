@@ -322,11 +322,15 @@
                                 </tr>
                                 </thead>
                                 <tbody>
+                                <?php
 
+                                $i=1;
+
+                                ?>
                                 @foreach($insurance_contracts as $var)
                                     <tr>
 
-                                        <td class="counterCell text-center"></td>
+                                        <td class=" text-center">{{$i}}</td>
                                         <td>{{$var->full_name}}</td>
                                         <td class="text-right">{{$var->id}}</td>
                                         <td>{{$var->insurance_class}}</td>
@@ -407,6 +411,11 @@
                                             </center>
                                         </td>
                                     </tr>
+                                    <?php
+
+                                    $i=$i+1;
+
+                                    ?>
                                 @endforeach
 
 

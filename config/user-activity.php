@@ -13,6 +13,9 @@ return [
     'model' => [
         'user' => "App\User",
         'insurance' => "App\insurance",
+        'insurance_contract' => "App\insurance_contract",
+        'insurance_invoices_client' => "App\insurance_invoices_client",
+        'insurance_clients_payment' => "App\insurance_clients_payment",
         'carRental' => "App\carRental",
         'research_flats_contract' => "App\research_flats_contract",
         'space' => "App\space",

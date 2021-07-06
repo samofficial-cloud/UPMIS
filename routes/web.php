@@ -112,6 +112,7 @@ Route::post('/login/custom', [
 
     Route::post('/businesses/research_flats/edit', 'HomeController@editresearchflats')->name('editflat');
 
+    Route::get('/businesses/research_flats/revoke_delete/{id}', 'HomeController@revokeDeleteResearchflats')->name('revoke_deleteflat');
     Route::get('/businesses/research_flats/delete/{id}', 'HomeController@deleteresearchflats')->name('deleteflat');
     Route::get('/businesses/research_flats/delete_permanently/{id}', 'HomeController@deleteresearchflatsPermanently')->name('deleteflat_permanently');
 
@@ -261,6 +262,7 @@ Route::post('/car/hire_rate/add','hireRateController@addhirerate')->name('addhir
 Route::post('/car/hire_rate/edit','hireRateController@edithirerate')->name('edithirerate');
 
 Route::get('/car/hire_rate/delete/{id}','hireRateController@deletehirerate')->name('deletehirerate');
+Route::get('/car/hire_rate/revoke_delete/{id}','hireRateController@revokedeletehirerate')->name('revoke_deletehirerate');
 Route::get('/car/hire_rate/delete_permanent/{id}','hireRateController@deletehireratePermanently')->name('deletehireratepermanent');
 
 Route::post('/car/cost_centres/add','carRentalController@addcentre')->name('addcentre');
@@ -271,6 +273,7 @@ Route::get('/car/cost_centres/delete/{id}','carRentalController@deletecentre')->
 
 Route::get('/car/delete_car/{id}', 'carRentalController@deletecar')->name('deletecar');
 Route::get('/car/delete_car_permanently/{id}', 'carRentalController@deletecarPermanently')->name('deletecar_permanently');
+Route::get('/car/revoke_deletecar/{id}', 'carRentalController@revokeDeleteCar')->name('revoke_deletecar');
 
 Route::get('/contracts/car_rental','carContractsController@index')->name('carContracts');
 
@@ -472,14 +475,19 @@ Route::group(['middleware' => ['auth', 'space']], function() {
     Route::get('/renew_space_contract_form/{id}','ContractsController@renewSpaceContractForm')->name('renew_space_contract_form');
     Route::get('/renew_space_contract_form_parent_client/{id}','ContractsController@renewSpaceContractFormParentClient')->name('renew_space_contract_form_parent_client');
     Route::get('/edit_space_contract/{id}/', 'ContractsController@EditSpaceContractForm')->name('edit_contract');
+    Route::get('/edit_space_contract_approval/{id}/', 'ContractsController@EditSpaceContractFormApproval')->name('edit_contract_approval');
+
     Route::get('/edit_space_contract_parent_client/{id}/', 'ContractsController@EditSpaceContractFormParentClient')->name('edit_contract_parent_client');
+    Route::get('/edit_space_contract_parent_client_approval/{id}/', 'ContractsController@EditSpaceContractFormParentClientApproval')->name('edit_contract_parent_client_approval');
     Route::post('/edit_space_contract_final/{contract_id}/client_id/{client_id}', 'ContractsController@EditSpaceContractFinalProcessing')->name('edit_space_contract_final');
     Route::post('/add_space', 'SpaceController@addSpace')->name('add_space');
     Route::post('/approve_space', 'SpaceController@approveSpace')->name('approve_space');
+    Route::post('/approve_space_second', 'SpaceController@approveSpaceSecond')->name('approve_space_second');
     Route::post('/edit_space/{id}', 'SpaceController@editSpace')->name('edit_space');
     Route::post('/resubmit_space/{id}', 'SpaceController@ResubmitSpace')->name('resubmit_space');
     Route::get('/delete_space/{id}', 'SpaceController@deleteSpace')->name('delete_space');
     Route::get('/cancel_space_addition/{id}', 'SpaceController@CancelSpaceAddition')->name('cancel_space_addition');
+    Route::get('/revoke_deletion_space/{id}', 'SpaceController@revokeDeletionSpace')->name('revoke_deletion_space');
     Route::post('/generate_minor_list', 'SpaceController@generateMinorList')->name('generate_minor_list');
 
     Route::post('/generate_location_list', 'SpaceController@generateLocationList')->name('generate_location_list');
@@ -506,6 +514,8 @@ Route::group(['middleware' => ['auth', 'space']], function() {
     Route::post('/space_contract_approval_response', 'ContractsController@SpaceContractApprovalResponse')->name('space_contract_approval_response');
     Route::post('/space_contract_second_approval_response', 'ContractsController@SpaceContractSecondApprovalResponse')->name('space_contract_second_approval_response');
     Route::get('/terminate_space_contract/{id}', 'ContractsController@terminateSpaceContract')->name('terminate_space_contract');
+    Route::get('/revoke_terminate_space_contract/{id}', 'ContractsController@RevokeTerminateSpaceContract')->name('revoke_terminate_space_contract');
+    Route::post('/update_terminated_invoice/{id}', 'ContractsController@updateTerminatedInvoice')->name('update_terminated_invoice');
     Route::get('/contract_availability_space', 'InvoicesController@contractAvailabilitySpace')->name('contract_availability_space');
     Route::get('/get_parent_currency', 'ContractsController@getParentCurrency')->name('get_parent_currency');
     Route::get('/print_space_contract/{id}', 'ContractsController@printSpaceContract')->name('print_space_contract');

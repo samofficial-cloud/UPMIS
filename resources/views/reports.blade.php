@@ -281,11 +281,11 @@ $year=$current-3;
       <div class="form-wrapper">
       <label for="space_id"  >Real Estate Number<span style="color: red;">*</span></label>
       <span id="spaceidmsg"></span>
-     {{-- <input type="text" class="form-control" id="space_id" name="space_id" value="" autocomplete="off"> --}}
-       {{-- <select class="form-control" id="space_id" name="space_id">
-        <option value="" disabled selected hidden>Select Space</option>
+{{--      <input type="text" class="form-control" id="space_id" name="space_id" value="" autocomplete="off">--}}
+{{--        <select class="form-control" id="space_id" name="space_id">--}}
+{{--        <option value="" disabled selected hidden>Select Space</option>--}}
 
-       </select> --}}
+{{--       </select>--}}
         <span id="nameListSpaceId"></span>
       </div>
     </div>
