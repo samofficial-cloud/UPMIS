@@ -169,14 +169,14 @@
                                     <div class="form-group">
                                         <div class="form-wrapper">
                                             <label for=""  ><strong>TIN<span style="color: red;"> *</span> </strong></label>
-                                            <input type="text" class="form-control" name="company_tin" value="" required autocomplete="off">
-
+                                            <input type="number" class="form-control" name="company_tin" value="" required autocomplete="off" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); minCharactersTinAdd(this.value);"  maxlength = "9">
+                                            <p id="error_tin_add"></p>
                                         </div>
                                     </div>
                                     <br>
 
                                     <div align="right">
-                                        <button class="btn btn-primary" type="submit" >Submit</button>
+                                        <button class="btn btn-primary" id="save" type="submit" >Save</button>
                                         <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
                                     </div>
                                 </form>
@@ -354,8 +354,8 @@
                                 <div class="form-group">
                                     <div class="form-wrapper">
                                         <label for="first_name"  ><strong>TIN</strong></label>
-                                        <input type="text" class="form-control" required  name="company_tin" value="{{$var->company_tin}}"  autocomplete="off">
-
+                                        <input type="number" class="form-control" required  name="company_tin" value="{{$var->company_tin}}"  autocomplete="off" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); minCharactersTin(this.value,{{$var->id}});"  maxlength = "9">
+                                        <p id="error_tin{{$var->id}}"></p>
                                     </div>
                                 </div>
 
@@ -363,7 +363,7 @@
 
 
                               <div align="right">
-                                <button class="btn btn-primary" type="submit" >Save</button>
+                                <button class="btn btn-primary" id="update{{$var->id}}" type="submit" >Update</button>
                                 <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
                               </div>
                             </form>
@@ -444,6 +444,48 @@
       "pageLength": 100,
       "bLengthChange": false
   } );
+
+
+
+
+
+  function minCharactersTin(value,id){
+
+
+
+      if(value.length<9){
+
+          document.getElementById("update"+id).disabled = true;
+          document.getElementById("error_tin"+id).style.color = 'red';
+          document.getElementById("error_tin"+id).style.float = 'left';
+          document.getElementById("error_tin"+id).style.paddingTop = '1%';
+          document.getElementById("error_tin"+id).innerHTML ='TIN number cannot be less than 9 digits';
+
+      }else{
+          document.getElementById("error_tin"+id).innerHTML ='';
+          document.getElementById("update"+id).disabled = false;
+      }
+
+  }
+
+
+  function minCharactersTinAdd(value,id){
+
+
+      if(value.length<9){
+
+          document.getElementById("save").disabled = true;
+          document.getElementById("error_tin_add").style.color = 'red';
+          document.getElementById("error_tin_add").style.float = 'left';
+          document.getElementById("error_tin_add").style.paddingTop = '1%';
+          document.getElementById("error_tin_add").innerHTML ='TIN number cannot be less than 9 digits';
+
+      }else{
+          document.getElementById("error_tin_add").innerHTML ='';
+          document.getElementById("save").disabled = false;
+      }
+
+  }
 
 </script>
 

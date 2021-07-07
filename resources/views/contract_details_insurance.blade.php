@@ -879,7 +879,6 @@
             dom: '<"top"fl>rt<"bottom"pi>'
         } );
 
-
         var table = $('#myTableCar').DataTable( {
             dom: '<"top"fl>rt<"bottom"pi>'
         } );

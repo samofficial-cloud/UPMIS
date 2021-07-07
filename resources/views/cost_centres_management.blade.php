@@ -138,7 +138,7 @@
                     <div style="float:left;">
 
 
-                        <a data-toggle="modal" data-target="#cost_centree" class="btn btn-success  active" style="background-color: #38c172; border: none;    padding: 10px;
+                        <a data-toggle="modal" data-target="#cost_centree" class="btn btn-success  active" style="cursor: pointer; background-color: #38c172; border: none;    padding: 10px;
 
                             margin-bottom: 5px;
                             margin-top: 4px;" role="button" aria-pressed="true">Add Cost Centre</a>
@@ -158,16 +158,26 @@
                                             <div class="form-group" id="costcentreiddiv">
                                                 <div class="form-wrapper">
                                                     <label for="costcentreid">Cost Centre id<span style="color: red;">*</span></label>
-                                                    <input type="text" id="costcentreid" name="costcentreid" class="form-control" required="" onkeypress="if((this.value.length<8)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
+                                                    <input type="text" id="costcentreid" name="costcentreid" class="form-control" required="" >
                                                 </div>
                                             </div>
 
                                             <div class="form-group" id="centrenamediv">
                                                 <div class="form-wrapper">
                                                     <label for="centrename">Cost Centre Name<span style="color: red;">*</span></label>
-                                                    <input type="text" id="centrename" name="centrename" class="form-control" required="" onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
+                                                    <input type="text" id="centrename" name="centrename" class="form-control" required="" >
                                                 </div>
                                             </div>
+
+
+
+                                            <div class="form-group">
+                                                <div class="form-wrapper">
+                                                    <label for="division_id">Division ID<span style="color: red;">*</span></label>
+                                                    <input type="text" id="division_id" name="division_id" class="form-control" required="" >
+                                                </div>
+                                            </div>
+
 
                                             <div align="right">
                                                 <button class="btn btn-primary" type="submit">Save</button>
@@ -293,7 +303,7 @@
                                                                 <div class="form-group">
                                                                     <div class="form-wrapper">
                                                                         <label for="costcentre_id{{$var->id}}">Cost Centre Id<span style="color: red;">*</span></label>
-                                                                        <input type="text" id="costcentre_id{{$var->id}}" name="costcentre_id" class="form-control" required="" autocomplete="off" value="{{$var->costcentre_id}}" onkeypress="if((this.value.length<10)&&((event.charCode >= 48 && event.charCode <= 57) || (event.charCode==46))){return true} else return false;">
+                                                                        <input type="text" id="costcentre_id{{$var->id}}" name="costcentre_id" class="form-control" required="" autocomplete="off" value="{{$var->costcentre_id}}" >
                                                                     </div>
                                                                 </div>
                                                                 <br>
@@ -301,14 +311,30 @@
                                                                 <div class="form-group">
                                                                     <div class="form-wrapper">
                                                                         <label for="centrename{{$var->id}}">Cost Centre Name<span style="color: red;">*</span></label>
-                                                                        <input type="text" id="centrename{{$var->id}}" name="centrename" class="form-control" required="" value="{{$var->costcentre}}" onkeypress="if(event.charCode >= 48 && event.charCode <= 57){return false}else return true;">
+                                                                        <input type="text" id="centrename{{$var->id}}" name="centrename" class="form-control" required="" value="{{$var->costcentre}}" >
                                                                     </div>
                                                                 </div>
                                                                 <br>
+
+
+
+
+                                                                <div class="form-group">
+                                                                    <div class="form-wrapper">
+                                                                        <label for="division_id">Division ID<span style="color: red;">*</span></label>
+                                                                        <input type="text" id="division_id{{$var->id}}" name="division_id" value="{{$var->division_id}}" class="form-control" required="" >
+                                                                    </div>
+                                                                </div>
+
+
+                                                                <br>
+
+
+
                                                                 <input type="text" name="centreid" value="{{$var->id}}" hidden="">
 
                                                                 <div align="right">
-                                                                    <button class="btn btn-primary" type="submit">Save</button>
+                                                                    <button class="btn btn-primary" type="submit">Update</button>
                                                                     <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
                                                                 </div>
 
@@ -332,8 +358,8 @@
                                                             <p style="font-size: 20px;">Are you sure you want to delete this cost centre?</p>
                                                             <br>
                                                             <div align="right">
-                                                                <a class="btn btn-info" href="{{route('deletecentre',$var->id)}}">Proceed</a>
-                                                                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                                                                <a class="btn btn-info" href="{{route('deletecentre',$var->id)}}">Yes</a>
+                                                                <button type="button" class="btn btn-danger" data-dismiss="modal">No</button>
                                                             </div>
 
                                                         </div>

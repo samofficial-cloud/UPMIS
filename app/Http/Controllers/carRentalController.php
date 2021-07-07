@@ -296,8 +296,12 @@ public function addcentre(Request $request){
  }
  else{
   $centre_name=$request->get('centrename');
-  $data=array('costcentre_id'=>$centre_id,"costcentre"=>$centre_name);
-  DB::table('cost_centres')->insert($data);
+     $cost_centre= new cost_centre();
+     $cost_centre->costcentre_id=$centre_id;
+     $cost_centre->costcentre=$centre_name;
+     $cost_centre->division_id=$request->division_id;
+     $cost_centre->status=1;
+     $cost_centre->save();
   return redirect()->back()->with('success', 'Cost Centre Added Successfully');
  }
 }
@@ -305,23 +309,21 @@ public function addcentre(Request $request){
 public function editcentre(Request $request){
   $id=$request->get('centreid');
 
-      DB::table('cost_centres')
-      ->where('id', $id)
-      ->update(['costcentre_id' => $request->get('costcentre_id')]);
+    $cost_centre= cost_centre::find($id);
+    $cost_centre->costcentre_id=$request->get('costcentre_id');
+    $cost_centre->costcentre=$request->get('centrename');
+    $cost_centre->division_id=$request->division_id;
+    $cost_centre->save();
 
-       DB::table('cost_centres')
-      ->where('id', $id)
-      ->update(['costcentre' => $request->get('centrename')]);
+
 
       return redirect()->back()->with('success', 'Cost Centre Details Edited Successfully');
 }
 
 public function deletecentre($id){
-
-    DB::table('cost_centres')
-        ->where('id', $id)
-        ->update(['status' => 0]);
-
+    $cost_centre= cost_centre::find($id);
+    $cost_centre->status=0;
+    $cost_centre->save();
 
   return redirect()->back()->with('success', 'Cost Centre Deleted Successfully');
 }

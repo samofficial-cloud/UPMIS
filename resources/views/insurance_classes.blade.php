@@ -214,7 +214,7 @@
                                     <br>
 
                                     <div align="right">
-                                        <button class="btn btn-primary" type="submit" >Submit</button>
+                                        <button class="btn btn-primary" type="submit" >Save</button>
                                         <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
                                     </div>
                                 </form>
@@ -286,7 +286,7 @@
 
                                                             <br>
                                                             <div align="right">
-                                                                <button class="btn btn-primary" type="submit" >Save</button>
+                                                                <button class="btn btn-primary" type="submit" >Update</button>
                                                                 <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
                                                             </div>
                                                         </form>

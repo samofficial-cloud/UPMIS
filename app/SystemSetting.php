@@ -5,9 +5,9 @@ namespace App;
 use Haruncpi\LaravelUserActivity\Traits\Loggable;
 use Illuminate\Database\Eloquent\Model;
 
-class cost_centre extends Model
+class SystemSetting extends Model
 {
     //
-    use Loggable;
 
+    use Loggable;
 }

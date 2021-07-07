@@ -2,6 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\GeneralSetting;
+use App\insurance_parameter;
+use App\SystemSetting;
+use App\User;
+use App\users;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\space;
@@ -50,10 +55,9 @@ class SystemSettingsController extends Controller
     public function deactivateUser($id)
     {
 
-        DB::table('users')
-            ->where('id', $id)
-            ->update(['status' => 0]);
-
+        $user=User::find($id);
+        $user->status=0;
+        $user->save();
 
         return redirect('/user_role_management')
             ->with('success', 'User deactivated successfully');
@@ -63,10 +67,9 @@ class SystemSettingsController extends Controller
     public function activateUser($id)
     {
 
-        DB::table('users')
-            ->where('id', $id)
-            ->update(['status' => 1]);
-
+        $user=User::find($id);
+        $user->status=1;
+        $user->save();
 
         return redirect('/user_role_management')
             ->with('success', 'User activated successfully');
@@ -87,41 +90,16 @@ if($request->get('cost_centre')=='')
 
     }
 
-
-        DB::table('users')
-            ->where('id', $id)
-            ->update(['name' => $name]);
-
-        DB::table('users')
-            ->where('id', $id)
-            ->update(['first_name' => $request->get('first_name')]);
-
-
-        DB::table('users')
-            ->where('id', $id)
-            ->update(['last_name' => $request->get('last_name')]);
-
-        DB::table('users')
-            ->where('id', $id)
-            ->update(['user_name' => $user_name]);
-
-        DB::table('users')
-            ->where('id', $id)
-            ->update(['email' => $request->get('email')]);
-
-        DB::table('users')
-            ->where('id', $id)
-            ->update(['phone_number' => $request->get('phone_number')]);
-
-
-        DB::table('users')
-            ->where('id', $id)
-            ->update(['role' => $request->get('role')]);
-
-        DB::table('users')
-            ->where('id', $id)
-            ->update(['cost_centre' => $cost_centre]);
-
+        $user=User::find($id);
+        $user->name=$name;
+        $user->first_name=$request->get('first_name');
+        $user->last_name=$request->get('last_name');
+        $user->user_name=$user_name;
+        $user->email=$request->get('email');
+        $user->phone_number=$request->get('phone_number');
+        $user->role=$request->get('role');
+        $user->cost_centre=$cost_centre;
+        $user->save();
 
 
         return redirect('/user_role_management')
@@ -159,20 +137,19 @@ if($request->get('cost_centre')=='')
 
         $default_password=DB::table('system_settings')->where('id',1)->value('default_password');
 
-        DB::table('users')->insert([
-            'name' => $name,
-            'first_name' => $request->get('first_name'),
-            'last_name' => $request->get('last_name'),
-            'user_name' => $user_name,
-            'email' => $request->get('email'),
-            'phone_number' => $request->get('phone_number'),
-            'role' => $request->get('role'),
-            'cost_centre' => $cost_centre,
-            'password' => Hash::make($default_password),
-            'password_flag' => 0
 
-        ]);
-
+        $user= new User();
+        $user->name=$name;
+        $user->first_name=$request->get('first_name');
+        $user->last_name=$request->get('last_name');
+        $user->user_name=$user_name;
+        $user->email=$request->get('email');
+        $user->phone_number=$request->get('phone_number');
+        $user->role=$request->get('role');
+        $user->cost_centre=$cost_centre;
+        $user->password=Hash::make($default_password);
+        $user->password_flag=0;
+        $user->save();
 
 
         return redirect('/user_role_management')
@@ -198,31 +175,21 @@ if($request->get('cost_centre')=='')
 
         if($received_role=='dvc administration' || $received_role=='dvc adminstration'){
 
-            DB::table('general_settings')->insert([
-
-                'user_roles' => 'DVC Administrator',
-                'category' => $request->get('category'),
-                'privileges' => $request->get('privileges'),
-
-            ]);
+            $generalSetting= new GeneralSetting();
+            $generalSetting->user_roles='DVC Administrator';
+            $generalSetting->category=$request->get('category');
+            $generalSetting->privileges=$request->get('privileges');
+            $generalSetting->save();
 
         }else{
 
-            DB::table('general_settings')->insert([
-
-                'user_roles' => $request->get('user_roles'),
-                'category' => $request->get('category'),
-                'privileges' => $request->get('privileges'),
-
-            ]);
+            $generalSetting= new GeneralSetting();
+            $generalSetting->user_roles=$request->get('user_roles');
+            $generalSetting->category=$request->get('category');
+            $generalSetting->privileges=$request->get('privileges');
+            $generalSetting->save();
 
         }
-
-
-
-
-
-
 
         return redirect('/role_management')
             ->with('success', 'Role added successfully');
@@ -233,7 +200,6 @@ if($request->get('cost_centre')=='')
     public function addInsuranceCompany(Request $request)
     {
 
-
         if(DB::table('insurance_parameters')->where('company',$request->get('company'))->exists()){
 
 
@@ -242,17 +208,13 @@ if($request->get('cost_centre')=='')
         }
 
 
-
-        DB::table('insurance_parameters')->insert([
-
-            'company' => $request->get('company'),
-            'company_email' => $request->get('company_email'),
-            'company_address' => $request->get('company_address'),
-            'company_tin' => $request->get('company_tin'),
-            'classes' => '',
-
-        ]);
-
+        $insuranceParameter= new insurance_parameter();
+        $insuranceParameter->company=$request->get('company');
+        $insuranceParameter->company_email=$request->get('company_email');
+        $insuranceParameter->company_address=$request->get('company_address');
+        $insuranceParameter->company_tin=$request->get('company_tin');
+        $insuranceParameter->classes='';
+        $insuranceParameter->save();
 
 
         return redirect('/insurance_companies')
@@ -274,13 +236,10 @@ if($request->get('cost_centre')=='')
         }
 
 
-
-        DB::table('insurance_parameters')->insert([
-
-            'classes' => $request->get('classes'),
-            'company' => '',
-
-        ]);
+        $insuranceParameter= new insurance_parameter();
+        $insuranceParameter->company='';
+        $insuranceParameter->classes=$request->get('classes');
+        $insuranceParameter->save();
 
 
 
@@ -293,20 +252,11 @@ if($request->get('cost_centre')=='')
     public function editRole(Request $request,$id)
     {
 
-
-        DB::table('general_settings')
-            ->where('id', $id)
-            ->update(['user_roles' => $request->get('user_roles')]);
-
-
-        DB::table('general_settings')
-            ->where('id', $id)
-            ->update(['category' => $request->get('category')]);
-
-
-        DB::table('general_settings')
-            ->where('id', $id)
-            ->update(['privileges' => $request->get('privileges')]);
+        $generalSetting= GeneralSetting::find($id);
+        $generalSetting->user_roles=$request->get('user_roles');
+        $generalSetting->category=$request->get('category');
+        $generalSetting->privileges=$request->get('privileges');
+        $generalSetting->save();
 
 
         return redirect('/role_management')
@@ -322,27 +272,12 @@ if($request->get('cost_centre')=='')
     public function editInsuranceCompany(Request $request,$id)
     {
 
-
-        DB::table('insurance_parameters')
-            ->where('id', $id)
-            ->update(['company' => $request->get('company')]);
-
-
-        DB::table('insurance_parameters')
-            ->where('id', $id)
-            ->update(['company_email' => $request->get('company_email')]);
-
-
-
-        DB::table('insurance_parameters')
-            ->where('id', $id)
-            ->update(['company_address' => $request->get('company_address')]);
-
-
-        DB::table('insurance_parameters')
-            ->where('id', $id)
-            ->update(['company_tin' => $request->get('company_tin')]);
-
+        $insuranceParameter= insurance_parameter::find($id);
+        $insuranceParameter->company=$request->get('company');
+        $insuranceParameter->company_email=$request->get('company_email');
+        $insuranceParameter->company_address=$request->get('company_address');
+        $insuranceParameter->company_tin=$request->get('company_tin');
+        $insuranceParameter->save();
 
 
         return redirect('/insurance_companies')
@@ -353,9 +288,9 @@ if($request->get('cost_centre')=='')
     public function editInsuranceClass(Request $request,$id)
     {
 
-        DB::table('insurance_parameters')
-            ->where('id', $id)
-            ->update(['classes' => $request->get('classes')]);
+        $insuranceParameter= insurance_parameter::find($id);
+        $insuranceParameter->classes=$request->get('classes');
+        $insuranceParameter->save();
 
         return redirect('/insurance_classes')
             ->with('success', 'Insurance class information edited successfully');
@@ -365,9 +300,8 @@ if($request->get('cost_centre')=='')
     public function deleteRole($id)
     {
 
-
-        DB::table('general_settings')
-            ->where('id', $id)->delete();
+        $generalSetting= GeneralSetting::find($id);
+        $generalSetting->delete();
 
 
         return redirect('/role_management')
@@ -378,9 +312,10 @@ if($request->get('cost_centre')=='')
     public function deleteInsuranceCompany($id)
     {
 
-            DB::table('insurance_parameters')
-                ->where('id', $id)
-                ->delete();
+
+        $insuranceParameter= insurance_parameter::find($id);
+        $insuranceParameter->delete();
+
 
         return redirect('/insurance_companies')
             ->with('success', 'Insurance company deleted successfully');
@@ -390,9 +325,10 @@ if($request->get('cost_centre')=='')
     public function deleteInsuranceClass($id)
     {
 
-            DB::table('insurance_parameters')
-                ->where('id', $id)
-                ->delete();
+
+
+        $insuranceParameter= insurance_parameter::find($id);
+        $insuranceParameter->delete();
 
 
         return redirect('/insurance_classes')
@@ -440,100 +376,26 @@ if($request->get('cost_centre')=='')
 
         $insurance_percentage=$request->get('insurance_percentage')/100;
 
-        DB::table('system_settings')
-            ->where('id', 1)
-            ->update(['financial_year' => $request->get('financial_year')]);
 
-
-        DB::table('system_settings')
-            ->where('id', 1)
-            ->update(['max_no_of_days_to_pay_invoice' => $request->get('max_no_of_days_to_pay_invoice')]);
-
-
-
-
-
-        DB::table('system_settings')
-            ->where('id', 1)
-            ->update(['insurance_percentage' => $insurance_percentage]);
-
-
-        DB::table('system_settings')
-            ->where('id', 1)
-            ->update(['insurance_invoice_start_day' => $request->get('insurance_invoice_start_day')]);
-
-
-        DB::table('system_settings')
-            ->where('id', 1)
-            ->update(['insurance_invoice_end_day' => $request->get('insurance_invoice_end_day')]);
-
-
-        DB::table('system_settings')
-            ->where('id', 1)
-            ->update(['day_for_insurance_invoice' => $request->get('day_for_insurance_invoice')]);
-
-
-
-
-
-        DB::table('system_settings')
-            ->where('id', 1)
-            ->update(['space_invoice_start_day' => $request->get('space_invoice_start_day')]);
-
-
-        DB::table('system_settings')
-            ->where('id', 1)
-            ->update(['space_invoice_end_day' => $request->get('space_invoice_end_day')]);
-
-
-        DB::table('system_settings')
-            ->where('id', 1)
-            ->update(['day_to_send_space_invoice' => $request->get('day_to_send_space_invoice')]);
-
-
-
-
-        DB::table('system_settings')
-            ->where('id', 1)
-            ->update(['unit_price_water' => $request->get('unit_price_water')]);
-
-
-        DB::table('system_settings')
-            ->where('id', 1)
-            ->update(['unit_price_electricity' => $request->get('unit_price_electricity')]);
-
-
-
-        DB::table('system_settings')
-            ->where('id', 1)
-            ->update(['default_password' => $request->get('default_password')]);
-
-
-        DB::table('system_settings')
-            ->where('id', 1)
-            ->update(['days_in_advance_for_invoices' => $request->get('days_in_advance_for_invoices')]);
-
-
-        DB::table('system_settings')
-            ->where('id', 1)
-            ->update(['semester_one_start' => $request->get('semester_one_start')]);
-
-
-        DB::table('system_settings')
-            ->where('id', 1)
-            ->update(['semester_one_end' => $request->get('semester_one_end')]);
-
-
-        DB::table('system_settings')
-            ->where('id', 1)
-            ->update(['semester_two_start' => $request->get('semester_two_start')]);
-
-
-
-        DB::table('system_settings')
-            ->where('id', 1)
-            ->update(['semester_two_end' => $request->get('semester_two_end')]);
-
+        $systemSetting=SystemSetting::find(1);
+        $systemSetting->financial_year=$request->get('financial_year');
+        $systemSetting->max_no_of_days_to_pay_invoice=$request->get('max_no_of_days_to_pay_invoice');
+        $systemSetting->insurance_percentage=$insurance_percentage;
+        $systemSetting->insurance_invoice_start_day=$request->get('insurance_invoice_start_day');
+        $systemSetting->insurance_invoice_end_day=$request->get('insurance_invoice_end_day');
+        $systemSetting->day_for_insurance_invoice=$request->get('day_for_insurance_invoice');
+        $systemSetting->space_invoice_start_day=$request->get('space_invoice_start_day');
+        $systemSetting->space_invoice_end_day=$request->get('space_invoice_end_day');
+        $systemSetting->day_to_send_space_invoice=$request->get('day_to_send_space_invoice');
+        $systemSetting->unit_price_water=$request->get('unit_price_water');
+        $systemSetting->unit_price_electricity=$request->get('unit_price_electricity');
+        $systemSetting->default_password=$request->get('default_password');
+        $systemSetting->days_in_advance_for_invoices=$request->get('days_in_advance_for_invoices');
+        $systemSetting->semester_one_start=$request->get('semester_one_start');
+        $systemSetting->semester_one_end=$request->get('semester_one_end');
+        $systemSetting->semester_two_start=$request->get('semester_two_start');
+        $systemSetting->semester_two_end=$request->get('semester_two_end');
+        $systemSetting->save();
 
 
         return redirect('/system_settings')

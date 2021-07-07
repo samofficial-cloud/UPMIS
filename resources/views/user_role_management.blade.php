@@ -598,7 +598,7 @@ div.dt-buttons{
 
 
                               <div align="right">
-                                <button class="btn btn-primary" type="submit" onsubmit="check_phone();">Save</button>
+                                <button class="btn btn-primary" type="submit" onsubmit="check_phone();">Update</button>
                                 <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
                               </div>
                             </form>
