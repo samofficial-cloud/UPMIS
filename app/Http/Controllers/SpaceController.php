@@ -852,7 +852,7 @@ foreach($minor_industries as $minor_industry) {
 
  public function fetchspaceidss(Request $request){
 if($request->get('query')){
-    $data = space::select('space_id', 'sub_location')->where('major_industry', $request->get('query'))->where('flag',2)->orderBy('space_id','asc')->get();
+    $data = space::select('space_id', 'sub_location')->where('major_industry', $request->get('query'))->where('stage','3')->orderBy('space_id','asc')->get();
      if(count($data)!=0){
         $output = '<select class="form-control" id="space_id" name="space_id">';
         $output .='<option value="" disabled selected hidden>Select Space</option>';

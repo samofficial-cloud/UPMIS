@@ -4071,10 +4071,10 @@ else{
       public function flatsreport(){
         if($_GET['report_type']=='rooms'){
           if($_GET['room_fil']=='true'){
-            $rooms = DB::table('research_flats_rooms')->where('category',$_GET['room'])->orderBy('room_no','asc')->get();
+            $rooms = DB::table('research_flats_rooms')->where('category',$_GET['room'])->where('stage','3')->orderBy('room_no','asc')->get();
           }
           else{
-            $rooms = DB::table('research_flats_rooms')->orderBy('room_no','asc')->get();
+            $rooms = DB::table('research_flats_rooms')->orderBy('room_no','asc')->where('stage','3')->get();
           }
 
           if(count($rooms)==0){
