@@ -399,12 +399,12 @@ class carContractsController extends Controller
         $carContract->head_date=$request->get('head_date');
         $carContract->head_approval_status=$request->get('head_approval_status');
         $carContract->accountant_signature=Auth::user()->signature;
-
+        $carContract->save();
 
 
 
                 if($nature=='Private'){
-
+                    $carContract=carContract::find($id);
                     $carContract->form_status='Transport Officer-CPTU';
                     $carContract->cptu_msg_status='inbox';
                     $carContract->save();
@@ -416,7 +416,7 @@ class carContractsController extends Controller
 
                     $carContract=carContract::find($id);
                     $carContract->acc_msg_status='outbox';
-
+                    $carContract->save();
 
 
                             DB::table('notifications')
@@ -432,10 +432,11 @@ class carContractsController extends Controller
                             //  DB::table('car_contracts')
                             // ->where('id', $id)
                             // ->update(['head_msg_status' => 'inbox']);
+                            $carContract=carContract::find($id);
                             $carContract->acc_remark=$request->get('acc_remark');
                             $carContract->form_status='Transport Officer-CPTU';
                             $carContract->cptu_msg_status='inbox';
-
+                            $carContract->save();
 
 
                              // DB::table('notifications')->insert(['role'=>'Vote Holder', 'message'=>'You have a new pending car rental application', 'flag'=>'1', 'type'=>'car contract','contract_id'=>$id]);
@@ -448,7 +449,7 @@ class carContractsController extends Controller
 
                             else{
 
-
+                                $carContract=carContract::find($id);
                                 $carContract->form_status='Vote Holder';
                                 $carContract->head_msg_status='inbox';
                                 $carContract->save();
@@ -575,10 +576,10 @@ class carContractsController extends Controller
 
             $carContract=carContract::find($id);
             $carContract->head_cptu_signature=$head_cptu_signature;
-
+            $carContract->save();
 
         }
-
+            $carContract=carContract::find($id);
             $carContract->initial_speedmeter=$request->get('speedmeter_km');
             $carContract->initial_speedmeter_time=$request->get('speedmeter_time');
             $carContract->ending_speedmeter=$request->get('end_speedmeter_km');
@@ -594,11 +595,11 @@ class carContractsController extends Controller
             $carContract->total_charges=$request->get('total_charges');
             $carContract->standing_charges=$request->get('standing_charges');
             $carContract->grand_total=$request->get('grand_total');
-
+            $carContract->save();
 
 
            if(($request->get('button_value'))=='save_close'){
-
+               $carContract=carContract::find($id);
                $carContract->form_completion='1';
                $carContract->save();
 
@@ -680,7 +681,7 @@ class carContractsController extends Controller
        }
        else{
 
-           $carContract->save();
+
           return redirect()->route('contracts_management')->with('success', 'Details Saved Successfully');
        }
 
