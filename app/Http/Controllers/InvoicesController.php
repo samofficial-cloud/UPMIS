@@ -922,7 +922,7 @@ class InvoicesController extends Controller
 
 
 
-        $created_stage_space_invoices=DB::table('invoices')->join('space_contracts','invoices.contract_id','=','space_contracts.contract_id')->orderBy('invoices.rejected','desc')->orderBy('invoices.updated_at','desc')->orderBy('invoices.invoice_number','desc')->where('invoices.stage',0)->get();
+        $created_stage_space_invoices=DB::table('invoices')->join('space_contracts','invoices.contract_id','=','space_contracts.contract_id')->orderBy('invoices.rejected','desc')->orderBy('invoices.updated_at','desc')->orderBy('invoices.invoice_number','desc')->where('invoices.stage','0')->get();
         $fowarded_stage_space_invoices=DB::table('invoices')->join('space_contracts','invoices.contract_id','=','space_contracts.contract_id')->orderBy('invoices.updated_at','desc')->orderBy('invoices.invoice_number','desc')->where('invoices.stage',1)->get();
         $approval_stage_space_invoices=DB::table('invoices')->join('space_contracts','invoices.contract_id','=','space_contracts.contract_id')->orderBy('invoices.updated_at','desc')->orderBy('invoices.invoice_number','desc')->where('invoices.stage',2)->get();
         $rejected_stage_space_invoices=DB::table('invoices')->join('space_contracts','invoices.contract_id','=','space_contracts.contract_id')->orderBy('invoices.updated_at','desc')->orderBy('invoices.invoice_number','desc')->where('invoices.stage',0)->where('invoices.rejected',1)->get();
