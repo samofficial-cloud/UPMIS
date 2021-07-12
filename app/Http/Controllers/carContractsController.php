@@ -591,6 +591,7 @@ class carContractsController extends Controller
             $carContract->mileage_km=$request->get('mileage_km');
             $carContract->mileage_tshs=$request->get('mileage_tshs');
             $carContract->penalty_hrs=$request->get('penalty_hrs');
+            $carContract->penalty_amount=$request->get('penalty_amount');
             $carContract->overtime_charges=$request->get('overtime_charges');
             $carContract->total_charges=$request->get('total_charges');
             $carContract->standing_charges=$request->get('standing_charges');
