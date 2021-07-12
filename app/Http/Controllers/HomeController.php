@@ -1357,15 +1357,12 @@ class HomeController extends Controller
      }
 
      public function deleteresearchflats($id){
-      DB::table('research_flats_rooms')
-      ->where('id', $id)
-      ->update(['terminated_stage' => '1']);
 
 
-
-         DB::table('research_flats_rooms')
-             ->where('id', $id)
-             ->update(['stage' => '1']);
+         $research_flats_rooms= research_flats_room::find($id);
+         $research_flats_rooms->terminated_stage='1';
+         $research_flats_rooms->stage='1';
+         $research_flats_rooms->save();
 
 
       return redirect()->back()->with('success', 'Request sent Successfully');
@@ -1373,24 +1370,14 @@ class HomeController extends Controller
 
 
      public function revokeDeleteResearchflats($id){
-      DB::table('research_flats_rooms')
-      ->where('id', $id)
-      ->update(['terminated_stage' => '0']);
 
+         $research_flats_rooms= research_flats_room::find($id);
+         $research_flats_rooms->terminated_stage='0';
+         $research_flats_rooms->stage='3';
+         $research_flats_rooms->rejected_by='0';
+         $research_flats_rooms->save();
 
-
-         DB::table('research_flats_rooms')
-             ->where('id', $id)
-             ->update(['stage' => '3']);
-
-
-
-         DB::table('research_flats_rooms')
-             ->where('id', $id)
-             ->update(['rejected_by' => '0']);
-
-
-      return redirect()->back()->with('success', 'Operation completed successfully');
+         return redirect()->back()->with('success', 'Operation completed successfully');
      }
 
 

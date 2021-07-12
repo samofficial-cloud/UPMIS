@@ -425,7 +425,7 @@
 
 
                               <div align="right">
-                                <button class="btn btn-primary" type="submit" >Save</button>
+                                <button class="btn btn-primary" type="submit" >Update</button>
                                 <button class="btn btn-danger" type="button" class="close" data-dismiss="modal">Cancel</button>
                               </div>
                             </form>
@@ -445,7 +445,7 @@
                       <div class="modal-dialog" role="document">
                         <div class="modal-content">
                           <div class="modal-header">
-                            <b><h5 class="modal-title">Are you sure you want to delete {{$var->client_name}}'s event
+                              <h5 class="modal-title">Are you sure you want to delete {{$var->client_name}}'s event</h5>
 
                             <button type="button" class="close" data-dismiss="modal">&times;</button>
                           </div>

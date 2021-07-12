@@ -187,8 +187,9 @@
                         {{-- @if(Auth::user()->role=='Transport Officer-CPTU' OR Auth::user()->role=='Head of CPTU' OR (Auth::user()->role=='System Administrator' OR Auth::user()->role=='Super Administrator')) --}}
                         @if($privileges=='Read only')
                         @else
+                            @if(Auth::user()->role=='Transport Officer-CPTU')
                             <a class="btn btn-success btn-sm" style="background-color: #38c172; font-size: 14px; padding: 7px; color:white; margin-left: -2px;  margin-bottom: 5px; margin-top: 4px;" href="{{ route('carRentalForm') }}">Add Client</a>
-
+                            @endif
                             <a title="Send email to selected clients" href="#" id="acp_btn_mail" class="btn btn-info btn-sm" data-toggle="modal" data-target="#acp_mail" role="button" aria-pressed="true" style="
     padding: 10px;
     color: #fff;font-size: 16px;

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\ConferenceEvent;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\space;
@@ -772,15 +773,16 @@ foreach($minor_industries as $minor_industry) {
     public function addEvent(Request $request)
     {
 
-
-
-        DB::table('conference_events')->insert(['client_name' =>$request->get('client_name'), 'conference_id' => $request->get('conference_id'), 'event_description' => $request->get('event_description'),'rent' =>  $request->get('rent'),'rent_currency' =>  $request->get('rent_currency'),'event_date' =>  $request->get('event_date')]);
-
-
+        $conference_events=new ConferenceEvent();
+        $conference_events->client_name=$request->get('client_name');
+        $conference_events->conference_id=$request->get('conference_id');
+        $conference_events->event_description=$request->get('event_description');
+        $conference_events->rent=$request->get('rent');
+        $conference_events->rent_currency=$request->get('rent_currency');
+        $conference_events->event_date=$request->get('event_date');
+        $conference_events->save();
 
         return redirect()->back()->with("success","Event Added Successfully");
-
-
 
     }
 
@@ -789,40 +791,14 @@ foreach($minor_industries as $minor_industry) {
     {
 
 
-        DB::table('conference_events')
-            ->where('id', $id)
-            ->update(['client_name' =>$request->get('client_name')]);
-
-
-
-        DB::table('conference_events')
-            ->where('id', $id)
-            ->update(['conference_id' => $request->get('conference_id')]);
-
-
-
-
-        DB::table('conference_events')
-            ->where('id', $id)
-            ->update(['event_description' => $request->get('event_description')]);
-
-        DB::table('conference_events')
-            ->where('id', $id)
-            ->update(['rent' =>  $request->get('rent')]);
-
-
-
-
-        DB::table('conference_events')
-            ->where('id', $id)
-            ->update(['rent_currency' =>  $request->get('rent_currency')]);
-
-
-
-        DB::table('conference_events')
-            ->where('id', $id)
-            ->update(['event_date' =>  Carbon::createFromFormat('d/m/Y', $request->get('event_date'))->format('Y-m-d')]);
-
+        $conference_events= ConferenceEvent::where('id', $id)->first();
+        $conference_events->client_name=$request->get('client_name');
+        $conference_events->conference_id=$request->get('conference_id');
+        $conference_events->event_description=$request->get('event_description');
+        $conference_events->rent=$request->get('rent');
+        $conference_events->rent_currency=$request->get('rent_currency');
+        $conference_events->event_date=Carbon::createFromFormat('d/m/Y', $request->get('event_date'))->format('Y-m-d');
+        $conference_events->save();
 
 
         return redirect()->back()->with("success","Event Edited Successfully");
@@ -837,9 +813,9 @@ foreach($minor_industries as $minor_industry) {
     public function deleteEvent($id)
     {
 
-        DB::table('conference_events')
-            ->where('id', $id)
-            ->update(['status' =>  0]);
+        $conference_events= ConferenceEvent::where('id', $id)->first();
+        $conference_events->status=0;
+        $conference_events->save();
 
 
         return redirect()->back()->with("success","Event deleted Successfully");

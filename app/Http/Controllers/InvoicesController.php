@@ -2,12 +2,26 @@
 
 namespace App\Http\Controllers;
 
+use App\car_rental_invoice;
+use App\car_rental_payment;
+use App\electricity_bill_invoice;
+use App\electricity_bill_payment;
+use App\insurance_clients_payment;
+use App\insurance_invoice;
+use App\insurance_invoices_client;
+use App\insurance_payment;
+use App\invoice;
 use App\Jobs\SendEmailsSpaceJob;
 use App\Jobs\SendEmailsInsuranceJob;
 use App\Jobs\SendEmailsWaterJob;
 use App\Jobs\SendEmailsElectricityJob;
 use App\Jobs\SendEmailsCarJob;
 use App\Notifications\SendInvoiceCar;
+use App\research_flats_invoice;
+use App\research_flats_payment;
+use App\space_payment;
+use App\water_bill_invoice;
+use App\water_bill_payment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Notifications\SendInvoice;
@@ -319,9 +333,37 @@ class InvoicesController extends Controller
 
         if(count($invoice_to_be_created)==0){
 
-            DB::table('invoices')->insert(
-                ['invoice_number_votebook'=>$request->get('invoice_number'),'contract_id' => $request->get('contract_id','N/A'), 'invoicing_period_start_date' => $request->get('invoicing_period_start_date'),'invoicing_period_end_date' => $request->get('invoicing_period_end_date'),'period' => $request->get('period','N/A'),'project_id' => $request->get('project_id','N/A'),'debtor_account_code' => $request->get('debtor_account_code','N/A'),'debtor_name' => $request->get('debtor_name'),'debtor_address' => $request->get('debtor_address'),'amount_to_be_paid' => $request->get('amount_to_be_paid'),'currency_invoice'=>$request->get('currency'),'gepg_control_no'=>'','tin'=>$request->get('tin','N/A'),'vrn'=>$request->get('vrn','N/A'),'max_no_of_days_to_pay'=>$max_no_of_days_to_pay,'status'=>$request->get('status','N/A'),'amount_in_words'=>$amount_in_words,'inc_code'=>$request->get('inc_code'),'invoice_category'=>'Space','invoice_date'=>$today,'financial_year'=>$financial_year,'payment_status'=>'Not paid','description'=>$request->get('description','N/A'),'prepared_by'=>Auth::user()->name,'approved_by'=>'N/A','stage'=>1]
-            );
+
+
+            $invoice= new invoice();
+            $invoice->invoice_number_votebook=$request->get('invoice_number');
+            $invoice->contract_id=$request->get('contract_id','N/A');
+            $invoice->invoicing_period_start_date=$request->get('invoicing_period_start_date');
+            $invoice->invoicing_period_end_date=$request->get('invoicing_period_end_date');
+            $invoice->period=$request->get('period','N/A');
+            $invoice->project_id=$request->get('project_id','N/A');
+            $invoice->debtor_account_code=$request->get('debtor_account_code','N/A');
+            $invoice->debtor_name=$request->get('debtor_name');
+            $invoice->debtor_address=$request->get('debtor_address');
+            $invoice->amount_to_be_paid=$request->get('amount_to_be_paid');
+            $invoice->currency_invoice=$request->get('currency');
+            $invoice->gepg_control_no='';
+            $invoice->tin=$request->get('tin','N/A');
+            $invoice->vrn=$request->get('vrn','N/A');
+            $invoice->max_no_of_days_to_pay=$max_no_of_days_to_pay;
+            $invoice->status=$request->get('status','N/A');
+            $invoice->amount_in_words=$amount_in_words;
+            $invoice->inc_code=$request->get('inc_code');
+            $invoice->invoice_category='Space';
+            $invoice->invoice_date=$today;
+            $invoice->financial_year=$financial_year;
+            $invoice->payment_status='Not paid';
+            $invoice->description=$request->get('description','N/A');
+            $invoice->prepared_by=Auth::user()->name;
+            $invoice->approved_by='N/A';
+            $invoice->stage=1;
+            $invoice->save();
+
 
             $invoice_number_created=DB::table('invoices')->orderBy('invoice_number','desc')->limit(1)->value('invoice_number');
 
@@ -329,9 +371,15 @@ class InvoicesController extends Controller
                 ['invoice_id' => $invoice_number_created, 'invoice_category' => 'space']
             );
 
-            DB::table('space_payments')->insert(
-                ['invoice_number' => $invoice_number_created, 'invoice_number_votebook' => $request->get('invoice_number'),'amount_paid' => 0,'amount_not_paid' =>$request->get('amount_to_be_paid'),'currency_payments' => $request->get('currency'),'receipt_number' => '']
-            );
+
+            $space_payment= new space_payment();
+            $space_payment->invoice_number=$invoice_number_created;
+            $space_payment->invoice_number_votebook=$request->get('invoice_number');
+            $space_payment->amount_paid=0;
+            $space_payment->amount_not_paid=$request->get('amount_to_be_paid');
+            $space_payment->currency_payments=$request->get('currency');
+            $space_payment->receipt_number='';
+            $space_payment->save();
 
 
         }else{
@@ -737,14 +785,14 @@ class InvoicesController extends Controller
 
     public function CancelSpaceInvoice($id){
 
-        DB::table('invoices')
-            ->where('invoice_number', $id)
-            ->update(['invoice_status' => 0]);
 
+        $invoice= invoice::where('invoice_number', $id)->first();
+        $invoice->invoice_status=0;
+        $invoice->save();
 
-        DB::table('space_payments')
-            ->where('invoice_number', $id)
-            ->update(['status_payment' => 0]);
+        $space_payment=space_payment::where('invoice_number', $id)->first();
+        $space_payment->status_payment=0;
+        $space_payment->save();
 
         return redirect('/invoice_management')
             ->with('success', 'Invoice cancelled successfully');
@@ -754,13 +802,14 @@ class InvoicesController extends Controller
 
     public function CancelWaterInvoice($id){
 
-        DB::table('water_bill_invoices')
-            ->where('invoice_number', $id)
-            ->update(['invoice_status' => 0]);
 
-        DB::table('water_bill_payments')
-            ->where('invoice_number', $id)
-            ->update(['status_payment' => 0]);
+        $water_bill_invoice= water_bill_invoice::where('invoice_number', $id)->first();
+        $water_bill_invoice->invoice_status=0;
+        $water_bill_invoice->save();
+
+        $water_bill_payment=water_bill_payment::where('invoice_number', $id)->first();
+        $water_bill_payment->status_payment=0;
+       $water_bill_payment->save();
 
         return redirect('/invoice_management')
             ->with('success', 'Invoice cancelled successfully');
@@ -772,14 +821,15 @@ class InvoicesController extends Controller
 
     public function CancelElectricityInvoice($id){
 
-        DB::table('electricity_bill_invoices')
-            ->where('invoice_number', $id)
-            ->update(['invoice_status' => 0]);
 
+        $electricity_bill_invoice= electricity_bill_invoice::where('invoice_number', $id)->first();
+        $electricity_bill_invoice->invoice_status=0;
+        $electricity_bill_invoice->save();
 
-        DB::table('electricity_bill_payments')
-            ->where('invoice_number', $id)
-            ->update(['status_payment' => 0]);
+        $electricity_bill_payment=electricity_bill_payment::where('invoice_number', $id)->first();
+        $electricity_bill_payment->status_payment=0;
+        $electricity_bill_payment->save();
+
 
 
         return redirect('/invoice_management')
@@ -790,14 +840,15 @@ class InvoicesController extends Controller
 
     public function CancelResearchInvoice($id){
 
-        DB::table('research_flats_invoices')
-            ->where('invoice_number', $id)
-            ->update(['invoice_status' => 0]);
 
+        $research_invoice= research_flats_invoice::where('invoice_number', $id)->first();
+        $research_invoice->invoice_status=0;
+        $research_invoice->save();
 
-        DB::table('research_flats_payments')
-            ->where('invoice_number', $id)
-            ->update(['status_payment' => 0]);
+        $research_payment=research_flats_payment::where('invoice_number', $id)->first();
+        $research_payment->status_payment=0;
+        $research_payment->save();
+
 
         return redirect('/invoice_management')
             ->with('success', 'Invoice cancelled successfully');
@@ -807,13 +858,15 @@ class InvoicesController extends Controller
 
     public function CancelInsuranceClientsInvoice($id){
 
-        DB::table('insurance_invoices_clients')
-            ->where('invoice_number', $id)
-            ->update(['invoice_status' => 0]);
 
-        DB::table('insurance_clients_payments')
-            ->where('invoice_number', $id)
-            ->update(['status_payment' => 0]);
+        $insurance_invoices_client= insurance_invoices_client::where('invoice_number', $id)->first();
+        $insurance_invoices_client->invoice_status=0;
+        $insurance_invoices_client->save();
+
+        $insurance_clients_payment=insurance_clients_payment::where('invoice_number', $id)->first();
+        $insurance_clients_payment->status_payment=0;
+        $insurance_clients_payment->save();
+
 
 
         return redirect('/invoice_management')
@@ -824,14 +877,15 @@ class InvoicesController extends Controller
 
     public function CancelInsurancePrincipalsInvoice($id){
 
-        DB::table('insurance_invoices')
-            ->where('invoice_number', $id)
-            ->update(['invoice_status' => 0]);
+
+        $insurance_invoice= insurance_invoice::where('invoice_number', $id)->first();
+        $insurance_invoice->invoice_status=0;
+        $insurance_invoice->save();
 
 
-        DB::table('insurance_payments')
-            ->where('invoice_number', $id)
-            ->update(['status_payment' => 0]);
+        $insurance_payment=insurance_payment::where('invoice_number', $id)->first();
+        $insurance_payment->status_payment=0;
+        $insurance_payment->save();
 
 
         return redirect('/invoice_management')
@@ -842,15 +896,15 @@ class InvoicesController extends Controller
 
     public function CancelCarInvoice($id){
 
-        DB::table('car_rental_invoices')
-            ->where('invoice_number', $id)
-            ->update(['invoice_status' => 0]);
+
+        $car_rental_invoice= car_rental_invoice::where('invoice_number', $id)->first();
+        $car_rental_invoice->invoice_status=0;
+        $car_rental_invoice->save();
 
 
-
-        DB::table('car_rental_payments')
-            ->where('invoice_number', $id)
-            ->update(['status_payment' => 0]);
+        $car_rental_payment=car_rental_payment::where('invoice_number', $id)->first();
+        $car_rental_payment->status_payment=0;
+        $car_rental_payment->save();
 
 
         return redirect('/invoice_management')
@@ -1975,47 +2029,25 @@ class InvoicesController extends Controller
         }
 
 
-        DB::table('invoices')
-            ->where('invoice_number', $id)
-            ->update(['payment_status' => $payment_status]);
+        $invoice=invoice::where('invoice_number', $id)->first();
+        $invoice->payment_status=$payment_status;
+        $invoice->user_comments=$request->get('user_comments');
+        $invoice->save();
 
-        DB::table('invoices')
-            ->where('invoice_number', $id)
-            ->update(['user_comments' => $request->get('user_comments')]);
 
 
 //        DB::table('space_payments')->insert(
 //            ['invoice_number' => $request->get('invoice_number'), 'invoice_number_votebook' => $request->get('invoice_number_votebook'),'amount_paid' => $request->get('amount_paid'),'amount_not_paid' =>$amount_not_paid,'currency_payments' => $request->get('currency_payments'),'receipt_number' => $request->get('receipt_number'),'date_of_payment' => $request->get('date_of_payment')]
 //        );
 
-
-        DB::table('space_payments')
-            ->where('invoice_number', $request->get('invoice_number'))
-            ->update(['invoice_number_votebook' => $request->get('invoice_number_votebook')]);
-
-        DB::table('space_payments')
-            ->where('invoice_number', $request->get('invoice_number'))
-            ->update(['amount_paid' => $request->get('amount_paid')]);
-
-        DB::table('space_payments')
-            ->where('invoice_number', $request->get('invoice_number'))
-            ->update(['amount_not_paid' => $amount_not_paid]);
-
-        DB::table('space_payments')
-            ->where('invoice_number', $request->get('invoice_number'))
-            ->update(['currency_payments' => $request->get('currency_payments')]);
-
-        DB::table('space_payments')
-            ->where('invoice_number', $request->get('invoice_number'))
-            ->update(['receipt_number' => $request->get('receipt_number')]);
-
-        DB::table('space_payments')
-            ->where('invoice_number', $request->get('invoice_number'))
-            ->update(['date_of_payment' => $request->get('date_of_payment')]);
-
-
-
-
+        $space_payment=space_payment::where('invoice_number', $request->get('invoice_number'))->first();
+        $space_payment->invoice_number_votebook=$request->get('invoice_number_votebook');
+        $space_payment->amount_paid=$request->get('amount_paid');
+        $space_payment->amount_not_paid=$amount_not_paid;
+        $space_payment->currency_payments=$request->get('currency_payments');
+        $space_payment->receipt_number=$request->get('receipt_number');
+        $space_payment->date_of_payment=$request->get('date_of_payment');
+        $space_payment->save();
 
 
 
@@ -2033,24 +2065,12 @@ class InvoicesController extends Controller
 
         if($request->get('approval_status')=='Rejected'){
 
-            DB::table('invoices')
-                ->where('invoice_number', $id)
-                ->update(['stage' => 0]);
-
-            DB::table('invoices')
-                ->where('invoice_number', $id)
-                ->update(['rejected' => 1]);
-
-
-            DB::table('invoices')
-                ->where('invoice_number', $id)
-                ->update(['reason' => $request->get('reason')]);
-
-
-            DB::table('invoices')
-                ->where('invoice_number', $id)
-                ->update(['updated_at' => Carbon::now()->toDateTimeString()]);
-
+            $invoice=invoice::where('invoice_number', $id)->first();
+            $invoice->stage=0;
+            $invoice->rejected=1;
+            $invoice->reason=$request->get('reason');
+            $invoice->updated_at=Carbon::now()->toDateTimeString();
+            $invoice->save();
 
 
 
@@ -2059,22 +2079,15 @@ class InvoicesController extends Controller
 
         }else{
 
-
-            DB::table('invoices')
-                ->where('invoice_number', $id)
-                ->update(['rejected' => 0]);
-
-
-            DB::table('space_payments')
-                ->where('invoice_number', $id)
-                ->update(['invoice_number_votebook' => $request->get('invoice_number_votebook')]);
+            $invoice=invoice::where('invoice_number', $id)->first();
+            $invoice->rejected=0;
+            $invoice->invoice_number_votebook=$request->get('invoice_number_votebook');
+            $invoice->save();
 
 
-            DB::table('invoices')
-                ->where('invoice_number', $id)
-                ->update(['invoice_number_votebook' => $request->get('invoice_number_votebook')]);
-
-
+            $space_payment=space_payment::where('invoice_number', $id)->first();
+            $space_payment->invoice_number_votebook=$request->get('invoice_number_votebook');
+            $space_payment->save();
 
 
             $invoice_data=DB::table('invoices')->where('invoice_number', $id)->get();
@@ -2114,19 +2127,12 @@ class InvoicesController extends Controller
                 Notification::route('mail',$email_address)
                     ->notify(new SendInvoice($var->debtor_name,$request->get('invoice_number_votebook'),$var->project_id,$var->debtor_account_code,$var->debtor_name,$var->debtor_address,$var->amount_to_be_paid,$var->currency_invoice,$request->get('gepg_control_no'),$var->tin,$max_no_of_days_to_pay,$var->status,$var->vrn,$amount_in_words,$var->inc_code,$today,$financial_year,$var->period,$var->description,$var->prepared_by,Auth::user()->name,date("d/m/Y",strtotime($var->invoicing_period_start_date)) ,date("d/m/Y",strtotime($var->invoicing_period_end_date))));
 
-                DB::table('invoices')
-                    ->where('invoice_number', $id)
-                    ->update(['invoice_date' => $today]);
 
-
-                DB::table('invoices')
-                    ->where('invoice_number', $id)
-                    ->update(['email_sent_status' => 'SENT']);
-
-                DB::table('invoices')
-                    ->where('invoice_number', $id)
-                    ->update(['gepg_control_no' => $request->get('gepg_control_no')]);
-
+                $invoice=invoice::where('invoice_number', $id)->first();
+                $invoice->invoice_date=$today;
+                $invoice->email_sent_status='SENT';
+                $invoice->gepg_control_no=$request->get('gepg_control_no');
+                $invoice->save();
 
 
 //            DB::table('space_payments')->insert(
@@ -2141,14 +2147,10 @@ class InvoicesController extends Controller
 
 
 
-            DB::table('invoices')
-                ->where('invoice_number', $id)
-                ->update(['stage' => 3]);
-
-
-            DB::table('invoices')
-                ->where('invoice_number', $id)
-                ->update(['updated_at' => Carbon::now()->toDateTimeString()]);
+            $invoice=invoice::where('invoice_number', $id)->first();
+            $invoice->stage=3;
+            $invoice->updated_at=Carbon::now()->toDateTimeString();
+            $invoice->save();
 
 
 
@@ -2169,18 +2171,15 @@ class InvoicesController extends Controller
     public function sendInvoiceCarRental(Request $request,$id)
     {
 
-        DB::table('car_rental_payments')
-            ->where('invoice_number', $id)
-            ->update(['invoice_number_votebook' => $request->get('invoice_number_votebook')]);
+        $car_rental_payment=car_rental_payment::where('invoice_number', $id)->first();
+        $car_rental_payment->invoice_number_votebook=$request->get('invoice_number_votebook');
+        $car_rental_payment->save();
 
-        DB::table('car_rental_invoices')
-            ->where('invoice_number', $id)
-            ->update(['invoice_number_votebook' => $request->get('invoice_number_votebook')]);
+        $car_rental_invoice=car_rental_invoice::where('invoice_number', $id)->first();
+        $car_rental_invoice->invoice_number_votebook=$request->get('invoice_number_votebook');
+        $car_rental_invoice->inc_code=$request->get('inc_code');
+        $car_rental_invoice->save();
 
-
-        DB::table('car_rental_invoices')
-            ->where('invoice_number', $id)
-            ->update(['inc_code' => $request->get('inc_code')]);
 
 
 
@@ -2225,18 +2224,12 @@ class InvoicesController extends Controller
             Notification::route('mail',$email_address)
                 ->notify(new SendInvoice($var->debtor_name,$request->get('invoice_number_votebook'),$var->project_id,$var->debtor_account_code,$var->debtor_name,$var->debtor_address,$var->amount_to_be_paid,$var->currency_invoice,$request->get('gepg_control_no'),$var->tin,$max_no_of_days_to_pay,$var->status,$var->vrn,$amount_in_words,$var->inc_code,$today,$financial_year,$var->period,$var->description,$var->prepared_by,Auth::user()->name,date("d/m/Y",strtotime($var->invoicing_period_start_date)) ,date("d/m/Y",strtotime($var->invoicing_period_end_date))));
 
-            DB::table('car_rental_invoices')
-                ->where('invoice_number', $id)
-                ->update(['email_sent_status' => 'SENT']);
+            $car_rental_invoice=car_rental_invoice::where('invoice_number', $id)->first();
+            $car_rental_invoice->email_sent_status='SENT';
+            $car_rental_invoice->invoice_date=$today;
+            $car_rental_invoice->gepg_control_no=$request->get('gepg_control_no');
+            $car_rental_invoice->save();
 
-            DB::table('car_rental_invoices')
-                ->where('invoice_number', $id)
-                ->update(['invoice_date' => $today]);
-
-
-            DB::table('car_rental_invoices')
-                ->where('invoice_number', $id)
-                ->update(['gepg_control_no' => $request->get('gepg_control_no')]);
 
 
 //        DB::table('car_rental_payments')->insert(
@@ -2250,9 +2243,11 @@ class InvoicesController extends Controller
         }
 
 
-        DB::table('car_rental_invoices')
-            ->where('invoice_number', $id)
-            ->update(['stage' => 2]);
+        $car_rental_invoice=car_rental_invoice::where('invoice_number', $id)->first();
+        $car_rental_invoice->stage=2;
+        $car_rental_invoice->save();
+
+
 
 
         DB::table('invoice_notifications')->where('invoice_category',  'car_rental')->where('invoice_id',$id)->delete();
@@ -2268,18 +2263,15 @@ class InvoicesController extends Controller
     public function sendInvoiceResearch(Request $request,$id)
     {
 
-        DB::table('research_flats_payments')
-            ->where('invoice_number', $id)
-            ->update(['invoice_number_votebook' => $request->get('invoice_number_votebook')]);
-
-        DB::table('research_flats_invoices')
-            ->where('invoice_number', $id)
-            ->update(['invoice_number_votebook' => $request->get('invoice_number_votebook')]);
+        $research_flats_payment=research_flats_payment::where('invoice_number', $id)->first();
+        $research_flats_payment->invoice_number_votebook=$request->get('invoice_number_votebook');
+        $research_flats_payment->save();
 
 
-        DB::table('research_flats_invoices')
-            ->where('invoice_number', $id)
-            ->update(['inc_code' => $request->get('inc_code')]);
+        $research_flats_invoice=research_flats_invoice::where('invoice_number', $id)->first();
+        $research_flats_invoice->invoice_number_votebook=$request->get('invoice_number_votebook');
+        $research_flats_invoice->inc_code=$request->get('inc_code');
+        $research_flats_invoice->save();
 
 
 
@@ -2332,19 +2324,12 @@ class InvoicesController extends Controller
             Notification::route('mail',$email_address)
                 ->notify(new SendInvoice($var->debtor_name,$request->get('invoice_number_votebook'),$var->project_id,$var->debtor_account_code,$var->debtor_name,$var->debtor_address,$var->amount_to_be_paid,$var->currency_invoice,$request->get('gepg_control_no'),$var->tin,$max_no_of_days_to_pay,$var->status,$var->vrn,$amount_in_words,$var->inc_code,$today,$financial_year,$var->period,$var->description,$var->prepared_by,Auth::user()->name,date("d/m/Y",strtotime($var->invoicing_period_start_date)) ,date("d/m/Y",strtotime($var->invoicing_period_end_date))));
 
-            DB::table('research_flats_invoices')
-                ->where('invoice_number', $id)
-                ->update(['email_sent_status' => 'SENT']);
 
-            DB::table('research_flats_invoices')
-                ->where('invoice_number', $id)
-                ->update(['invoice_date' => $today]);
-
-
-            DB::table('research_flats_invoices')
-                ->where('invoice_number', $id)
-                ->update(['gepg_control_no' => $request->get('gepg_control_no')]);
-
+            $research_flats_invoice=research_flats_invoice::where('invoice_number', $id)->first();
+            $research_flats_invoice->email_sent_status='SENT';
+            $research_flats_invoice->invoice_date=$today;
+            $research_flats_invoice->gepg_control_no=$request->get('gepg_control_no');
+            $research_flats_invoice->save();
 
 //        DB::table('car_rental_payments')->insert(
 //            ['invoice_number' => $var->invoice_number, 'invoice_number_votebook' => '','amount_paid' => 0,'amount_not_paid' =>$var->amount_to_be_paid,'currency_payments' => $var->currency_invoice,'receipt_number' => '']
@@ -2356,10 +2341,9 @@ class InvoicesController extends Controller
 
         }
 
-
-        DB::table('research_flats_invoices')
-            ->where('invoice_number', $id)
-            ->update(['stage' => 2]);
+        $research_flats_invoice=research_flats_invoice::where('invoice_number', $id)->first();
+        $research_flats_invoice->stage=2;
+        $research_flats_invoice->save();
 
 
         DB::table('invoice_notifications')->where('invoice_category',  'research')->where('invoice_id',$id)->delete();
@@ -2428,19 +2412,11 @@ class InvoicesController extends Controller
                     Notification::route('mail', $email_address)
                         ->notify(new SendInvoice($invoice->debtor_name, $invoice->invoice_number_votebook, $invoice->project_id, $invoice->debtor_account_code, $invoice->debtor_name, $invoice->debtor_address, $invoice->amount_to_be_paid, $invoice->currency_invoice, $invoice->gepg_control_no, $invoice->tin, $max_no_of_days_to_pay, $invoice->status, $invoice->vrn, $amount_in_words, $invoice->inc_code, $today, $financial_year, $invoice->period, $invoice->description, $invoice->prepared_by, Auth::user()->name, date("d/m/Y", strtotime($invoice->invoicing_period_start_date)), date("d/m/Y", strtotime($invoice->invoicing_period_end_date))));
 
-                    DB::table('invoices')
-                        ->where('invoice_number', $invoice->invoice_number)
-                        ->update(['invoice_date' => $today]);
-
-
-                    DB::table('invoices')
-                        ->where('invoice_number', $invoice->invoice_number)
-                        ->update(['email_sent_status' => 'SENT']);
-
-
-                    DB::table('invoices')
-                        ->where('invoice_number', $invoice->invoice_number)
-                        ->update(['stage' => 2]);
+                    $invoice= invoice::where('invoice_number', $invoice->invoice_number)->first();
+                    $invoice->invoice_date=$today;
+                    $invoice->email_sent_status='SENT';
+                    $invoice->stage=2;
+                    $invoice->save();
 
 
                     DB::table('invoice_notifications')->where('invoice_category', 'space')->where('invoice_id', $invoice->invoice_number)->delete();
@@ -2529,19 +2505,13 @@ class InvoicesController extends Controller
                     Notification::route('mail', $email_address)
                         ->notify(new SendInvoice($invoice->debtor_name, $invoice->invoice_number_votebook, $invoice->project_id, $invoice->debtor_account_code, $invoice->debtor_name, $invoice->debtor_address, $invoice->cumulative_amount, $invoice->currency_invoice, $invoice->gepg_control_no, $invoice->tin, $max_no_of_days_to_pay, $invoice->status, $invoice->vrn, $amount_in_words, $invoice->inc_code, $today, $financial_year, $invoice->period, $invoice->description, $invoice->prepared_by, Auth::user()->name, date("d/m/Y", strtotime($invoice->invoicing_period_start_date)), date("d/m/Y", strtotime($invoice->invoicing_period_end_date))));
 
-                    DB::table('water_bill_invoices')
-                        ->where('invoice_number', $invoice->invoice_number)
-                        ->update(['invoice_date' => $today]);
 
+                    $water_bill_invoice= water_bill_invoice::where('invoice_number', $invoice->invoice_number)->first();
+                    $water_bill_invoice->invoice_date=$today;
+                    $water_bill_invoice->email_sent_status='SENT';
+                    $water_bill_invoice->stage=2;
+                    $water_bill_invoice->save();
 
-                    DB::table('water_bill_invoices')
-                        ->where('invoice_number', $invoice->invoice_number)
-                        ->update(['email_sent_status' => 'SENT']);
-
-
-                    DB::table('water_bill_invoices')
-                        ->where('invoice_number', $invoice->invoice_number)
-                        ->update(['stage' => 2]);
 
 
 
@@ -2631,18 +2601,14 @@ class InvoicesController extends Controller
                     Notification::route('mail', $email_address)
                         ->notify(new SendInvoice($invoice->debtor_name, $invoice->invoice_number_votebook, $invoice->project_id, $invoice->debtor_account_code, $invoice->debtor_name, $invoice->debtor_address, $invoice->cumulative_amount, $invoice->currency_invoice, $invoice->gepg_control_no, $invoice->tin, $max_no_of_days_to_pay, $invoice->status, $invoice->vrn, $amount_in_words, $invoice->inc_code, $today, $financial_year, $invoice->period, $invoice->description, $invoice->prepared_by, Auth::user()->name, date("d/m/Y", strtotime($invoice->invoicing_period_start_date)), date("d/m/Y", strtotime($invoice->invoicing_period_end_date))));
 
-                    DB::table('electricity_bill_invoices')
-                        ->where('invoice_number', $invoice->invoice_number)
-                        ->update(['invoice_date' => $today]);
+
+                    $electricity_bill_invoice= electricity_bill_invoice::where('invoice_number', $invoice->invoice_number)->first();
+                    $electricity_bill_invoice->invoice_date=$today;
+                    $electricity_bill_invoice->email_sent_status='SENT';
+                    $electricity_bill_invoice->stage=2;
+                    $electricity_bill_invoice->save();
 
 
-                    DB::table('electricity_bill_invoices')
-                        ->where('invoice_number', $invoice->invoice_number)
-                        ->update(['email_sent_status' => 'SENT']);
-
-                    DB::table('electricity_bill_invoices')
-                        ->where('invoice_number', $invoice->invoice_number)
-                        ->update(['stage' => 2]);
 
 
                     DB::table('invoice_notifications')->where('invoice_category', 'electricity bill')->where('invoice_id', $invoice->invoice_number)->delete();
@@ -2725,19 +2691,13 @@ class InvoicesController extends Controller
                     Notification::route('mail', $email_address)
                         ->notify(new SendInvoice($invoice->debtor_name, $invoice->invoice_number_votebook, $invoice->project_id, $invoice->debtor_account_code, $invoice->debtor_name, $invoice->debtor_address, $invoice->amount_to_be_paid, $invoice->currency_invoice, $invoice->gepg_control_no, $invoice->tin, $max_no_of_days_to_pay, $invoice->status, $invoice->vrn, $amount_in_words, $invoice->inc_code, $today, $financial_year, $invoice->period, $invoice->description, $invoice->prepared_by, Auth::user()->name, date("d/m/Y", strtotime($invoice->invoicing_period_start_date)), date("d/m/Y", strtotime($invoice->invoicing_period_end_date))));
 
-                    DB::table('insurance_invoices_clients')
-                        ->where('invoice_number', $invoice->invoice_number)
-                        ->update(['invoice_date' => $today]);
 
+                    $insurance_invoices_client= insurance_invoices_client::where('invoice_number', $invoice->invoice_number)->first();
+                    $insurance_invoices_client->invoice_date=$today;
+                    $insurance_invoices_client->email_sent_status='SENT';
+                    $insurance_invoices_client->stage=2;
+                    $insurance_invoices_client->save();
 
-                    DB::table('insurance_invoices_clients')
-                        ->where('invoice_number', $invoice->invoice_number)
-                        ->update(['email_sent_status' => 'SENT']);
-
-
-                    DB::table('insurance_invoices_clients')
-                        ->where('invoice_number', $invoice->invoice_number)
-                        ->update(['stage' => 2]);
 
 
                     DB::table('invoice_notifications')->where('invoice_category', 'insurance')->where('invoice_id', $invoice->invoice_number)->delete();
@@ -2814,18 +2774,15 @@ class InvoicesController extends Controller
                     Notification::route('mail', $email_address)
                         ->notify(new SendInvoice($invoice->debtor_name, $invoice->invoice_number_votebook, $invoice->project_id, $invoice->debtor_account_code, $invoice->debtor_name, $invoice->debtor_address, $invoice->amount_to_be_paid, $invoice->currency_invoice, $invoice->gepg_control_no, $invoice->tin, $max_no_of_days_to_pay, $invoice->status, $invoice->vrn, $amount_in_words, $invoice->inc_code, $today, $financial_year, $invoice->period, $invoice->description, $invoice->prepared_by, Auth::user()->name, date("d/m/Y", strtotime($invoice->invoicing_period_start_date)), date("d/m/Y", strtotime($invoice->invoicing_period_end_date))));
 
-                    DB::table('insurance_invoices')
-                        ->where('invoice_number', $invoice->invoice_number)
-                        ->update(['invoice_date' => $today]);
 
 
-                    DB::table('insurance_invoices')
-                        ->where('invoice_number', $invoice->invoice_number)
-                        ->update(['email_sent_status' => 'SENT']);
 
-                    DB::table('insurance_invoices')
-                        ->where('invoice_number', $invoice->invoice_number)
-                        ->update(['stage' => 2]);
+                    $insurance_invoices_client= insurance_invoice::where('invoice_number', $invoice->invoice_number)->first();
+                    $insurance_invoices_client->invoice_date=$today;
+                    $insurance_invoices_client->email_sent_status='SENT';
+                    $insurance_invoices_client->stage=2;
+                    $insurance_invoices_client->save();
+
 
 
                     DB::table('invoice_notifications')->where('invoice_category', 'insurance')->where('invoice_id', $invoice->invoice_number)->delete();
@@ -2905,19 +2862,13 @@ class InvoicesController extends Controller
                         Notification::route('mail', $email_address)
                             ->notify(new SendInvoice($invoice->debtor_name, $invoice->invoice_number_votebook, $invoice->project_id, $invoice->debtor_account_code, $invoice->debtor_name, $invoice->debtor_address, $invoice->amount_to_be_paid, $invoice->currency_invoice, $invoice->gepg_control_no, $invoice->tin, $max_no_of_days_to_pay, $invoice->status, $invoice->vrn, $amount_in_words, $invoice->inc_code, $today, $financial_year, $invoice->period, $invoice->description, $invoice->prepared_by, Auth::user()->name, date("d/m/Y", strtotime($invoice->invoicing_period_start_date)), date("d/m/Y", strtotime($invoice->invoicing_period_end_date))));
 
-                        DB::table('car_rental_invoices')
-                            ->where('invoice_number', $invoice->invoice_number)
-                            ->update(['invoice_date' => $today]);
 
+                        $car_rental_invoice= car_rental_invoice::where('invoice_number', $invoice->invoice_number)->first();
+                        $car_rental_invoice->invoice_date=$today;
+                        $car_rental_invoice->email_sent_status='SENT';
+                        $car_rental_invoice->stage=2;
+                        $car_rental_invoice->save();
 
-                        DB::table('car_rental_invoices')
-                            ->where('invoice_number', $invoice->invoice_number)
-                            ->update(['email_sent_status' => 'SENT']);
-
-
-                        DB::table('car_rental_invoices')
-                            ->where('invoice_number', $invoice->invoice_number)
-                            ->update(['stage' => 2]);
 
 
                         DB::table('invoice_notifications')->where('invoice_category', 'car_rental')->where('invoice_id', $invoice->invoice_number)->delete();
@@ -2928,19 +2879,11 @@ class InvoicesController extends Controller
                             ->notify(new SendInvoiceCar($invoice->debtor_name, $invoice->invoice_number_votebook, $invoice->project_id, $invoice->debtor_account_code, $invoice->debtor_name, $invoice->debtor_address, $invoice->amount_to_be_paid, $invoice->currency_invoice, $invoice->account_no, $invoice->tin, $max_no_of_days_to_pay, $invoice->status, $invoice->vrn, $amount_in_words, $invoice->inc_code, $today, $financial_year, $invoice->period, $invoice->description, $invoice->prepared_by, Auth::user()->name, date("d/m/Y", strtotime($invoice->invoicing_period_start_date)), date("d/m/Y", strtotime($invoice->invoicing_period_end_date))));
 
 
-                        DB::table('car_rental_invoices')
-                            ->where('invoice_number', $invoice->invoice_number)
-                            ->update(['invoice_date' => $today]);
-
-
-                        DB::table('car_rental_invoices')
-                            ->where('invoice_number', $invoice->invoice_number)
-                            ->update(['email_sent_status' => 'SENT']);
-
-
-                        DB::table('car_rental_invoices')
-                            ->where('invoice_number', $invoice->invoice_number)
-                            ->update(['stage' => 2]);
+                        $car_rental_invoice= car_rental_invoice::where('invoice_number', $invoice->invoice_number)->first();
+                        $car_rental_invoice->invoice_date=$today;
+                        $car_rental_invoice->email_sent_status='SENT';
+                        $car_rental_invoice->stage=2;
+                        $car_rental_invoice->save();
 
 
                         DB::table('invoice_notifications')->where('invoice_category', 'car_rental')->where('invoice_id', $invoice->invoice_number)->delete();
@@ -3030,18 +2973,13 @@ class InvoicesController extends Controller
                         Notification::route('mail', $email_address)
                             ->notify(new SendInvoice($invoice->debtor_name, $invoice->invoice_number_votebook, $invoice->project_id, $invoice->debtor_account_code, $invoice->debtor_name, $invoice->debtor_address, $invoice->amount_to_be_paid, $invoice->currency_invoice, $invoice->gepg_control_no, $invoice->tin, $max_no_of_days_to_pay, $invoice->status, $invoice->vrn, $amount_in_words, $invoice->inc_code, $today, $financial_year, $invoice->period, $invoice->description, $invoice->prepared_by, Auth::user()->name, date("d/m/Y", strtotime($invoice->invoicing_period_start_date)), date("d/m/Y", strtotime($invoice->invoicing_period_end_date))));
 
-                        DB::table('research_flats_invoices')
-                            ->where('invoice_number', $invoice->invoice_number)
-                            ->update(['invoice_date' => $today]);
 
+                        $research_flats_invoice= research_flats_invoice::where('invoice_number', $invoice->invoice_number)->first();
+                        $research_flats_invoice->invoice_date=$today;
+                        $research_flats_invoice->email_sent_status='SENT';
+                        $research_flats_invoice->stage=2;
+                        $research_flats_invoice->save();
 
-                        DB::table('research_flats_invoices')
-                            ->where('invoice_number', $invoice->invoice_number)
-                            ->update(['email_sent_status' => 'SENT']);
-
-                        DB::table('research_flats_invoices')
-                            ->where('invoice_number', $invoice->invoice_number)
-                            ->update(['stage' => 2]);
 
 
                         DB::table('invoice_notifications')->where('invoice_category', 'research')->where('invoice_id', $invoice->invoice_number)->delete();
@@ -3052,19 +2990,12 @@ class InvoicesController extends Controller
                             ->notify(new SendInvoiceCar($invoice->debtor_name, $invoice->invoice_number_votebook, $invoice->project_id, $invoice->debtor_account_code, $invoice->debtor_name, $invoice->debtor_address, $invoice->amount_to_be_paid, $invoice->currency_invoice, $invoice->account_no, $invoice->tin, $max_no_of_days_to_pay, $invoice->status, $invoice->vrn, $amount_in_words, $invoice->inc_code, $today, $financial_year, $invoice->period, $invoice->description, $invoice->prepared_by, Auth::user()->name, date("d/m/Y", strtotime($invoice->invoicing_period_start_date)), date("d/m/Y", strtotime($invoice->invoicing_period_end_date))));
 
 
-                        DB::table(' research_flats_invoices')
-                            ->where('invoice_number', $invoice->invoice_number)
-                            ->update(['invoice_date' => $today]);
 
-
-                        DB::table('research_flats_invoices')
-                            ->where('invoice_number', $invoice->invoice_number)
-                            ->update(['email_sent_status' => 'SENT']);
-
-
-                        DB::table('research_flats_invoices')
-                            ->where('invoice_number', $invoice->invoice_number)
-                            ->update(['stage' => 2]);
+                        $research_flats_invoice= research_flats_invoice::where('invoice_number', $invoice->invoice_number)->first();
+                        $research_flats_invoice->invoice_date=$today;
+                        $research_flats_invoice->email_sent_status='SENT';
+                        $research_flats_invoice->stage=2;
+                        $research_flats_invoice->save();
 
 
                         DB::table('invoice_notifications')->where('invoice_category', 'research')->where('invoice_id', $invoice->invoice_number)->delete();
@@ -3104,34 +3035,14 @@ class InvoicesController extends Controller
     public function addControlNumberSpace(Request $request,$id){
 
 
-        DB::table('invoices')
-            ->where('invoice_number', $id)
-            ->update(['invoice_number_votebook' => $request->get('invoice_number_votebook')]);
-
-
-        DB::table('invoices')
-            ->where('invoice_number',$id)
-            ->update(['gepg_control_no' =>$request->get('gepg_control_no')]);
-
-
-        DB::table('invoices')
-            ->where('invoice_number',$id)
-            ->update(['inc_code' =>$request->get('inc_code')]);
-
-
-        DB::table('invoices')
-            ->where('invoice_number', $id)
-            ->update(['rejected' => 0]);
-
-
-        DB::table('invoices')
-            ->where('invoice_number', $id)
-            ->update(['stage' => 2]);
-
-        DB::table('invoices')
-            ->where('invoice_number', $id)
-            ->update(['updated_at' => Carbon::now()->toDateTimeString()]);
-
+        $invoice=invoice::where('invoice_number', $id)->first();
+        $invoice->invoice_number_votebook=$request->get('invoice_number_votebook');
+        $invoice->gepg_control_no=$request->get('gepg_control_no');
+        $invoice->inc_code=$request->get('inc_code');
+        $invoice->rejected=0;
+        $invoice->stage=2;
+        $invoice->updated_at=Carbon::now()->toDateTimeString();
+        $invoice->save();
 
 
         return redirect('/invoice_management')
@@ -3142,21 +3053,11 @@ class InvoicesController extends Controller
 
     public function addControlNumberInsurance(Request $request,$id){
 
-        DB::table('insurance_invoices_clients')
-            ->where('invoice_number', $id)
-            ->update(['invoice_number_votebook' => $request->get('invoice_number_votebook')]);
-
-
-        DB::table('insurance_invoices_clients')
-            ->where('invoice_number',$id)
-            ->update(['inc_code' =>$request->get('inc_code')]);
-
-
-
-
-        DB::table('insurance_invoices_clients')
-            ->where('invoice_number',$id)
-            ->update(['gepg_control_no' =>$request->get('gepg_control_no')]);
+        $insurance_invoices_client=insurance_invoices_client::where('invoice_number', $id)->first();
+        $insurance_invoices_client->invoice_number_votebook=$request->get('invoice_number_votebook');
+        $insurance_invoices_client->inc_code=$request->get('inc_code');
+        $insurance_invoices_client->gepg_control_no=$request->get('gepg_control_no');
+        $insurance_invoices_client->save();
 
 
         return redirect('/invoice_management')
@@ -3166,20 +3067,13 @@ class InvoicesController extends Controller
 
     public function addControlNumberInsurancePrincipals(Request $request,$id){
 
-        DB::table('insurance_invoices')
-            ->where('invoice_number', $id)
-            ->update(['invoice_number_votebook' => $request->get('invoice_number_votebook')]);
 
+        $insurance_invoice=insurance_invoice::where('invoice_number', $id)->first();
+        $insurance_invoice->invoice_number_votebook=$request->get('invoice_number_votebook');
+        $insurance_invoice->inc_code=$request->get('inc_code');
+        $insurance_invoice->gepg_control_no=$request->get('gepg_control_no');
+        $insurance_invoice->save();
 
-        DB::table('insurance_invoices')
-            ->where('invoice_number',$id)
-            ->update(['inc_code' =>$request->get('inc_code')]);
-
-
-
-        DB::table('insurance_invoices')
-            ->where('invoice_number',$id)
-            ->update(['gepg_control_no' =>$request->get('gepg_control_no')]);
 
 
         return redirect('/invoice_management')
@@ -3192,17 +3086,11 @@ class InvoicesController extends Controller
     public function addControlNumberCar(Request $request,$id){
 
 
-        DB::table('car_rental_invoices')
-            ->where('invoice_number', $id)
-            ->update(['invoice_number_votebook' => $request->get('invoice_number_votebook')]);
-
-        DB::table('car_rental_invoices')
-            ->where('invoice_number',$id)
-            ->update(['inc_code' =>$request->get('inc_code')]);
-
-        DB::table('car_rental_invoices')
-            ->where('invoice_number',$id)
-            ->update(['gepg_control_no' =>$request->get('gepg_control_no')]);
+        $car_rental_invoice=car_rental_invoice::where('invoice_number', $id)->first();
+        $car_rental_invoice->invoice_number_votebook=$request->get('invoice_number_votebook');
+        $car_rental_invoice->inc_code=$request->get('inc_code');
+        $car_rental_invoice->gepg_control_no=$request->get('gepg_control_no');
+        $car_rental_invoice->save();
 
 
         return redirect('/invoice_management')
@@ -3214,17 +3102,11 @@ class InvoicesController extends Controller
     public function addControlNumberResearch(Request $request,$id){
 
 
-        DB::table('research_flats_invoices')
-            ->where('invoice_number', $id)
-            ->update(['invoice_number_votebook' => $request->get('invoice_number_votebook')]);
-
-        DB::table('research_flats_invoices')
-            ->where('invoice_number',$id)
-            ->update(['inc_code' =>$request->get('inc_code')]);
-
-        DB::table('research_flats_invoices')
-            ->where('invoice_number',$id)
-            ->update(['gepg_control_no' =>$request->get('gepg_control_no')]);
+        $research_flats_invoice=research_flats_invoice::where('invoice_number', $id)->first();
+        $research_flats_invoice->invoice_number_votebook=$request->get('invoice_number_votebook');
+        $research_flats_invoice->inc_code=$request->get('inc_code');
+        $research_flats_invoice->gepg_control_no=$request->get('gepg_control_no');
+        $research_flats_invoice->save();
 
 
         return redirect('/invoice_management')
@@ -3236,30 +3118,13 @@ class InvoicesController extends Controller
     public function addControlNumberWater(Request $request,$id){
 
 
-        DB::table('water_bill_invoices')
-            ->where('invoice_number', $id)
-            ->update(['invoice_number_votebook' => $request->get('invoice_number_votebook')]);
-
-        DB::table('water_bill_invoices')
-            ->where('invoice_number',$id)
-            ->update(['inc_code' =>$request->get('inc_code')]);
-
-
-        DB::table('water_bill_invoices')
-            ->where('invoice_number', $id)
-            ->update(['rejected' => 0]);
-
-
-        DB::table('water_bill_invoices')
-            ->where('invoice_number', $id)
-            ->update(['stage' => 2]);
-
-
-        DB::table('water_bill_invoices')
-            ->where('invoice_number', $id)
-            ->update(['updated_at' => Carbon::now()->toDateTimeString()]);
-
-
+        $water_bill_invoice=water_bill_invoice::where('invoice_number', $id)->first();
+        $water_bill_invoice->invoice_number_votebook=$request->get('invoice_number_votebook');
+        $water_bill_invoice->inc_code=$request->get('inc_code');
+        $water_bill_invoice->rejected=0;
+        $water_bill_invoice->stage=2;
+        $water_bill_invoice->updated_at=Carbon::now()->toDateTimeString();
+        $water_bill_invoice->save();
 
 
         $invoice_data=DB::table('water_bill_invoices')->where('invoice_number', $id)->get();
@@ -3267,9 +3132,10 @@ class InvoicesController extends Controller
         foreach($invoice_data as $var){
 
 
-            DB::table('water_bill_invoices')
-                ->where('invoice_number', $id)
-                ->update(['gepg_control_no' => $request->get('gepg_control_no')]);
+            $water_bill_invoice=water_bill_invoice::where('invoice_number', $id)->first();
+            $water_bill_invoice->gepg_control_no=$request->get('gepg_control_no');
+            $water_bill_invoice->save();
+
 
 //            DB::table('water_bill_invoices')
 //                ->where('invoice_number', $id)
@@ -3305,33 +3171,14 @@ class InvoicesController extends Controller
 
     public function addControlNumberElectricity(Request $request,$id){
 
-        DB::table('electricity_bill_invoices')
-            ->where('invoice_number', $id)
-            ->update(['invoice_number_votebook' => $request->get('invoice_number_votebook')]);
 
-
-        DB::table('electricity_bill_invoices')
-            ->where('invoice_number',$id)
-            ->update(['inc_code' =>$request->get('inc_code')]);
-
-
-
-        DB::table('electricity_bill_invoices')
-            ->where('invoice_number', $id)
-            ->update(['rejected' => 0]);
-
-
-        DB::table('electricity_bill_invoices')
-            ->where('invoice_number', $id)
-            ->update(['stage' => 2]);
-
-
-        DB::table('electricity_bill_invoices')
-            ->where('invoice_number', $id)
-            ->update(['updated_at' => Carbon::now()->toDateTimeString()]);
-
-
-
+        $electricity_bill_invoice=electricity_bill_invoice::where('invoice_number', $id)->first();
+        $electricity_bill_invoice->invoice_number_votebook=$request->get('invoice_number_votebook');
+        $electricity_bill_invoice->inc_code=$request->get('inc_code');
+        $electricity_bill_invoice->rejected=0;
+        $electricity_bill_invoice->stage=2;
+        $electricity_bill_invoice->updated_at=Carbon::now()->toDateTimeString();
+        $electricity_bill_invoice->save();
 
 
 
@@ -3341,9 +3188,12 @@ class InvoicesController extends Controller
 
 
 
-            DB::table('electricity_bill_invoices')
-                ->where('invoice_number', $id)
-                ->update(['gepg_control_no' => $request->get('gepg_control_no')]);
+
+
+
+            $electricity_bill_invoice=electricity_bill_invoice::where('invoice_number', $id)->first();
+            $electricity_bill_invoice->gepg_control_no=$request->get('gepg_control_no');
+            $electricity_bill_invoice->save();
 
 //            DB::table('electricity_bill_invoices')
 //                ->where('invoice_number', $id)
@@ -3421,9 +3271,37 @@ class InvoicesController extends Controller
 
         if(count($invoice_to_be_created)==0){
 
-            DB::table('car_rental_invoices')->insert(
-                ['invoice_number_votebook'=>$request->get('invoice_number'),'contract_id' => $request->get('contract_id','N/A'), 'invoicing_period_start_date' => $request->get('invoicing_period_start_date'),'invoicing_period_end_date' => $request->get('invoicing_period_end_date'),'period' => $period,'project_id' => $request->get('project_id','N/A'),'debtor_account_code' => $request->get('debtor_account_code','N/A'),'debtor_name' => $request->get('debtor_name'),'debtor_address' => $request->get('debtor_address'),'amount_to_be_paid' => $request->get('amount_to_be_paid'),'currency_invoice'=>$request->get('currency'),'gepg_control_no'=>'','tin'=>$request->get('tin','N/A'),'vrn'=>$request->get('vrn','N/A'),'max_no_of_days_to_pay'=>$max_no_of_days_to_pay,'status'=>$request->get('status','N/A'),'amount_in_words'=>$amount_in_words,'inc_code'=>$request->get('inc_code'),'invoice_date'=>$today,'financial_year'=>$financial_year,'payment_status'=>'Not paid','description'=>$request->get('description','N/A'),'prepared_by'=>Auth::user()->name,'approved_by'=>'N/A','stage'=>1]
-            );
+
+            $car_rental_invoice= new car_rental_invoice();
+            $car_rental_invoice->invoice_number_votebook=$request->get('invoice_number');
+            $car_rental_invoice->contract_id=$request->get('contract_id','N/A');
+            $car_rental_invoice->invoicing_period_start_date=$request->get('invoicing_period_start_date');
+            $car_rental_invoice->invoicing_period_end_date=$request->get('invoicing_period_end_date');
+            $car_rental_invoice->period=$period;
+            $car_rental_invoice->project_id=$request->get('project_id','N/A');
+            $car_rental_invoice->debtor_account_code=$request->get('debtor_account_code','N/A');
+            $car_rental_invoice->debtor_name=$request->get('debtor_name');
+            $car_rental_invoice->debtor_address=$request->get('debtor_address');
+            $car_rental_invoice->amount_to_be_paid=$request->get('amount_to_be_paid');
+            $car_rental_invoice->currency_invoice=$request->get('currency');
+            $car_rental_invoice->gepg_control_no='';
+            $car_rental_invoice->tin=$request->get('tin','N/A');
+            $car_rental_invoice->vrn=$request->get('vrn','N/A');
+            $car_rental_invoice->max_no_of_days_to_pay=$max_no_of_days_to_pay;
+            $car_rental_invoice->status=$request->get('status','N/A');
+            $car_rental_invoice->amount_in_words=$amount_in_words;
+            $car_rental_invoice->inc_code=$request->get('inc_code');
+            $car_rental_invoice->invoice_date=$today;
+            $car_rental_invoice->financial_year=$financial_year;
+            $car_rental_invoice->payment_status='Not paid';
+            $car_rental_invoice->description=$request->get('description','N/A');
+            $car_rental_invoice->prepared_by=Auth::user()->name;
+            $car_rental_invoice->approved_by='N/A';
+            $car_rental_invoice->stage=1;
+            $car_rental_invoice->save();
+
+
+
 
             $invoice_number_created=DB::table('car_rental_invoices')->orderBy('invoice_number','desc')->limit(1)->value('invoice_number');
 
@@ -3431,9 +3309,15 @@ class InvoicesController extends Controller
                 ['invoice_id' => $invoice_number_created, 'invoice_category' => 'car_rental']
             );
 
-            DB::table('car_rental_payments')->insert(
-                ['invoice_number' => $invoice_number_created, 'invoice_number_votebook' => $request->get('invoice_number'),'amount_paid' => 0,'amount_not_paid' =>$request->get('amount_to_be_paid'),'currency_payments' => $request->get('currency'),'receipt_number' => '']
-            );
+
+            $car_rental_payment=new car_rental_payment();
+            $car_rental_payment->invoice_number=$invoice_number_created;
+            $car_rental_payment->invoice_number_votebook=$request->get('invoice_number');
+            $car_rental_payment->amount_paid=0;
+            $car_rental_payment->amount_not_paid=$request->get('amount_to_be_paid');
+            $car_rental_payment->currency_payments=$request->get('currency');
+            $car_rental_payment->receipt_number='';
+            $car_rental_payment->save();
 
 
         }else{
@@ -3495,9 +3379,35 @@ class InvoicesController extends Controller
 
         if(count($invoice_to_be_created)==0){
 
-            DB::table('research_flats_invoices')->insert(
-                ['invoice_number_votebook'=>$request->get('invoice_number'),'contract_id' => $request->get('contract_id','N/A'), 'invoicing_period_start_date' => $request->get('invoicing_period_start_date'),'invoicing_period_end_date' => $request->get('invoicing_period_end_date'),'period' => $period,'project_id' => $request->get('project_id','N/A'),'debtor_account_code' => $request->get('debtor_account_code','N/A'),'debtor_name' => $request->get('debtor_name'),'debtor_address' => $request->get('debtor_address'),'amount_to_be_paid' => $request->get('amount_to_be_paid'),'currency_invoice'=>$request->get('currency'),'gepg_control_no'=>'','tin'=>$request->get('tin','N/A'),'vrn'=>$request->get('vrn','N/A'),'max_no_of_days_to_pay'=>$max_no_of_days_to_pay,'status'=>$request->get('status','N/A'),'amount_in_words'=>$amount_in_words,'inc_code'=>$request->get('inc_code'),'invoice_date'=>$today,'financial_year'=>$financial_year,'payment_status'=>'Not paid','description'=>$request->get('description','N/A'),'prepared_by'=>Auth::user()->name,'approved_by'=>'N/A','stage'=>1]
-            );
+            $research_flats_invoice= new research_flats_invoice();
+            $research_flats_invoice->invoice_number_votebook=$request->get('invoice_number');
+            $research_flats_invoice->contract_id=$request->get('contract_id','N/A');
+            $research_flats_invoice->invoicing_period_start_date=$request->get('invoicing_period_start_date');
+            $research_flats_invoice->invoicing_period_end_date=$request->get('invoicing_period_end_date');
+            $research_flats_invoice->period=$period;
+            $research_flats_invoice->project_id=$request->get('project_id','N/A');
+            $research_flats_invoice->debtor_account_code=$request->get('debtor_account_code','N/A');
+            $research_flats_invoice->debtor_name=$request->get('debtor_name');
+            $research_flats_invoice->debtor_address=$request->get('debtor_address');
+            $research_flats_invoice->amount_to_be_paid=$request->get('amount_to_be_paid');
+            $research_flats_invoice->currency_invoice=$request->get('currency');
+            $research_flats_invoice->gepg_control_no='';
+            $research_flats_invoice->tin=$request->get('tin','N/A');
+            $research_flats_invoice->vrn=$request->get('vrn','N/A');
+            $research_flats_invoice->max_no_of_days_to_pay=$max_no_of_days_to_pay;
+            $research_flats_invoice->status=$request->get('status','N/A');
+            $research_flats_invoice->amount_in_words=$amount_in_words;
+            $research_flats_invoice->inc_code=$request->get('inc_code');
+            $research_flats_invoice->invoice_date=$today;
+            $research_flats_invoice->financial_year=$financial_year;
+            $research_flats_invoice->payment_status='Not paid';
+            $research_flats_invoice->description=$request->get('description','N/A');
+            $research_flats_invoice->prepared_by=Auth::user()->name;
+            $research_flats_invoice->approved_by='N/A';
+            $research_flats_invoice->stage=1;
+            $research_flats_invoice->save();
+
+
 
             $invoice_number_created=DB::table('research_flats_invoices')->orderBy('invoice_number','desc')->limit(1)->value('invoice_number');
 
@@ -3505,9 +3415,17 @@ class InvoicesController extends Controller
                 ['invoice_id' => $invoice_number_created, 'invoice_category' => 'research']
             );
 
-            DB::table('research_flats_payments')->insert(
-                ['invoice_number' => $invoice_number_created, 'invoice_number_votebook' => $request->get('invoice_number'),'amount_paid' => 0,'amount_not_paid' =>$request->get('amount_to_be_paid'),'currency_payments' => $request->get('currency'),'receipt_number' => '']
-            );
+
+            $research_flats_payment= new research_flats_payment();
+            $research_flats_payment->invoice_number=$invoice_number_created;
+            $research_flats_payment->invoice_number_votebook=$request->get('invoice_number');
+            $research_flats_payment->amount_paid=0;
+            $research_flats_payment->amount_not_paid=$request->get('amount_to_be_paid');
+            $research_flats_payment->currency_payments=$request->get('currency');
+            $research_flats_payment->receipt_number='';
+            $research_flats_payment->save();
+
+
 
 
         }else{
@@ -3561,44 +3479,28 @@ class InvoicesController extends Controller
 
         }
 
+        $car_rental_invoice= car_rental_invoice::where('invoice_number',$id)->first();
+        $car_rental_invoice->payment_status=$payment_status;
+        $car_rental_invoice->user_comments=$request->get('user_comments');
+        $car_rental_invoice->save();
 
-        DB::table('car_rental_invoices')
-            ->where('invoice_number', $id)
-            ->update(['payment_status' => $payment_status]);
 
-        DB::table('car_rental_invoices')
-            ->where('invoice_number', $id)
-            ->update(['user_comments' => $request->get('user_comments')]);
 
 
 //        DB::table('car_rental_payments')->insert(
 //            ['invoice_number' => $request->get('invoice_number'), 'invoice_number_votebook' => $request->get('invoice_number_votebook'),'amount_paid' => $request->get('amount_paid'),'amount_not_paid' =>$amount_not_paid,'currency_payments' => $request->get('currency_payments'),'receipt_number' => $request->get('receipt_number'),'date_of_payment' => $request->get('date_of_payment')]
 //        );
 
+        $car_rental_payment=car_rental_payment::where('invoice_number', $request->get('invoice_number'))->first();
+        $car_rental_payment->invoice_number_votebook=$request->get('invoice_number_votebook');
+        $car_rental_payment->amount_paid=$request->get('amount_paid');
+        $car_rental_payment->amount_not_paid=$amount_not_paid;
+        $car_rental_payment->currency_payments=$request->get('currency_payments');
+        $car_rental_payment->receipt_number=$request->get('receipt_number');
+        $car_rental_payment->date_of_payment=$request->get('date_of_payment');
+        $car_rental_payment->save();
 
-        DB::table('car_rental_payments')
-            ->where('invoice_number', $request->get('invoice_number'))
-            ->update(['invoice_number_votebook' => $request->get('invoice_number_votebook')]);
 
-        DB::table('car_rental_payments')
-            ->where('invoice_number', $request->get('invoice_number'))
-            ->update(['amount_paid' => $request->get('amount_paid')]);
-
-        DB::table('car_rental_payments')
-            ->where('invoice_number', $request->get('invoice_number'))
-            ->update(['amount_not_paid' => $amount_not_paid]);
-
-        DB::table('car_rental_payments')
-            ->where('invoice_number', $request->get('invoice_number'))
-            ->update(['currency_payments' => $request->get('currency_payments')]);
-
-        DB::table('car_rental_payments')
-            ->where('invoice_number', $request->get('invoice_number'))
-            ->update(['receipt_number' => $request->get('receipt_number')]);
-
-        DB::table('car_rental_payments')
-            ->where('invoice_number', $request->get('invoice_number'))
-            ->update(['date_of_payment' => $request->get('date_of_payment')]);
 
 
         return redirect('/invoice_management')
@@ -3630,14 +3532,12 @@ class InvoicesController extends Controller
 
         }
 
+        $research_flats_invoice=research_flats_invoice::where('invoice_number', $id)->first();
+        $research_flats_invoice->payment_status=$payment_status;
+        $research_flats_invoice->user_comments=$request->get('user_comments');
+        $research_flats_invoice->save();
 
-        DB::table('research_flats_invoices')
-            ->where('invoice_number', $id)
-            ->update(['payment_status' => $payment_status]);
 
-        DB::table('research_flats_invoices')
-            ->where('invoice_number', $id)
-            ->update(['user_comments' => $request->get('user_comments')]);
 
 
 //        DB::table('car_rental_payments')->insert(
@@ -3645,29 +3545,14 @@ class InvoicesController extends Controller
 //        );
 
 
-        DB::table('research_flats_payments')
-            ->where('invoice_number', $request->get('invoice_number'))
-            ->update(['invoice_number_votebook' => $request->get('invoice_number_votebook')]);
-
-        DB::table('research_flats_payments')
-            ->where('invoice_number', $request->get('invoice_number'))
-            ->update(['amount_paid' => $request->get('amount_paid')]);
-
-        DB::table('research_flats_payments')
-            ->where('invoice_number', $request->get('invoice_number'))
-            ->update(['amount_not_paid' => $amount_not_paid]);
-
-        DB::table('research_flats_payments')
-            ->where('invoice_number', $request->get('invoice_number'))
-            ->update(['currency_payments' => $request->get('currency_payments')]);
-
-        DB::table('research_flats_payments')
-            ->where('invoice_number', $request->get('invoice_number'))
-            ->update(['receipt_number' => $request->get('receipt_number')]);
-
-        DB::table('research_flats_payments')
-            ->where('invoice_number', $request->get('invoice_number'))
-            ->update(['date_of_payment' => $request->get('date_of_payment')]);
+        $research_flats_payment=research_flats_payment::where('invoice_number', $request->get('invoice_number'))->first();
+        $research_flats_payment->invoice_number_votebook=$request->get('invoice_number_votebook');
+        $research_flats_payment->amount_paid=$request->get('amount_paid');
+        $research_flats_payment->amount_not_paid=$amount_not_paid;
+        $research_flats_payment->currency_payments=$request->get('currency_payments');
+        $research_flats_payment->receipt_number=$request->get('receipt_number');
+        $research_flats_payment->date_of_payment=$request->get('date_of_payment');
+        $research_flats_payment->save();
 
 
         return redirect('/invoice_management')
@@ -3738,9 +3623,36 @@ class InvoicesController extends Controller
 
         if(count($invoice_to_be_created)==0){
 
-            DB::table('insurance_invoices')->insert(
-                ['invoice_number_votebook'=>$request->get('invoice_number'),'contract_id' => '', 'invoicing_period_start_date' => $request->get('invoicing_period_start_date'),'invoicing_period_end_date' => $request->get('invoicing_period_end_date'),'period' => $period,'project_id' => $request->get('project_id','N/A'),'debtor_account_code' => $request->get('debtor_account_code','N/A'),'debtor_name' => $request->get('debtor_name'),'debtor_address' => $request->get('debtor_address'),'amount_to_be_paid' => $request->get('amount_to_be_paid'),'currency_invoice'=>$request->get('currency'),'gepg_control_no'=>'','tin'=>$request->get('tin','N/A'),'vrn'=>$request->get('vrn','N/A'),'max_no_of_days_to_pay'=>$max_no_of_days_to_pay,'status'=>$request->get('status','N/A'),'amount_in_words'=>$amount_in_words,'inc_code'=>$request->get('inc_code'),'invoice_category'=>'Insurance','invoice_date'=>$today,'financial_year'=>$financial_year,'payment_status'=>'Not paid','description'=>$request->get('description','N/A'),'prepared_by'=>Auth::user()->name,'approved_by'=>'N/A','stage'=>1]
-            );
+
+            $insurance_invoice= new insurance_invoice();
+            $insurance_invoice->invoice_number_votebook=$request->get('invoice_number');
+            $insurance_invoice->contract_id='';
+            $insurance_invoice->invoicing_period_start_date=$request->get('invoicing_period_start_date');
+            $insurance_invoice->invoicing_period_end_date=$request->get('invoicing_period_end_date');
+            $insurance_invoice->period=$period;
+            $insurance_invoice->project_id=$request->get('project_id','N/A');
+            $insurance_invoice->debtor_account_code=$request->get('debtor_account_code','N/A');
+            $insurance_invoice->debtor_name=$request->get('debtor_name');
+            $insurance_invoice->debtor_address=$request->get('debtor_address');
+            $insurance_invoice->amount_to_be_paid=$request->get('amount_to_be_paid');
+            $insurance_invoice->currency_invoice=$request->get('currency');
+            $insurance_invoice->gepg_control_no='';
+            $insurance_invoice->tin=$request->get('tin','N/A');
+            $insurance_invoice->vrn=$request->get('vrn','N/A');
+            $insurance_invoice->max_no_of_days_to_pay=$max_no_of_days_to_pay;
+            $insurance_invoice->status=$request->get('status','N/A');
+            $insurance_invoice->amount_in_words=$amount_in_words;
+            $insurance_invoice->inc_code=$request->get('inc_code');
+            $insurance_invoice->invoice_category='Insurance';
+            $insurance_invoice->invoice_date=$today;
+            $insurance_invoice->financial_year=$financial_year;
+            $insurance_invoice->payment_status='Not paid';
+            $insurance_invoice->description=$request->get('description','N/A');
+            $insurance_invoice->prepared_by=Auth::user()->name;
+            $insurance_invoice->approved_by='N/A';
+            $insurance_invoice->stage=1;
+            $insurance_invoice->save();
+
 
             $invoice_number_created=DB::table('insurance_invoices')->orderBy('invoice_number','desc')->limit(1)->value('invoice_number');
 
@@ -3748,9 +3660,18 @@ class InvoicesController extends Controller
                 ['invoice_id' => $invoice_number_created, 'invoice_category' => 'insurance']
             );
 
-            DB::table('insurance_payments')->insert(
-                ['invoice_number' => $invoice_number_created, 'invoice_number_votebook' => $request->get('invoice_number'),'amount_paid' => 0,'amount_not_paid' =>$request->get('amount_to_be_paid'),'currency_payments' => $request->get('currency'),'receipt_number' => '']
-            );
+
+
+            $insurance_payment= new insurance_payment();
+            $insurance_payment->invoice_number=$invoice_number_created;
+            $insurance_payment->invoice_number_votebook=$request->get('invoice_number');
+            $insurance_payment->amount_paid=0;
+            $insurance_payment->amount_not_paid=$request->get('amount_to_be_paid');
+            $insurance_payment->currency_payments=$request->get('currency');
+            $insurance_payment->receipt_number='';
+            $insurance_payment->save();
+
+
 
 
         }else{
@@ -3811,9 +3732,36 @@ class InvoicesController extends Controller
 
         if(count($invoice_to_be_created)==0){
 
-            DB::table('insurance_invoices_clients')->insert(
-                ['invoice_number_votebook'=>$request->get('invoice_number'),'contract_id' => $request->get("contract_id"), 'invoicing_period_start_date' => $request->get('invoicing_period_start_date'),'invoicing_period_end_date' => $request->get('invoicing_period_end_date'),'period' => $period,'project_id' => $request->get('project_id','N/A'),'debtor_account_code' => $request->get('debtor_account_code','N/A'),'debtor_name' => $request->get('debtor_name'),'debtor_address' => $request->get('debtor_address'),'amount_to_be_paid' => $request->get('amount_to_be_paid'),'currency_invoice'=>$request->get('currency'),'gepg_control_no'=>'','tin'=>$request->get('tin','N/A'),'vrn'=>$request->get('vrn','N/A'),'max_no_of_days_to_pay'=>$max_no_of_days_to_pay,'status'=>$request->get('status','N/A'),'amount_in_words'=>$amount_in_words,'inc_code'=>$request->get('inc_code'),'invoice_category'=>'Insurance','invoice_date'=>$today,'financial_year'=>$financial_year,'payment_status'=>'Not paid','description'=>$request->get('description','N/A'),'prepared_by'=>Auth::user()->name,'approved_by'=>'N/A','stage'=>1]
-            );
+
+            $insurance_invoices_client= new insurance_invoices_client();
+            $insurance_invoices_client->invoice_number_votebook=$request->get('invoice_number');
+            $insurance_invoices_client->contract_id=$request->get("contract_id");
+            $insurance_invoices_client->invoicing_period_start_date=$request->get('invoicing_period_start_date');
+            $insurance_invoices_client->invoicing_period_end_date=$request->get('invoicing_period_end_date');
+            $insurance_invoices_client->period=$period;
+            $insurance_invoices_client->project_id=$request->get('project_id','N/A');
+            $insurance_invoices_client->debtor_account_code=$request->get('debtor_account_code','N/A');
+            $insurance_invoices_client->debtor_name=$request->get('debtor_name');
+            $insurance_invoices_client->debtor_address=$request->get('debtor_address');
+            $insurance_invoices_client->amount_to_be_paid=$request->get('amount_to_be_paid');
+            $insurance_invoices_client->currency_invoice=$request->get('currency');
+            $insurance_invoices_client->gepg_control_no='';
+            $insurance_invoices_client->tin=$request->get('tin','N/A');
+            $insurance_invoices_client->vrn=$request->get('vrn','N/A');
+            $insurance_invoices_client->max_no_of_days_to_pay=$max_no_of_days_to_pay;
+            $insurance_invoices_client->status=$request->get('status','N/A');
+            $insurance_invoices_client->amount_in_words=$amount_in_words;
+            $insurance_invoices_client->inc_code=$request->get('inc_code');
+            $insurance_invoices_client->invoice_category='Insurance';
+            $insurance_invoices_client->invoice_date=$today;
+            $insurance_invoices_client->financial_year=$financial_year;
+            $insurance_invoices_client->payment_status='Not paid';
+            $insurance_invoices_client->description=$request->get('description','N/A');
+            $insurance_invoices_client->prepared_by=Auth::user()->name;
+            $insurance_invoices_client->approved_by='N/A';
+            $insurance_invoices_client->stage=1;
+            $insurance_invoices_client->save();
+
 
             $invoice_number_created=DB::table('insurance_invoices_clients')->orderBy('invoice_number','desc')->limit(1)->value('invoice_number');
 
@@ -3821,9 +3769,14 @@ class InvoicesController extends Controller
                 ['invoice_id' => $invoice_number_created, 'invoice_category' => 'insurance_clients']
             );
 
-            DB::table('insurance_clients_payments')->insert(
-                ['invoice_number' => $invoice_number_created, 'invoice_number_votebook' => '','amount_paid' => 0,'amount_not_paid' =>$request->get('amount_to_be_paid'),'currency_payments' => $request->get('currency'),'receipt_number' => '']
-            );
+            $insurance_clients_payment= new insurance_clients_payment();
+            $insurance_clients_payment->invoice_number=$invoice_number_created;
+            $insurance_clients_payment->invoice_number_votebook='';
+            $insurance_clients_payment->amount_paid=0;
+            $insurance_clients_payment->amount_not_paid=$request->get('amount_to_be_paid');
+            $insurance_clients_payment->currency_payments=$request->get('currency');
+            $insurance_clients_payment->receipt_number='';
+            $insurance_clients_payment->save();
 
 
         }else{
@@ -3850,21 +3803,15 @@ class InvoicesController extends Controller
     public function sendInvoiceInsurance(Request $request,$id)
     {
 
-        DB::table('insurance_clients_payments')
-            ->where('invoice_number', $id)
-            ->update(['invoice_number_votebook' => $request->get('invoice_number_votebook')]);
+        $insurance_clients_payment= insurance_clients_payment::where('invoice_number', $id)->first();
+        $insurance_clients_payment->invoice_number_votebook=$request->get('invoice_number_votebook');
+        $insurance_clients_payment->save();
 
 
-        DB::table('insurance_invoices_clients')
-            ->where('invoice_number', $id)
-            ->update(['invoice_number_votebook' => $request->get('invoice_number_votebook')]);
-
-
-
-        DB::table('insurance_invoices_clients')
-            ->where('invoice_number', $id)
-            ->update(['inc_code' => $request->get('inc_code')]);
-
+        $insurance_invoices_client=insurance_invoices_client::where('invoice_number', $id)->first();
+        $insurance_invoices_client->invoice_number_votebook=$request->get('invoice_number_votebook');
+        $insurance_invoices_client->inc_code=$request->get('inc_code');
+        $insurance_invoices_client->save();
 
 
         $invoice_data=DB::table('insurance_invoices_clients')->where('invoice_number', $id)->get();
@@ -3907,19 +3854,12 @@ class InvoicesController extends Controller
             Notification::route('mail',$email_address)
                 ->notify(new SendInvoice($var->debtor_name,$request->get('invoice_number_votebook'),$var->project_id,$var->debtor_account_code,$var->debtor_name,$var->debtor_address,$var->amount_to_be_paid,$var->currency_invoice,$request->get('gepg_control_no'),$var->tin,$max_no_of_days_to_pay,$var->status,$var->vrn,$amount_in_words,$var->inc_code,$today,$financial_year,$var->period,$var->description,$var->prepared_by,Auth::user()->name,date("d/m/Y",strtotime($var->invoicing_period_start_date)) ,date("d/m/Y",strtotime($var->invoicing_period_end_date))));
 
-            DB::table('insurance_invoices_clients')
-                ->where('invoice_number', $id)
-                ->update(['invoice_date' => $today]);
 
-
-            DB::table('insurance_invoices_clients')
-                ->where('invoice_number', $id)
-                ->update(['email_sent_status' => 'SENT']);
-
-            DB::table('insurance_invoices_clients')
-                ->where('invoice_number', $id)
-                ->update(['gepg_control_no' => $request->get('gepg_control_no')]);
-
+            $insurance_invoices_client=insurance_invoices_client::where('invoice_number', $id)->first();
+            $insurance_invoices_client->invoice_date=$today;
+            $insurance_invoices_client->email_sent_status='SENT';
+            $insurance_invoices_client->gepg_control_no=$request->get('gepg_control_no');
+            $insurance_invoices_client->save();
 
 //            DB::table('insurance_payments')->insert(
 //                ['invoice_number' => $var->invoice_number, 'invoice_number_votebook' => '','amount_paid' => 0,'amount_not_paid' =>$var->amount_to_be_paid,'currency_payments' => $var->currency_invoice,'receipt_number' => '']
@@ -3929,9 +3869,11 @@ class InvoicesController extends Controller
         }
 
 
-        DB::table('insurance_invoices_clients')
-            ->where('invoice_number', $id)
-            ->update(['stage' => 2]);
+
+        $insurance_invoices_client=insurance_invoices_client::where('invoice_number', $id)->first();
+        $insurance_invoices_client->stage=2;
+        $insurance_invoices_client->save();
+
 
 
         DB::table('invoice_notifications')->where('invoice_category',  'insurance')->where('invoice_id',$id)->delete();
@@ -3948,19 +3890,15 @@ class InvoicesController extends Controller
     public function sendInvoiceInsurancePrincipals(Request $request,$id)
     {
 
-        DB::table('insurance_payments')
-            ->where('invoice_number', $id)
-            ->update(['invoice_number_votebook' => $request->get('invoice_number_votebook')]);
+        $insurance_payment=insurance_payment::where('invoice_number', $id)->first();
+        $insurance_payment->invoice_number_votebook=$request->get('invoice_number_votebook');
+        $insurance_payment->save();
 
 
-        DB::table('insurance_invoices')
-            ->where('invoice_number', $id)
-            ->update(['invoice_number_votebook' => $request->get('invoice_number_votebook')]);
-
-
-        DB::table('insurance_invoices')
-            ->where('invoice_number', $id)
-            ->update(['inc_code' => $request->get('inc_code')]);
+        $insurance_invoice=insurance_invoice::where('invoice_number', $id)->first();
+        $insurance_invoice->invoice_number_votebook=$request->get('invoice_number_votebook');
+        $insurance_invoice->inc_code=$request->get('inc_code');
+        $insurance_invoice->save();
 
 
 
@@ -4002,19 +3940,12 @@ class InvoicesController extends Controller
             Notification::route('mail',$email_address)
                 ->notify(new SendInvoice($var->debtor_name,$request->get('invoice_number_votebook'),$var->project_id,$var->debtor_account_code,$var->debtor_name,$var->debtor_address,$var->amount_to_be_paid,$var->currency_invoice,$request->get('gepg_control_no'),$var->tin,$max_no_of_days_to_pay,$var->status,$var->vrn,$amount_in_words,$var->inc_code,$today,$financial_year,$var->period,$var->description,$var->prepared_by,Auth::user()->name,date("d/m/Y",strtotime($var->invoicing_period_start_date)) ,date("d/m/Y",strtotime($var->invoicing_period_end_date))));
 
-            DB::table('insurance_invoices')
-                ->where('invoice_number', $id)
-                ->update(['invoice_date' => $today]);
 
-
-            DB::table('insurance_invoices')
-                ->where('invoice_number', $id)
-                ->update(['email_sent_status' => 'SENT']);
-
-            DB::table('insurance_invoices')
-                ->where('invoice_number', $id)
-                ->update(['gepg_control_no' => $request->get('gepg_control_no')]);
-
+            $insurance_invoice=insurance_invoice::where('invoice_number', $id)->first();
+            $insurance_invoice->invoice_date=$today;
+            $insurance_invoice->email_sent_status='SENT';
+            $insurance_invoice->gepg_control_no=$request->get('gepg_control_no');
+            $insurance_invoice->save();
 
 //            DB::table('insurance_payments')->insert(
 //                ['invoice_number' => $var->invoice_number, 'invoice_number_votebook' => '','amount_paid' => 0,'amount_not_paid' =>$var->amount_to_be_paid,'currency_payments' => $var->currency_invoice,'receipt_number' => '']
@@ -4024,9 +3955,10 @@ class InvoicesController extends Controller
         }
 
 
-        DB::table('insurance_invoices')
-            ->where('invoice_number', $id)
-            ->update(['stage' => 2]);
+        $insurance_invoice=insurance_invoice::where('invoice_number', $id)->first();
+        $insurance_invoice->stage=2;
+        $insurance_invoice->save();
+
 
         DB::table('invoice_notifications')->where('invoice_category',  'insurance')->where('invoice_id',$id)->delete();
 
@@ -4060,14 +3992,11 @@ class InvoicesController extends Controller
 
         }
 
+        $insurance_invoices_client= insurance_invoices_client::where('invoice_number', $id)->first();
+        $insurance_invoices_client->payment_status=$payment_status;
+        $insurance_invoices_client->user_comments=$request->get('user_comments');
+        $insurance_invoices_client->save();
 
-        DB::table('insurance_invoices_clients')
-            ->where('invoice_number', $id)
-            ->update(['payment_status' => $payment_status]);
-
-        DB::table('insurance_invoices_clients')
-            ->where('invoice_number', $id)
-            ->update(['user_comments' => $request->get('user_comments')]);
 
 
 //        DB::table('insurance_payments')->insert(
@@ -4075,30 +4004,14 @@ class InvoicesController extends Controller
 //        );
 
 
-
-        DB::table('insurance_clients_payments')
-            ->where('invoice_number', $request->get('invoice_number'))
-            ->update(['invoice_number_votebook' => $request->get('invoice_number_votebook')]);
-
-        DB::table('insurance_clients_payments')
-            ->where('invoice_number', $request->get('invoice_number'))
-            ->update(['amount_paid' => $request->get('amount_paid')]);
-
-        DB::table('insurance_clients_payments')
-            ->where('invoice_number', $request->get('invoice_number'))
-            ->update(['amount_not_paid' => $amount_not_paid]);
-
-        DB::table('insurance_clients_payments')
-            ->where('invoice_number', $request->get('invoice_number'))
-            ->update(['currency_payments' => $request->get('currency_payments')]);
-
-        DB::table('insurance_clients_payments')
-            ->where('invoice_number', $request->get('invoice_number'))
-            ->update(['receipt_number' => $request->get('receipt_number')]);
-
-        DB::table('insurance_clients_payments')
-            ->where('invoice_number', $request->get('invoice_number'))
-            ->update(['date_of_payment' => $request->get('date_of_payment')]);
+        $insurance_clients_payment= insurance_clients_payment::where('invoice_number', $request->get('invoice_number'))->first();
+        $insurance_clients_payment->invoice_number_votebook=$request->get('invoice_number_votebook');
+        $insurance_clients_payment->amount_paid=$request->get('amount_paid');
+        $insurance_clients_payment->amount_not_paid=$amount_not_paid;
+        $insurance_clients_payment->currency_payments=$request->get('currency_payments');
+        $insurance_clients_payment->receipt_number=$request->get('receipt_number');
+        $insurance_clients_payment->date_of_payment=$request->get('date_of_payment');
+        $insurance_clients_payment->save();
 
 
         return redirect('/invoice_management')
@@ -4131,13 +4044,11 @@ class InvoicesController extends Controller
         }
 
 
-        DB::table('insurance_invoices')
-            ->where('invoice_number', $id)
-            ->update(['payment_status' => $payment_status]);
+        $insurance_invoice= insurance_invoice::where('invoice_number', $id)->first();
+        $insurance_invoice->payment_status=$payment_status;
+        $insurance_invoice->user_comments=$request->get('user_comments');
+        $insurance_invoice->save();
 
-        DB::table('insurance_invoices')
-            ->where('invoice_number', $id)
-            ->update(['user_comments' => $request->get('user_comments')]);
 
 
 //        DB::table('insurance_payments')->insert(
@@ -4145,30 +4056,14 @@ class InvoicesController extends Controller
 //        );
 
 
-
-        DB::table('insurance_payments')
-            ->where('invoice_number', $request->get('invoice_number'))
-            ->update(['invoice_number_votebook' => $request->get('invoice_number_votebook')]);
-
-        DB::table('insurance_payments')
-            ->where('invoice_number', $request->get('invoice_number'))
-            ->update(['amount_paid' => $request->get('amount_paid')]);
-
-        DB::table('insurance_payments')
-            ->where('invoice_number', $request->get('invoice_number'))
-            ->update(['amount_not_paid' => $amount_not_paid]);
-
-        DB::table('insurance_payments')
-            ->where('invoice_number', $request->get('invoice_number'))
-            ->update(['currency_payments' => $request->get('currency_payments')]);
-
-        DB::table('insurance_payments')
-            ->where('invoice_number', $request->get('invoice_number'))
-            ->update(['receipt_number' => $request->get('receipt_number')]);
-
-        DB::table('insurance_payments')
-            ->where('invoice_number', $request->get('invoice_number'))
-            ->update(['date_of_payment' => $request->get('date_of_payment')]);
+        $insurance_payment=insurance_payment::where('invoice_number', $request->get('invoice_number'))->first();
+        $insurance_payment->invoice_number_votebook=$request->get('invoice_number_votebook');
+        $insurance_payment->amount_paid=$request->get('amount_paid');
+        $insurance_payment->amount_not_paid=$amount_not_paid;
+        $insurance_payment->currency_payments=$request->get('currency_payments');
+        $insurance_payment->receipt_number=$request->get('receipt_number');
+        $insurance_payment->date_of_payment=$request->get('date_of_payment');
+        $insurance_payment->save();
 
 
         return redirect('/invoice_management')
@@ -4196,101 +4091,27 @@ class InvoicesController extends Controller
     public function fowardSpaceInvoice(Request $request,$invoice_id)
     {
 
-
-
-        DB::table('invoices')
-            ->where('invoice_number', $invoice_id)
-            ->update(['debtor_name' => $request->get('debtor_name')]);
-
-
-
-
-
-
-        DB::table('invoices')
-            ->where('invoice_number', $invoice_id)
-            ->update(['debtor_account_code' => $request->get('debtor_account_code')]);
-
-
-        DB::table('invoices')
-            ->where('invoice_number', $invoice_id)
-            ->update(['tin' => $request->get('tin')]);
-
-        DB::table('invoices')
-            ->where('invoice_number', $invoice_id)
-            ->update(['debtor_address' => $request->get('debtor_address')]);
-
-        DB::table('invoices')
-            ->where('invoice_number', $invoice_id)
-            ->update(['invoicing_period_start_date' => $request->get('invoicing_period_start_date')]);
-
-
-
-        DB::table('invoices')
-            ->where('invoice_number', $invoice_id)
-            ->update(['invoicing_period_end_date' => $request->get('invoicing_period_end_date')]);
-
-
-
-
-        DB::table('invoices')
-            ->where('invoice_number', $invoice_id)
-            ->update(['period' => $request->get('period')]);
-
+        $invoice=invoice::where('invoice_number', $invoice_id)->first();
+        $invoice->debtor_name=$request->get('debtor_name');
+        $invoice->debtor_account_code=$request->get('debtor_account_code');
+        $invoice->tin=$request->get('tin');
+        $invoice->debtor_address=$request->get('debtor_address');
+        $invoice->invoicing_period_start_date=$request->get('invoicing_period_start_date');
+        $invoice->invoicing_period_end_date=$request->get('invoicing_period_end_date');
+        $invoice->period=$request->get('period');
+        $invoice->project_id=$request->get('project_id');
+        $invoice->amount_to_be_paid=$request->get('amount_to_be_paid');
+        $invoice->currency_invoice=$request->get('currency');
+        $invoice->status=$request->get('status');
+        $invoice->description=$request->get('description');
+        $invoice->prepared_by=Auth::user()->name;
+        $invoice->stage=1;
+        $invoice->updated_at=Carbon::now()->toDateTimeString();
+        $invoice->save();
 
 //        DB::table('invoices')
 //            ->where('invoice_number', $invoice_id)
 //            ->update(['inc_code' => $request->get('inc_code')]);
-
-
-
-
-        DB::table('invoices')
-            ->where('invoice_number', $invoice_id)
-            ->update(['project_id' => $request->get('project_id')]);
-
-
-
-        DB::table('invoices')
-            ->where('invoice_number', $invoice_id)
-            ->update(['amount_to_be_paid' => $request->get('amount_to_be_paid')]);
-
-
-
-        DB::table('invoices')
-            ->where('invoice_number', $invoice_id)
-            ->update(['currency_invoice' => $request->get('currency')]);
-
-
-
-
-
-        DB::table('invoices')
-            ->where('invoice_number', $invoice_id)
-            ->update(['status' => $request->get('status')]);
-
-
-
-        DB::table('invoices')
-            ->where('invoice_number', $invoice_id)
-            ->update(['description' => $request->get('description')]);
-
-
-        DB::table('invoices')
-            ->where('invoice_number', $invoice_id)
-            ->update(['prepared_by' => Auth::user()->name]);
-
-
-        DB::table('invoices')
-            ->where('invoice_number', $invoice_id)
-            ->update(['stage' => 1]);
-
-
-        DB::table('invoices')
-            ->where('invoice_number', $invoice_id)
-            ->update(['updated_at' => Carbon::now()->toDateTimeString()]);
-
-
 
         return redirect('/invoice_management')
             ->with('success', 'Operation completed successfully');
@@ -4303,97 +4124,24 @@ class InvoicesController extends Controller
     public function fowardCarInvoice(Request $request,$invoice_id)
     {
 
-
-
-        DB::table('car_rental_invoices')
-            ->where('invoice_number', $invoice_id)
-            ->update(['debtor_name' => $request->get('debtor_name')]);
-
-
-
-        DB::table('car_rental_invoices')
-            ->where('invoice_number', $invoice_id)
-            ->update(['debtor_account_code' => $request->get('debtor_account_code')]);
-
-
-        DB::table('car_rental_invoices')
-            ->where('invoice_number', $invoice_id)
-            ->update(['tin' => $request->get('tin')]);
-
-        DB::table('car_rental_invoices')
-            ->where('invoice_number', $invoice_id)
-            ->update(['debtor_address' => $request->get('debtor_address')]);
-
-        DB::table('car_rental_invoices')
-            ->where('invoice_number', $invoice_id)
-            ->update(['invoicing_period_start_date' => $request->get('invoicing_period_start_date')]);
-
-
-
-        DB::table('car_rental_invoices')
-            ->where('invoice_number', $invoice_id)
-            ->update(['invoicing_period_end_date' => $request->get('invoicing_period_end_date')]);
-
-
-
-
-        DB::table('car_rental_invoices')
-            ->where('invoice_number', $invoice_id)
-            ->update(['period' => $request->get('period')]);
-
-
-        DB::table('car_rental_invoices')
-            ->where('invoice_number', $invoice_id)
-            ->update(['inc_code' => $request->get('inc_code')]);
-
-
-
-        DB::table('car_rental_invoices')
-            ->where('invoice_number', $invoice_id)
-            ->update(['vrn' => $request->get('vrn')]);
-
-
-
-
-        DB::table('car_rental_invoices')
-            ->where('invoice_number', $invoice_id)
-            ->update(['project_id' => $request->get('project_id')]);
-
-
-
-        DB::table('car_rental_invoices')
-            ->where('invoice_number', $invoice_id)
-            ->update(['amount_to_be_paid' => $request->get('amount_to_be_paid')]);
-
-
-
-        DB::table('car_rental_invoices')
-            ->where('invoice_number', $invoice_id)
-            ->update(['currency_invoice' => $request->get('currency')]);
-
-
-
-
-
-        DB::table('car_rental_invoices')
-            ->where('invoice_number', $invoice_id)
-            ->update(['status' => $request->get('status')]);
-
-
-
-        DB::table('car_rental_invoices')
-            ->where('invoice_number', $invoice_id)
-            ->update(['description' => $request->get('description')]);
-
-
-        DB::table('car_rental_invoices')
-            ->where('invoice_number', $invoice_id)
-            ->update(['prepared_by' => Auth::user()->name]);
-
-
-        DB::table('car_rental_invoices')
-            ->where('invoice_number', $invoice_id)
-            ->update(['stage' => 1]);
+        $car_rental_invoice= car_rental_invoice::where('invoice_number', $invoice_id)->first();
+        $car_rental_invoice->debtor_name=$request->get('debtor_name');
+        $car_rental_invoice->debtor_account_code=$request->get('debtor_account_code');
+        $car_rental_invoice->tin=$request->get('tin');
+        $car_rental_invoice->debtor_address=$request->get('debtor_address');
+        $car_rental_invoice->invoicing_period_start_date=$request->get('invoicing_period_start_date');
+        $car_rental_invoice->invoicing_period_end_date=$request->get('invoicing_period_end_date');
+        $car_rental_invoice->period=$request->get('period');
+        $car_rental_invoice->inc_code=$request->get('inc_code');
+        $car_rental_invoice->vrn=$request->get('vrn');
+        $car_rental_invoice->project_id=$request->get('project_id');
+        $car_rental_invoice->amount_to_be_paid=$request->get('amount_to_be_paid');
+        $car_rental_invoice->currency_invoice=$request->get('currency');
+        $car_rental_invoice->status=$request->get('status');
+        $car_rental_invoice->description=$request->get('description');
+        $car_rental_invoice->prepared_by=Auth::user()->name;
+        $car_rental_invoice->stage=1;
+        $car_rental_invoice->save();
 
 
 
@@ -4409,92 +4157,23 @@ class InvoicesController extends Controller
     {
 
 
-
-        DB::table('research_flats_invoices')
-            ->where('invoice_number', $invoice_id)
-            ->update(['debtor_name' => $request->get('debtor_name')]);
-
-
-
-        DB::table('research_flats_invoices')
-            ->where('invoice_number', $invoice_id)
-            ->update(['debtor_account_code' => $request->get('debtor_account_code')]);
-
-
-        DB::table('research_flats_invoices')
-            ->where('invoice_number', $invoice_id)
-            ->update(['tin' => $request->get('tin')]);
-
-        DB::table('research_flats_invoices')
-            ->where('invoice_number', $invoice_id)
-            ->update(['debtor_address' => $request->get('debtor_address')]);
-
-        DB::table('research_flats_invoices')
-            ->where('invoice_number', $invoice_id)
-            ->update(['invoicing_period_start_date' => $request->get('invoicing_period_start_date')]);
-
-
-
-        DB::table('research_flats_invoices')
-            ->where('invoice_number', $invoice_id)
-            ->update(['invoicing_period_end_date' => $request->get('invoicing_period_end_date')]);
-
-
-
-
-        DB::table('research_flats_invoices')
-            ->where('invoice_number', $invoice_id)
-            ->update(['period' => $request->get('period')]);
-
-
-        DB::table('research_flats_invoices')
-            ->where('invoice_number', $invoice_id)
-            ->update(['inc_code' => $request->get('inc_code')]);
-
-
-
-
-        DB::table('research_flats_invoices')
-            ->where('invoice_number', $invoice_id)
-            ->update(['project_id' => $request->get('project_id')]);
-
-
-
-        DB::table('research_flats_invoices')
-            ->where('invoice_number', $invoice_id)
-            ->update(['amount_to_be_paid' => $request->get('amount_to_be_paid')]);
-
-
-
-        DB::table('research_flats_invoices')
-            ->where('invoice_number', $invoice_id)
-            ->update(['currency_invoice' => $request->get('currency')]);
-
-
-
-
-
-        DB::table('research_flats_invoices')
-            ->where('invoice_number', $invoice_id)
-            ->update(['status' => $request->get('status')]);
-
-
-
-        DB::table('research_flats_invoices')
-            ->where('invoice_number', $invoice_id)
-            ->update(['description' => $request->get('description')]);
-
-
-        DB::table('research_flats_invoices')
-            ->where('invoice_number', $invoice_id)
-            ->update(['prepared_by' => Auth::user()->name]);
-
-
-
-        DB::table('research_flats_invoices')
-            ->where('invoice_number', $invoice_id)
-            ->update(['stage' => 1]);
-
+        $research_flats_invoice=research_flats_invoice::where('invoice_number', $invoice_id)->first();
+        $research_flats_invoice->debtor_name=$request->get('debtor_name');
+        $research_flats_invoice->debtor_account_code=$request->get('debtor_account_code');
+        $research_flats_invoice->tin=$request->get('tin');
+        $research_flats_invoice->debtor_address=$request->get('debtor_address');
+        $research_flats_invoice->invoicing_period_start_date=$request->get('invoicing_period_start_date');
+        $research_flats_invoice->invoicing_period_end_date=$request->get('invoicing_period_end_date');
+        $research_flats_invoice->period=$request->get('period');
+        $research_flats_invoice->inc_code=$request->get('inc_code');
+        $research_flats_invoice->project_id=$request->get('project_id');
+        $research_flats_invoice->amount_to_be_paid=$request->get('amount_to_be_paid');
+        $research_flats_invoice->currency_invoice=$request->get('currency');
+        $research_flats_invoice->status=$request->get('status');
+        $research_flats_invoice->description=$request->get('description');
+        $research_flats_invoice->prepared_by=Auth::user()->name;
+        $research_flats_invoice->stage=1;
+        $research_flats_invoice->save();
 
 
         return redirect('/invoice_management')
@@ -4508,91 +4187,24 @@ class InvoicesController extends Controller
     public function fowardInsuranceInvoice(Request $request,$invoice_id)
     {
 
+        $insurance_invoice=insurance_invoice::where('invoice_number', $invoice_id)->first();
+        $insurance_invoice->debtor_name=$request->get('debtor_name');
+        $insurance_invoice->debtor_account_code=$request->get('debtor_account_code');
+        $insurance_invoice->tin=$request->get('tin');
+        $insurance_invoice->debtor_address=$request->get('debtor_address');
+        $insurance_invoice->invoicing_period_start_date=$request->get('invoicing_period_start_date');
+        $insurance_invoice->invoicing_period_end_date=$request->get('invoicing_period_end_date');
+        $insurance_invoice->period=$request->get('period');
+        $insurance_invoice->inc_code=$request->get('inc_code');
+        $insurance_invoice->project_id=$request->get('project_id');
+        $insurance_invoice->amount_to_be_paid=$request->get('amount_to_be_paid');
+        $insurance_invoice->currency_invoice=$request->get('currency');
+        $insurance_invoice->status=$request->get('status');
+        $insurance_invoice->description=$request->get('description');
+        $insurance_invoice->prepared_by=Auth::user()->name;
+        $insurance_invoice->stage=1;
+        $insurance_invoice->save();
 
-
-        DB::table('insurance_invoices')
-            ->where('invoice_number', $invoice_id)
-            ->update(['debtor_name' => $request->get('debtor_name')]);
-
-
-
-        DB::table('insurance_invoices')
-            ->where('invoice_number', $invoice_id)
-            ->update(['debtor_account_code' => $request->get('debtor_account_code')]);
-
-
-        DB::table('insurance_invoices')
-            ->where('invoice_number', $invoice_id)
-            ->update(['tin' => $request->get('tin')]);
-
-        DB::table('insurance_invoices')
-            ->where('invoice_number', $invoice_id)
-            ->update(['debtor_address' => $request->get('debtor_address')]);
-
-        DB::table('insurance_invoices')
-            ->where('invoice_number', $invoice_id)
-            ->update(['invoicing_period_start_date' => $request->get('invoicing_period_start_date')]);
-
-
-
-        DB::table('insurance_invoices')
-            ->where('invoice_number', $invoice_id)
-            ->update(['invoicing_period_end_date' => $request->get('invoicing_period_end_date')]);
-
-
-
-
-        DB::table('insurance_invoices')
-            ->where('invoice_number', $invoice_id)
-            ->update(['period' => $request->get('period')]);
-
-
-        DB::table('insurance_invoices')
-            ->where('invoice_number', $invoice_id)
-            ->update(['inc_code' => $request->get('inc_code')]);
-
-
-
-
-        DB::table('insurance_invoices')
-            ->where('invoice_number', $invoice_id)
-            ->update(['project_id' => $request->get('project_id')]);
-
-
-
-        DB::table('insurance_invoices')
-            ->where('invoice_number', $invoice_id)
-            ->update(['amount_to_be_paid' => $request->get('amount_to_be_paid')]);
-
-
-
-        DB::table('insurance_invoices')
-            ->where('invoice_number', $invoice_id)
-            ->update(['currency_invoice' => $request->get('currency')]);
-
-
-
-
-
-        DB::table('insurance_invoices')
-            ->where('invoice_number', $invoice_id)
-            ->update(['status' => $request->get('status')]);
-
-
-
-        DB::table('insurance_invoices')
-            ->where('invoice_number', $invoice_id)
-            ->update(['description' => $request->get('description')]);
-
-
-        DB::table('insurance_invoices')
-            ->where('invoice_number', $invoice_id)
-            ->update(['prepared_by' => Auth::user()->name]);
-
-
-        DB::table('insurance_invoices')
-            ->where('invoice_number', $invoice_id)
-            ->update(['stage' => 1]);
 
 
 
@@ -4609,90 +4221,24 @@ class InvoicesController extends Controller
     {
 
 
+        $insurance_invoices_client=insurance_invoices_client::where('invoice_number', $invoice_id)->first();
+        $insurance_invoices_client->debtor_name=$request->get('debtor_name');
+        $insurance_invoices_client->debtor_account_code=$request->get('debtor_account_code');
+        $insurance_invoices_client->tin=$request->get('tin');
+        $insurance_invoices_client->debtor_address=$request->get('debtor_address');
+        $insurance_invoices_client->invoicing_period_start_date=$request->get('invoicing_period_start_date');
+        $insurance_invoices_client->invoicing_period_end_date=$request->get('invoicing_period_end_date');
+        $insurance_invoices_client->period=$request->get('period');
+        $insurance_invoices_client->inc_code=$request->get('inc_code');
+        $insurance_invoices_client->project_id=$request->get('project_id');
+        $insurance_invoices_client->amount_to_be_paid=$request->get('amount_to_be_paid');
+        $insurance_invoices_client->currency_invoice=$request->get('currency');
+        $insurance_invoices_client->status=$request->get('status');
+        $insurance_invoices_client->description=$request->get('description');
+        $insurance_invoices_client->prepared_by=Auth::user()->name;
+        $insurance_invoices_client->stage=1;
+        $insurance_invoices_client->save();
 
-        DB::table('insurance_invoices_clients')
-            ->where('invoice_number', $invoice_id)
-            ->update(['debtor_name' => $request->get('debtor_name')]);
-
-
-
-        DB::table('insurance_invoices_clients')
-            ->where('invoice_number', $invoice_id)
-            ->update(['debtor_account_code' => $request->get('debtor_account_code')]);
-
-
-        DB::table('insurance_invoices_clients')
-            ->where('invoice_number', $invoice_id)
-            ->update(['tin' => $request->get('tin')]);
-
-        DB::table('insurance_invoices_clients')
-            ->where('invoice_number', $invoice_id)
-            ->update(['debtor_address' => $request->get('debtor_address')]);
-
-        DB::table('insurance_invoices_clients')
-            ->where('invoice_number', $invoice_id)
-            ->update(['invoicing_period_start_date' => $request->get('invoicing_period_start_date')]);
-
-
-
-        DB::table('insurance_invoices_clients')
-            ->where('invoice_number', $invoice_id)
-            ->update(['invoicing_period_end_date' => $request->get('invoicing_period_end_date')]);
-
-
-
-
-        DB::table('insurance_invoices_clients')
-            ->where('invoice_number', $invoice_id)
-            ->update(['period' => $request->get('period')]);
-
-
-        DB::table('insurance_invoices_clients')
-            ->where('invoice_number', $invoice_id)
-            ->update(['inc_code' => $request->get('inc_code')]);
-
-
-
-
-        DB::table('insurance_invoices_clients')
-            ->where('invoice_number', $invoice_id)
-            ->update(['project_id' => $request->get('project_id')]);
-
-
-
-        DB::table('insurance_invoices_clients')
-            ->where('invoice_number', $invoice_id)
-            ->update(['amount_to_be_paid' => $request->get('amount_to_be_paid')]);
-
-
-
-        DB::table('insurance_invoices_clients')
-            ->where('invoice_number', $invoice_id)
-            ->update(['currency_invoice' => $request->get('currency')]);
-
-
-
-
-
-        DB::table('insurance_invoices_clients')
-            ->where('invoice_number', $invoice_id)
-            ->update(['status' => $request->get('status')]);
-
-
-
-        DB::table('insurance_invoices_clients')
-            ->where('invoice_number', $invoice_id)
-            ->update(['description' => $request->get('description')]);
-
-
-        DB::table('insurance_invoices_clients')
-            ->where('invoice_number', $invoice_id)
-            ->update(['prepared_by' => Auth::user()->name]);
-
-
-        DB::table('insurance_invoices_clients')
-            ->where('invoice_number', $invoice_id)
-            ->update(['stage' => 1]);
 
 
 
@@ -4707,125 +4253,38 @@ class InvoicesController extends Controller
     {
 
 
-
-        DB::table('water_bill_invoices')
-            ->where('invoice_number', $invoice_id)
-            ->update(['debtor_name' => $request->get('debtor_name')]);
-
-
-
-        DB::table('water_bill_invoices')
-            ->where('invoice_number', $invoice_id)
-            ->update(['debtor_account_code' => $request->get('debtor_account_code')]);
-
-
-        DB::table('water_bill_invoices')
-            ->where('invoice_number', $invoice_id)
-            ->update(['tin' => $request->get('tin')]);
-
-        DB::table('water_bill_invoices')
-            ->where('invoice_number', $invoice_id)
-            ->update(['debtor_address' => $request->get('debtor_address')]);
-
-        DB::table('water_bill_invoices')
-            ->where('invoice_number', $invoice_id)
-            ->update(['invoicing_period_start_date' => $request->get('invoicing_period_start_date')]);
-
+        $water_bill_invoice=water_bill_invoice::where('invoice_number', $invoice_id)->first();
+        $water_bill_invoice->debtor_name=$request->get('debtor_name');
+        $water_bill_invoice->debtor_account_code=$request->get('debtor_account_code');
+        $water_bill_invoice->tin=$request->get('tin');
+        $water_bill_invoice->debtor_address=$request->get('debtor_address');
+        $water_bill_invoice->invoicing_period_start_date=$request->get('invoicing_period_start_date');
+        $water_bill_invoice->invoicing_period_end_date=$request->get('invoicing_period_end_date');
+        $water_bill_invoice->period=$request->get('period');
+        $water_bill_invoice->project_id=$request->get('project_id');
+        $water_bill_invoice->cumulative_amount=$request->get('amount_to_be_paid');
+        $water_bill_invoice->begin_units=$request->get('begin_units');
+        $water_bill_invoice->end_units=$request->get('end_units');
+        $water_bill_invoice->consumed_units=$request->get('units_usage');
+        $water_bill_invoice->debt=$request->get('debt');
+        $water_bill_invoice->current_amount=$request->get('current_amount');
+        $water_bill_invoice->currency_invoice=$request->get('currency');
+        $water_bill_invoice->status=$request->get('status');
+        $water_bill_invoice->description=$request->get('description');
+        $water_bill_invoice->prepared_by=Auth::user()->name;
+        $water_bill_invoice->stage=1;
+        $water_bill_invoice->updated_at=Carbon::now()->toDateTimeString();
+        $water_bill_invoice->save();
 
 
-        DB::table('water_bill_invoices')
-            ->where('invoice_number', $invoice_id)
-            ->update(['invoicing_period_end_date' => $request->get('invoicing_period_end_date')]);
-
-
-
-
-        DB::table('water_bill_invoices')
-            ->where('invoice_number', $invoice_id)
-            ->update(['period' => $request->get('period')]);
 
 //        DB::table('water_bill_invoices')
 //            ->where('invoice_number', $invoice_id)
 //            ->update(['inc_code' => $request->get('inc_code')]);
 
 
-        DB::table('water_bill_invoices')
-            ->where('invoice_number', $invoice_id)
-            ->update(['project_id' => $request->get('project_id')]);
 
 
-
-        DB::table('water_bill_invoices')
-            ->where('invoice_number', $invoice_id)
-            ->update(['cumulative_amount' => $request->get('amount_to_be_paid')]);
-
-
-
-
-
-
-        DB::table('water_bill_invoices')
-            ->where('invoice_number', $invoice_id)
-            ->update(['begin_units' => $request->get('begin_units')]);
-
-
-
-        DB::table('water_bill_invoices')
-            ->where('invoice_number', $invoice_id)
-            ->update(['end_units' => $request->get('end_units')]);
-
-        DB::table('water_bill_invoices')
-            ->where('invoice_number', $invoice_id)
-            ->update(['consumed_units' => $request->get('units_usage')]);
-
-
-
-        DB::table('water_bill_invoices')
-            ->where('invoice_number', $invoice_id)
-            ->update(['debt' => $request->get('debt')]);
-
-        DB::table('water_bill_invoices')
-            ->where('invoice_number', $invoice_id)
-            ->update(['current_amount' => $request->get('current_amount')]);
-
-
-
-
-
-        DB::table('water_bill_invoices')
-            ->where('invoice_number', $invoice_id)
-            ->update(['currency_invoice' => $request->get('currency')]);
-
-
-
-
-
-        DB::table('water_bill_invoices')
-            ->where('invoice_number', $invoice_id)
-            ->update(['status' => $request->get('status')]);
-
-
-
-        DB::table('water_bill_invoices')
-            ->where('invoice_number', $invoice_id)
-            ->update(['description' => $request->get('description')]);
-
-
-        DB::table('water_bill_invoices')
-            ->where('invoice_number', $invoice_id)
-            ->update(['prepared_by' => Auth::user()->name]);
-
-
-
-        DB::table('water_bill_invoices')
-            ->where('invoice_number', $invoice_id)
-            ->update(['stage' => 1]);
-
-
-
-        DB::table('water_bill_invoices')
-            ->where('invoice_number', $invoice_id)
-            ->update(['updated_at' => Carbon::now()->toDateTimeString()]);
 
 
 
@@ -4838,123 +4297,34 @@ class InvoicesController extends Controller
     public function fowardElectricityInvoice(Request $request,$invoice_id)
     {
 
-
-
-        DB::table('electricity_bill_invoices')
-            ->where('invoice_number', $invoice_id)
-            ->update(['debtor_name' => $request->get('debtor_name')]);
-
-
-
-        DB::table('electricity_bill_invoices')
-            ->where('invoice_number', $invoice_id)
-            ->update(['debtor_account_code' => $request->get('debtor_account_code')]);
-
-
-        DB::table('electricity_bill_invoices')
-            ->where('invoice_number', $invoice_id)
-            ->update(['tin' => $request->get('tin')]);
-
-        DB::table('electricity_bill_invoices')
-            ->where('invoice_number', $invoice_id)
-            ->update(['debtor_address' => $request->get('debtor_address')]);
-
-        DB::table('electricity_bill_invoices')
-            ->where('invoice_number', $invoice_id)
-            ->update(['invoicing_period_start_date' => $request->get('invoicing_period_start_date')]);
-
-
-
-        DB::table('electricity_bill_invoices')
-            ->where('invoice_number', $invoice_id)
-            ->update(['invoicing_period_end_date' => $request->get('invoicing_period_end_date')]);
-
-
-
-
-        DB::table('electricity_bill_invoices')
-            ->where('invoice_number', $invoice_id)
-            ->update(['period' => $request->get('period')]);
-
+        $electricity_bill_invoice=electricity_bill_invoice::where('invoice_number', $invoice_id)->first();
+        $electricity_bill_invoice->debtor_name=$request->get('debtor_name');
+        $electricity_bill_invoice->debtor_account_code=$request->get('debtor_account_code');
+        $electricity_bill_invoice->tin=$request->get('tin');
+        $electricity_bill_invoice->debtor_address=$request->get('debtor_address');
+        $electricity_bill_invoice->invoicing_period_start_date=$request->get('invoicing_period_start_date');
+        $electricity_bill_invoice->invoicing_period_end_date=$request->get('invoicing_period_end_date');
+        $electricity_bill_invoice->period=$request->get('period');
+        $electricity_bill_invoice->project_id=$request->get('project_id');
+        $electricity_bill_invoice->cumulative_amount=$request->get('amount_to_be_paid');
+        $electricity_bill_invoice->begin_units=$request->get('begin_units');
+        $electricity_bill_invoice->end_units=$request->get('end_units');
+        $electricity_bill_invoice->consumed_units=$request->get('units_usage');
+        $electricity_bill_invoice->debt=$request->get('debt');
+        $electricity_bill_invoice->current_amount=$request->get('current_amount');
+        $electricity_bill_invoice->currency_invoice=$request->get('currency');
+        $electricity_bill_invoice->status=$request->get('status');
+        $electricity_bill_invoice->description=$request->get('description');
+        $electricity_bill_invoice->prepared_by=Auth::user()->name;
+        $electricity_bill_invoice->stage=1;
+        $electricity_bill_invoice->updated_at=Carbon::now()->toDateTimeString();
+        $electricity_bill_invoice->save();
 
 //        DB::table('electricity_bill_invoices')
 //            ->where('invoice_number', $invoice_id)
 //            ->update(['inc_code' => $request->get('inc_code')]);
 
 
-        DB::table('electricity_bill_invoices')
-            ->where('invoice_number', $invoice_id)
-            ->update(['project_id' => $request->get('project_id')]);
-
-
-
-        DB::table('electricity_bill_invoices')
-            ->where('invoice_number', $invoice_id)
-            ->update(['cumulative_amount' => $request->get('amount_to_be_paid')]);
-
-
-
-
-        DB::table('electricity_bill_invoices')
-            ->where('invoice_number', $invoice_id)
-            ->update(['begin_units' => $request->get('begin_units')]);
-
-
-
-        DB::table('electricity_bill_invoices')
-            ->where('invoice_number', $invoice_id)
-            ->update(['end_units' => $request->get('end_units')]);
-
-        DB::table('electricity_bill_invoices')
-            ->where('invoice_number', $invoice_id)
-            ->update(['consumed_units' => $request->get('units_usage')]);
-
-
-
-        DB::table('electricity_bill_invoices')
-            ->where('invoice_number', $invoice_id)
-            ->update(['debt' => $request->get('debt')]);
-
-        DB::table('electricity_bill_invoices')
-            ->where('invoice_number', $invoice_id)
-            ->update(['current_amount' => $request->get('current_amount')]);
-
-
-
-        DB::table('electricity_bill_invoices')
-            ->where('invoice_number', $invoice_id)
-            ->update(['currency_invoice' => $request->get('currency')]);
-
-
-
-
-
-        DB::table('electricity_bill_invoices')
-            ->where('invoice_number', $invoice_id)
-            ->update(['status' => $request->get('status')]);
-
-
-
-        DB::table('electricity_bill_invoices')
-            ->where('invoice_number', $invoice_id)
-            ->update(['description' => $request->get('description')]);
-
-
-        DB::table('electricity_bill_invoices')
-            ->where('invoice_number', $invoice_id)
-            ->update(['prepared_by' => Auth::user()->name]);
-
-
-
-        DB::table('electricity_bill_invoices')
-            ->where('invoice_number', $invoice_id)
-            ->update(['stage' => 1]);
-
-
-
-        DB::table('electricity_bill_invoices')
-            ->where('invoice_number', $invoice_id)
-            ->update(['updated_at' => Carbon::now()->toDateTimeString()]);
 
 
 
@@ -5004,9 +4374,43 @@ class InvoicesController extends Controller
 
         if(count($invoice_to_be_created)==0){
 
-            DB::table('electricity_bill_invoices')->insert(
-                ['invoice_number_votebook'=>$request->get('invoice_number'),'contract_id' => $request->get('contract_id','N/A'), 'invoicing_period_start_date' => $request->get('invoicing_period_start_date'),'invoicing_period_end_date' => $request->get('invoicing_period_end_date'),'period' => $period,'project_id' => $request->get('project_id','N/A'),'debtor_account_code' => $request->get('debtor_account_code','N/A'),'debtor_name' => $request->get('debtor_name'),'debtor_address' => $request->get('debtor_address'),'current_amount' => $request->get('current_amount'),'cumulative_amount' => $request->get('cumulative_amount'),'debt' => $request->get('debt'),'currency_invoice'=>$request->get('currency'),'gepg_control_no'=>'','tin'=>$request->get('tin','N/A'),'vrn'=>$request->get('vrn','N/A'),'max_no_of_days_to_pay'=>$max_no_of_days_to_pay,'status'=>$request->get('status','N/A'),'amount_in_words'=>$amount_in_words,'inc_code'=>$request->get('inc_code'),'invoice_category'=>'Electricity','invoice_date'=>$today,'financial_year'=>$financial_year,'payment_status'=>'Not paid','description'=>$request->get('description','N/A'),'prepared_by'=>Auth::user()->name,'approved_by'=>'N/A','stage'=>1,'begin_units'=>$request->get('begin_units'),'end_units'=>$request->get('end_units'),'consumed_units'=>$request->get('units_usage'),'unit_price'=>$request->get('unit_price')]
-            );
+
+            $electricity_bill_invoice= new electricity_bill_invoice();
+            $electricity_bill_invoice->invoice_number_votebook=$request->get('invoice_number');
+            $electricity_bill_invoice->contract_id=$request->get('contract_id','N/A');
+            $electricity_bill_invoice->invoicing_period_start_date=$request->get('invoicing_period_start_date');
+            $electricity_bill_invoice->invoicing_period_end_date=$request->get('invoicing_period_end_date');
+            $electricity_bill_invoice->period=$period;
+            $electricity_bill_invoice->project_id=$request->get('project_id','N/A');
+            $electricity_bill_invoice->debtor_account_code=$request->get('debtor_account_code','N/A');
+            $electricity_bill_invoice->debtor_name=$request->get('debtor_name');
+            $electricity_bill_invoice->debtor_address=$request->get('debtor_address');
+            $electricity_bill_invoice->current_amount=$request->get('current_amount');
+            $electricity_bill_invoice->cumulative_amount=$request->get('cumulative_amount');
+            $electricity_bill_invoice->debt=$request->get('debt');
+            $electricity_bill_invoice->currency_invoice=$request->get('currency');
+            $electricity_bill_invoice->gepg_control_no='';
+            $electricity_bill_invoice->tin=$request->get('tin','N/A');
+            $electricity_bill_invoice->vrn=$request->get('vrn','N/A');
+            $electricity_bill_invoice->max_no_of_days_to_pay=$max_no_of_days_to_pay;
+            $electricity_bill_invoice->status=$request->get('status','N/A');
+            $electricity_bill_invoice->amount_in_words=$amount_in_words;
+            $electricity_bill_invoice->inc_code=$request->get('inc_code');
+            $electricity_bill_invoice->invoice_category='Electricity';
+            $electricity_bill_invoice->invoice_date=$today;
+            $electricity_bill_invoice->financial_year=$financial_year;
+            $electricity_bill_invoice->payment_status='Not paid';
+            $electricity_bill_invoice->description=$request->get('description','N/A');
+            $electricity_bill_invoice->prepared_by=Auth::user()->name;
+            $electricity_bill_invoice->approved_by='N/A';
+            $electricity_bill_invoice->stage=1;
+            $electricity_bill_invoice->begin_units=$request->get('begin_units');
+            $electricity_bill_invoice->end_units=$request->get('end_units');
+            $electricity_bill_invoice->consumed_units=$request->get('units_usage');
+            $electricity_bill_invoice->unit_price=$request->get('unit_price');
+            $electricity_bill_invoice->save();
+
+
 
             $invoice_number_created=DB::table('electricity_bill_invoices')->orderBy('invoice_number','desc')->limit(1)->value('invoice_number');
 
@@ -5014,10 +4418,16 @@ class InvoicesController extends Controller
                 ['invoice_id' => $invoice_number_created, 'invoice_category' => 'electricity bill']
             );
 
-            DB::table('electricity_bill_payments')->insert(
-                ['invoice_number' => $invoice_number_created, 'invoice_number_votebook' => $request->get('invoice_number'),'amount_paid' => 0,'amount_not_paid' =>$request->get('cumulative_amount'),'currency_payments' => $request->get('currency'),'receipt_number' => '']
-            );
 
+
+            $electricity_bill_payment= new electricity_bill_payment();
+            $electricity_bill_payment->invoice_number=$invoice_number_created;
+            $electricity_bill_payment->invoice_number_votebook=$request->get('invoice_number');
+            $electricity_bill_payment->amount_paid=0;
+            $electricity_bill_payment->amount_not_paid=$request->get('cumulative_amount');
+            $electricity_bill_payment->currency_payments=$request->get('currency');
+            $electricity_bill_payment->receipt_number='';
+            $electricity_bill_payment->save();
 
 
         }else{
@@ -5043,23 +4453,13 @@ class InvoicesController extends Controller
 
         if($request->get('approval_status_electricity')=='Rejected'){
 
-            DB::table('electricity_bill_invoices')
-                ->where('invoice_number', $id)
-                ->update(['stage' => 0]);
+            $electricity_bill_invoice=electricity_bill_invoice::where('invoice_number', $id)->first();
+            $electricity_bill_invoice->stage=0;
+            $electricity_bill_invoice->rejected=1;
+            $electricity_bill_invoice->reason=$request->get('reason');
+            $electricity_bill_invoice->updated_at=Carbon::now()->toDateTimeString();
+            $electricity_bill_invoice->save();
 
-            DB::table('electricity_bill_invoices')
-                ->where('invoice_number', $id)
-                ->update(['rejected' => 1]);
-
-
-            DB::table('electricity_bill_invoices')
-                ->where('invoice_number', $id)
-                ->update(['reason' => $request->get('reason')]);
-
-
-            DB::table('electricity_bill_invoices')
-                ->where('invoice_number', $id)
-                ->update(['updated_at' => Carbon::now()->toDateTimeString()]);
 
 
 
@@ -5069,22 +4469,18 @@ class InvoicesController extends Controller
 
         }else{
 
+            $electricity_bill_invoice=electricity_bill_invoice::where('invoice_number', $id)->first();
+            $electricity_bill_invoice->rejected=0;
+            $electricity_bill_invoice->invoice_number_votebook=$request->get('invoice_number_votebook');
+            $electricity_bill_invoice->save();
+
+
+            $electricity_bill_payment=electricity_bill_payment::where('invoice_number', $id)->first();
+            $electricity_bill_payment->invoice_number_votebook=$request->get('invoice_number_votebook');
+            $electricity_bill_payment->save();
 
 
 
-            DB::table('electricity_bill_invoices')
-                ->where('invoice_number', $id)
-                ->update(['rejected' => 0]);
-
-
-
-            DB::table('electricity_bill_payments')
-                ->where('invoice_number', $id)
-                ->update(['invoice_number_votebook' => $request->get('invoice_number_votebook')]);
-
-            DB::table('electricity_bill_invoices')
-                ->where('invoice_number', $id)
-                ->update(['invoice_number_votebook' => $request->get('invoice_number_votebook')]);
 
 
             $invoice_data=DB::table('electricity_bill_invoices')->where('invoice_number', $id)->get();
@@ -5125,18 +4521,14 @@ class InvoicesController extends Controller
                 Notification::route('mail',$email_address)
                     ->notify(new SendInvoice($var->debtor_name,$request->get('invoice_number_votebook'),$var->project_id,$var->debtor_account_code,$var->debtor_name,$var->debtor_address,$var->cumulative_amount,$var->currency_invoice,$request->get('gepg_control_no'),$var->tin,$max_no_of_days_to_pay,$var->status,$var->vrn,$amount_in_words,$var->inc_code,$today,$financial_year,$var->period,$var->description,$var->prepared_by,Auth::user()->name,date("d/m/Y",strtotime($var->invoicing_period_start_date)) ,date("d/m/Y",strtotime($var->invoicing_period_end_date))));
 
-                DB::table('electricity_bill_invoices')
-                    ->where('invoice_number', $id)
-                    ->update(['invoice_date' => $today]);
+
+                $electricity_bill_invoice=electricity_bill_invoice::where('invoice_number', $id)->first();
+                $electricity_bill_invoice->invoice_date=$today;
+                $electricity_bill_invoice->email_sent_status='SENT';
+                $electricity_bill_invoice->gepg_control_no=$request->get('gepg_control_no');
+                $electricity_bill_invoice->save();
 
 
-                DB::table('electricity_bill_invoices')
-                    ->where('invoice_number', $id)
-                    ->update(['email_sent_status' => 'SENT']);
-
-                DB::table('electricity_bill_invoices')
-                    ->where('invoice_number', $id)
-                    ->update(['gepg_control_no' => $request->get('gepg_control_no')]);
 
 //            DB::table('electricity_bill_invoices')
 //                ->where('invoice_number', $id)
@@ -5166,15 +4558,10 @@ class InvoicesController extends Controller
 
 
 
-
-            DB::table('electricity_bill_invoices')
-                ->where('invoice_number', $id)
-                ->update(['stage' => 3]);
-
-
-            DB::table('electricity_bill_invoices')
-                ->where('invoice_number', $id)
-                ->update(['updated_at' => Carbon::now()->toDateTimeString()]);
+            $electricity_bill_invoice=electricity_bill_invoice::where('invoice_number', $id)->first();
+            $electricity_bill_invoice->stage=3;
+            $electricity_bill_invoice->updated_at=Carbon::now()->toDateTimeString();
+            $electricity_bill_invoice->save();
 
 
 
@@ -5217,42 +4604,29 @@ class InvoicesController extends Controller
         }
 
 
-        DB::table('electricity_bill_invoices')
-            ->where('invoice_number', $id)
-            ->update(['payment_status' => $payment_status]);
 
-        DB::table('electricity_bill_invoices')
-            ->where('invoice_number', $id)
-            ->update(['user_comments' => $request->get('user_comments')]);
+        $electricity_bill_invoice=electricity_bill_invoice::where('invoice_number', $id)->first();
+        $electricity_bill_invoice->payment_status=$payment_status;
+        $electricity_bill_invoice->user_comments=$request->get('user_comments');
+        $electricity_bill_invoice->save();
+
+
+
 
 
 //        DB::table('electricity_bill_payments')->insert(
 //            ['invoice_number' => $request->get('invoice_number'), 'invoice_number_votebook' => $request->get('invoice_number_votebook'),'amount_paid' => $request->get('amount_paid'),'amount_not_paid' =>$amount_not_paid,'currency_payments' => $request->get('currency_payments'),'receipt_number' => $request->get('receipt_number'),'date_of_payment' => $request->get('date_of_payment')]
 //        );
 
-        DB::table('electricity_bill_payments')
-            ->where('invoice_number', $request->get('invoice_number'))
-            ->update(['invoice_number_votebook' => $request->get('invoice_number_votebook')]);
+        $electricity_bill_payment=electricity_bill_payment::where('invoice_number', $request->get('invoice_number'))->first();
+        $electricity_bill_payment->invoice_number_votebook=$request->get('invoice_number_votebook');
+        $electricity_bill_payment->amount_paid=$request->get('amount_paid');
+        $electricity_bill_payment->amount_not_paid=$amount_not_paid;
+        $electricity_bill_payment->currency_payments=$request->get('currency_payments');
+        $electricity_bill_payment->receipt_number=$request->get('receipt_number');
+        $electricity_bill_payment->date_of_payment=$request->get('date_of_payment');
+        $electricity_bill_payment->save();
 
-        DB::table('electricity_bill_payments')
-            ->where('invoice_number', $request->get('invoice_number'))
-            ->update(['amount_paid' => $request->get('amount_paid')]);
-
-        DB::table('electricity_bill_payments')
-            ->where('invoice_number', $request->get('invoice_number'))
-            ->update(['amount_not_paid' => $amount_not_paid]);
-
-        DB::table('electricity_bill_payments')
-            ->where('invoice_number', $request->get('invoice_number'))
-            ->update(['currency_payments' => $request->get('currency_payments')]);
-
-        DB::table('electricity_bill_payments')
-            ->where('invoice_number', $request->get('invoice_number'))
-            ->update(['receipt_number' => $request->get('receipt_number')]);
-
-        DB::table('electricity_bill_payments')
-            ->where('invoice_number', $request->get('invoice_number'))
-            ->update(['date_of_payment' => $request->get('date_of_payment')]);
 
 
 
@@ -5269,18 +4643,19 @@ class InvoicesController extends Controller
     public function sendInvoiceCarRentalAccount(Request $request,$id)
     {
 
-        DB::table('car_rental_payments')
-            ->where('invoice_number', $id)
-            ->update(['invoice_number_votebook' => $request->get('invoice_number_votebook')]);
 
-        DB::table('car_rental_invoices')
-            ->where('invoice_number', $id)
-            ->update(['invoice_number_votebook' => $request->get('invoice_number_votebook')]);
+        $car_rental_payment= car_rental_payment::where('invoice_number', $id)->first();
+        $car_rental_payment->invoice_number_votebook=$request->get('invoice_number_votebook');
+        $car_rental_payment->save();
 
 
-        DB::table('car_rental_invoices')
-            ->where('invoice_number', $id)
-            ->update(['inc_code' => $request->get('inc_code')]);
+        $car_rental_invoice=car_rental_invoice::where('invoice_number', $id)->first();
+        $car_rental_invoice->invoice_number_votebook=$request->get('invoice_number_votebook');
+        $car_rental_invoice->inc_code=$request->get('inc_code');
+        $car_rental_invoice->save();
+
+
+
 
 
 
@@ -5324,18 +4699,13 @@ class InvoicesController extends Controller
             Notification::route('mail',$email_address)
                 ->notify(new SendInvoiceCar($var->debtor_name,$request->get('invoice_number_votebook'),$var->project_id,$var->debtor_account_code,$var->debtor_name,$var->debtor_address,$var->amount_to_be_paid,$var->currency_invoice,$request->get('account_no'),$var->tin,$max_no_of_days_to_pay,$var->status,$var->vrn,$amount_in_words,$var->inc_code,$today,$financial_year,$var->period,$var->description,$var->prepared_by,Auth::user()->name,date("d/m/Y",strtotime($var->invoicing_period_start_date)) ,date("d/m/Y",strtotime($var->invoicing_period_end_date))));
 
-            DB::table('car_rental_invoices')
-                ->where('invoice_number', $id)
-                ->update(['email_sent_status' => 'SENT']);
 
-            DB::table('car_rental_invoices')
-                ->where('invoice_number', $id)
-                ->update(['invoice_date' => $today]);
+            $car_rental_invoice=car_rental_invoice::where('invoice_number', $id)->first();
+            $car_rental_invoice->email_sent_status='SENT';
+            $car_rental_invoice->invoice_date=$today;
+            $car_rental_invoice->account_no=$request->get('account_no');
+            $car_rental_invoice->save();
 
-
-            DB::table('car_rental_invoices')
-                ->where('invoice_number', $id)
-                ->update(['account_no' => $request->get('account_no')]);
 
 
 //        DB::table('car_rental_payments')->insert(
@@ -5349,9 +4719,12 @@ class InvoicesController extends Controller
         }
 
 
-        DB::table('car_rental_invoices')
-            ->where('invoice_number', $id)
-            ->update(['stage' => 2]);
+
+        $car_rental_invoice=car_rental_invoice::where('invoice_number', $id)->first();
+        $car_rental_invoice->stage=2;
+        $car_rental_invoice->save();
+
+
 
 
 
@@ -5367,15 +4740,11 @@ class InvoicesController extends Controller
     public function addAccountNumberCar(Request $request,$id){
 
 
-        DB::table('car_rental_invoices')
-            ->where('invoice_number', $id)
-            ->update(['invoice_number_votebook' => $request->get('invoice_number_votebook')]);
 
-
-
-        DB::table('car_rental_invoices')
-            ->where('invoice_number',$id)
-            ->update(['account_no' =>$request->get('account_no')]);
+        $car_rental_invoice=car_rental_invoice::where('invoice_number', $id)->first();
+        $car_rental_invoice->invoice_number_votebook=$request->get('invoice_number_votebook');
+        $car_rental_invoice->account_no=$request->get('account_no');
+        $car_rental_invoice->save();
 
 
         return redirect('/invoice_management')
@@ -5386,15 +4755,10 @@ class InvoicesController extends Controller
     public function addAccountNumberResearch(Request $request,$id){
 
 
-        DB::table('research_flats_invoices')
-            ->where('invoice_number', $id)
-            ->update(['invoice_number_votebook' => $request->get('invoice_number_votebook')]);
-
-
-
-        DB::table('research_flats_invoices')
-            ->where('invoice_number',$id)
-            ->update(['account_no' =>$request->get('account_no')]);
+        $research_flats_invoice= research_flats_invoice::where('invoice_number', $id)->first();
+        $research_flats_invoice->invoice_number_votebook=$request->get('invoice_number_votebook');
+        $research_flats_invoice->account_no=$request->get('account_no');
+        $research_flats_invoice->save();
 
 
         return redirect('/invoice_management')
@@ -5767,9 +5131,42 @@ class InvoicesController extends Controller
 
         if(count($invoice_to_be_created)==0){
 
-            DB::table('water_bill_invoices')->insert(
-                ['invoice_number_votebook'=>$request->get('invoice_number'),'contract_id' => $request->get('contract_id','N/A'), 'invoicing_period_start_date' => $request->get('invoicing_period_start_date'),'invoicing_period_end_date' => $request->get('invoicing_period_end_date'),'period' => $period,'project_id' => $request->get('project_id','N/A'),'debtor_account_code' => $request->get('debtor_account_code','N/A'),'debtor_name' => $request->get('debtor_name'),'debtor_address' => $request->get('debtor_address'),'current_amount' => $request->get('current_amount'),'cumulative_amount' => $request->get('cumulative_amount'),'debt' => $request->get('debt'),'currency_invoice'=>$request->get('currency'),'gepg_control_no'=>'','tin'=>$request->get('tin','N/A'),'vrn'=>$request->get('vrn','N/A'),'max_no_of_days_to_pay'=>$max_no_of_days_to_pay,'status'=>$request->get('status','N/A'),'amount_in_words'=>$amount_in_words,'inc_code'=>$request->get('inc_code'),'invoice_category'=>'Water','invoice_date'=>$today,'financial_year'=>$financial_year,'payment_status'=>'Not paid','description'=>$request->get('description','N/A'),'prepared_by'=>Auth::user()->name,'approved_by'=>'N/A','stage'=>1,'begin_units'=>$request->get('begin_units'),'end_units'=>$request->get('end_units'),'consumed_units'=>$request->get('units_usage'),'unit_price'=>$request->get('unit_price')]
-            );
+
+            $water_bill_invoice= new water_bill_invoice();
+            $water_bill_invoice->invoice_number_votebook=$request->get('invoice_number');
+            $water_bill_invoice->contract_id=$request->get('contract_id','N/A');
+            $water_bill_invoice->invoicing_period_start_date=$request->get('invoicing_period_start_date');
+            $water_bill_invoice->invoicing_period_end_date=$request->get('invoicing_period_end_date');
+            $water_bill_invoice->period=$period;
+            $water_bill_invoice->project_id=$request->get('project_id','N/A');
+            $water_bill_invoice->debtor_account_code=$request->get('debtor_account_code','N/A');
+            $water_bill_invoice->debtor_name=$request->get('debtor_name');
+            $water_bill_invoice->debtor_address=$request->get('debtor_address');
+            $water_bill_invoice->current_amount=$request->get('current_amount');
+            $water_bill_invoice->cumulative_amount=$request->get('cumulative_amount');
+            $water_bill_invoice->debt=$request->get('debt');
+            $water_bill_invoice->currency_invoice=$request->get('currency');
+            $water_bill_invoice->gepg_control_no='';
+            $water_bill_invoice->tin=$request->get('tin','N/A');
+            $water_bill_invoice->vrn=$request->get('vrn','N/A');
+            $water_bill_invoice->max_no_of_days_to_pay=$max_no_of_days_to_pay;
+            $water_bill_invoice->status=$request->get('status','N/A');
+            $water_bill_invoice->amount_in_words=$amount_in_words;
+            $water_bill_invoice->inc_code=$request->get('inc_code');
+            $water_bill_invoice->invoice_category='Water';
+            $water_bill_invoice->invoice_date=$today;
+            $water_bill_invoice->financial_year=$financial_year;
+            $water_bill_invoice->payment_status='Not paid';
+            $water_bill_invoice->description=$request->get('description','N/A');
+            $water_bill_invoice->prepared_by=Auth::user()->name;
+            $water_bill_invoice->approved_by='N/A';
+            $water_bill_invoice->stage=1;
+            $water_bill_invoice->begin_units=$request->get('begin_units');
+            $water_bill_invoice->end_units=$request->get('end_units');
+            $water_bill_invoice->consumed_units=$request->get('units_usage');
+            $water_bill_invoice->unit_price=$request->get('unit_price');
+            $water_bill_invoice->save();
+
 
             $invoice_number_created=DB::table('water_bill_invoices')->orderBy('invoice_number','desc')->limit(1)->value('invoice_number');
 
@@ -5777,9 +5174,17 @@ class InvoicesController extends Controller
                 ['invoice_id' => $invoice_number_created, 'invoice_category' => 'water bill']
             );
 
-            DB::table('water_bill_payments')->insert(
-                ['invoice_number' => $invoice_number_created, 'invoice_number_votebook' => $request->get('invoice_number'),'amount_paid' => 0,'amount_not_paid' =>$request->get('cumulative_amount'),'currency_payments' => $request->get('currency'),'receipt_number' => '']
-            );
+
+            $water_bill_payment=new water_bill_payment();
+            $water_bill_payment->invoice_number=$invoice_number_created;
+            $water_bill_payment->invoice_number_votebook=$request->get('invoice_number');
+            $water_bill_payment->amount_paid=0;
+            $water_bill_payment->amount_not_paid=$request->get('cumulative_amount');
+            $water_bill_payment->currency_payments=$request->get('currency');
+            $water_bill_payment->receipt_number='';
+            $water_bill_payment->save();
+
+
 
 
 
@@ -5808,24 +5213,13 @@ class InvoicesController extends Controller
 
         if($request->get('approval_status_water')=='Rejected'){
 
-            DB::table('water_bill_invoices')
-                ->where('invoice_number', $id)
-                ->update(['stage' => 0]);
 
-            DB::table('water_bill_invoices')
-                ->where('invoice_number', $id)
-                ->update(['rejected' => 1]);
-
-
-            DB::table('water_bill_invoices')
-                ->where('invoice_number', $id)
-                ->update(['reason' => $request->get('reason')]);
-
-
-            DB::table('water_bill_invoices')
-                ->where('invoice_number', $id)
-                ->update(['updated_at' => Carbon::now()->toDateTimeString()]);
-
+            $water_bill_invoice= water_bill_invoice::where('invoice_number', $id)->first();
+            $water_bill_invoice->stage=0;
+            $water_bill_invoice->rejected=1;
+            $water_bill_invoice->reason=$request->get('reason');
+            $water_bill_invoice->updated_at=Carbon::now()->toDateTimeString();
+            $water_bill_invoice->save();
 
 
 
@@ -5835,20 +5229,15 @@ class InvoicesController extends Controller
         }else{
 
 
-            DB::table('water_bill_invoices')
-                ->where('invoice_number', $id)
-                ->update(['rejected' => 0]);
 
+            $water_bill_invoice= water_bill_invoice::where('invoice_number', $id)->first();
+            $water_bill_invoice->rejected=0;
+            $water_bill_invoice->invoice_number_votebook=$request->get('invoice_number_votebook');
+            $water_bill_invoice->save();
 
-
-
-            DB::table('water_bill_payments')
-                ->where('invoice_number', $id)
-                ->update(['invoice_number_votebook' => $request->get('invoice_number_votebook')]);
-
-            DB::table('water_bill_invoices')
-                ->where('invoice_number', $id)
-                ->update(['invoice_number_votebook' => $request->get('invoice_number_votebook')]);
+            $water_bill_payment=water_bill_payment::where('invoice_number', $id)->first();
+            $water_bill_payment->invoice_number_votebook=$request->get('invoice_number_votebook');
+            $water_bill_payment->save();
 
 
 
@@ -5890,18 +5279,17 @@ class InvoicesController extends Controller
                 Notification::route('mail',$email_address)
                     ->notify(new SendInvoice($var->debtor_name,$request->get('invoice_number_votebook'),$var->project_id,$var->debtor_account_code,$var->debtor_name,$var->debtor_address,($var->cumulative_amount),$var->currency_invoice,$request->get('gepg_control_no'),$var->tin,$max_no_of_days_to_pay,$var->status,$var->vrn,$amount_in_words,$var->inc_code,$today,$financial_year,$var->period,$var->description,$var->prepared_by,Auth::user()->name,date("d/m/Y",strtotime($var->invoicing_period_start_date)) ,date("d/m/Y",strtotime($var->invoicing_period_end_date))));
 
-                DB::table('water_bill_invoices')
-                    ->where('invoice_number', $id)
-                    ->update(['invoice_date' => $today]);
+
+                $water_bill_invoice= water_bill_invoice::where('invoice_number', $id)->first();
+                $water_bill_invoice->invoice_date=$today;
+                $water_bill_invoice->email_sent_status='SENT';
+                $water_bill_invoice->gepg_control_no=$request->get('gepg_control_no');
+                $water_bill_invoice->save();
 
 
-                DB::table('water_bill_invoices')
-                    ->where('invoice_number', $id)
-                    ->update(['email_sent_status' => 'SENT']);
 
-                DB::table('water_bill_invoices')
-                    ->where('invoice_number', $id)
-                    ->update(['gepg_control_no' => $request->get('gepg_control_no')]);
+
+
 
 //            DB::table('water_bill_invoices')
 //                ->where('invoice_number', $id)
@@ -5930,15 +5318,13 @@ class InvoicesController extends Controller
             DB::table('invoice_notifications')->where('invoice_category',  'water bill')->where('invoice_id',$id)->delete();
 
 
-            DB::table('water_bill_invoices')
-                ->where('invoice_number', $id)
-                ->update(['stage' => 3]);
+
+            $water_bill_invoice= water_bill_invoice::where('invoice_number', $id)->first();
+            $water_bill_invoice->stage=3;
+            $water_bill_invoice->updated_at=Carbon::now()->toDateTimeString();
+            $water_bill_invoice->save();
 
 
-
-            DB::table('water_bill_invoices')
-                ->where('invoice_number', $id)
-                ->update(['updated_at' => Carbon::now()->toDateTimeString()]);
 
 
 
@@ -5980,44 +5366,26 @@ class InvoicesController extends Controller
         }
 
 
-        DB::table('water_bill_invoices')
-            ->where('invoice_number', $id)
-            ->update(['payment_status' => $payment_status]);
+        $water_bill_invoice= water_bill_invoice::where('invoice_number', $id)->first();
+        $water_bill_invoice->payment_status=$payment_status;
+        $water_bill_invoice->user_comments=$request->get('user_comments');
+        $water_bill_invoice->save();
 
-        DB::table('water_bill_invoices')
-            ->where('invoice_number', $id)
-            ->update(['user_comments' => $request->get('user_comments')]);
+
 
 //        DB::table('water_bill_payments')->insert(
 //            ['invoice_number' => $request->get('invoice_number'), 'invoice_number_votebook' => $request->get('invoice_number_votebook'),'amount_paid' => $request->get('amount_paid'),'amount_not_paid' =>$amount_not_paid,'currency_payments' => $request->get('currency_payments'),'receipt_number' => $request->get('receipt_number'),'date_of_payment' => $request->get('date_of_payment')]
 //        );
 
 
-        DB::table('water_bill_payments')
-            ->where('invoice_number', $request->get('invoice_number'))
-            ->update(['invoice_number_votebook' => $request->get('invoice_number_votebook')]);
-
-        DB::table('water_bill_payments')
-            ->where('invoice_number', $request->get('invoice_number'))
-            ->update(['amount_paid' => $request->get('amount_paid')]);
-
-        DB::table('water_bill_payments')
-            ->where('invoice_number', $request->get('invoice_number'))
-            ->update(['amount_not_paid' => $amount_not_paid]);
-
-        DB::table('water_bill_payments')
-            ->where('invoice_number', $request->get('invoice_number'))
-            ->update(['currency_payments' => $request->get('currency_payments')]);
-
-        DB::table('water_bill_payments')
-            ->where('invoice_number', $request->get('invoice_number'))
-            ->update(['receipt_number' => $request->get('receipt_number')]);
-
-        DB::table('water_bill_payments')
-            ->where('invoice_number', $request->get('invoice_number'))
-            ->update(['date_of_payment' => $request->get('date_of_payment')]);
-
-
+        $water_bill_payment=water_bill_payment::where('invoice_number', $request->get('invoice_number'))->first();
+        $water_bill_payment->invoice_number_votebook=$request->get('invoice_number_votebook');
+        $water_bill_payment->amount_paid=$request->get('amount_paid');
+        $water_bill_payment->amount_not_paid=$amount_not_paid;
+        $water_bill_payment->currency_payments=$request->get('currency_payments');
+        $water_bill_payment->receipt_number=$request->get('receipt_number');
+        $water_bill_payment->date_of_payment=$request->get('date_of_payment');
+        $water_bill_payment->save();
 
 
 

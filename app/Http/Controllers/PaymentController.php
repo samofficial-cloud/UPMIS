@@ -2,6 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\car_rental_invoice;
+use App\car_rental_payment;
+use App\electricity_bill_invoice;
+use App\electricity_bill_payment;
+use App\insurance_clients_payment;
+use App\insurance_invoice;
+use App\insurance_invoices_client;
+use App\insurance_payment;
+use App\invoice;
+use App\research_flats_invoice;
+use App\research_flats_payment;
+use App\space_payment;
+use App\water_bill_invoice;
+use App\water_bill_payment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Auth;
@@ -163,30 +177,18 @@ class PaymentController extends Controller
             }
 
 
-            DB::table('invoices')
-                ->where('invoice_number_votebook', $request->get('invoice_number'))
-                ->update(['payment_status' => $payment_status]);
+            $invoice=invoice::where('invoice_number_votebook', $request->get('invoice_number'))->first();
+            $invoice->payment_status=$payment_status;
+            $invoice->save();
 
 
-            DB::table('space_payments')
-                ->where('invoice_number_votebook', $request->get('invoice_number'))
-                ->update(['amount_paid' => $request->get('amount_paid')]);
-
-            DB::table('space_payments')
-                ->where('invoice_number_votebook', $request->get('invoice_number'))
-                ->update(['amount_not_paid' => $amount_not_paid]);
-
-            DB::table('space_payments')
-                ->where('invoice_number_votebook', $request->get('invoice_number'))
-                ->update(['currency_payments' => $request->get('currency_payments')]);
-
-            DB::table('space_payments')
-                ->where('invoice_number_votebook', $request->get('invoice_number'))
-                ->update(['receipt_number' => $request->get('receipt_number')]);
-
-            DB::table('space_payments')
-                ->where('invoice_number_votebook', $request->get('invoice_number'))
-                ->update(['date_of_payment' => $request->get('date_of_payment')]);
+            $space_payment= space_payment::where('invoice_number_votebook', $request->get('invoice_number'))->first();
+            $space_payment->amount_paid=$request->get('amount_paid');
+            $space_payment->amount_not_paid=$amount_not_paid;
+            $space_payment->currency_payments=$request->get('currency_payments');
+            $space_payment->receipt_number=$request->get('receipt_number');
+            $space_payment->date_of_payment=$request->get('date_of_payment');
+            $space_payment->save();
 
 
 
@@ -274,33 +276,20 @@ class PaymentController extends Controller
             }
 
 
-            DB::table('insurance_invoices')
-                ->where('invoice_number_votebook', $request->get('invoice_number'))
-                ->update(['payment_status' => $payment_status]);
+            $insurance_invoice= insurance_invoice::where('invoice_number_votebook', $request->get('invoice_number'))->first();
+            $insurance_invoice->payment_status=$payment_status;
+            $insurance_invoice->save();
 
 
 
+            $insurance_payment=insurance_payment::where('invoice_number_votebook', $request->get('invoice_number'))->first();
+            $insurance_payment->amount_paid=$request->get('amount_paid');
+            $insurance_payment->amount_not_paid=$amount_not_paid;
+            $insurance_payment->currency_payments=$request->get('currency_payments');
+            $insurance_payment->receipt_number=$request->get('receipt_number');
+            $insurance_payment->date_of_payment=$request->get('date_of_payment');
+            $insurance_payment->save();
 
-
-            DB::table('insurance_payments')
-                ->where('invoice_number_votebook', $request->get('invoice_number'))
-                ->update(['amount_paid' => $request->get('amount_paid')]);
-
-            DB::table('insurance_payments')
-                ->where('invoice_number_votebook', $request->get('invoice_number'))
-                ->update(['amount_not_paid' => $amount_not_paid]);
-
-            DB::table('insurance_payments')
-                ->where('invoice_number_votebook', $request->get('invoice_number'))
-                ->update(['currency_payments' => $request->get('currency_payments')]);
-
-            DB::table('insurance_payments')
-                ->where('invoice_number_votebook', $request->get('invoice_number'))
-                ->update(['receipt_number' => $request->get('receipt_number')]);
-
-            DB::table('insurance_payments')
-                ->where('invoice_number_votebook', $request->get('invoice_number'))
-                ->update(['date_of_payment' => $request->get('date_of_payment')]);
 
 
 
@@ -353,33 +342,21 @@ class PaymentController extends Controller
             }
 
 
-            DB::table('insurance_invoices_clients')
-                ->where('invoice_number_votebook', $request->get('invoice_number'))
-                ->update(['payment_status' => $payment_status]);
+            $insurance_invoices_client= insurance_invoices_client::where('invoice_number_votebook', $request->get('invoice_number'))->first();
+            $insurance_invoices_client->payment_status=$payment_status;
+            $insurance_invoices_client->save();
 
 
 
+            $insurance_clients_payment= insurance_clients_payment::where('invoice_number_votebook', $request->get('invoice_number'))->first();
+            $insurance_clients_payment->amount_paid=$request->get('amount_paid');
+            $insurance_clients_payment->amount_not_paid=$amount_not_paid;
+            $insurance_clients_payment->currency_payments=$request->get('currency_payments');
+            $insurance_clients_payment->receipt_number=$request->get('receipt_number');
+            $insurance_clients_payment->date_of_payment=$request->get('date_of_payment');
+            $insurance_clients_payment->save();
 
 
-            DB::table('insurance_clients_payments')
-                ->where('invoice_number_votebook', $request->get('invoice_number'))
-                ->update(['amount_paid' => $request->get('amount_paid')]);
-
-            DB::table('insurance_clients_payments')
-                ->where('invoice_number_votebook', $request->get('invoice_number'))
-                ->update(['amount_not_paid' => $amount_not_paid]);
-
-            DB::table('insurance_clients_payments')
-                ->where('invoice_number_votebook', $request->get('invoice_number'))
-                ->update(['currency_payments' => $request->get('currency_payments')]);
-
-            DB::table('insurance_clients_payments')
-                ->where('invoice_number_votebook', $request->get('invoice_number'))
-                ->update(['receipt_number' => $request->get('receipt_number')]);
-
-            DB::table('insurance_clients_payments')
-                ->where('invoice_number_votebook', $request->get('invoice_number'))
-                ->update(['date_of_payment' => $request->get('date_of_payment')]);
 
 
 
@@ -495,32 +472,20 @@ class PaymentController extends Controller
             }
 
 
-            DB::table('car_rental_invoices')
-                ->where('invoice_number_votebook', $request->get('invoice_number'))
-                ->update(['payment_status' => $payment_status]);
+            $car_rental_invoice=car_rental_invoice::where('invoice_number_votebook', $request->get('invoice_number'))->first();
+            $car_rental_invoice->payment_status=$payment_status;
+            $car_rental_invoice->save();
 
 
+            $car_rental_payment=car_rental_payment::where('invoice_number_votebook', $request->get('invoice_number'))->first();
+            $car_rental_payment->amount_paid=$request->get('amount_paid');
+            $car_rental_payment->amount_not_paid=$amount_not_paid;
+            $car_rental_payment->currency_payments=$request->get('currency_payments');
+            $car_rental_payment->receipt_number=$request->get('receipt_number');
+            $car_rental_payment->date_of_payment=$request->get('date_of_payment');
+            $car_rental_payment->save();
 
 
-            DB::table('car_rental_payments')
-                ->where('invoice_number_votebook', $request->get('invoice_number'))
-                ->update(['amount_paid' => $request->get('amount_paid')]);
-
-            DB::table('car_rental_payments')
-                ->where('invoice_number_votebook', $request->get('invoice_number'))
-                ->update(['amount_not_paid' => $amount_not_paid]);
-
-            DB::table('car_rental_payments')
-                ->where('invoice_number_votebook', $request->get('invoice_number'))
-                ->update(['currency_payments' => $request->get('currency_payments')]);
-
-            DB::table('car_rental_payments')
-                ->where('invoice_number_votebook', $request->get('invoice_number'))
-                ->update(['receipt_number' => $request->get('receipt_number')]);
-
-            DB::table('car_rental_payments')
-                ->where('invoice_number_votebook', $request->get('invoice_number'))
-                ->update(['date_of_payment' => $request->get('date_of_payment')]);
 
 
 
@@ -573,33 +538,22 @@ class PaymentController extends Controller
 
             }
 
-
-            DB::table('research_flats_invoices')
-                ->where('invoice_number_votebook', $request->get('invoice_number'))
-                ->update(['payment_status' => $payment_status]);
-
+            $research_flats_invoice= research_flats_invoice::where('invoice_number_votebook', $request->get('invoice_number'))->first();
+            $research_flats_invoice->payment_status=$payment_status;
+            $research_flats_invoice->save();
 
 
+            $research_flats_payment= research_flats_payment::where('invoice_number_votebook', $request->get('invoice_number'))->first();
+            $research_flats_payment->amount_paid=$request->get('amount_paid');
+            $research_flats_payment->amount_not_paid=$amount_not_paid;
+            $research_flats_payment->currency_payments=$request->get('currency_payments');
+            $research_flats_payment->receipt_number=$request->get('receipt_number');
+            $research_flats_payment->date_of_payment=$request->get('date_of_payment');
+            $research_flats_payment->save();
 
-            DB::table('research_flats_payments')
-                ->where('invoice_number_votebook', $request->get('invoice_number'))
-                ->update(['amount_paid' => $request->get('amount_paid')]);
 
-            DB::table('research_flats_payments')
-                ->where('invoice_number_votebook', $request->get('invoice_number'))
-                ->update(['amount_not_paid' => $amount_not_paid]);
 
-            DB::table('research_flats_payments')
-                ->where('invoice_number_votebook', $request->get('invoice_number'))
-                ->update(['currency_payments' => $request->get('currency_payments')]);
 
-            DB::table('research_flats_payments')
-                ->where('invoice_number_votebook', $request->get('invoice_number'))
-                ->update(['receipt_number' => $request->get('receipt_number')]);
-
-            DB::table('research_flats_payments')
-                ->where('invoice_number_votebook', $request->get('invoice_number'))
-                ->update(['date_of_payment' => $request->get('date_of_payment')]);
 
 
 
@@ -723,34 +677,20 @@ class PaymentController extends Controller
             }
 
 
-            DB::table('water_bill_invoices')
-                ->where('invoice_number_votebook', $request->get('invoice_number'))
-                ->update(['payment_status' => $payment_status]);
+            $water_bill_invoice= water_bill_invoice::where('invoice_number_votebook', $request->get('invoice_number'))->first();
+            $water_bill_invoice->payment_status=$payment_status;
+            $water_bill_invoice->save();
 
 
 
+            $water_bill_payment=water_bill_payment::where('invoice_number_votebook', $request->get('invoice_number'))->first();
+            $water_bill_payment->amount_paid=$request->get('amount_paid');
+            $water_bill_payment->amount_not_paid=$amount_not_paid;
+            $water_bill_payment->currency_payments=$request->get('currency_payments');
+            $water_bill_payment->receipt_number=$request->get('receipt_number');
+            $water_bill_payment->date_of_payment=$request->get('date_of_payment');
+            $water_bill_payment->save();
 
-
-
-            DB::table('water_bill_payments')
-                ->where('invoice_number_votebook', $request->get('invoice_number'))
-                ->update(['amount_paid' => $request->get('amount_paid')]);
-
-            DB::table('water_bill_payments')
-                ->where('invoice_number_votebook', $request->get('invoice_number'))
-                ->update(['amount_not_paid' => $amount_not_paid]);
-
-            DB::table('water_bill_payments')
-                ->where('invoice_number_votebook', $request->get('invoice_number'))
-                ->update(['currency_payments' => $request->get('currency_payments')]);
-
-            DB::table('water_bill_payments')
-                ->where('invoice_number_votebook', $request->get('invoice_number'))
-                ->update(['receipt_number' => $request->get('receipt_number')]);
-
-            DB::table('water_bill_payments')
-                ->where('invoice_number_votebook', $request->get('invoice_number'))
-                ->update(['date_of_payment' => $request->get('date_of_payment')]);
 
 
         }
@@ -836,31 +776,18 @@ class PaymentController extends Controller
             }
 
 
-            DB::table('electricity_bill_invoices')
-                ->where('invoice_number_votebook', $request->get('invoice_number'))
-                ->update(['payment_status' => $payment_status]);
+            $electricity_bill_invoice=electricity_bill_invoice::where('invoice_number_votebook', $request->get('invoice_number'))->first();
+            $electricity_bill_invoice->payment_status=$payment_status;
+            $electricity_bill_invoice->save();
 
 
-            DB::table('electricity_bill_payments')
-                ->where('invoice_number_votebook', $request->get('invoice_number'))
-                ->update(['amount_paid' => $request->get('amount_paid')]);
-
-            DB::table('electricity_bill_payments')
-                ->where('invoice_number_votebook', $request->get('invoice_number'))
-                ->update(['amount_not_paid' => $amount_not_paid]);
-
-            DB::table('electricity_bill_payments')
-                ->where('invoice_number_votebook', $request->get('invoice_number'))
-                ->update(['currency_payments' => $request->get('currency_payments')]);
-
-            DB::table('electricity_bill_payments')
-                ->where('invoice_number_votebook', $request->get('invoice_number'))
-                ->update(['receipt_number' => $request->get('receipt_number')]);
-
-            DB::table('electricity_bill_payments')
-                ->where('invoice_number_votebook', $request->get('invoice_number'))
-                ->update(['date_of_payment' => $request->get('date_of_payment')]);
-
+            $electricity_bill_payment=electricity_bill_payment::where('invoice_number_votebook', $request->get('invoice_number'))->first();
+            $electricity_bill_payment->amount_paid=$request->get('amount_paid');
+            $electricity_bill_payment->amount_not_paid=$amount_not_paid;
+            $electricity_bill_payment->currency_payments=$request->get('currency_payments');
+            $electricity_bill_payment->receipt_number=$request->get('receipt_number');
+            $electricity_bill_payment->date_of_payment=$request->get('date_of_payment');
+            $electricity_bill_payment->save();
 
 
 
@@ -915,20 +842,11 @@ class PaymentController extends Controller
     public function addDiscountSpace(Request $request,$id)
     {
 
-        DB::table('space_payments')
-            ->where('id', $id)
-            ->update(['temporary_over_payment' => $request->get('temporary_over_payment')]);
-
-
-
-        DB::table('space_payments')
-            ->where('id', $id)
-            ->update(['reason' => $request->get('reason_for_discount')]);
-
-        DB::table('space_payments')
-            ->where('id', $id)
-            ->update(['stage' => 1]);
-
+        $space_payment=space_payment::where('id', $id)->first();
+        $space_payment->temporary_over_payment=$request->get('temporary_over_payment');
+        $space_payment->reason=$request->get('reason_for_discount');
+        $space_payment->stage=1;
+        $space_payment->save();
 
 
         return redirect('/payment_management')
@@ -941,41 +859,30 @@ class PaymentController extends Controller
     public function approveDiscountRequest(Request $request,$id)
     {
 
+        $space_payment=space_payment::where('id', $id)->first();
 
         if($request->get('approval_status')=='Rejected'){
 
-            DB::table('space_payments')
-                ->where('id', $id)
-                ->update(['stage' => 2]);
-
-
-            DB::table('space_payments')
-                ->where('id', $id)
-                ->update(['approval_remarks' => $request->get('approval_remarks')]);
+            $space_payment->stage=2;
+            $space_payment->approval_remarks=$request->get('approval_remarks');
 
         }else{
 
-            DB::table('space_payments')
-                ->where('id', $id)
-                ->update(['stage' => 0]);
+            $space_payment->stage=0;
+
 
             $temporary_over_payment=DB::table('space_payments')->where('id',$id)->value('temporary_over_payment');
             $temporary_reason=DB::table('space_payments')->where('id',$id)->value('reason');
 
-            DB::table('space_payments')
-                ->where('id', $id)
-                ->update(['over_payment' => $temporary_over_payment]);
 
-            DB::table('space_payments')
-                ->where('id', $id)
-                ->update(['permanent_reason' => $temporary_reason]);
-
+            $space_payment->over_payment=$temporary_over_payment;
+            $space_payment->permanent_reason=$temporary_reason;
 
         }
 
 
 
-
+        $space_payment->save();
 
         return redirect('/payment_management')
             ->with('success', 'Operation completed successfully');
@@ -988,17 +895,12 @@ class PaymentController extends Controller
     public function editDiscountSpace(Request $request,$id)
     {
 
-        DB::table('space_payments')
-            ->where('id', $id)
-            ->update(['temporary_over_payment' => $request->get('temporary_over_payment')]);
+        $space_payment=space_payment::where('id', $id)->first();
+        $space_payment->temporary_over_payment=$request->get('temporary_over_payment');
+        $space_payment->reason=$request->get('reason_for_discount');
+        $space_payment->stage=1;
+        $space_payment->save();
 
-        DB::table('space_payments')
-            ->where('id', $id)
-            ->update(['reason' => $request->get('reason_for_discount')]);
-
-        DB::table('space_payments')
-            ->where('id', $id)
-            ->update(['stage' => 1]);
 
         return redirect('/payment_management')
             ->with('success', 'Request forwarded successfully');
@@ -1010,11 +912,9 @@ class PaymentController extends Controller
     public function cancelDiscountAdditionRequest(Request $request,$id)
     {
 
-
-
-        DB::table('space_payments')
-            ->where('id', $id)
-            ->update(['stage' => 0]);
+        $space_payment=space_payment::where('id', $id)->first();
+        $space_payment->stage=0;
+        $space_payment->save();
 
         return redirect('/payment_management')
             ->with('success', 'Request cancelled successfully');
